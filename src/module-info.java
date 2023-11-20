@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author sarpvulas
- *
- */
-module Alchemist {
-}
