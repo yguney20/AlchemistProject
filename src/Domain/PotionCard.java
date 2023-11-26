@@ -17,6 +17,7 @@ public class PotionCard {
 		        this.potionType = potionType;
 		        this.ingredients = ingredients;
 		        this.description = description;
+		        //
 		    }
 		    
 		    
