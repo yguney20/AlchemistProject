@@ -126,14 +126,13 @@ public class GameEntranceScreen extends JFrame{
         });
         add(helpButton);
 
-     // Help button,
+     
         quitButton.setBounds(getWidth() - 70, 20, 80, 20);
         quitButton.setFocusPainted(false);
         quitButton.setContentAreaFilled(false);
         quitButton.setBorderPainted(false);
      // Increase the font size
         Font pacificoFont = new Font("Pacifico", Font.PLAIN, 12);
-        
         Font largerFont = pacificoFont.deriveFont(pacificoFont.getSize() + 24f);
         quitButton.setFont(largerFont);
        

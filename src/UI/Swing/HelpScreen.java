@@ -12,6 +12,7 @@ public class HelpScreen extends JFrame {
     public HelpScreen(int width, int height, Frame frame) {
         backButton.setBounds(width - 100, height - 50, 100, 50);
         setSize(width, height);
+        
         setTitle("KU Alchemists Help");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ImageIcon icon = new ImageIcon("src/UI/Swing/Images/logo.png");
