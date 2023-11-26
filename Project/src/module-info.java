@@ -2,8 +2,8 @@
  * 
  */
 /**
- * @author sarpvulas
+ * @author zeynepaydin
  *
  */
-module Project {
+module Alchemist {
 }
