@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author zeynepaydin
- *
- */
-module Alchemist {
-}
