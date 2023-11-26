@@ -1,4 +1,4 @@
-package Domain;
+package gameObjects;
 
 public class Molecule {
     private String color;
