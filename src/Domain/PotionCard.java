@@ -9,15 +9,13 @@ public class PotionCard {
 	
 		 	private String potionName;
 		    private String potionType;
-		    private List<IngredientCard> ingredients;
-		    private int points;
+		    private List<IngredientCard> ingredients;		    
 		    private String description;
 		    
-		    public PotionCard(String potionName, String potionType, List<IngredientCard> ingredients, int points, String description) {
+		    public PotionCard(String potionName, String potionType, List<IngredientCard> ingredients, String description) {
 		        this.potionName = potionName;
 		        this.potionType = potionType;
 		        this.ingredients = ingredients;
-		        this.points = points;
 		        this.description = description;
 		    }
 		    
@@ -46,13 +44,6 @@ public class PotionCard {
 		        this.ingredients = ingredients;
 		    }
 
-		    public int getPoints() {
-		        return points;
-		    }
-
-		    public void setPoints(int points) {
-		        this.points = points;
-		    }
 
 		    public String getDescription() {
 		        return description;
