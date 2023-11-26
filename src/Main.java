@@ -3,9 +3,8 @@ import UI.Swing.*;
 public class Main {
     public static void main(String[] args) {
         
-        LoginScreen loginScreen = new LoginScreen();
+        GameEntranceScreen entranceScreen = new GameEntranceScreen();
 
-        
-        loginScreen.display();
+        entranceScreen.display();
     }
 }
