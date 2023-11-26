@@ -5,30 +5,43 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class GameEntranceScreen {
-    private JFrame frame;
-    private JPanel backgroundPanel;
+public class GameEntranceScreen extends JFrame{
+    /**
+	 * 
+	 */
+	private JFrame frame;
+	private JPanel backgroundPanel;
     private JButton playButton = new JButton("Play");
     private JButton settingsButton = new JButton("Settings");
     private JButton helpButton = new JButton("Help");
+    private JButton quitButton = new JButton("X");
+
     private int buttonWidth;
     private int buttonHeight;
+    private int initialX;
+    private int initialY;
 
     public GameEntranceScreen() {
-        frame = new JFrame("KU Alchemist");
-        frame.setSize(800, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);       
-        buttonWidth = frame.getWidth() / 2;
+    	this.frame = this;
+        setTitle("KU Alchemist");
+        setSize(1000, 800);
+        setUndecorated(true);  // Make the JFrame undecorated
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        buttonWidth = 500;
         buttonHeight = 50;
         // Load the background image using ImageIO
         try {
             BufferedImage backgroundImage = ImageIO.read(new File("src/UI/Swing/Images/background.jpeg"));
             ImageIcon icon = new ImageIcon("src/UI/Swing/Images/logo.png");
-            frame.setIconImage(icon.getImage());
+            setIconImage(icon.getImage());
             
             // Create a custom JPanel with the background image
             backgroundPanel = new JPanel() {
@@ -38,50 +51,60 @@ public class GameEntranceScreen {
                     g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 }
             };
-            
+                        
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Set layout manager to OverlayLayout
-        frame.setLayout(new OverlayLayout(frame.getContentPane()));
+        
 
         // Create and add buttons
         createButtons();
 
-        // Add a ComponentListener to track frame size changes
-        frame.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                adjustButtonPositions();
+        
+        
+     // Add a MouseListener to make the frame movable
+        backgroundPanel.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                initialX = e.getX();
+                initialY = e.getY();
+            }
+        });
+
+        backgroundPanel.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                int x = getLocation().x + e.getX() - initialX;
+                int y = getLocation().y + e.getY() - initialY;
+                setLocation(x, y);
             }
         });
 
         // Center the frame on the screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (screenSize.width - frame.getWidth()) / 2;
-        int y = (screenSize.height - frame.getHeight()) / 2;
-        frame.setLocation(x, y);
+        int x = (screenSize.width - getWidth()) / 2;
+        int y = (screenSize.height -getHeight()) / 2;
+        setLocation(x, y);
 
         // Add the backgroundPanel to the content pane
-        frame.getContentPane().add(backgroundPanel);
+        getContentPane().add(backgroundPanel);
     }
 
     private void createButtons() {
         // Play button
-        playButton.setBounds((frame.getWidth() - buttonWidth) / 2, (frame.getHeight() / 2) - 175, buttonWidth, buttonHeight);
+        playButton.setBounds(getWidth() / 4, 225, buttonWidth, buttonHeight);
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();  // Close current frame
+                dispose();  // Close current frame
                 LoginScreen loginScreen = new LoginScreen();
                 loginScreen.display();
             }
         });
-        frame.add(playButton);
+        this.add(playButton);
 
         // Settings button
-        settingsButton.setBounds((frame.getWidth() - buttonWidth) / 2, (frame.getHeight() / 2) - 75, buttonWidth, buttonHeight);
+        settingsButton.setBounds(getWidth() / 4, 375, buttonWidth, buttonHeight);
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,34 +112,48 @@ public class GameEntranceScreen {
                 // Add your logic here
             }
         });
-        frame.add(settingsButton);
+        add(settingsButton);
 
         // Help button,
-        helpButton.setBounds((frame.getWidth() - buttonWidth) / 2, (frame.getHeight() / 2) + 25, buttonWidth, buttonHeight);
+        helpButton.setBounds(getWidth() / 4, 525, buttonWidth, buttonHeight);
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	frame.dispose();  // Close current frame
-                HelpScreen helpScreen = new HelpScreen(frame.getWidth(), frame.getHeight());
+            	setVisible(false);  // Close current frame
+                HelpScreen helpScreen = new HelpScreen(getWidth(), getHeight(), frame);
                 helpScreen.display();
             }
         });
-        frame.add(helpButton);
+        add(helpButton);
 
-        // Adjust the initial button positions
-        adjustButtonPositions();
-    }
-
-    private void adjustButtonPositions() {
+     // Help button,
+        quitButton.setBounds(getWidth() - 70, 20, 80, 20);
+        quitButton.setFocusPainted(false);
+        quitButton.setContentAreaFilled(false);
+        quitButton.setBorderPainted(false);
+     // Increase the font size
+        Font pacificoFont = new Font("Pacifico", Font.PLAIN, 12);
         
-
-        playButton.setBounds((frame.getWidth() - buttonWidth) / 2, (frame.getHeight() / 2) - 175, buttonWidth, buttonHeight);
-        settingsButton.setBounds((frame.getWidth() - buttonWidth) / 2, (frame.getHeight() / 2) - 75, buttonWidth, buttonHeight);
-        helpButton.setBounds((frame.getWidth() - buttonWidth) / 2, (frame.getHeight() / 2) + 25, buttonWidth, buttonHeight);
+        Font largerFont = pacificoFont.deriveFont(pacificoFont.getSize() + 24f);
+        quitButton.setFont(largerFont);
+       
+     // Set the red "X" as the text
+        quitButton.setForeground(Color.RED);
+        quitButton.setText("X");
+        
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	dispose();
+            }
+        });
+        add(quitButton);
     }
+
+    
 
     public void display() {
-        frame.setVisible(true);
+        setVisible(true);
     }
 
     // Add this method to set up the UI components

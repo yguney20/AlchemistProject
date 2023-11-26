@@ -9,7 +9,7 @@ public class HelpScreen extends JFrame {
 
     private JButton backButton = new JButton("Back");
 
-    public HelpScreen(int width, int height) {
+    public HelpScreen(int width, int height, Frame frame) {
         backButton.setBounds(width - 100, height - 50, 100, 50);
         setSize(width, height);
         setTitle("KU Alchemists Help");
@@ -43,11 +43,10 @@ public class HelpScreen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Close the current HelpScreen
-                dispose();
-
-                // Open the GameEntranceScreen
-                GameEntranceScreen entranceScreen = new GameEntranceScreen();
-                entranceScreen.display();
+            	frame.setVisible(true);
+            	dispose();
+                
+                
             }
         });
 
