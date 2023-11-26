@@ -1,4 +1,4 @@
-package Domain;
+package gameObjects;
 import java.util.List;
 
 public class PotionCard {
