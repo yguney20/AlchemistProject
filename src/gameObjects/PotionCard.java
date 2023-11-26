@@ -9,6 +9,7 @@ public class PotionCard {
 	
 		 	private String potionName;
 		    private String potionType;
+
 		    private List<IngredientCard> ingredients;		    
 		    private String description;
 		    
@@ -18,6 +19,7 @@ public class PotionCard {
 		        this.ingredients = ingredients;
 		        this.description = description;
 		        
+
 		    }
 		    
 		    
