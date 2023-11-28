@@ -1,39 +1,61 @@
 package gameObjects;
 
+
 public class Molecule {
-    private String color;
-    private String sign;
-    private int size;
+	
+	enum Size {BIG, SMALL};
+	enum Sign {POSITIVE, NEGATIVE};
+    private Size redComponentSize;
+    private Sign redComponentSign;
+    private Size greenComponentSize;
+    private Sign greenComponentSign;
+    private Size blueComponentSize;
+    private Sign blueComponentSign;
 
-    public Molecule(String color, String sign, int size) {
-        this.color = color;
-        this.sign = sign;
-        this.size = size;
+    public Molecule(Size redComponentSize, Sign redComponentSign, 
+            Size greenComponentSize, Sign greenComponentSign, 
+            Size blueComponentSize, Sign blueComponentSign) {
+    	this.redComponentSize = redComponentSize;
+    	this.redComponentSign = redComponentSign;
+    	this.greenComponentSize = greenComponentSize;
+    	this.greenComponentSign = greenComponentSign;
+    	this.blueComponentSize = blueComponentSize;
+    	this.blueComponentSign = blueComponentSign;
     }
 
-    public void setColor(String color) {
-		this.color = color;
-	}
-
-	public void setSign(String sign) {
-		this.sign = sign;
-	}
-
-	public void setSize(int size) {
-		this.size = size;
-	}
-
-	// Getters for color, sign, and size
-    public String getColor() {
-        return color;
+    @Override
+    public String toString() {
+        return "Molecule{" +
+                "redComponentSize=" + redComponentSize +
+                ", redComponentSign=" + redComponentSign +
+                ", greenComponentSize=" + greenComponentSize +
+                ", greenComponentSign=" + greenComponentSign +
+                ", blueComponentSize=" + blueComponentSize +
+                ", blueComponentSign=" + blueComponentSign +
+                '}';
+    }
+    
+    public Size getRedComponentSize() {
+    	return redComponentSize;
     }
 
-    public String getSign() {
-        return sign;
+    public Sign getRedComponentSign() {
+    	return redComponentSign;
     }
 
-    public int getSize() {
-        return size;
+    public Size getGreenComponentSize() {
+    	return greenComponentSize;
+    }
+
+    public Sign getGreenComponentSign() {
+    	return greenComponentSign;
+    }
+
+    public Size getBlueComponentSize() {
+    	return blueComponentSize;
+    }
+
+    public Sign getBlueComponentSign() {
+    	return blueComponentSign;
     }
 }
-
