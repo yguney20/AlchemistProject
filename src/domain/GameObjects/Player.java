@@ -13,6 +13,8 @@
      private int sicknessLevel;
      private int reputationPoints;
      private double score;
+ 	 private static ArrayList<Player> playerList = new ArrayList<Player>();
+
 
      public Player(String nickname, String avatar) {
          this.nickname = nickname;
@@ -23,9 +25,26 @@
          this.artifactCards = new ArrayList<>();
          this.sicknessLevel = 0; 
          this.reputationPoints = 0; 
+         playerList.add(this);
      }
 
-     public void increaseSickness(int x) {
+     public static ArrayList<Player> getPlayerList() {
+		return playerList;
+	}
+
+	public static void setPlayerList(ArrayList<Player> playerList) {
+		Player.playerList = playerList;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public void increaseSickness(int x) {
     	 this.sicknessLevel += x;
      }
      
