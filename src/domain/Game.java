@@ -18,8 +18,8 @@ public class Game {
     private Player currentPlayer;
     
     
-    public Game(List<Player> players) {
-        this.players = players;
+    public Game() {
+        this.players = Player.getPlayerList();
         this.moleculeList = createMoleculeList();
         this.ingredientDeck = createIngredientDeck();
         this.artifactDeck = new ArrayList<>();

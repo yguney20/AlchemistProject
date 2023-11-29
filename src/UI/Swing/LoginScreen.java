@@ -1,269 +1,355 @@
 package UI.Swing;
-import javax.swing.*;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.Color;
-import java.awt.Toolkit;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import java.awt.Font;
-import java.awt.Image;
-
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
-import javax.swing.JPasswordField;
-import javax.swing.border.LineBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
-import java.awt.Cursor;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.UIManager;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Iterator;
-import java.util.logging.Logger;
-import java.io.FileReader;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-
-import javax.swing.JSeparator;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import domain.GameObjects.Player;
 
+public class LoginScreen extends JFrame implements ActionListener{
 
-public class LoginScreen extends JFrame {
+	private JFrame frame;
+    private JPanel contentPane;
+    private JTextField player1Name;
+    private JTextField player2Name;
+    private JButton avatar1;
+    private JButton avatar2;
+    private JButton avatar3;
+    private JButton avatar4;
+    private JButton avatar5;
+    private JButton avatar6;
+    private JLabel player1Label;
+    private JLabel player2Label;
+    private JLabel chooseAvatar;
+    private JLabel nickname;
+    private JLabel message1;
+    private JLabel message2;
+    private JLabel selected;
+    private JButton confirmButton;
+    private JButton startGameButton;
+    private String player1Avatar;
+    private String player2Avatar;
+    private int initialX;
+    private int initialY;
 
+    /**
+     * @throws IOException 
+     */
+    public LoginScreen(){
+    	this.frame = this;
+        setTitle("KU Alchemist Login");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 900, 505);
+        setResizable(false);
 
-	private JPanel contentPane;
-	private JTextField usernameTextField;
-	private JPasswordField passwordTextField;
-	
-	private int mouseX, mouseY;
-	
+        try {
+        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/UI/Swing/Images/loginbackground.jpg"));
+        contentPane = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+            }
+        };       
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+        
+        ImageIcon icon = new ImageIcon(getClass().getResource("/UI/Swing/Images/logo.png"));
+        setIconImage(icon.getImage());
+        addTextFields();
+        addJLabels();
+        addJButtons();
+		addActionEvent();
+		
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+        
+        // Add a MouseListener to make the frame movable
+        contentPane.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                initialX = e.getX();
+                initialY = e.getY();
+            }
+        });
 
+        contentPane.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                int x = getLocation().x + e.getX() - initialX;
+                int y = getLocation().y + e.getY() - initialY;
+                setLocation(x, y);
+            }
+        });
+    }
 
-	 
-	public LoginScreen() {
-			
-		setUndecorated(true);
-		setBackground(new Color(255, 255, 255));
-		setTitle("PhotoCloud Login");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1400, 900);
-		setLocationRelativeTo(null);
+	public void setImage(String path, JButton button) throws IOException {
 		
-		
-		contentPane = new JPanel();
-		contentPane.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				
-				setLocation(getX() + e.getX() - mouseX, getY() + e.getY() - mouseY);
-				
-			}
-		});
-		contentPane.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				
-				mouseX = e.getX();
-				mouseY = e.getY();
-				
-			}
-		});
-		contentPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		contentPane.setBackground(new Color(255, 255, 255));
-		contentPane.setBorder(null);
+		// Read the original image
+        BufferedImage originalImage = ImageIO.read(getClass().getResource(path));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("");
-		
-		ImageIcon logInMainIcon = new ImageIcon("src/UI/Swing/Images/wizardLogo.png");
-		Image logInMainImage = logInMainIcon.getImage(); // transform it 
-		Image newlogInMainImage = logInMainImage.getScaledInstance(550, 200,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way 
-		logInMainIcon = new ImageIcon(newlogInMainImage);  // transform it back
-		
-		
-		lblNewLabel.setIcon(logInMainIcon);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel.setBounds(83, 226, 585, 429);
-		contentPane.add(lblNewLabel);
-		
-		JPanel LogInPane = new JPanel();
-		LogInPane.setBorder(null);
-		LogInPane.setBackground(new Color(128, 0, 128));
-		LogInPane.setBounds(798, 0, 602, 900);
-		contentPane.add(LogInPane);
-		LogInPane.setLayout(null);
-		
-		JPanel logInButtonPanel = new JPanel();
-		logInButtonPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {}
-		});
-		logInButtonPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		logInButtonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
-		logInButtonPanel.setBackground(new Color(128, 0, 128));
-		logInButtonPanel.setBounds(139, 512, 144, 57);
-		LogInPane.add(logInButtonPanel);
-		logInButtonPanel.setLayout(null);
-		
-		JLabel logInLabel = new JLabel("Log In");
-		logInLabel.setBounds(32, 11, 79, 46);
-		logInButtonPanel.add(logInLabel);
-		logInLabel.setFont(new Font("Sylfaen", Font.BOLD, 24));
-		logInLabel.setForeground(new Color(255, 255, 255));
-		
-		JPanel signUpButtonPanel = new JPanel();
-		signUpButtonPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		signUpButtonPanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			
-				
-				
-			}
-		});
-		
-		
-		signUpButtonPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		signUpButtonPanel.setBorder(new LineBorder(new Color(255, 255, 255), 2, true));
-		signUpButtonPanel.setBackground(new Color(128, 0, 128));
-		signUpButtonPanel.setBounds(355, 512, 144, 57);
-		LogInPane.add(signUpButtonPanel);
-		signUpButtonPanel.setLayout(null);
-		
-		JLabel signUpLabel = new JLabel("Sign Up");
-		signUpLabel.setBounds(29, 11, 89, 46);
-		signUpButtonPanel.add(signUpLabel);
-		signUpLabel.setForeground(Color.WHITE);
-		signUpLabel.setFont(new Font("Sylfaen", Font.BOLD, 24));
-		
-		usernameTextField = new JTextField();
-		usernameTextField.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				usernameTextField.setText("");
-				usernameTextField.removeMouseListener(this);
-				
-			}
-		});
-		usernameTextField.setForeground(new Color(255, 255, 255));
-		usernameTextField.setBackground(new Color(128, 0, 128));
-		usernameTextField.setFont(new Font("Dialog", Font.PLAIN, 24));
-		usernameTextField.setText("Username");
-		usernameTextField.setBounds(244, 317, 255, 36);
-		LogInPane.add(usernameTextField);
-		usernameTextField.setBorder(null);
-		usernameTextField.setCaretColor(new Color(255, 255, 255));
-		usernameTextField.setColumns(10);
-		
-		passwordTextField = new JPasswordField();
-		passwordTextField.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				passwordTextField.setText("");
-				passwordTextField.removeMouseListener(this);
-				
-			}
-		});
-		passwordTextField.setCaretColor(new Color(255, 255, 255));
-		passwordTextField.setFont(new Font("Dialog", Font.PLAIN, 24));
-		passwordTextField.setForeground(new Color(255, 255, 255));
-		passwordTextField.setBackground(new Color(128, 0, 128));
-		passwordTextField.setText("Password");
-		passwordTextField.setBounds(244, 388, 255, 35);
-		LogInPane.add(passwordTextField);
-		passwordTextField.setBorder(null);
-		
-		JLabel lblNewLabel_3 = new JLabel("");
-		lblNewLabel_3.setHorizontalTextPosition(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(159, 317, 42, 57);
-		LogInPane.add(lblNewLabel_3);
-		
-		ImageIcon whiteUsernameImageIcon = new ImageIcon("src/UI/Swing/Images/Icons/white_username.png");
-		Image whiteUsernameImage = whiteUsernameImageIcon.getImage(); // transform it 
-		Image newWhiteUsernameImage = whiteUsernameImage.getScaledInstance(35, 35,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		whiteUsernameImageIcon = new ImageIcon(newWhiteUsernameImage);  // transform it back
-		
-		
-		lblNewLabel_3.setIcon(whiteUsernameImageIcon);
-		
-		JSeparator separator = new JSeparator();
-		separator.setBorder(new LineBorder(new Color(255, 255, 255), 4));
-		separator.setBounds(244, 362, 213, 3);
-		LogInPane.add(separator);
-		separator.setForeground(new Color(255, 255, 255));
-		separator.setBackground(new Color(255, 255, 255));
-		
-		JLabel lblNewLabel_2 = new JLabel("Forget Password?");
-		lblNewLabel_2.setForeground(new Color(255, 255, 255));
-		lblNewLabel_2.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblNewLabel_2.setBounds(244, 651, 185, 36);
-		LogInPane.add(lblNewLabel_2);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setForeground(Color.WHITE);
-		separator_2.setBorder(new LineBorder(new Color(255, 255, 255), 4));
-		separator_2.setBackground(Color.WHITE);
-		separator_2.setBounds(244, 434, 213, 3);
-		LogInPane.add(separator_2);
-		
-		JLabel lblNewLabel_4 = new JLabel("");
-		lblNewLabel_4.setBounds(159, 388, 50, 48);
-		LogInPane.add(lblNewLabel_4);
-		
-		ImageIcon whiteKeyImageIcon = new ImageIcon("src/UI/Swing/Images/Icons/white_key.png");
-		Image image = whiteKeyImageIcon.getImage(); // transform it 
-		Image newimg = image.getScaledInstance(35, 35,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-		whiteKeyImageIcon = new ImageIcon(newimg);  // transform it back
-		lblNewLabel_4.setIcon(whiteKeyImageIcon);
-		
-		JLabel exitLabel = new JLabel("X");
-		exitLabel.setBounds(557, 11, 49, 51);
-		LogInPane.add(exitLabel);
-		exitLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		exitLabel.addMouseListener(new MouseAdapter() { //Exits when pushed to the red X button.
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.exit(0);
-			}
-		});
-		exitLabel.setForeground(new Color(255, 0, 0));
-		exitLabel.setBackground(new Color(0, 0, 0));
-		exitLabel.setFont(new Font("Segoe Print", Font.BOLD, 42));
-		
-		setVisible(true);
+        // Get the dimensions of the button
+        int buttonWidth = button.getWidth();
+        int buttonHeight = button.getHeight();
+
+        // Create a new image with better quality
+        BufferedImage scaledImage = new BufferedImage(buttonWidth, buttonHeight, BufferedImage.TYPE_INT_ARGB);
+        AffineTransformOp op = new AffineTransformOp(
+                AffineTransform.getScaleInstance((double) buttonWidth / originalImage.getWidth(),
+                        (double) buttonHeight / originalImage.getHeight()),
+                AffineTransformOp.TYPE_BILINEAR);
+        scaledImage = op.filter(originalImage, scaledImage);
+
+        // Set the scaled image as the icon for the button
+        button.setIcon(new ImageIcon(scaledImage));
+        
 	}
 
-
-
-
-/**
-* @Author -- H. Sarp Vulas
-*/
-
-  
-
     public void display() {
-        // Make the frame visible
         setVisible(true);
     }
+    
+    public void addJButtons() {
+    	try {
+        avatar1 = new JButton("New button");
+        avatar1.setBounds(440, 93, 123, 148);
+        avatar1.setContentAreaFilled(false);
+        avatar1.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(avatar1);
+        setImage("/UI/Swing/Images/a1.png", avatar1);
+        
+        avatar2= new JButton("New button");
+        avatar2.setBounds(40, 93, 123, 148);
+        avatar2.setContentAreaFilled(false);
+        avatar2.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(avatar2);
+        setImage("/UI/Swing/Images/a2.png", avatar2);
+        
+        avatar3 = new JButton("New button");
+        avatar3.setBounds(174, 93, 123, 148);
+        avatar3.setContentAreaFilled(false);
+        avatar3.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(avatar3);
+        setImage("/UI/Swing/Images/a3.png", avatar3);
+
+        avatar4 = new JButton("New button");
+        avatar4.setBounds(714, 93, 123, 148);
+        avatar4.setContentAreaFilled(false);
+        avatar4.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(avatar4);
+        setImage("/UI/Swing/Images/a4.png", avatar4);
+
+        avatar5 = new JButton("New button");
+        avatar5.setBounds(307, 93, 123, 148);
+        avatar5.setContentAreaFilled(false);
+        avatar5.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(avatar5);
+        setImage("/UI/Swing/Images/a5.png", avatar5);
+
+        avatar6 = new JButton("New button");
+        avatar6.setBounds(573, 93, 123, 148);
+        avatar6.setContentAreaFilled(false);
+        avatar6.setBorder(BorderFactory.createEmptyBorder());
+        contentPane.add(avatar6);
+        setImage("/UI/Swing/Images/a6.png", avatar6);
+        
+        confirmButton = new JButton("Confirm");
+        confirmButton.setBounds(390, 369, 89, 23);
+        contentPane.add(confirmButton);
+        
+        startGameButton = new JButton("Start Game");
+        startGameButton.setBounds(370, 369, 120, 23);
+        startGameButton.setVisible(false); // Initially hidden
+        contentPane.add(startGameButton);
+    	} catch(IOException e) {
+            e.printStackTrace();
+    		
+    	}
+    }
+    
+    public void addJLabels() {
+        player1Label= new JLabel("PLAYER 1");
+        player1Label.setBounds(390, 312, 80, 14);
+        player1Label.setForeground(Color.WHITE);
+        player1Label.setFont(new Font("Arial", Font.BOLD, 16));
+        contentPane.add(player1Label);
+        
+        player2Label = new JLabel("PLAYER 2");
+        player2Label.setBounds(390, 312, 80, 14);
+        player2Label.setForeground(Color.WHITE);
+        player2Label.setFont(new Font("Arial", Font.BOLD, 16));
+        player2Label.setVisible(false); // Initially hidden
+        contentPane.add(player2Label);
+
+        nickname = new JLabel("Nickname");
+        nickname.setBounds(196, 340, 80, 14);
+        nickname.setForeground(Color.WHITE);
+        nickname.setFont(new Font("Arial", Font.BOLD, 16));
+        contentPane.add(nickname);
+        
+        chooseAvatar = new JLabel("Choose an avatar");
+        chooseAvatar.setBounds(40, 60, 299, 14);
+        chooseAvatar.setForeground(Color.WHITE);
+        chooseAvatar.setFont(new Font("Arial", Font.BOLD, 16));
+        contentPane.add(chooseAvatar);
+        
+        message1 = new JLabel("PLAYER 1 is created!!! Now it is time for PLAYER 2");
+        message1.setBounds(40, 25, 500, 30); // Increased height for better visibility
+        message1.setForeground(Color.WHITE);
+        message1.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 20)); // Larger and italic
+        message1.setBackground(new Color(0, 0, 0, 200)); // Semi-transparent black background
+        message1.setOpaque(true);
+        message1.setVisible(false);
+        contentPane.add(message1);
+        
+        message2 = new JLabel("Please enter a nickname and choose an avatar");
+        message2.setBounds(40, 25, 500, 30); // Increased height for better visibility
+        message2.setForeground(Color.WHITE);
+        message2.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 20)); // Larger and italic
+        message2.setBackground(new Color(0, 0, 0, 200)); // Semi-transparent black background
+        message2.setOpaque(true);
+        message2.setVisible(false);
+        contentPane.add(message2);
+        
+        selected = new JLabel("SELECTED");
+        selected.setBackground(Color.RED);
+        selected.setForeground(Color.WHITE); 
+        selected.setFont(new Font("Arial", Font.BOLD, 20)); 
+        selected.setOpaque(true);
+        selected.setVisible(false);
+        contentPane.add(selected);
+    }
+    
+    public void addTextFields() {
+    	 player1Name = new JTextField();
+    	 player1Name.setBounds(335, 337, 190, 20);
+         contentPane.add(player1Name);
+         player1Name.setColumns(10);
+         
+    	 player2Name = new JTextField();
+    	 player2Name.setBounds(335, 337, 190, 20);
+         contentPane.add(player2Name);
+         player2Name.setColumns(10);
+         player2Name.setVisible(false);
+    }
+    
+    public void addActionEvent() {
+	       avatar1.addActionListener(this);
+	       avatar2.addActionListener(this);
+	       avatar3.addActionListener(this);
+	       avatar4.addActionListener(this);
+	       avatar5.addActionListener(this);
+	       avatar6.addActionListener(this);
+	       confirmButton.addActionListener(this);
+	       startGameButton.addActionListener(this);
+ }
+    
+    @Override
+	public void actionPerformed(ActionEvent e) {
+		//sets what will happen when the user clicks a button
+		if(e.getSource() == avatar1) {
+	        handleAvatarSelection("/UI/Swing/Images/a1.png", avatar1);
+		}
+			
+		if(e.getSource() == avatar2) {
+	        handleAvatarSelection("/UI/Swing/Images/a2.png", avatar2);
+		}
+		
+		if(e.getSource() == avatar3) {
+	        handleAvatarSelection("/UI/Swing/Images/a3.png", avatar3);
+		}
+		
+		if(e.getSource() == avatar4) {
+	        handleAvatarSelection("/UI/Swing/Images/a4.png", avatar4);
+
+		}
+		
+		if(e.getSource() == avatar5) {
+	        handleAvatarSelection("/UI/Swing/Images/a5.png", avatar5);
+		}
+		
+		if(e.getSource() == avatar6) {
+	        handleAvatarSelection("/UI/Swing/Images/a6.png", avatar6);
+		}
+		
+		if(e.getSource() == confirmButton) {
+			if (!player1Name.getText().isEmpty() && player1Avatar != null) {
+			message2.setVisible(false);
+			Player player1 = new Player(player1Name.getText(), player1Avatar);
+	        hideAvatarButton(player1Avatar);
+	        selected.setVisible(false);
+			player1Label.setVisible(false);
+			player1Name.setVisible(false);
+			player2Label.setVisible(true);
+			player2Name.setVisible(true);
+			message1.setVisible(true);
+			startGameButton.setVisible(true);
+			confirmButton.setVisible(false);
+			} else {
+			message2.setVisible(true);
+			}
+		}
+		
+		if(e.getSource() == startGameButton) {
+			if (!player2Name.getText().isEmpty() && player2Avatar != null) {
+				Player player2 = new Player(player2Name.getText(), player2Avatar);
+				this.setVisible(false);
+				BoardScreen board = new BoardScreen();
+				board.display();
+			} else {
+				message1.setVisible(false);
+				message2.setVisible(true);
+			}
+		}		
+		
+	}
+    
+    private void handleAvatarSelection(String avatarPath, JButton button) {            
+            if (button == avatar1 || button == avatar2 || button == avatar3 || button == avatar4 ||button == avatar5 ||button == avatar6) {
+            	if(player1Label.isVisible()) {
+            		player1Avatar = avatarPath;
+                    selected.setBounds(button.getX(), button.getHeight(), button.getWidth()-8, 20);
+                    selected.setVisible(true);
+            	}
+            	else {
+                    player2Avatar = avatarPath;
+                    selected.setBounds(button.getX(), button.getHeight(), button.getWidth()-8, 20);
+                    selected.setVisible(true);
+            	}
+            }
+    }
+    
+    private void hideAvatarButton(String avatarPath) {
+        if (avatarPath.equals("/UI/Swing/Images/a1.png")) {
+            avatar1.setVisible(false);
+        } else if (avatarPath.equals("/UI/Swing/Images/a2.png")) {
+            avatar2.setVisible(false);
+        } else if (avatarPath.equals("/UI/Swing/Images/a3.png")) {
+            avatar3.setVisible(false);
+        } else if (avatarPath.equals("/UI/Swing/Images/a4.png")) {
+            avatar4.setVisible(false);
+        } else if (avatarPath.equals("/UI/Swing/Images/a5.png")) {
+            avatar5.setVisible(false);
+        } else if (avatarPath.equals("/UI/Swing/Images/a6.png")) {
+            avatar6.setVisible(false);
+        }
+    }
+
 }
