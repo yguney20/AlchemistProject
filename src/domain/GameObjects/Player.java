@@ -1,4 +1,4 @@
- package gameObjects;
+ package domain.GameObjects;
 
  import java.util.ArrayList;
  import java.util.List;

@@ -1,11 +1,12 @@
-package gameObjects;
+package domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import gameObjects.Molecule.Sign;
-import gameObjects.Molecule.Size;
+import domain.GameObjects.*;
+import domain.GameObjects.Molecule.*;
+
 
 public class Game {
 	

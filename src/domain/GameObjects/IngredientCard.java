@@ -1,4 +1,4 @@
-package gameObjects;
+package domain.GameObjects;
 
 public class IngredientCard {
 	

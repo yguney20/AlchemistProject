@@ -39,8 +39,9 @@ public class GameEntranceScreen extends JFrame{
         buttonHeight = 50;
         // Load the background image using ImageIO
         try {
-            BufferedImage backgroundImage = ImageIO.read(new File("src/UI/Swing/Images/background.jpeg"));
-            ImageIcon icon = new ImageIcon("src/UI/Swing/Images/logo.png");
+           BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/UI/Swing/Images/background.jpeg"));
+           ImageIcon icon = new ImageIcon(getClass().getResource("/UI/Swing/Images/logo.png"));
+
             setIconImage(icon.getImage());
             
             // Create a custom JPanel with the background image

@@ -1,10 +1,10 @@
-package gameObjects;
+package domain.GameObjects;
 
 
 public class Molecule {
 	
-	enum Size {BIG, SMALL};
-	enum Sign {POSITIVE, NEGATIVE};
+	public enum Size {BIG, SMALL};
+	public enum Sign {POSITIVE, NEGATIVE};
     private Size redComponentSize;
     private Sign redComponentSign;
     private Size greenComponentSize;
