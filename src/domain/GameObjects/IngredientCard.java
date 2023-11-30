@@ -1,4 +1,4 @@
-package gameObjects;
+package domain.GameObjects;
 
 public class IngredientCard {
 	
@@ -11,7 +11,16 @@ public class IngredientCard {
 	    this.name = name;
 	    this.molecule = molecule;
 	}
-
+	
+    @Override
+    public String toString() {
+        return "IngredientCard{" +
+                "cardId=" + cardId +
+                ", name='" + name + '\'' +
+                ", molecule=" + molecule +
+                '}';
+    }
+	
 	public int getCardId() {
 		return cardId;
 	}
@@ -25,8 +34,8 @@ public class IngredientCard {
 	}
 
 	public void setName(String name) {
-		this.name = name;
-	}
+        this.name = name;
+    }
 
 	public Molecule getMolecule() {
 		return molecule;
