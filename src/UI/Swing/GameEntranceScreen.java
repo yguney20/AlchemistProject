@@ -121,7 +121,7 @@ public class GameEntranceScreen extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
             	setVisible(false);  // Close current frame
-                HelpScreen helpScreen = new HelpScreen(getWidth(), getHeight(), frame);
+                HelpScreen helpScreen = new HelpScreen(frame);
                 helpScreen.display();
             }
         });
