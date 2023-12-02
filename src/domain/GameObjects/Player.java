@@ -64,13 +64,7 @@
     	 this.reputationPoints -= x;
      }
      
-     public double calculateFinalScore() {
-    	 int goldsForScore = this.golds;
-         goldsForScore += 2*artifactCards.size();
-         score = 10*this.getReputationPoints();
-         score += goldsForScore/3;
-         return score;
-     }
+     
      
      public List<ArtifactCard> getArtifactCards() {
 		return artifactCards;
@@ -135,5 +129,11 @@
      public void setReputationPoints(int reputationPoints) {
          this.reputationPoints = reputationPoints;
      }
+
+     
+     // Adds an artifact card to the player's collection.
+    public void addArtifactCard(ArtifactCard card) {
+        this.artifactCards.add(card);
+    }
  }
 
