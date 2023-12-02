@@ -15,6 +15,7 @@ public class Game {
 	private List<ArtifactCard> artifactDeck;
     private int currentRound;
     private Player currentPlayer;
+    private boolean isPaused;
     
     
     public Game() {
@@ -95,6 +96,28 @@ public class Game {
         int score = currentPlayer.getReputationPoints() * 10;
         score += goldsForScore/3;
         return score;
+    }
+  
+    public void pauseGame() {
+        if (!isPaused) {
+            isPaused = true;
+            // Notify all players
+            notifyPlayers("The game has been paused.");
+        }
+    }
+
+    public void resumeGame() {
+        if (isPaused) {
+            isPaused = false;
+            // Notify all players
+            notifyPlayers("The game has resumed.");
+        }
+    }
+    
+    // Until implementing UI Component this will be used for testing
+    private void notifyPlayers(String message) {
+        // Implement notification logic here
+        System.out.println(message);
     }
 
     //----------------------Ingredient Card Related Functions-------------------------------

@@ -351,5 +351,4 @@ public class LoginScreen extends JFrame implements ActionListener{
             avatar6.setVisible(false);
         }
     }
-
 }
