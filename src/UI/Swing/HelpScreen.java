@@ -111,16 +111,16 @@ public class HelpScreen extends JFrame {
                 "A: Discover Artifact Cards during your alchemical journey. Convert them into gold through the Player Dashboard, contributing to additional score points and enhancing your alchemical prowess.");
         addQuestionAndAnswer(qaPanel, "Q: How are reputation points calculated in the game?\n" ,
                 "A: Multiply your reputation points by 10 to determine your score points. The higher your reputation, the greater your score.");
-        addQuestionAndAnswer(qaPanel, "Q: Can you explain the effects of the selected Artifact card Koç Cure?\n" ,
+        addQuestionAndAnswer(qaPanel, "Q: Can you explain the effects of the selected Artifact card Koï¿½ Cure?\n" ,
                 "- Random Ingredient Saver: When making a potion, instead of discarding both ingredients used, only 1 is randomly chosen to be discarded. This ability can be used once per round.");
         addQuestionAndAnswer(qaPanel, "Q: Can you explain the effects of the selected Artifact card Rumeli Selector?\n" ,
         		"- Rumeli Selector: Allows you to choose the ingredient you want when performing the action 'Forage for Ingredient.' This effect can be used one time.\n");
-        addQuestionAndAnswer(qaPanel, "Q: Can you explain the effects of the selected Artifact card Dean’s Honor?\n" ,
-        		"- Dean’s Honor: Provides an immediate effect of gaining 1 reputation point upon selection.\n");
-        addQuestionAndAnswer(qaPanel, "Q: Can you explain the effects of the selected Artifact card Vehbi’s Vision?\n" ,
-        		"- Vehbi’s Vision: Grants the ability to see the ingredients of the next potion the other player makes. This effect is a one-time use.\n");
+        addQuestionAndAnswer(qaPanel, "Q: Can you explain the effects of the selected Artifact card Dean's Honor?\n" ,
+        		"- Dean's Honor: Provides an immediate effect of gaining 1 reputation point upon selection.\n");
+        addQuestionAndAnswer(qaPanel, "Q: Can you explain the effects of the selected Artifact card Vehbi's Vision?\n" ,
+        		"- Vehbi's Vision: Grants the ability to see the ingredients of the next potion the other player makes. This effect is a one-time use.\n");
         addQuestionAndAnswer(qaPanel, "Q: Can you explain the effects of the selected Artifact card Random Ingredient Saver?\n" ,
-        		"- Koç Cure: Grants an immediate effect of obtaining 1 healing potion when selected.\n");
+        		"- KoÃ§ Cure: Grants an immediate effect of obtaining 1 healing potion when selected.\n");
         addQuestionAndAnswer(qaPanel, "Q: What's the primary objective of the game?\n" ,
                 "A: Your goal is to uncover the secrets of magical ingredients, create powerful potions, and climb the ranks by conducting experiments, publishing theories, and earning reputation points. Beware of hidden truths and unforeseen consequences in the mystical world of Alchemy.");
         addQuestionAndAnswer(qaPanel, "Q: How do I maximize my score in the game?\n" ,

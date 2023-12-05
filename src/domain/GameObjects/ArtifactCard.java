@@ -68,9 +68,9 @@ public class ArtifactCard {
         this.isUsed = isUsed;
     }
     
-    public void applyEffect() {
+    public void applyEffect(Game game) {
         if(isUsed == false ){ 
-            effect.apply();
+            effect.apply(game);
             isUsed = true;
 
         } else if(isUsed == true && isOneTimeUse == false){

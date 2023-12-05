@@ -164,7 +164,7 @@ public class Game {
     }
 
 	//Takes a player and calculates the score (Bunu belki degistirebiliriz 
-    // ya tüm playerlari hesaplar birinciyi doner gibi gibi... )
+    // ya tï¿½m playerlari hesaplar birinciyi doner gibi gibi... )
     public double calculateFinalScore(Player currentPlayer) {
         int goldsForScore = currentPlayer.getGolds();
         goldsForScore += currentPlayer.getArtifactCards().size() * 2;
@@ -224,7 +224,7 @@ public class Game {
     public void buyArtifactCard(ArtifactCard card, Player player) {
         try {
             if (card.isImmadiate()){
-                card.applyEffect();
+                card.applyEffect(this);
             } else {
                 player.addArtifactCard(card);
             }
