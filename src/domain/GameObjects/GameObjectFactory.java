@@ -6,25 +6,23 @@ import java.util.List;
 import domain.GameObjects.*;
 import domain.GameObjects.Molecule.*;
 
-public class GameObjectFactory {
+public class GameObjectFactory { // Singleton Patterns
 	
-	private static class GameObjectFactoryContainer{
-		private static GameObjectFactory instance;
-	}
-	
+	private static GameObjectFactory instance;
+		
+    private GameObjectFactory() {
+    }
+
+    // Singleton Methods
     public static GameObjectFactory getInstance() {
-        if (GameObjectFactoryContainer.instance == null) {
-            GameObjectFactoryContainer.instance = new GameObjectFactory();
+        if (GameObjectFactory.instance == null) {
+            GameObjectFactory.instance = new GameObjectFactory();
         }
-        return GameObjectFactoryContainer.instance;
+        return GameObjectFactory.instance;
     }
     
     public static void destroyInstance() {
-        GameObjectFactoryContainer.instance = null;
-    }
-    
-    private GameObjectFactory() {
-    	
+        GameObjectFactory.instance = null;
     }
 	
 	//Create a player
