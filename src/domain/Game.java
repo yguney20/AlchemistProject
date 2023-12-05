@@ -83,14 +83,6 @@ public class Game {
 	}
 
     //-----------------------Game Related Functions--------------------------------------
-	public void play() {
-		initializeGame();
-		
-		while (!isGameOver()) {
-			playTurn();
-		}
-		
-	}
 
     public void initializeGame() {
     	
@@ -106,18 +98,14 @@ public class Game {
     	
         Player currentPlayer = players.get(0);
         
-        gameState = new GameState(players, 1, 1, currentPlayer, false);
+        gameState.setCurrentPlayer(currentPlayer);
         System.out.println(currentPlayer);
-
         System.out.println(currentPlayer.getIngredientInventory());
+        System.out.println(gameState);
       
     }
     
-    public void playTurn() {
-        if (!gameState.isPaused()) {
-        	
-            // Perform actions for the current turn
-
+    public void updateState() {
             // Move to the next player
             int currentPlayerIndex = players.indexOf(currentPlayer);
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
@@ -143,7 +131,7 @@ public class Game {
             gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentRound(currentRound);
             gameState.setCurrentTurn(currentTurn);
-        }
+            
     }
     
     //end game method
@@ -214,6 +202,8 @@ public class Game {
     	if (!ingredientDeck.isEmpty()) {
     		IngredientCard selectedCard = drawIngredientCard();
     		p.getIngredientInventory().add(selectedCard);
+            System.out.println(p.getIngredientInventory());
+
     	} else {
             notifyPlayers("The ingredient deck is empty.");
     	}
