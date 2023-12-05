@@ -8,6 +8,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JLabel;
@@ -23,9 +25,10 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.UIManager;
 
-public class BoardScreen extends JFrame {
+public class BoardScreen extends JFrame implements ActionListener{
 
     private JPanel contentPane;
+    private JButton dashboardPanel = new JButton();
 
     /**
      * Create the frame.
@@ -125,7 +128,7 @@ public class BoardScreen extends JFrame {
         gameBoardImage.setIcon(postResizeMenuImageIcon);
         titlePanel.add(gameBoardImage);
         
-        JPanel dashboardPanel = new JPanel();
+        //JButton dashboardPanel = new JButton();
         dashboardPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
         dashboardPanel.setBackground(Color.WHITE);
         dashboardPanel.setBounds(362, 88, 174, 58);
@@ -167,9 +170,22 @@ public class BoardScreen extends JFrame {
         
         JLabel artifactCardsNameLabel = new JLabel("Artifact Cards");
         artifactCardPanel.add(artifactCardsNameLabel);
+        
+		addActionEvent();
+
 
     }
-
+    
+    public void addActionEvent() {
+    	dashboardPanel.addActionListener(this);
+    }
+    
+	public void actionPerformed(ActionEvent event) {
+		if(event.getSource()==dashboardPanel) {
+			PlayerDashboard playerDashboard = new PlayerDashboard();
+			playerDashboard.display();			
+		}
+	}
 
     public void display() {
         setVisible(true); // Show the board
