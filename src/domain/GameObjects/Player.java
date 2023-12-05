@@ -27,6 +27,16 @@
          this.reputationPoints = 0; 
          playerList.add(this);
      }
+     
+     @Override
+     public String toString() {
+         return "Player{" +
+                 "\n\tnickname='" + nickname + 
+                 "\n\tgolds=" + golds +
+                 "\n\treputationPoints=" + reputationPoints +
+                 "\n\tsicknessLevel=" + sicknessLevel +
+                 "\n}";
+     }
 
      public static ArrayList<Player> getPlayerList() {
 		return playerList;
