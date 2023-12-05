@@ -15,10 +15,10 @@ public class IngredientCard {
     @Override
     public String toString() {
         return "IngredientCard{" +
-                "cardId=" + cardId +
-                ", name='" + name + '\'' +
-                ", molecule=" + molecule +
-                '}';
+                "\n\tcardId=" + cardId +
+                "\n\tname='" + name +
+                "\n\tmolecule=" + molecule +
+                "\n}";
     }
 	
 	public int getCardId() {

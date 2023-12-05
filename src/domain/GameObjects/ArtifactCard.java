@@ -10,7 +10,7 @@ public class ArtifactCard {
     private ArtifactEffect effect;
     private boolean isOneTimeUse; // Indicates if the card is for one-time use
     private boolean isUsed;       // Tracks whether the card has been used
-    private boolean isImmadiate; // Indicates if the card is immadiatly applied or Whenever is used.
+    private boolean isImmadiate; // Indicates if the card is immediately applied or Whenever is used.
 
     
     public ArtifactCard(String name, int goldValue, ArtifactEffect effect, boolean isOneTimeUse, boolean isImmadiate) {

@@ -7,6 +7,30 @@ import domain.GameObjects.*;
 import domain.GameObjects.Molecule.*;
 
 public class GameObjectFactory {
+	
+	private static class GameObjectFactoryContainer{
+		private static GameObjectFactory instance;
+	}
+	
+    public static GameObjectFactory getInstance() {
+        if (GameObjectFactoryContainer.instance == null) {
+            GameObjectFactoryContainer.instance = new GameObjectFactory();
+        }
+        return GameObjectFactoryContainer.instance;
+    }
+    
+    public static void destroyInstance() {
+        GameObjectFactoryContainer.instance = null;
+    }
+    
+    private GameObjectFactory() {
+    	
+    }
+	
+	//Create a player
+	public void createPlayer(String nickname, String avatar) {
+		Player player = new Player(nickname, avatar);
+	}
 
     //Create a Molecule list
     public static List<Molecule> createMoleculeList() {
@@ -24,9 +48,10 @@ public class GameObjectFactory {
         return molecules;
     }
 
-    /*Creates a new ingredient list for the given molecule. 
-    *Each Game ingredients have different moleluce */
+    /*Creates a new ingredient list for the given molecule list. 
+    *Each ingredient will have a different molecule for each Game*/
     public static List<IngredientCard> createIngredientDeck() {
+    	List<Molecule> moleculeList = createMoleculeList();
         List<IngredientCard> ingredients = new ArrayList<>();
 
         List<String> ingredientNames = new ArrayList<> (List.of("Moon Blossom", "Crystalite", "Shimmer Fungus", "Golden Mold",
@@ -36,7 +61,7 @@ public class GameObjectFactory {
 
         for (int i = 0; i < ingredientNames.size(); i++) {
             for (int j = 0; j < 3; j++) { //3 of each ingredient
-                Molecule molecule = createMoleculeList().get(i);
+                Molecule molecule = moleculeList.get(i);
                 String ingredientName = ingredientNames.get(i);
                 ingredients.add(new IngredientCard((i * 3) + j + 1, ingredientName, molecule));
             }
