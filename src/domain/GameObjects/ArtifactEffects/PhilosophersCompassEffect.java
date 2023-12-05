@@ -1,11 +1,13 @@
 package domain.GameObjects.ArtifactEffects;
 
+import domain.Game;
+
 public class PhilosophersCompassEffect implements ArtifactEffect{
 
     @Override
-    public void apply() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'apply'");
+    public void apply(Game game) {
+        
+        
     }
 
 }

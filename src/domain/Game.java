@@ -7,26 +7,45 @@ import java.util.List;
 import domain.GameObjects.*;
 
 
-
-public class Game {
+public class Game { //Singleton Pattern
 	
+	private static Game game_instance = null;
+
     private List<Player> players;
     private List<IngredientCard> ingredientDeck;
 	private List<ArtifactCard> artifactDeck;
+	private int totalRounds;
     private int currentRound;
+    private int currentTurn;
     private Player currentPlayer;
     private boolean isPaused;
+    private GameState gameState;
+    Player winner = null;
     
     
     public Game() {
-        this.players = Player.getPlayerList();
-        
+    	
+        this.players = Player.getPlayerList();      
         this.ingredientDeck = GameObjectFactory.createIngredientDeck();
         this.artifactDeck = new ArrayList<>();
-        this.currentRound = 1; 
-
+        this.totalRounds = 3; // Set the total number of rounds
+        this.currentRound = 1;
+        this.currentTurn = 1;
+        this.gameState = new GameState(players, currentRound, currentTurn, currentPlayer, isPaused);
+        
     }
+    //---------------------Singleton Methods----------------------------------------
     
+    public static Game getInstance() {
+        if (game_instance== null) {
+            game_instance= new Game();
+        }
+        return game_instance;
+    }
+
+    public static void destroyInstance() {
+        game_instance = null;
+    }
 
     //----------------------Getters and Setters------------------------
 
@@ -53,24 +72,24 @@ public class Game {
 	public void setArtifactDeck(List<ArtifactCard> artifactDeck) {
 		this.artifactDeck = artifactDeck;
 	}
-
-	public int getCurrentRound() {
-		return currentRound;
+	
+    public GameState getGameState() {
+		return gameState;
 	}
 
-	public void setCurrentRound(int currentRound) {
-		this.currentRound = currentRound;
-	}
-
-	public Player getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	public void setCurrentPlayer(Player currentPlayer) {
-		this.currentPlayer = currentPlayer;
+	public Player getWinner() {
+		return winner;
 	}
 
     //-----------------------Game Related Functions--------------------------------------
+	public void play() {
+		initializeGame();
+		
+		while (!isGameOver()) {
+			playTurn();
+		}
+		
+	}
 
     public void initializeGame() {
     	
@@ -84,12 +103,67 @@ public class Game {
     		p.getIngredientInventory().add(i2);
     	}
     	
-        currentPlayer = players.get(0);
-    	
+        Player currentPlayer = players.get(0);
+        
+        gameState = new GameState(players, 1, 1, currentPlayer, false);
+        System.out.println(currentPlayer);
+
+        System.out.println(currentPlayer.getIngredientInventory());
+      
+    }
+    
+    public void playTurn() {
+        if (!gameState.isPaused()) {
+        	
+            // Perform actions for the current turn
+
+            // Move to the next player
+            int currentPlayerIndex = players.indexOf(currentPlayer);
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            currentPlayer = players.get(currentPlayerIndex);
+
+            // Check if all players have completed their turns
+            if (currentPlayerIndex == 0) {
+                currentTurn++;
+
+                // Check if all turns for the current round have been completed
+                if (currentTurn > 3) {
+                    currentTurn = 1;
+                    currentRound++;
+
+                    // Check if all rounds have been completed
+                    if (currentRound > totalRounds) {
+                        endGame();
+                        return;
+                    }
+                }
+            }
+
+            gameState.setCurrentPlayer(currentPlayer);
+            gameState.setCurrentRound(currentRound);
+            gameState.setCurrentTurn(currentTurn);
+        }
+    }
+    
+    //end game method
+    private void endGame() {
+    	double maxScore = Double.MIN_VALUE;
+
+        for (Player player : players) {
+            double score = calculateFinalScore(player);
+            System.out.println("Player: " + player.getNickname() + " - Final Score: " + score);
+
+            if (score > maxScore) {
+                maxScore = score;
+                winner = player;
+            }
+        }
+
+        System.out.println("Game Over! Winner: " + winner.getNickname() + " with a score of " + maxScore);
     }
 
-    //Takes a player and calculates the score (Bunu belki değiştirebiliriz 
-    // ya tüm playerları hesaplar birinciyi döner gibi gibi... )
+	//Takes a player and calculates the score (Bunu belki degistirebiliriz 
+    // ya t�m playerlari hesaplar birinciyi doner gibi gibi... )
     public double calculateFinalScore(Player currentPlayer) {
         int goldsForScore = currentPlayer.getGolds();
         goldsForScore += currentPlayer.getArtifactCards().size() * 2;
@@ -99,16 +173,16 @@ public class Game {
     }
   
     public void pauseGame() {
-        if (!isPaused) {
-            isPaused = true;
+        if (!gameState.isPaused()) {
+            gameState.setPaused(true);
             // Notify all players
             notifyPlayers("The game has been paused.");
         }
     }
 
     public void resumeGame() {
-        if (isPaused) {
-            isPaused = false;
+        if (gameState.isPaused()) {
+            gameState.setPaused(false);
             // Notify all players
             notifyPlayers("The game has resumed.");
         }
@@ -119,11 +193,29 @@ public class Game {
         // Implement notification logic here
         System.out.println(message);
     }
+    
+    private boolean isGameOver() {
+        return currentRound > totalRounds;  // You can adjust the condition based on your game rules
+    }
 
     //----------------------Ingredient Card Related Functions-------------------------------
 
     public IngredientCard drawIngredientCard(){
+    	if (!ingredientDeck.isEmpty()) {
             return ingredientDeck.remove(0); // Remove and return the top card
+        } else {
+            notifyPlayers("The ingredient deck is empty.");
+            return null;
+        }
+    }
+    
+    public void forageForIngredient(Player p) {
+    	if (!ingredientDeck.isEmpty()) {
+    		IngredientCard selectedCard = drawIngredientCard();
+    		p.getIngredientInventory().add(selectedCard);
+    	} else {
+            notifyPlayers("The ingredient deck is empty.");
+    	}
     }
 
     //-----------------------Artifact Related Functions ------------------------------------
@@ -131,7 +223,7 @@ public class Game {
     public void buyArtifactCard(ArtifactCard card, Player player) {
         try {
             if (card.isImmadiate()){
-                card.applyEffect();
+                card.applyEffect(this);
             } else {
                 player.addArtifactCard(card);
             }

@@ -21,7 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-import domain.GameObjects.Player;
+
+import controllers.LoginController;
 
 public class LoginScreen extends JFrame implements ActionListener{
 
@@ -48,6 +49,7 @@ public class LoginScreen extends JFrame implements ActionListener{
     private String player2Avatar;
     private int initialX;
     private int initialY;
+    private LoginController loginController = LoginController.getInstance();
 
     /**
      * @throws IOException 
@@ -56,7 +58,7 @@ public class LoginScreen extends JFrame implements ActionListener{
     	this.frame = this;
         setTitle("KU Alchemist Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 900, 505);
+        setBounds(50, 50, 1200, 600);
         setResizable(false);
 
         try {
@@ -129,53 +131,53 @@ public class LoginScreen extends JFrame implements ActionListener{
     public void addJButtons() {
     	try {
         avatar1 = new JButton("New button");
-        avatar1.setBounds(440, 93, 123, 148);
+        avatar1.setBounds(580, 100, 150, 200);
         avatar1.setContentAreaFilled(false);
         avatar1.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(avatar1);
         setImage("/UI/Swing/Images/a1.png", avatar1);
         
         avatar2= new JButton("New button");
-        avatar2.setBounds(40, 93, 123, 148);
+        avatar2.setBounds(70, 100, 150, 200);
         avatar2.setContentAreaFilled(false);
         avatar2.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(avatar2);
         setImage("/UI/Swing/Images/a2.png", avatar2);
         
         avatar3 = new JButton("New button");
-        avatar3.setBounds(174, 93, 123, 148);
+        avatar3.setBounds(240, 100, 150, 200);
         avatar3.setContentAreaFilled(false);
         avatar3.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(avatar3);
         setImage("/UI/Swing/Images/a3.png", avatar3);
 
         avatar4 = new JButton("New button");
-        avatar4.setBounds(714, 93, 123, 148);
+        avatar4.setBounds(920, 100, 150, 200);
         avatar4.setContentAreaFilled(false);
         avatar4.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(avatar4);
         setImage("/UI/Swing/Images/a4.png", avatar4);
 
         avatar5 = new JButton("New button");
-        avatar5.setBounds(307, 93, 123, 148);
+        avatar5.setBounds(410, 100, 150, 200);
         avatar5.setContentAreaFilled(false);
         avatar5.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(avatar5);
         setImage("/UI/Swing/Images/a5.png", avatar5);
 
         avatar6 = new JButton("New button");
-        avatar6.setBounds(573, 93, 123, 148);
+        avatar6.setBounds(750, 100, 150, 200);
         avatar6.setContentAreaFilled(false);
         avatar6.setBorder(BorderFactory.createEmptyBorder());
         contentPane.add(avatar6);
         setImage("/UI/Swing/Images/a6.png", avatar6);
         
         confirmButton = new JButton("Confirm");
-        confirmButton.setBounds(390, 369, 89, 23);
+        confirmButton.setBounds(525, 430, 89, 23);
         contentPane.add(confirmButton);
         
         startGameButton = new JButton("Start Game");
-        startGameButton.setBounds(370, 369, 120, 23);
+        startGameButton.setBounds(505, 430, 120, 23);
         startGameButton.setVisible(false); // Initially hidden
         contentPane.add(startGameButton);
     	} catch(IOException e) {
@@ -186,20 +188,20 @@ public class LoginScreen extends JFrame implements ActionListener{
     
     public void addJLabels() {
         player1Label= new JLabel("PLAYER 1");
-        player1Label.setBounds(390, 312, 80, 14);
+        player1Label.setBounds(525, 330, 80, 14);
         player1Label.setForeground(Color.WHITE);
         player1Label.setFont(new Font("Arial", Font.BOLD, 16));
         contentPane.add(player1Label);
         
         player2Label = new JLabel("PLAYER 2");
-        player2Label.setBounds(390, 312, 80, 14);
+        player2Label.setBounds(525, 330, 80, 14);
         player2Label.setForeground(Color.WHITE);
         player2Label.setFont(new Font("Arial", Font.BOLD, 16));
         player2Label.setVisible(false); // Initially hidden
         contentPane.add(player2Label);
 
         nickname = new JLabel("Nickname");
-        nickname.setBounds(196, 340, 80, 14);
+        nickname.setBounds(370, 375, 80, 14);
         nickname.setForeground(Color.WHITE);
         nickname.setFont(new Font("Arial", Font.BOLD, 16));
         contentPane.add(nickname);
@@ -239,12 +241,12 @@ public class LoginScreen extends JFrame implements ActionListener{
     
     public void addTextFields() {
     	 player1Name = new JTextField();
-    	 player1Name.setBounds(335, 337, 190, 20);
+    	 player1Name.setBounds(470, 375, 190, 20);
          contentPane.add(player1Name);
          player1Name.setColumns(10);
          
     	 player2Name = new JTextField();
-    	 player2Name.setBounds(335, 337, 190, 20);
+    	 player2Name.setBounds(470, 375, 190, 20);
          contentPane.add(player2Name);
          player2Name.setColumns(10);
          player2Name.setVisible(false);
@@ -262,37 +264,37 @@ public class LoginScreen extends JFrame implements ActionListener{
  }
     
     @Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent event) {
 		//sets what will happen when the user clicks a button
-		if(e.getSource() == avatar1) {
+		if(event.getSource() == avatar1) {
 	        handleAvatarSelection("/UI/Swing/Images/a1.png", avatar1);
 		}
 			
-		if(e.getSource() == avatar2) {
+		if(event.getSource() == avatar2) {
 	        handleAvatarSelection("/UI/Swing/Images/a2.png", avatar2);
 		}
 		
-		if(e.getSource() == avatar3) {
+		if(event.getSource() == avatar3) {
 	        handleAvatarSelection("/UI/Swing/Images/a3.png", avatar3);
 		}
 		
-		if(e.getSource() == avatar4) {
+		if(event.getSource() == avatar4) {
 	        handleAvatarSelection("/UI/Swing/Images/a4.png", avatar4);
 
 		}
 		
-		if(e.getSource() == avatar5) {
+		if(event.getSource() == avatar5) {
 	        handleAvatarSelection("/UI/Swing/Images/a5.png", avatar5);
 		}
 		
-		if(e.getSource() == avatar6) {
+		if(event.getSource() == avatar6) {
 	        handleAvatarSelection("/UI/Swing/Images/a6.png", avatar6);
 		}
 		
-		if(e.getSource() == confirmButton) {
+		if(event.getSource() == confirmButton) {
 			if (!player1Name.getText().isEmpty() && player1Avatar != null) {
 			message2.setVisible(false);
-			Player player1 = new Player(player1Name.getText(), player1Avatar);
+			loginController.createPlayer(player1Name.getText(), player1Avatar);
 	        hideAvatarButton(player1Avatar);
 	        selected.setVisible(false);
 			player1Label.setVisible(false);
@@ -307,9 +309,10 @@ public class LoginScreen extends JFrame implements ActionListener{
 			}
 		}
 		
-		if(e.getSource() == startGameButton) {
+		if(event.getSource() == startGameButton) {
 			if (!player2Name.getText().isEmpty() && player2Avatar != null) {
-				Player player2 = new Player(player2Name.getText(), player2Avatar);
+				loginController.createPlayer(player2Name.getText(), player2Avatar);
+				loginController.initializeGame();
 				this.setVisible(false);
 				BoardScreen board = new BoardScreen();
 				board.display();

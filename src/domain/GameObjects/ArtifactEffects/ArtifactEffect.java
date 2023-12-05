@@ -1,6 +1,8 @@
 package domain.GameObjects.ArtifactEffects;
 
-    public interface ArtifactEffect {
-    void apply();
+import domain.Game;
+
+public interface ArtifactEffect {
+    void apply(Game game);
 }
 
