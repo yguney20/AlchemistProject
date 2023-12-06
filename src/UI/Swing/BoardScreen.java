@@ -23,6 +23,9 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
+
+import controllers.GameController;
+
 import javax.swing.UIManager;
 
 public class BoardScreen extends JFrame implements ActionListener{
@@ -36,7 +39,7 @@ public class BoardScreen extends JFrame implements ActionListener{
     public BoardScreen() {
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 900, 505); // Adjust the size accordingly
+        setBounds(50, 50, 900, 505); // Adjust the size accordingly
         setResizable(false);
         
         contentPane = new JPanel();
@@ -182,7 +185,8 @@ public class BoardScreen extends JFrame implements ActionListener{
     
 	public void actionPerformed(ActionEvent event) {
 		if(event.getSource()==dashboardPanel) {
-			PlayerDashboard playerDashboard = new PlayerDashboard();
+            GameController gameController = GameController.getInstance();
+			PlayerDashboard playerDashboard = new PlayerDashboard(gameController);
 			playerDashboard.display();			
 		}
 	}

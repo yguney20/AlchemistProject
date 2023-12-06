@@ -1,5 +1,6 @@
 package domain.GameObjects.ArtifactEffects;
 
+import domain.Game;
 
 /**
  * ElixirOfInsightEffect is an implementation of the ArtifactEffect interface.
@@ -9,10 +10,13 @@ package domain.GameObjects.ArtifactEffects;
 public class ElixirOfInsightEffect implements ArtifactEffect {
 
     @Override
-    public void apply() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'apply'");
+    public void apply(Game game) {
+        if( game.getIngredientDeck().size() >= 3) {
+            
+        }
     }
+
+    
 
     
     

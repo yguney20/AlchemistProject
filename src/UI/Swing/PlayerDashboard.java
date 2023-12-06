@@ -1,18 +1,21 @@
 package UI.Swing;
 
-import java.awt.EventQueue;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controllers.GameController;
+import domain.GameObjects.ArtifactCard;
 import domain.GameObjects.Player;
 
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 
 public class PlayerDashboard extends JFrame implements ActionListener{
 
@@ -20,7 +23,8 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 	private JButton forageForIngredient;
 	private JButton transmuteIngredient;
 	private JButton buyArtifact;
-	private GameController gameController = GameController.getInstance();
+	private GameController gameController;
+	private JButton quitButton = new JButton("X");
 
 	
 
@@ -31,7 +35,8 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PlayerDashboard frame = new PlayerDashboard();
+					GameController gameController = GameController.getInstance();
+                	PlayerDashboard frame = new PlayerDashboard(gameController);	
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,10 +48,11 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 	/**
 	 * Create the frame.
 	 */
-	public PlayerDashboard() {
+	public PlayerDashboard(GameController gameController) {
+		this.gameController = gameController;
 		setTitle("Player Dashboard");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 462, 512);
+		setBounds(950, 50, 450, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -103,6 +109,28 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 		
 		addActionEvent();
 
+		
+        quitButton.setBounds(getWidth() - 70, 20, 80, 20);
+        quitButton.setFocusPainted(false);
+        quitButton.setContentAreaFilled(false);
+        quitButton.setBorderPainted(false);
+     // Increase the font size
+        Font pacificoFont = new Font("Pacifico", Font.PLAIN, 12);
+        Font largerFont = pacificoFont.deriveFont(pacificoFont.getSize() + 24f);
+        quitButton.setFont(largerFont);
+       
+     // Set the red "X" as the text
+        quitButton.setForeground(Color.RED);
+        quitButton.setText("X");
+        
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	dispose();
+            }
+        });
+        add(quitButton);
+
 	}
 	
     public void addActionEvent() {
@@ -113,12 +141,65 @@ public class PlayerDashboard extends JFrame implements ActionListener{
     }
     
 	public void actionPerformed(ActionEvent event) {
+
+		if(event.getSource()== buyArtifact) {
+			Player currentPlayer = gameController.getCurrentPlayer();
+			displayArtifactSelectionPanel(currentPlayer);
+			
+		}
+
 		if(event.getSource()==forageForIngredient) {
 			Player currentPlayer = gameController.getCurrentPlayer();
 			gameController.forageForIngredient(currentPlayer);
 			this.setVisible(false);
 		}
+
+		
 	}
+
+	private void displayArtifactSelectionPanel(Player currentPlayer) {
+    // Create a new panel to display artifacts
+    JDialog artifactSelectionDialog = new JDialog();
+    artifactSelectionDialog.setLayout(new FlowLayout());
+    artifactSelectionDialog.setBounds(950, 550, 450, 275);
+
+    // Assuming gameController can provide a list of available artifacts
+    List<ArtifactCard> availableArtifacts = gameController.getAvailableArtifacts();
+
+    for (ArtifactCard artifact : availableArtifacts) {
+        JButton artifactButton = new JButton(new ImageIcon(artifact.getImagePath()));
+        artifactButton.addActionListener(e -> {
+            gameController.buyArtifactCard(artifact, currentPlayer);
+            artifactSelectionDialog.dispose(); // Close the dialog upon selection
+        });
+        artifactSelectionDialog.add(artifactButton);
+    }
+
+    // Add a cancel button to close the dialog
+    JButton quitButton = new JButton("X");
+	quitButton.setBounds(getWidth() - 70, 20, 80, 20);
+        quitButton.setFocusPainted(false);
+        quitButton.setContentAreaFilled(false);
+        quitButton.setBorderPainted(false);
+
+        Font pacificoFont = new Font("Pacifico", Font.PLAIN, 12);
+        Font largerFont = pacificoFont.deriveFont(pacificoFont.getSize() + 24f);
+        quitButton.setFont(largerFont);
+       
+        quitButton.setForeground(Color.RED);
+        quitButton.setText("X");
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	dispose();
+            }
+        });
+        add(quitButton);
+
+    artifactSelectionDialog.setVisible(true);
+}
+
+
 	
 	public void display() {
 		this.setVisible(true);

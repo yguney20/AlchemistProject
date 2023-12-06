@@ -1,6 +1,9 @@
 package controllers;
 
+import java.util.List;
+
 import domain.Game;
+import domain.GameObjects.ArtifactCard;
 import domain.GameObjects.Player;
 
 public class GameController {
@@ -33,5 +36,13 @@ public class GameController {
     
     public void forageForIngredient(Player p) {
     	game.forageForIngredient(p);
+    }
+
+    public List<ArtifactCard> getAvailableArtifacts() {
+        return game.getArtifactDeck();
+    }
+
+    public void buyArtifactCard(ArtifactCard artifact, Player currentPlayer) {
+        game.buyArtifactCard(artifact, currentPlayer);
     }
 }

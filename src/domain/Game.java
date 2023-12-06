@@ -7,23 +7,10 @@ import java.util.List;
 import domain.GameObjects.*;
 
 
-public class Game {
+public class Game { //Singleton Pattern
 	
-	private static class GameContainer {
-        private static Game instance;
-    }
+	private static Game game_instance = null;
 
-    public static Game getInstance() {
-        if (GameContainer.instance == null) {
-            GameContainer.instance = new Game();
-        }
-        return GameContainer.instance;
-    }
-
-    public static void destroyInstance() {
-        GameContainer.instance = null;
-    }
-	
     private List<Player> players;
     private List<IngredientCard> ingredientDeck;
 	private List<ArtifactCard> artifactDeck;
@@ -39,13 +26,25 @@ public class Game {
     public Game() {
     	
         this.players = Player.getPlayerList();      
-        this.ingredientDeck = GameObjectFactory.createIngredientDeck();
-        this.artifactDeck = new ArrayList<>();
+        this.ingredientDeck = GameObjectFactory.getInstance().createIngredientDeck();
+        this.artifactDeck = GameObjectFactory.getInstance().createArtifactDeck();
         this.totalRounds = 3; // Set the total number of rounds
         this.currentRound = 1;
         this.currentTurn = 1;
         this.gameState = new GameState(players, currentRound, currentTurn, currentPlayer, isPaused);
         
+    }
+    //---------------------Singleton Methods----------------------------------------
+    
+    public static Game getInstance() {
+        if (game_instance== null) {
+            game_instance= new Game();
+        }
+        return game_instance;
+    }
+
+    public static void destroyInstance() {
+        game_instance = null;
     }
 
     //----------------------Getters and Setters------------------------
@@ -152,7 +151,7 @@ public class Game {
     }
 
 	//Takes a player and calculates the score (Bunu belki degistirebiliriz 
-    // ya tüm playerlari hesaplar birinciyi doner gibi gibi... )
+    // ya tï¿½m playerlari hesaplar birinciyi doner gibi gibi... )
     public double calculateFinalScore(Player currentPlayer) {
         int goldsForScore = currentPlayer.getGolds();
         goldsForScore += currentPlayer.getArtifactCards().size() * 2;
@@ -214,7 +213,7 @@ public class Game {
     public void buyArtifactCard(ArtifactCard card, Player player) {
         try {
             if (card.isImmadiate()){
-                card.applyEffect();
+                card.applyEffect(this);
             } else {
                 player.addArtifactCard(card);
             }
