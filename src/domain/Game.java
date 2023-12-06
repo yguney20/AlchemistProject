@@ -26,8 +26,8 @@ public class Game { //Singleton Pattern
     public Game() {
     	
         this.players = Player.getPlayerList();      
-        this.ingredientDeck = GameObjectFactory.createIngredientDeck();
-        this.artifactDeck = new ArrayList<>();
+        this.ingredientDeck = GameObjectFactory.getInstance().createIngredientDeck();
+        this.artifactDeck = GameObjectFactory.getInstance().createArtifactDeck();
         this.totalRounds = 3; // Set the total number of rounds
         this.currentRound = 1;
         this.currentTurn = 1;
