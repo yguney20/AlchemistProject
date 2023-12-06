@@ -96,5 +96,16 @@ public class ArtifactCard {
             isUsed = false;
         }
     }
+    
+    @Override
+    public String toString() {
+        return "ArtifactCard{" +
+                "\n\tname='" + name + 
+                "\n\tgoldValue=" + goldValue +
+                "\n\tisOneTimeUse=" + isOneTimeUse +
+                "\n\tisUsed=" + isUsed +
+                "\n\tisImmediate=" + isImmadiate +
+                "\n}";
+    }
 
 }

@@ -45,4 +45,8 @@ public class GameController {
     public void buyArtifactCard(ArtifactCard artifact, Player currentPlayer) {
         game.buyArtifactCard(artifact, currentPlayer);
     }
+    
+    public ArtifactCard getArtifactCardByPath(String path) {
+    	return game.getArtifactCardByPath(path);
+    }
 }
