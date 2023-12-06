@@ -88,7 +88,7 @@ public class GameObjectFactory { // Singleton Patterns
     public List<ArtifactCard> createArtifactDeck() {
         List<ArtifactCard> artifactDeck = new ArrayList<>();
 
-        artifactDeck.add(new ArtifactCard("Elixir of Insight", 3, new ElixirOfInsightEffect(), true, false,"src/UI/Swing/Images/ArtifactCards/Elixir Of Insight.png" ));
+        artifactDeck.add(new ArtifactCard("Elixir of Insight", 3, new ElixirOfInsightEffect(), true, false,"/UI/Swing/Images/ArtifactCards/Elixir Of Insight.png" ));
         // Add other artifacts here
 
         return artifactDeck;

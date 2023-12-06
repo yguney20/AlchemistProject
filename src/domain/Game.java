@@ -3,6 +3,7 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import domain.GameObjects.*;
 
@@ -217,11 +218,23 @@ public class Game { //Singleton Pattern
             } else {
                 player.addArtifactCard(card);
             }
+            artifactDeck.remove(card);
+            player.reduceGold(card.getGoldValue());
+            System.out.println(player.getArtifactCards());
+            System.out.println(player);
             
         } catch (IllegalStateException e) {
             // Handle the case where a one-time use card is attempted to be used again
             System.out.println(e.getMessage());
         }
+    }
+    
+    
+    public ArtifactCard getArtifactCardByPath(String path) {
+        return artifactDeck.stream()
+                .filter(card -> card.getImagePath().equals(path))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Artifact Card not found for path: " + path));
     }
 
 
