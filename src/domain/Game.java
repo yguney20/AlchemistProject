@@ -233,6 +233,22 @@ public class Game { //Singleton Pattern
             System.out.println(e.getMessage());
         }
     }
+    
+  //-----------------------Transmute Function ------------------------------------
+    
+    public void transmuteIngredient(Player player, IngredientCard selectedIngredient) {
+        // Preconditions
+        if (player.getIngredientInventory().isEmpty()) {
+        	notifyPlayers("ingredient card not found.");
+        }
+        else {
+        	// Flow
+            player.getIngredientInventory().remove(selectedIngredient); 
+            ingredientDeck.add(selectedIngredient);
+            Collections.shuffle(ingredientDeck);
+            player.increaseGold(1);      	
+        }
+    }
 
 
 }
