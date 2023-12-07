@@ -1,6 +1,8 @@
 package UI.Swing;
 
 import javax.swing.JFrame;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
@@ -31,6 +33,8 @@ public class BoardScreen extends JFrame {
      * Create the frame.
      */
     public BoardScreen() {
+    	DeductionBoard deductionBoard = new DeductionBoard(this); // Pass 'this' as the reference to the BoardScreen
+ 
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 900, 505); // Adjust the size accordingly
@@ -113,7 +117,7 @@ public class BoardScreen extends JFrame {
         gameBoardImage.setHorizontalAlignment(SwingConstants.CENTER);
         gameBoardImage.setIconTextGap(0);
         gameBoardImage.setFocusable(false);
-     // Load the original image
+        // Load the original image
         ImageIcon preResizeMenuImageIcon = new ImageIcon(BoardScreen.class.getResource("/UI/Swing/Images/gameBoardUI/kuAlchemistGameBoardTitleImage.png"));
         Image preResizeMenuImage = preResizeMenuImageIcon.getImage();
 
@@ -152,13 +156,6 @@ public class BoardScreen extends JFrame {
         ingredientCardImage.setIcon(postResizedIngredientCardImageIcon);
         ingredientCardPanel.add(ingredientCardImage);
         
-        JScrollPane DeductionBoardScrollPanel = new JScrollPane();
-        DeductionBoardScrollPanel.setBounds(619, 62, 275, 291);
-        contentPane.add(DeductionBoardScrollPanel);
-        
-        JLabel deductionBoardNameLabel = new JLabel("Deduction Board");
-        DeductionBoardScrollPanel.setColumnHeaderView(deductionBoardNameLabel);
-        
         JPanel artifactCardPanel = new JPanel();
         artifactCardPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
         artifactCardPanel.setBackground(Color.WHITE);
@@ -167,7 +164,27 @@ public class BoardScreen extends JFrame {
         
         JLabel artifactCardsNameLabel = new JLabel("Artifact Cards");
         artifactCardPanel.add(artifactCardsNameLabel);
-
+        
+        JPanel deductionBoardPanel = new JPanel();
+        deductionBoardPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+        deductionBoardPanel.setBackground(Color.WHITE);
+        deductionBoardPanel.setBounds(619, 62, 275, 291);
+        contentPane.add(deductionBoardPanel);
+        
+        JLabel deductionBoardNameLabel = new JLabel("Deduction Board");
+        deductionBoardPanel.add(deductionBoardNameLabel);
+        
+        JButton deductionPageButton = new JButton("Click to go to the deduction board!");
+        deductionBoardPanel.add(deductionPageButton);
+        
+        deductionPageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Create an instance of DeductionBoard and display it
+               
+                deductionBoard.display();
+            }
+        });
     }
 
 
