@@ -11,16 +11,17 @@ public class ArtifactCard {
     private boolean isOneTimeUse; // Indicates if the card is for one-time use
     private boolean isUsed;       // Tracks whether the card has been used
     private boolean isImmadiate; // Indicates if the card is immediately applied or Whenever is used.
+    private String imagePath;
 
     
-    public ArtifactCard(String name, int goldValue, ArtifactEffect effect, boolean isOneTimeUse, boolean isImmadiate) {
+    public ArtifactCard(String name, int goldValue, ArtifactEffect effect, boolean isOneTimeUse, boolean isImmadiate, String imagePath) {
         this.name = name;
         this.goldValue = goldValue;
         this.effect = effect;
         this.isOneTimeUse = isOneTimeUse;
         this.isUsed = false;
         this.isImmadiate = isImmadiate;
-        
+        this.imagePath = imagePath;
     }
 
     // Getters and setters
@@ -48,6 +49,10 @@ public class ArtifactCard {
         return isImmadiate;
     }
 
+    public String getImagePath(){
+        return imagePath;
+    }
+
     public void setName(String name){
         this.name = name;
     }
@@ -66,6 +71,10 @@ public class ArtifactCard {
 
     public void isUsed(Boolean isUsed){
         this.isUsed = isUsed;
+    }
+
+    public void setImagePath(String imagePath){
+        this.imagePath = imagePath;
     }
     
     public void applyEffect(Game game) {
@@ -86,6 +95,17 @@ public class ArtifactCard {
         if ( !isOneTimeUse) {
             isUsed = false;
         }
+    }
+    
+    @Override
+    public String toString() {
+        return "ArtifactCard{" +
+                "\n\tname='" + name + 
+                "\n\tgoldValue=" + goldValue +
+                "\n\tisOneTimeUse=" + isOneTimeUse +
+                "\n\tisUsed=" + isUsed +
+                "\n\tisImmediate=" + isImmadiate +
+                "\n}";
     }
 
 }

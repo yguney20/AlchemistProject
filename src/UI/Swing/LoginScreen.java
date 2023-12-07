@@ -45,6 +45,7 @@ public class LoginScreen extends JFrame implements ActionListener{
     private JLabel selected;
     private JButton confirmButton;
     private JButton startGameButton;
+    private JButton backButton;
     private String player1Avatar;
     private String player2Avatar;
     private int initialX;
@@ -180,6 +181,11 @@ public class LoginScreen extends JFrame implements ActionListener{
         startGameButton.setBounds(505, 430, 120, 23);
         startGameButton.setVisible(false); // Initially hidden
         contentPane.add(startGameButton);
+        
+        backButton = new JButton("Back");
+        backButton.setBounds(525, 500, 89, 23);
+        contentPane.add(backButton);
+        
     	} catch(IOException e) {
             e.printStackTrace();
     		
@@ -261,6 +267,7 @@ public class LoginScreen extends JFrame implements ActionListener{
 	       avatar6.addActionListener(this);
 	       confirmButton.addActionListener(this);
 	       startGameButton.addActionListener(this);
+	       backButton.addActionListener(this);
  }
     
     @Override
@@ -320,7 +327,13 @@ public class LoginScreen extends JFrame implements ActionListener{
 				message1.setVisible(false);
 				message2.setVisible(true);
 			}
-		}		
+		}	
+		
+		if(event.getSource()==backButton) {
+			this.setVisible(false);
+			GameEntranceScreen gameEntrance = new GameEntranceScreen();
+			gameEntrance.display();
+		}
 		
 	}
     
