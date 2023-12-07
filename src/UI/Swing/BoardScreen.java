@@ -8,9 +8,18 @@ import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URL;
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JLabel;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
@@ -21,11 +30,16 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
+
+import controllers.GameController;
+
 import javax.swing.UIManager;
 
-public class BoardScreen extends JFrame {
+public class BoardScreen extends JFrame implements ActionListener{
 
     private JPanel contentPane;
+    private JButton dashboardPanel = new JButton();
+    
 
     /**
      * Create the frame.
@@ -33,7 +47,7 @@ public class BoardScreen extends JFrame {
     public BoardScreen() {
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 900, 505); // Adjust the size accordingly
+        setBounds(50, 50, 900, 505); // Adjust the size accordingly
         setResizable(false);
         
         contentPane = new JPanel();
@@ -123,7 +137,7 @@ public class BoardScreen extends JFrame {
         gameBoardImage.setIcon(postResizeMenuImageIcon);
         titlePanel.add(gameBoardImage);
         
-        JPanel dashboardPanel = new JPanel();
+        //JButton dashboardPanel = new JButton();
         dashboardPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
         dashboardPanel.setBackground(Color.WHITE);
         dashboardPanel.setBounds(362, 88, 174, 58);
@@ -165,9 +179,38 @@ public class BoardScreen extends JFrame {
         
         JLabel artifactCardsNameLabel = new JLabel("Artifact Cards");
         artifactCardPanel.add(artifactCardsNameLabel);
+        
+		addActionEvent();
+
 
     }
-
+    
+    public void addActionEvent() {
+    	dashboardPanel.addActionListener(this);
+    }
+    
+	public void actionPerformed(ActionEvent event) {
+		if(event.getSource()==dashboardPanel) {
+            GameController gameController = GameController.getInstance();
+			PlayerDashboard playerDashboard = new PlayerDashboard(gameController);
+			playerDashboard.display();			
+		}
+	}
+	
+	private void playSound(String soundFilePath) {
+        try {
+            // Open an audio input stream.
+            URL url = this.getClass().getClassLoader().getResource(soundFilePath);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            // Get a sound clip resource.
+            Clip clip = AudioSystem.getClip();
+            // Open audio clip and load samples from the audio input stream.
+            clip.open(audioIn);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void display() {
         setVisible(true); // Show the board

@@ -1,5 +1,6 @@
 package UI.Swing;
 
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -21,6 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+
+import controllers.GameController;
+import domain.GameObjects.Player;
+
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,16 +33,19 @@ import java.awt.event.MouseEvent;
 public class PlayerDashboard extends JFrame {
 
     private JPanel contentPane;
+    private GameController gameController;
 
     /**
      * Create the frame.
      */
-    public PlayerDashboard() {
+    public PlayerDashboard(GameController gameController) {
+    	
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 900, 505); // Adjust the size accordingly
         setResizable(false);
         
+
         RoundedBorder roundedBorder = new RoundedBorder(Color.BLACK, 10, 0, 4, new Color(0, 0, 0, 70));  //Custom Border Design.
         
         RoundedBorder roundedBorder2 = new RoundedBorder(Color.BLACK, 5, 0, 3, new Color(0, 0, 0, 120));  //Custom Border Design.
@@ -124,6 +132,12 @@ public class PlayerDashboard extends JFrame {
             public void mouseExited(MouseEvent e) {
                 forageForIngredientButton.setBackground(Color.WHITE);
             }
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		Player currentPlayer = gameController.getCurrentPlayer();
+    			gameController.forageForIngredient(currentPlayer);
+    			PlayerDashboard.this.setVisible(false);
+        	}
         });
         forageForIngredientButton.setIcon(null);
         forageForIngredientButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -148,6 +162,12 @@ public class PlayerDashboard extends JFrame {
             public void mouseExited(MouseEvent e) {
             	transmuteIngredientButton.setBackground(Color.WHITE);
             }
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		
+        		//TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
+    			//transmuteIngredientScreen.display();
+        	}
         });
         transmuteIngredientButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         transmuteIngredientButton.setBounds(4, 45, 425, 36);
@@ -171,6 +191,15 @@ public class PlayerDashboard extends JFrame {
             public void mouseExited(MouseEvent e) {
             	buyArtifactButton.setBackground(Color.WHITE);
             }
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		
+        		BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
+    			buyArtifactScreen.display();
+        		
+
+        		
+        	}
         });
         buyArtifactButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         buyArtifactButton.setBounds(4, 86, 425, 36);
@@ -588,4 +617,10 @@ public class PlayerDashboard extends JFrame {
         setVisible(true); // Show the board
         playSound("UI/Swing/Sounds/medivalSoundtrack.wav");
     }
+
+
+	
+ 
+	
 }
+

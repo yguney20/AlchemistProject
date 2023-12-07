@@ -5,11 +5,13 @@ public class IngredientCard {
 	private int cardId;
 	private String name;
     private Molecule molecule;
+	private String imagePath;
 
-	public IngredientCard(int cardId, String name, Molecule molecule) {
+	public IngredientCard(int cardId, String name, Molecule molecule, String imagePath) {
 	    this.cardId = cardId;
 	    this.name = name;
 	    this.molecule = molecule;
+		this.imagePath = imagePath;
 	}
 	
     @Override
@@ -18,6 +20,7 @@ public class IngredientCard {
                 "\n\tcardId=" + cardId +
                 "\n\tname='" + name +
                 "\n\tmolecule=" + molecule +
+				"\n\timagePath='" + imagePath +
                 "\n}";
     }
 	
@@ -43,6 +46,14 @@ public class IngredientCard {
 
 	public void setMolecule(Molecule molecule) {
 		this.molecule = molecule;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	
 }
