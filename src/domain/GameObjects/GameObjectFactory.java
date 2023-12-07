@@ -52,14 +52,14 @@ public class GameObjectFactory { // Singleton Patterns
         List<IngredientCard> ingredients = new ArrayList<>();
         Map<String, String> ingredientImages = new HashMap<>();
 
-        ingredientImages.put("Moon Blossom", "src/UI/Swing/Images/IngredientCards/Moon Blossom.png");
-        ingredientImages.put("Crystalite", "src/UI/Swing/Images/IngredientCards/Crystalite.png");
-        ingredientImages.put("Shimmer Fungus", "src/UI/Swing/Images/IngredientCards/Moon Blossom.png");
-        ingredientImages.put("Golden Mold", "src/UI/Swing/Images/IngredientCards/Golden Mald.png");
-        ingredientImages.put("Starling Nectar", "src/UI/Swing/Images/IngredientCards/Starlight Nectar.png");
-        ingredientImages.put("Verdant Fern", "src/UI/Swing/Images/IngredientCards/Verdant Fern.png");
-        ingredientImages.put("Dandelion Root", "src/UI/Swing/Images/IngredientCards/Dandelion Root.png");
-        ingredientImages.put("Dragon Powder", "src/UI/Swing/Images/IngredientCards/Dragon Powder.png");
+        ingredientImages.put("Moon Blossom", "/UI/Swing/Images/IngredientCards/Moon Blossom.png");
+        ingredientImages.put("Crystalite", "/UI/Swing/Images/IngredientCards/Crystalite.png");
+        ingredientImages.put("Shimmer Fungus", "/UI/Swing/Images/IngredientCards/Moon Blossom.png");
+        ingredientImages.put("Golden Mold", "/UI/Swing/Images/IngredientCards/Golden Mald.png");
+        ingredientImages.put("Starling Nectar", "/UI/Swing/Images/IngredientCards/Starlight Nectar.png");
+        ingredientImages.put("Verdant Fern", "/UI/Swing/Images/IngredientCards/Verdant Fern.png");
+        ingredientImages.put("Dandelion Root", "/UI/Swing/Images/IngredientCards/Dandelion Root.png");
+        ingredientImages.put("Dragon Powder", "/UI/Swing/Images/IngredientCards/Dragon Powder.png");
 
 
         List<String> ingredientNames = new ArrayList<> (List.of("Moon Blossom", "Crystalite", "Shimmer Fungus", "Golden Mold",

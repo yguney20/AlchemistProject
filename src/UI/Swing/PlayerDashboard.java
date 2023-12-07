@@ -21,7 +21,6 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 	private JButton buyArtifact;
 	private GameController gameController;
 	private JButton quitButton = new JButton("X");
-	private BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
 
 	/**
 	 * Create the frame.
@@ -121,13 +120,19 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 
 		if(event.getSource()== buyArtifact) {
-			buyArtifactScreen.display();			
+			BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
+			buyArtifactScreen.display();
 		}
 
 		if(event.getSource()==forageForIngredient) {
 			Player currentPlayer = gameController.getCurrentPlayer();
 			gameController.forageForIngredient(currentPlayer);
 			this.setVisible(false);
+		}
+		
+		if(event.getSource()==transmuteIngredient) {
+			TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
+			transmuteIngredientScreen.display();
 		}
 	}
 	
