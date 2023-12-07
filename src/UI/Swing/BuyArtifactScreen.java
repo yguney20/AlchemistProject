@@ -12,6 +12,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -31,7 +34,6 @@ import javax.swing.JLabel;
 public class BuyArtifactScreen extends JFrame  implements ActionListener{
 
 	private JPanel contentPane;
-	private JButton elixirOfInsight;
 	private JButton buyButton;
     private int initialX;
     private int initialY;
@@ -39,6 +41,7 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
     private JLabel selected;
     private GameController gameController = GameController.getInstance();
     private JLabel message;
+    List<ArtifactCard> artifactCards;
     
 
 	/**
@@ -65,6 +68,7 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	        //ImageIcon icon = new ImageIcon(getClass().getResource("UI/Swing/Images/logo.png"));
 	        //setIconImage(icon.getImage());
 	        
+	        addArtifacts();
 	        addJButtons();
 	        addJLabels();
 	        addActionEvent();
@@ -95,33 +99,57 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 		this.setVisible(true);
 	}
 	
-	public void addJButtons() {
+	public void addArtifacts() {
 		try {
 			
-		elixirOfInsight = new JButton("New button");
-		elixirOfInsight.setBounds(25, 20, 139, 165);
-        elixirOfInsight.setContentAreaFilled(false);
-        elixirOfInsight.setBorder(BorderFactory.createEmptyBorder());
-        setImage("/UI/Swing/Images/ArtifactCards/Elixir Of Insight.png", elixirOfInsight);
-		contentPane.add(elixirOfInsight);
+			artifactCards = gameController.getAvailableArtifacts(); 
+	        int x = 25;
+	        int y = 20;
+	        int buttonWidth = 139;
+	        int buttonHeight = 165;
+	        int horizontalSpacing = 20;
+	        
+	        Map<ArtifactCard, JButton> artifactButtonMap = new HashMap<>();
+
+
+	        for (ArtifactCard card : artifactCards) {
+	        	JButton artifactButton = new JButton(card.getName());
+	        	artifactButton.setBounds(x, y, buttonWidth, buttonHeight);
+	        	artifactButton.setContentAreaFilled(false);
+	        	artifactButton.setBorder(BorderFactory.createEmptyBorder());
+	        	setImage(card.getImagePath(), artifactButton);
+	        	contentPane.add(artifactButton);
+
+	        	// Add action listener for each artifact button
+	        	artifactButton.addActionListener(e -> handleArtifactSelection(artifactButton));
+	        
+	        	artifactButtonMap.put(card, artifactButton);
+            
+	        	// Create label for the artifact
+	        	JLabel artifactLabel = new JLabel(card.getName());
+	        	artifactLabel.setForeground(Color.WHITE);
+	        	artifactLabel.setFont(new Font("Arial", Font.BOLD, 12));
+            	artifactLabel.setBounds(x, y+buttonHeight+20, buttonWidth, 14);
+            	contentPane.add(artifactLabel);
+            
+            	// Adjust the position for the next button
+            	x += buttonWidth + horizontalSpacing;
+	        }		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void addJButtons() {
 		
 		buyButton = new JButton("BUY");
 		buyButton.setBounds(391, 222, 89, 23);
 		contentPane.add(buyButton);
 		
-		}catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	
 	public void addJLabels() {
-		JLabel artifact1Label = new JLabel("Elixir of Insight");
-		artifact1Label.setForeground(Color.WHITE);
-		artifact1Label.setFont(new Font("Arial", Font.BOLD, 12));
-		artifact1Label.setBounds(55, 200, 150, 14);
-		contentPane.add(artifact1Label);
 		
         selected = new JLabel("SELECTED");
         selected.setBackground(Color.RED);
@@ -142,14 +170,12 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	}
 	
 	public void addActionEvent() {
-		elixirOfInsight.addActionListener(this);
+		//elixirOfInsight.addActionListener(this);
 		buyButton.addActionListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent event) {
-		if(event.getSource()==elixirOfInsight) {
-			handleArtifactSelection("/UI/Swing/Images/ArtifactCards/Elixir Of Insight.png", elixirOfInsight);
-		}
+
 		if(event.getSource()==buyButton) {
 			if(artifactCard==null) {
 				message.setVisible(true);
@@ -185,13 +211,22 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
         
 	}
 	
-    private void handleArtifactSelection(String artifactPath, JButton button) {            
-        if (button == elixirOfInsight) {
-        		artifactCard = gameController.getArtifactCardByPath(artifactPath);
-                selected.setBounds(button.getX(), button.getHeight(), button.getWidth()-8, 20);
-                selected.setVisible(true);
-                contentPane.setComponentZOrder(selected, 0);
+    private void handleArtifactSelection(JButton button) {            
+    	ArtifactCard selectedArtifactCard = null;
+        for (ArtifactCard card : artifactCards) {
+            if (button.getText().equals(card.getName())) {
+                selectedArtifactCard = card;
+                break;
+            }
+        }
 
+        if (selectedArtifactCard != null) {
+            artifactCard = selectedArtifactCard;
+
+            // Set the selected label position based on the clicked button
+            selected.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
+            selected.setVisible(true);
+            contentPane.setComponentZOrder(selected, 0);
         }
     }
 }
