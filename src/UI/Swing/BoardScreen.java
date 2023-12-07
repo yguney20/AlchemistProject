@@ -10,6 +10,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JLabel;
@@ -23,11 +25,16 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
+
+import controllers.GameController;
+
 import javax.swing.UIManager;
 
-public class BoardScreen extends JFrame {
+public class BoardScreen extends JFrame implements ActionListener{
 
     private JPanel contentPane;
+    private JButton dashboardPanel = new JButton();
+    private JFrame frame;
 
     /**
      * Create the frame.
@@ -37,7 +44,7 @@ public class BoardScreen extends JFrame {
  
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 900, 505); // Adjust the size accordingly
+        setBounds(50, 50, 900, 505); // Adjust the size accordingly
         setResizable(false);
         
         contentPane = new JPanel();
@@ -106,6 +113,16 @@ public class BoardScreen extends JFrame {
         menuButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         menuPanel.add(menuButton);
         
+        menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	setVisible(false);
+                MenuScreen menuScreen = new MenuScreen(frame);
+                menuScreen.display();
+            }
+        });
+        
+        
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(new Color(254, 255, 255));
         titlePanel.setBounds(280, 6, 340, 58);
@@ -129,7 +146,7 @@ public class BoardScreen extends JFrame {
         gameBoardImage.setIcon(postResizeMenuImageIcon);
         titlePanel.add(gameBoardImage);
         
-        JPanel dashboardPanel = new JPanel();
+        //JButton dashboardPanel = new JButton();
         dashboardPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
         dashboardPanel.setBackground(Color.WHITE);
         dashboardPanel.setBounds(362, 88, 174, 58);
@@ -165,6 +182,7 @@ public class BoardScreen extends JFrame {
         JLabel artifactCardsNameLabel = new JLabel("Artifact Cards");
         artifactCardPanel.add(artifactCardsNameLabel);
         
+
         JPanel deductionBoardPanel = new JPanel();
         deductionBoardPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
         deductionBoardPanel.setBackground(Color.WHITE);
@@ -187,6 +205,20 @@ public class BoardScreen extends JFrame {
         });
     }
 
+
+    }
+    
+    public void addActionEvent() {
+    	dashboardPanel.addActionListener(this);
+    }
+    
+	public void actionPerformed(ActionEvent event) {
+		if(event.getSource()==dashboardPanel) {
+            GameController gameController = GameController.getInstance();
+			PlayerDashboard playerDashboard = new PlayerDashboard(gameController);
+			playerDashboard.display();			
+		}
+	}
 
     public void display() {
         setVisible(true); // Show the board
