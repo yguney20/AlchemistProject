@@ -3,19 +3,15 @@ package UI.Swing;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controllers.GameController;
-import domain.GameObjects.ArtifactCard;
 import domain.GameObjects.Player;
 
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 
 public class PlayerDashboard extends JFrame implements ActionListener{
 
