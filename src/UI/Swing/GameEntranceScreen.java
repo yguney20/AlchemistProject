@@ -109,8 +109,9 @@ public class GameEntranceScreen extends JFrame{
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle Settings button click
-                // Add your logic here
+                setVisible(false);
+                SettingsScreen settingsScreen = new SettingsScreen(frame);
+                settingsScreen.display();
             }
         });
         add(settingsButton);
