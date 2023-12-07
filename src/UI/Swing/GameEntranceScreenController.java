@@ -44,7 +44,7 @@ public class GameEntranceScreenController {
 
     @FXML
     private void handleHelp() {
-        openScreen("HelpScreen.fxml"); // Replace with your help screen FXML
+        openScreen("HelpScreenControllerü.fxml"); // Replace with your help screen FXML
     }
 
     @FXML

@@ -23,14 +23,14 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.UIManager;
 
-public class BoardScreen extends JFrame {
+public class BoardScreenController extends JFrame {
 
     private JPanel contentPane;
 
     /**
      * Create the frame.
      */
-    public BoardScreen() {
+    public BoardScreenController() {
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 900, 505); // Adjust the size accordingly
@@ -67,7 +67,7 @@ public class BoardScreen extends JFrame {
         
         
         
-        ImageIcon preResizeCauldronImageIcon = new ImageIcon(BoardScreen.class.getResource("/UI/Swing/Images/gameBoardUI/cauldronImage.png"));
+        ImageIcon preResizeCauldronImageIcon = new ImageIcon(BoardScreenController.class.getResource("/UI/Swing/Images/gameBoardUI/cauldronImage.png"));
         Image preResizeCauldronImage = preResizeCauldronImageIcon.getImage();
 
         // Resize the image
@@ -114,7 +114,7 @@ public class BoardScreen extends JFrame {
         gameBoardImage.setIconTextGap(0);
         gameBoardImage.setFocusable(false);
      // Load the original image
-        ImageIcon preResizeMenuImageIcon = new ImageIcon(BoardScreen.class.getResource("/UI/Swing/Images/gameBoardUI/kuAlchemistGameBoardTitleImage.png"));
+        ImageIcon preResizeMenuImageIcon = new ImageIcon(BoardScreenController.class.getResource("/UI/Swing/Images/gameBoardUI/kuAlchemistGameBoardTitleImage.png"));
         Image preResizeMenuImage = preResizeMenuImageIcon.getImage();
 
         // Resize the image
@@ -142,7 +142,7 @@ public class BoardScreen extends JFrame {
         
         JLabel ingredientCardImage = new JLabel("");
         
-        ImageIcon preResizeIngredientCardImageIcon = new ImageIcon(BoardScreen.class.getResource("/UI/Swing/Images/gameBoardUI/gameBoardIngredientCardBacksideImage.png"));
+        ImageIcon preResizeIngredientCardImageIcon = new ImageIcon(BoardScreenController.class.getResource("/UI/Swing/Images/gameBoardUI/gameBoardIngredientCardBacksideImage.png"));
         Image preResizeIngredientCardImage = preResizeIngredientCardImageIcon.getImage();
 
         // Resize the image

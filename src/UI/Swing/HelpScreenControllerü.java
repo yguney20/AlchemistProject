@@ -5,11 +5,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class HelpScreen extends JFrame {
+public class HelpScreenControllerü extends JFrame {
 
     private JButton backButton = new JButton("Back");
 
-    public HelpScreen(int width, int height, Frame frame) {
+    public HelpScreenControllerü(int width, int height, Frame frame) {
         backButton.setBounds(width - 100, height - 50, 100, 50);
         setSize(width, height);
         
@@ -43,7 +43,7 @@ public class HelpScreen extends JFrame {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Close the current HelpScreen
+                // Close the current HelpScreenControllerü
             	frame.setVisible(true);
             	dispose();
                 
