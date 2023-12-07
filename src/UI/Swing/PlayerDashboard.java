@@ -30,6 +30,7 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 	/**
 	 * Create the frame.
 	 */
+
 	public PlayerDashboard(GameController gameController) {
 		this.gameController = gameController;
 		setTitle("Player Dashboard");

@@ -119,6 +119,7 @@ public class BoardScreen extends JFrame implements ActionListener{
             }
         });
         
+        
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(new Color(254, 255, 255));
         titlePanel.setBounds(280, 6, 340, 58);

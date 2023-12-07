@@ -167,7 +167,6 @@ public class GameEntranceScreen extends JFrame{
     }
 
     
-
     public void display() {
         setVisible(true);
     }

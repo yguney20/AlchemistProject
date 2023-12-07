@@ -80,6 +80,7 @@ public class MenuScreen extends JFrame {
             	pauseScreen.display();
             }
         });
+        
 
         helpButton.addActionListener(new ActionListener() {
             @Override
