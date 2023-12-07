@@ -116,11 +116,12 @@ public class BoardScreen extends JFrame implements ActionListener{
         menuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	setVisible(false);
-                MenuScreen menuScreen = new MenuScreen(frame);
+                setVisible(false);
+                MenuScreen menuScreen = new MenuScreen(BoardScreen.this); // Pass 'this' instead of 'frame'
                 menuScreen.display();
             }
         });
+
         
         
         JPanel titlePanel = new JPanel();

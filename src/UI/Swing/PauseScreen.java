@@ -8,9 +8,15 @@ import java.awt.event.ActionListener;
 public class PauseScreen extends JFrame {
     private JPanel contentPane;
     private JButton resumeButton;
+    private Frame mainFrame;
+    private JFrame menuScreen;
 
-    public PauseScreen(int width, int height, Frame frame) {
+    public PauseScreen(int width, int height, Frame frame, JFrame menuScreen) {
+        this.mainFrame = frame;
+        this.menuScreen = menuScreen;
+        
         // Set the title and size of the pause screen
+        this.mainFrame = frame;
         setTitle("Pause Screen");
         setSize(width, height);
         setResizable(false);
@@ -18,8 +24,6 @@ public class PauseScreen extends JFrame {
 
         // Center the frame on the screen
         setLocationRelativeTo(null);
-        
-        
 
         // Create a JPanel as the contentPane with null layout
         contentPane = new JPanel(null);
@@ -38,17 +42,25 @@ public class PauseScreen extends JFrame {
         infoLabel.setBounds(0, 30, width, 80); // Adjust as needed
         backgroundLabel.add(infoLabel); // Add to the background label
 
-        
         // Initialize the JButton for the resume action in the center
         resumeButton = new JButton("Resume");
         resumeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Hide the pause screen when the "Resume" button is clicked
-                frame.setVisible(true);
-            	dispose();
+                if (mainFrame != null && mainFrame instanceof JFrame) {
+                    JFrame mainJFrame = (JFrame) mainFrame;
+                    mainJFrame.setState(Frame.NORMAL);
+                    mainJFrame.toFront();
+                    mainJFrame.requestFocus();
+                    mainJFrame.setVisible(true);
+                }
+                if (menuScreen != null) {
+                    menuScreen.dispose(); // or menuScreen.setVisible(false); based on your need
+                }
+                PauseScreen.this.dispose();
             }
         });
+
         resumeButton.setBounds(width / 2 - 50, height / 2 - 25, 100, 50); // Centered button
         backgroundLabel.add(resumeButton); // Add to the background label
     }

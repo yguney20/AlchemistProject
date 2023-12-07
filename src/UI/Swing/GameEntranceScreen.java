@@ -38,6 +38,12 @@ public class GameEntranceScreen extends JFrame{
         buttonWidth = 500;
         buttonHeight = 50;
         // Load the background image using ImageIO
+        
+        JLabel titleLabel = new JLabel("Ku Alchemists", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial Black", Font.BOLD, 48));; // Replace with your font path and size
+        titleLabel.setForeground(new Color(255, 215, 0)); // Gold color, you can change it as per your theme
+        
+        
         try {
            BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/UI/Swing/Images/background.jpeg"));
            ImageIcon icon = new ImageIcon(getClass().getResource("/UI/Swing/Images/logo.png"));
@@ -57,10 +63,9 @@ public class GameEntranceScreen extends JFrame{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         
-
-        
+        titleLabel.setBounds(250, 300, 500, 300);
+        backgroundPanel.add(titleLabel);
         
         // Play button
         playButton.setBounds(getWidth() / 4, 225, buttonWidth, buttonHeight);
@@ -73,7 +78,7 @@ public class GameEntranceScreen extends JFrame{
             }
         });
         this.add(playButton);
-
+        
         // Settings button
         settingsButton.setBounds(getWidth() / 4, 375, buttonWidth, buttonHeight);
         settingsButton.addActionListener(new ActionListener() {
@@ -119,9 +124,10 @@ public class GameEntranceScreen extends JFrame{
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	dispose();
+                System.exit(0); // Terminate the application
             }
         });
+
         add(quitButton);
 
         
