@@ -60,38 +60,8 @@ public class GameEntranceScreen extends JFrame{
 
         
 
-        // Create and add buttons
-        createButtons();
-
         
         
-     // Add a MouseListener to make the frame movable
-        backgroundPanel.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                initialX = e.getX();
-                initialY = e.getY();
-            }
-        });
-
-        backgroundPanel.addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseDragged(MouseEvent e) {
-                int x = getLocation().x + e.getX() - initialX;
-                int y = getLocation().y + e.getY() - initialY;
-                setLocation(x, y);
-            }
-        });
-
-        // Center the frame on the screen
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (screenSize.width - getWidth()) / 2;
-        int y = (screenSize.height -getHeight()) / 2;
-        setLocation(x, y);
-
-        // Add the backgroundPanel to the content pane
-        getContentPane().add(backgroundPanel);
-    }
-
-    private void createButtons() {
         // Play button
         playButton.setBounds(getWidth() / 4, 225, buttonWidth, buttonHeight);
         playButton.addActionListener(new ActionListener() {
@@ -127,18 +97,22 @@ public class GameEntranceScreen extends JFrame{
             }
         });
         add(helpButton);
+        
+        addButtonHoverEffect(playButton);
+        addButtonHoverEffect(settingsButton);
+        addButtonHoverEffect(helpButton);
 
      
         quitButton.setBounds(getWidth() - 70, 20, 80, 20);
         quitButton.setFocusPainted(false);
         quitButton.setContentAreaFilled(false);
         quitButton.setBorderPainted(false);
-     // Increase the font size
+        // Increase the font size
         Font pacificoFont = new Font("Pacifico", Font.PLAIN, 12);
         Font largerFont = pacificoFont.deriveFont(pacificoFont.getSize() + 24f);
         quitButton.setFont(largerFont);
        
-     // Set the red "X" as the text
+        // Set the red "X" as the text
         quitButton.setForeground(Color.RED);
         quitButton.setText("X");
         
@@ -149,6 +123,47 @@ public class GameEntranceScreen extends JFrame{
             }
         });
         add(quitButton);
+
+        
+        
+        // Add a MouseListener to make the frame movable
+        backgroundPanel.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                initialX = e.getX();
+                initialY = e.getY();
+            }
+        });
+
+        backgroundPanel.addMouseMotionListener(new MouseMotionAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                int x = getLocation().x + e.getX() - initialX;
+                int y = getLocation().y + e.getY() - initialY;
+                setLocation(x, y);
+            }
+        });
+
+        // Center the frame on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screenSize.width - getWidth()) / 2;
+        int y = (screenSize.height -getHeight()) / 2;
+        setLocation(x, y);
+
+        // Add the backgroundPanel to the content pane
+        getContentPane().add(backgroundPanel);
+    }
+
+    private void addButtonHoverEffect(JButton button) {
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(Color.orange);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(UIManager.getColor("Button.background"));
+            }
+        });
     }
 
     
@@ -157,14 +172,5 @@ public class GameEntranceScreen extends JFrame{
         setVisible(true);
     }
 
-    // Add this method to set up the UI components
-    public void setupUI() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                createButtons();
-                display();
-            }
-        });
-    }
+    
 }

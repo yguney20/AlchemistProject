@@ -35,6 +35,7 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 		setTitle("Player Dashboard");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(950, 50, 450, 500);
+		setUndecorated(true);  // Make the JFrame undecorated
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

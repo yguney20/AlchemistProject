@@ -32,11 +32,13 @@ public class BoardScreen extends JFrame implements ActionListener{
 
     private JPanel contentPane;
     private JButton dashboardPanel = new JButton();
+    private JFrame frame;
 
     /**
      * Create the frame.
      */
     public BoardScreen() {
+    	this.frame = this;
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(50, 50, 900, 505); // Adjust the size accordingly
@@ -107,6 +109,15 @@ public class BoardScreen extends JFrame implements ActionListener{
         JButton menuButton = new JButton("Menu");
         menuButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         menuPanel.add(menuButton);
+        
+        menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	setVisible(false);
+                MenuScreen menuScreen = new MenuScreen(frame);
+                menuScreen.display();
+            }
+        });
         
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(new Color(254, 255, 255));
