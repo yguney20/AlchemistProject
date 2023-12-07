@@ -49,4 +49,13 @@ public class GameController {
     public ArtifactCard getArtifactCardByPath(String path) {
     	return game.getArtifactCardByPath(path);
     }
+    
+    public void pauseGame() {
+        game.pauseGame();
+    }
+
+    public void resumeGame() {
+        game.resumeGame();
+    }
+
 }
