@@ -65,8 +65,6 @@ public class BoardScreen extends JFrame {
         
         JLabel cauldronLabel = new JLabel("");
         
-        
-        
         ImageIcon preResizeCauldronImageIcon = new ImageIcon(BoardScreen.class.getResource("/UI/Swing/Images/gameBoardUI/cauldronImage.png"));
         Image preResizeCauldronImage = preResizeCauldronImageIcon.getImage();
 

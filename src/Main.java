@@ -3,8 +3,8 @@ import UI.Swing.*;
 public class Main {
     public static void main(String[] args) {
         
-        GameEntranceScreen entranceScreen = new GameEntranceScreen();
+        PlayerDashboard pd = new PlayerDashboard();
 
-        entranceScreen.display();
+        pd.display();
     }
 }
