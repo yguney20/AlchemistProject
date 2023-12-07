@@ -71,4 +71,40 @@ public class GameObjectFactory { // Singleton Patterns
 
     }
     
+    public PotionCard potionMaker(IngredientCard firstIngredient, IngredientCard secondIngredient) {
+        PotionCard potionCard = null;
+
+        if ((areSameSizeAndDifferentSign(firstIngredient.getMolecule().getRedComponentSign(), secondIngredient.getMolecule().getRedComponentSign(),
+                firstIngredient.getMolecule().getRedComponentSize(), secondIngredient.getMolecule().getRedComponentSize())) 
+        		&& (areSameSizeAndDifferentSign(firstIngredient.getMolecule().getBlueComponentSign(), secondIngredient.getMolecule().getBlueComponentSign(),
+        				firstIngredient.getMolecule().getBlueComponentSize(), secondIngredient.getMolecule().getBlueComponentSize()))
+        			&& (areSameSizeAndDifferentSign(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
+        	                firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize()))) {
+            potionCard = new PotionCard("Neutral Potion", "Clear", "Description for Neutral Potion");
+            
+        } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getRedComponentSign(), secondIngredient.getMolecule().getRedComponentSign(),
+                firstIngredient.getMolecule().getRedComponentSize(), secondIngredient.getMolecule().getRedComponentSize())) {
+            String redSignString = firstIngredient.getMolecule().getRedComponentSign().toString();
+            potionCard = new PotionCard("Red Potion", redSignString, "Description for Red Potion");
+        } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getBlueComponentSign(), secondIngredient.getMolecule().getBlueComponentSign(),
+                firstIngredient.getMolecule().getBlueComponentSize(), secondIngredient.getMolecule().getBlueComponentSize())) {
+            String blueSignString = firstIngredient.getMolecule().getBlueComponentSign().toString();
+            potionCard = new PotionCard("Blue Potion", blueSignString, "Description for Blue Potion");
+        } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
+                firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize())) {
+            String greenSignString = firstIngredient.getMolecule().getGreenComponentSign().toString();
+            potionCard = new PotionCard("Green Potion", greenSignString, "Description for Green Potion");
+        }
+
+        return potionCard;
+    }
+
+    private boolean areSameSizeAndDifferentSign(Molecule.Sign sign1, Molecule.Sign sign2, Molecule.Size size1, Molecule.Size size2) {
+        return size1.equals(size2) && !sign1.equals(sign2);
+    }
+
+    private boolean areSameSignAndDifferentSize(Molecule.Sign sign1, Molecule.Sign sign2, Molecule.Size size1, Molecule.Size size2) {
+        return sign1.equals(sign2) && !size1.equals(size2);
+    }
+    
 }

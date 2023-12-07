@@ -249,6 +249,50 @@ public class Game { //Singleton Pattern
             player.increaseGold(1);      	
         }
     }
+    
+
+    	
+    		
+    	
+    
+    /*
+    private boolean compareComponent(IngredientCard firstIngredient, IngredientCard secondIngredient, Molecule.Sign sign, Molecule.Size size) {
+        return ((sign.equals(secondIngredient.getMolecule().getRedComponentSign())) && (!size.equals(secondIngredient.getMolecule().getRedComponentSize())));
+    }
+	
+	public PotionCard potionMaker(IngredientCard firstIngredient, IngredientCard secondIngredient) {
+        PotionCard potionCard = null;
+
+        if (compareComponent(firstIngredient, secondIngredient, firstIngredient.getMolecule().getRedComponentSign(), firstIngredient.getMolecule().getRedComponentSize())) {
+        	String redSignString = firstIngredient.getMolecule().getRedComponentSign().toString();
+        	List<IngredientCard> ingredients = new ArrayList<>();
+            ingredients.add(firstIngredient);
+            ingredients.add(secondIngredient);
+        	// Create a PotionCard with relevant information for the red component
+            potionCard = new PotionCard("Red Potion", redSignString, ingredients, "Description for Red Potion");
+        }
+
+        else if (compareComponent(firstIngredient, secondIngredient, firstIngredient.getMolecule().getBlueComponentSign(), firstIngredient.getMolecule().getBlueComponentSize())) {
+        	String blueSignString = firstIngredient.getMolecule().getBlueComponentSign().toString();
+        	List<IngredientCard> ingredients = new ArrayList<>();
+            ingredients.add(firstIngredient);
+            ingredients.add(secondIngredient);
+        	// Create a PotionCard with relevant information for the blue component
+            potionCard = new PotionCard("Blue Potion", blueSignString, ingredients, "Description for Blue Potion");
+        }
+
+        else if (compareComponent(firstIngredient, secondIngredient, firstIngredient.getMolecule().getGreenComponentSign(), firstIngredient.getMolecule().getGreenComponentSize())) {
+        	String greenSignString = firstIngredient.getMolecule().getGreenComponentSign().toString();
+        	List<IngredientCard> ingredients = new ArrayList<>();
+            ingredients.add(firstIngredient);
+            ingredients.add(secondIngredient);
+        	// Create a PotionCard with relevant information for the green component
+            potionCard = new PotionCard("Green Potion", greenSignString, ingredients, "Description for Green Potion");
+        }
+
+        return potionCard;
+    }
+    */
 
 
 }
