@@ -23,7 +23,6 @@ public class GameState {
     @Override
     public String toString() {
         return "GameState{" +
-                "\n\tplayers=" + players +
                 "\n\tcurrentRound=" + currentRound +
                 "\n\tcurrentTurn=" + currentTurn +
                 "\n\tcurrentPlayer=" + currentPlayer +

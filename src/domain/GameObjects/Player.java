@@ -2,6 +2,7 @@
 
  import java.util.ArrayList;
  import java.util.List;
+import java.util.Objects;
 
  public class Player {
      private String nickname;
@@ -145,5 +146,6 @@
     public void addArtifactCard(ArtifactCard card) {
         this.artifactCards.add(card);
     }
+    
  }
 
