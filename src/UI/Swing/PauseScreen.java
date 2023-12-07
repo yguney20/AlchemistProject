@@ -9,7 +9,7 @@ public class PauseScreen extends JFrame {
     private JPanel contentPane;
     private JButton resumeButton;
 
-    public PauseScreen(int width, int height) {
+    public PauseScreen(int width, int height, Frame frame) {
         // Set the title and size of the pause screen
         setTitle("Pause Screen");
         setSize(width, height);
@@ -18,6 +18,8 @@ public class PauseScreen extends JFrame {
 
         // Center the frame on the screen
         setLocationRelativeTo(null);
+        
+        
 
         // Create a JPanel as the contentPane with null layout
         contentPane = new JPanel(null);
@@ -36,17 +38,22 @@ public class PauseScreen extends JFrame {
         infoLabel.setBounds(0, 30, width, 80); // Adjust as needed
         backgroundLabel.add(infoLabel); // Add to the background label
 
+        
         // Initialize the JButton for the resume action in the center
         resumeButton = new JButton("Resume");
         resumeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Hide the pause screen when the "Resume" button is clicked
-                dispose();
+                frame.setVisible(true);
+            	dispose();
             }
         });
         resumeButton.setBounds(width / 2 - 50, height / 2 - 25, 100, 50); // Centered button
         backgroundLabel.add(resumeButton); // Add to the background label
     }
 
+    public void display() {
+        setVisible(true);
+    }
 }
