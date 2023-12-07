@@ -1,9 +1,7 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import domain.GameObjects.*;
 
@@ -96,18 +94,16 @@ public class Game { //Singleton Pattern
     		p.getIngredientInventory().add(i2);
     	}
     	
-        Player currentPlayer = players.get(0);
+        currentPlayer = players.get(0);
         
         gameState.setCurrentPlayer(currentPlayer);
-        System.out.println(currentPlayer);
-        System.out.println(currentPlayer.getIngredientInventory());
         System.out.println(gameState);
       
     }
     
     public void updateState() {
-            // Move to the next player
-            int currentPlayerIndex = players.indexOf(currentPlayer);
+    	
+    		int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             currentPlayer = players.get(currentPlayerIndex);
 
@@ -131,7 +127,7 @@ public class Game { //Singleton Pattern
             gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentRound(currentRound);
             gameState.setCurrentTurn(currentTurn);
-            
+            System.out.println(gameState);
     }
     
     //end game method
@@ -235,6 +231,22 @@ public class Game { //Singleton Pattern
                 .filter(card -> card.getImagePath().equals(path))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Artifact Card not found for path: " + path));
+    }
+
+    //-----------------------Transmute Function ------------------------------------
+    
+    public void transmuteIngredient(Player player, IngredientCard selectedIngredient) {
+        // Preconditions
+        if (player.getIngredientInventory().isEmpty()) {
+        	notifyPlayers("ingredient card not found.");
+        }
+        else {
+        	// Flow
+            player.getIngredientInventory().remove(selectedIngredient); 
+            ingredientDeck.add(selectedIngredient);
+            Collections.shuffle(ingredientDeck);
+            player.increaseGold(1);      	
+        }
     }
 
 
