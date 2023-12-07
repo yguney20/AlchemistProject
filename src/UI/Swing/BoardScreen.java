@@ -206,7 +206,7 @@ public class BoardScreen extends JFrame implements ActionListener{
     }
 
 
-    }
+
     
     public void addActionEvent() {
     	dashboardPanel.addActionListener(this);
