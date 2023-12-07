@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<VBox fx:controller="UI.Swing.LoginScreenController" xmlns:fx="http://javafx.com/fxml/1" spacing="10" alignment="CENTER">
+    <Label text="Choose an avatar" />
+    <HBox spacing="10">
+        <!-- Sample image button -->
+        <Button fx:id="avatar1" text="Avatar 1" onAction="#handleAvatarSelection"/>
+        <!-- Add more avatar buttons similarly -->
+    </HBox>
+    <Label text="Nickname" />
+    <TextField fx:id="player1Name" />
+    <Button fx:id="confirmButton" text="Confirm" onAction="#handleConfirm"/>
+    <Button fx:id="startGameButton" text="Start Game" onAction="#handleStartGame" visible="false"/>
+    <!-- Add other components as needed -->
+</VBox>

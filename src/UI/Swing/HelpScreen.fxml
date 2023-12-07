@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="TOP_CENTER" spacing="10">
+    <Label text="Help and Information" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+    <ScrollPane fitToWidth="true">
+        <TextArea text="Here you can provide help information for your application.&#10;&#10;Explain various features, provide tips, or offer guidance on how to use the application. This text area can contain a large amount of text, which is scrollable for the user's convenience." wrapText="true" editable="false" />
+    </ScrollPane>
+    <Insets top="10" bottom="10" left="10" right="10"/>
+</VBox>
