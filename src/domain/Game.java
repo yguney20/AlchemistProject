@@ -224,16 +224,22 @@ public class Game { //Singleton Pattern
             System.out.println(e.getMessage());
         }
     }
-    
-    
-    public ArtifactCard getArtifactCardByPath(String path) {
+     public ArtifactCard getArtifactCardByPath(String path) {
         return artifactDeck.stream()
                 .filter(card -> card.getImagePath().equals(path))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Artifact Card not found for path: " + path));
     }
 
+
     //-----------------------Transmute Function ------------------------------------
+ public ArtifactCard getArtifactCardByPath(String path) {
+        return artifactDeck.stream()
+                .filter(card -> card.getImagePath().equals(path))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Artifact Card not found for path: " + path));
+    }
+
     
     public void transmuteIngredient(Player player, IngredientCard selectedIngredient) {
         // Preconditions
@@ -248,6 +254,7 @@ public class Game { //Singleton Pattern
             player.increaseGold(1);      	
         }
     }
+
 
 
 }
