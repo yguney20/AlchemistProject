@@ -260,7 +260,6 @@ public class Game { //Singleton Pattern
             	// Flow
                 player.getIngredientInventory().remove(selectedIngredient); 
                 ingredientDeck.add(selectedIngredient);
-                Collections.shuffle(ingredientDeck);
                 player.increaseGold(1);
                 actionPerformed = true;
             }

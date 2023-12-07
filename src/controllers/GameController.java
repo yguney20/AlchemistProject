@@ -4,6 +4,7 @@ import java.util.List;
 
 import domain.Game;
 import domain.GameObjects.ArtifactCard;
+import domain.GameObjects.IngredientCard;
 import domain.GameObjects.Player;
 
 public class GameController {
@@ -56,6 +57,10 @@ public class GameController {
 
     public void resumeGame() {
         game.resumeGame();
+    }
+    
+    public void transmuteIngredient(Player player, IngredientCard selectedIngredient) {
+    	game.transmuteIngredient(player, selectedIngredient);
     }
 
 }
