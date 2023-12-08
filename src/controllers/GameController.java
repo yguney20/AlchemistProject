@@ -43,6 +43,11 @@ public class GameController {
         return game.getArtifactDeck();
     }
 
+    public List<IngredientCard> getIngredientDeck() {
+        return game.getIngredientDeck();
+    }
+    
+
     public void buyArtifactCard(ArtifactCard artifact, Player currentPlayer) {
         game.buyArtifactCard(artifact, currentPlayer);
     }

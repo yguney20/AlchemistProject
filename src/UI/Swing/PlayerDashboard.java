@@ -19,6 +19,7 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 	private JButton forageForIngredient;
 	private JButton transmuteIngredient;
 	private JButton buyArtifact;
+	private JButton useArtifact;
 	private GameController gameController;
 	private JButton quitButton = new JButton("X");
 
@@ -49,11 +50,11 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 		contentPane.add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Reputation Points");
-		lblNewLabel_3.setBounds(36, 130, 100, 14);
+		lblNewLabel_3.setBounds(36, 130, 151, 14);
 		contentPane.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("ACTIONS");
-		lblNewLabel_4.setBounds(180, 173, 49, 14);
+		lblNewLabel_4.setBounds(180, 173, 100, 14);
 		contentPane.add(lblNewLabel_4);
 		
 		forageForIngredient = new JButton("Forage For Ingredient");
@@ -83,6 +84,10 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 		JButton btnNewButton_6 = new JButton("Debunk Theory");
 		btnNewButton_6.setBounds(134, 427, 153, 23);
 		contentPane.add(btnNewButton_6);
+
+		useArtifact = new JButton("Use Artifact");
+		useArtifact.setBounds(261, 130, 151, 23);
+		contentPane.add(useArtifact);
 		
 		addActionEvent();
 
@@ -114,6 +119,7 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 	       forageForIngredient.addActionListener(this);
 	       transmuteIngredient.addActionListener(this);
 	       buyArtifact.addActionListener(this);
+		   useArtifact.addActionListener(this);
 
     }
     
@@ -134,6 +140,13 @@ public class PlayerDashboard extends JFrame implements ActionListener{
 			TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
 			transmuteIngredientScreen.display();
 		}
+
+
+		if(event.getSource()==useArtifact) {
+			 UseArtifactScreen useArtifactScreen = new UseArtifactScreen();
+			 useArtifactScreen.display();
+		}
+
 	}
 	
 	public void display() {

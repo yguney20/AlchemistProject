@@ -54,7 +54,7 @@ public class GameObjectFactory { // Singleton Patterns
 
         ingredientImages.put("Moon Blossom", "/UI/Swing/Images/IngredientCards/Moon Blossom.png");
         ingredientImages.put("Crystalite", "/UI/Swing/Images/IngredientCards/Crystalite.png");
-        ingredientImages.put("Shimmer Fungus", "/UI/Swing/Images/IngredientCards/Moon Blossom.png");
+        ingredientImages.put("Shimmer Fungus", "/UI/Swing/Images/IngredientCards/Shimmer Fungus.png");
         ingredientImages.put("Golden Mold", "/UI/Swing/Images/IngredientCards/Golden Mald.png");
         ingredientImages.put("Starling Nectar", "/UI/Swing/Images/IngredientCards/Starlight Nectar.png");
         ingredientImages.put("Verdant Fern", "/UI/Swing/Images/IngredientCards/Verdant Fern.png");
