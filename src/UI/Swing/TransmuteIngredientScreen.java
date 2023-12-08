@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controllers.GameController;
-import domain.GameObjects.ArtifactCard;
+import domain.GameObjects.IngredientCard;
 import domain.GameObjects.Player;
 
 import javax.imageio.ImageIO;
@@ -31,25 +31,25 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 
-public class BuyArtifactScreen extends JFrame  implements ActionListener{
+public class TransmuteIngredientScreen extends JFrame  implements ActionListener{
 
 	private JPanel contentPane;
-	private JButton buyButton;
+	private JButton transmuteButton;
     private int initialX;
     private int initialY;
-    private ArtifactCard artifactCard;
+    private IngredientCard ingredientCard;
     private JLabel selected;
     private GameController gameController = GameController.getInstance();
     private JLabel message;
-    List<ArtifactCard> artifactCards;
+    List<IngredientCard> ingredientCards;
     private JButton quitButton = new JButton("X");
     
 
 	/**
 	 * Create the frame.
 	 */
-	public BuyArtifactScreen() {
-		setTitle("Buy Artifact");
+	public TransmuteIngredientScreen() {
+		setTitle("Transmute Ingredient");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 913, 293);
 		
@@ -65,6 +65,9 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	        setContentPane(contentPane);
 	        contentPane.setLayout(null);
+	        
+	        //ImageIcon icon = new ImageIcon(getClass().getResource("UI/Swing/Images/logo.png"));
+	        //setIconImage(icon.getImage());
 	        
 	        quitButton.setBounds(getWidth() - 70, 20, 80, 20);
 	        quitButton.setFocusPainted(false);
@@ -86,11 +89,9 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	            }
 	        });
 	        add(quitButton);
+
 	        
-	        //ImageIcon icon = new ImageIcon(getClass().getResource("UI/Swing/Images/logo.png"));
-	        //setIconImage(icon.getImage());
-	        
-	        addArtifacts();
+	        addIngredients();
 	        addJButtons();
 	        addJLabels();
 	        addActionEvent();
@@ -121,38 +122,38 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 		this.setVisible(true);
 	}
 	
-	public void addArtifacts() {
+	public void addIngredients() {
 		try {
 			
-			artifactCards = gameController.getAvailableArtifacts(); 
+			ingredientCards = gameController.getCurrentPlayer().getIngredientInventory(); 
 	        int x = 25;
 	        int y = 20;
 	        int buttonWidth = 139;
 	        int buttonHeight = 165;
 	        int horizontalSpacing = 20;
 	        
-	        Map<ArtifactCard, JButton> artifactButtonMap = new HashMap<>();
+	        Map<IngredientCard, JButton> ingredientButtonMap = new HashMap<>();
 
 
-	        for (ArtifactCard card : artifactCards) {
-	        	JButton artifactButton = new JButton(card.getName());
-	        	artifactButton.setBounds(x, y, buttonWidth, buttonHeight);
-	        	artifactButton.setContentAreaFilled(false);
-	        	artifactButton.setBorder(BorderFactory.createEmptyBorder());
-	        	setImage(card.getImagePath(), artifactButton);
-	        	contentPane.add(artifactButton);
+	        for (IngredientCard card : ingredientCards) {
+	        	JButton ingredientButton = new JButton(card.getName());
+	        	ingredientButton.setBounds(x, y, buttonWidth, buttonHeight);
+	        	ingredientButton.setContentAreaFilled(false);
+	        	ingredientButton.setBorder(BorderFactory.createEmptyBorder());
+	        	setImage(card.getImagePath(), ingredientButton);
+	        	contentPane.add(ingredientButton);
 
 	        	// Add action listener for each artifact button
-	        	artifactButton.addActionListener(e -> handleArtifactSelection(artifactButton));
+	        	ingredientButton.addActionListener(e -> handleIngredientSelection(ingredientButton));
 	        
-	        	artifactButtonMap.put(card, artifactButton);
+	        	ingredientButtonMap.put(card, ingredientButton);
             
 	        	// Create label for the artifact
-	        	JLabel artifactLabel = new JLabel(card.getName());
-	        	artifactLabel.setForeground(Color.WHITE);
-	        	artifactLabel.setFont(new Font("Arial", Font.BOLD, 12));
-            	artifactLabel.setBounds(x, y+buttonHeight+20, buttonWidth, 14);
-            	contentPane.add(artifactLabel);
+	        	JLabel ingredientLabel = new JLabel(card.getName());
+	        	ingredientLabel.setForeground(Color.WHITE);
+	        	ingredientLabel.setFont(new Font("Arial", Font.BOLD, 12));
+	        	ingredientLabel.setBounds(x, y+buttonHeight+20, buttonWidth, 14);
+            	contentPane.add(ingredientLabel);
             
             	// Adjust the position for the next button
             	x += buttonWidth + horizontalSpacing;
@@ -165,9 +166,9 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	
 	public void addJButtons() {
 		
-		buyButton = new JButton("BUY");
-		buyButton.setBounds(391, 222, 89, 23);
-		contentPane.add(buyButton);
+		transmuteButton = new JButton("TRANSMUTE");
+		transmuteButton.setBounds(391, 222, 120, 23);
+		contentPane.add(transmuteButton);
 		
 	}
 	
@@ -181,7 +182,7 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
         selected.setVisible(false);
         contentPane.add(selected);
         
-        message = new JLabel("Please select an artifact");
+        message = new JLabel("Please select an ingredient");
         message.setBounds(350, 0, 200, 30); // Increased height for better visibility
         message.setForeground(Color.WHITE);
         message.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15)); // Larger and italic
@@ -193,18 +194,18 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	
 	public void addActionEvent() {
 		//elixirOfInsight.addActionListener(this);
-		buyButton.addActionListener(this);
+		transmuteButton.addActionListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent event) {
 
-		if(event.getSource()==buyButton) {
-			if(artifactCard==null) {
+		if(event.getSource()==transmuteButton) {
+			if(ingredientCard==null) {
 				message.setVisible(true);
                 contentPane.setComponentZOrder(message, 0);
 			} else {
 				Player currentPlayer = gameController.getCurrentPlayer();
-				gameController.buyArtifactCard(artifactCard, currentPlayer);
+				gameController.transmuteIngredient(currentPlayer, ingredientCard);
 				this.setVisible(false);
 			}
 
@@ -233,17 +234,17 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
         
 	}
 	
-    private void handleArtifactSelection(JButton button) {            
-    	ArtifactCard selectedArtifactCard = null;
-        for (ArtifactCard card : artifactCards) {
+    private void handleIngredientSelection(JButton button) {            
+    	IngredientCard selectedIngredientCard = null;
+        for (IngredientCard card : ingredientCards) {
             if (button.getText().equals(card.getName())) {
-                selectedArtifactCard = card;
+                selectedIngredientCard = card;
                 break;
             }
         }
 
-        if (selectedArtifactCard != null) {
-            artifactCard = selectedArtifactCard;
+        if (selectedIngredientCard != null) {
+            ingredientCard = selectedIngredientCard;
 
             // Set the selected label position based on the clicked button
             selected.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
@@ -252,3 +253,4 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
         }
     }
 }
+

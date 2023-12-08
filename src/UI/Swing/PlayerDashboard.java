@@ -1,6 +1,5 @@
 package UI.Swing;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -29,6 +28,8 @@ import domain.GameObjects.Player;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
+import javax.swing.JButton;
 
 public class PlayerDashboard extends JFrame {
 
@@ -39,12 +40,13 @@ public class PlayerDashboard extends JFrame {
      * Create the frame.
      */
     public PlayerDashboard(GameController gameController) {
+    	playSound("UI/Swing/Sounds/medivalSoundtrack.wav");
     	
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 900, 505); // Adjust the size accordingly
         setResizable(false);
-        
+
 
         RoundedBorder roundedBorder = new RoundedBorder(Color.BLACK, 10, 0, 4, new Color(0, 0, 0, 70));  //Custom Border Design.
         
@@ -615,9 +617,8 @@ public class PlayerDashboard extends JFrame {
 
     public void display() {
         setVisible(true); // Show the board
-        playSound("UI/Swing/Sounds/medivalSoundtrack.wav");
+       
     }
-
 
 	
  

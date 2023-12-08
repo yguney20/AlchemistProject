@@ -20,6 +20,7 @@ public class Game { //Singleton Pattern
     private boolean isPaused;
     private GameState gameState;
     Player winner = null;
+    private boolean actionPerformed;
     
     
     public Game() {
@@ -31,6 +32,7 @@ public class Game { //Singleton Pattern
         this.currentRound = 1;
         this.currentTurn = 1;
         this.gameState = new GameState(players, currentRound, currentTurn, currentPlayer, isPaused);
+        this.actionPerformed = false;
         
     }
     //---------------------Singleton Methods----------------------------------------
@@ -127,6 +129,7 @@ public class Game { //Singleton Pattern
             gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentRound(currentRound);
             gameState.setCurrentTurn(currentTurn);
+            actionPerformed = false;
             System.out.println(gameState);
     }
     
@@ -195,35 +198,48 @@ public class Game { //Singleton Pattern
     }
     
     public void forageForIngredient(Player p) {
-    	if (!ingredientDeck.isEmpty()) {
-    		IngredientCard selectedCard = drawIngredientCard();
-    		p.getIngredientInventory().add(selectedCard);
-            System.out.println(p.getIngredientInventory());
+    	if(!actionPerformed) {
+        	if (!ingredientDeck.isEmpty()) {
+        		IngredientCard selectedCard = drawIngredientCard();
+        		p.getIngredientInventory().add(selectedCard);
+                actionPerformed = true;
+                System.out.println(p.getIngredientInventory());
 
+        	} else {
+                notifyPlayers("The ingredient deck is empty.");
+        	}
     	} else {
-            notifyPlayers("The ingredient deck is empty.");
+            notifyPlayers("Action already performed.");
+
     	}
+
     }
 
     //-----------------------Artifact Related Functions ------------------------------------
     // Additional logic will be added (Not finished)
     public void buyArtifactCard(ArtifactCard card, Player player) {
         try {
-            if (card.isImmadiate()){
-                card.applyEffect(this);
-            } else {
-                player.addArtifactCard(card);
-            }
-            artifactDeck.remove(card);
-            player.reduceGold(card.getGoldValue());
-            System.out.println(player.getArtifactCards());
-            System.out.println(player);
-            
+        	if(!actionPerformed) {
+                if (card.isImmadiate()){
+                    card.applyEffect(this);
+                } else {
+                    player.addArtifactCard(card);
+                }
+                artifactDeck.remove(card);
+                player.reduceGold(card.getGoldValue());
+                actionPerformed = true;
+                System.out.println(player.getArtifactCards());
+                System.out.println(player);
+        	} else {
+                notifyPlayers("Action already performed.");
+        	}
+        
         } catch (IllegalStateException e) {
             // Handle the case where a one-time use card is attempted to be used again
             System.out.println(e.getMessage());
         }
     }
+    
      public ArtifactCard getArtifactCardByPath(String path) {
         return artifactDeck.stream()
                 .filter(card -> card.getImagePath().equals(path))
@@ -235,20 +251,24 @@ public class Game { //Singleton Pattern
     //-----------------------Transmute Function ------------------------------------
     
     public void transmuteIngredient(Player player, IngredientCard selectedIngredient) {
-        // Preconditions
-        if (player.getIngredientInventory().isEmpty()) {
-        	notifyPlayers("ingredient card not found.");
-        }
-        else {
-        	// Flow
-            player.getIngredientInventory().remove(selectedIngredient); 
-            ingredientDeck.add(selectedIngredient);
-            Collections.shuffle(ingredientDeck);
-            player.increaseGold(1);      	
-        }
+    	if(!actionPerformed) {
+            // Preconditions
+            if (player.getIngredientInventory().isEmpty()) {
+            	notifyPlayers("ingredient card not found.");
+            }
+            else {
+            	// Flow
+                player.getIngredientInventory().remove(selectedIngredient); 
+                ingredientDeck.add(selectedIngredient);
+                Collections.shuffle(ingredientDeck);
+                player.increaseGold(1);
+                actionPerformed = true;
+            }
+    	} else {
+            notifyPlayers("Action already performed.");
+    	}
+
     }
-
-
 
 
 }

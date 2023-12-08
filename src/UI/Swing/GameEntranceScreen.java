@@ -38,6 +38,12 @@ public class GameEntranceScreen extends JFrame{
         buttonWidth = 500;
         buttonHeight = 50;
         // Load the background image using ImageIO
+        
+        JLabel titleLabel = new JLabel("Ku Alchemists", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial Black", Font.BOLD, 48));; // Replace with your font path and size
+        titleLabel.setForeground(new Color(255, 215, 0)); // Gold color, you can change it as per your theme
+        
+        
         try {
            BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/UI/Swing/Images/background.jpeg"));
            ImageIcon icon = new ImageIcon(getClass().getResource("/UI/Swing/Images/logo.png"));
@@ -57,15 +63,76 @@ public class GameEntranceScreen extends JFrame{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        titleLabel.setBounds(250, 300, 500, 300);
+        backgroundPanel.add(titleLabel);
+        
+        // Play button
+        playButton.setBounds(getWidth() / 4, 225, buttonWidth, buttonHeight);
+        playButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();  // Close current frame
+                LoginScreen loginScreen = new LoginScreen();
+                loginScreen.display();
+            }
+        });
+        this.add(playButton);
+        
+        // Settings button
+        settingsButton.setBounds(getWidth() / 4, 375, buttonWidth, buttonHeight);
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                SettingsScreen settingsScreen = new SettingsScreen(frame);
+                settingsScreen.display();
+            }
+        });
+        add(settingsButton);
+
+        // Help button,
+        helpButton.setBounds(getWidth() / 4, 525, buttonWidth, buttonHeight);
+        helpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	setVisible(false);  // Close current frame
+                HelpScreen helpScreen = new HelpScreen(frame);
+                helpScreen.display();
+            }
+        });
+        add(helpButton);
+        
+        addButtonHoverEffect(playButton);
+        addButtonHoverEffect(settingsButton);
+        addButtonHoverEffect(helpButton);
+
+     
+        quitButton.setBounds(getWidth() - 70, 20, 80, 20);
+        quitButton.setFocusPainted(false);
+        quitButton.setContentAreaFilled(false);
+        quitButton.setBorderPainted(false);
+        // Increase the font size
+        Font pacificoFont = new Font("Pacifico", Font.PLAIN, 12);
+        Font largerFont = pacificoFont.deriveFont(pacificoFont.getSize() + 24f);
+        quitButton.setFont(largerFont);
+       
+        // Set the red "X" as the text
+        quitButton.setForeground(Color.RED);
+        quitButton.setText("X");
+        
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0); // Terminate the application
+            }
+        });
+
+        add(quitButton);
 
         
-
-        // Create and add buttons
-        createButtons();
-
         
-        
-     // Add a MouseListener to make the frame movable
+        // Add a MouseListener to make the frame movable
         backgroundPanel.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 initialX = e.getX();
@@ -91,79 +158,24 @@ public class GameEntranceScreen extends JFrame{
         getContentPane().add(backgroundPanel);
     }
 
-    private void createButtons() {
-        // Play button
-        playButton.setBounds(getWidth() / 4, 225, buttonWidth, buttonHeight);
-        playButton.addActionListener(new ActionListener() {
+    private void addButtonHoverEffect(JButton button) {
+        button.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();  // Close current frame
-                LoginScreen loginScreen = new LoginScreen();
-                loginScreen.display();
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(Color.orange);
             }
-        });
-        this.add(playButton);
 
-        // Settings button
-        settingsButton.setBounds(getWidth() / 4, 375, buttonWidth, buttonHeight);
-        settingsButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // Handle Settings button click
-                // Add your logic here
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(UIManager.getColor("Button.background"));
             }
         });
-        add(settingsButton);
-
-        // Help button,
-        helpButton.setBounds(getWidth() / 4, 525, buttonWidth, buttonHeight);
-        helpButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	setVisible(false);  // Close current frame
-                HelpScreen helpScreen = new HelpScreen(frame);
-                helpScreen.display();
-            }
-        });
-        add(helpButton);
-
-     
-        quitButton.setBounds(getWidth() - 70, 20, 80, 20);
-        quitButton.setFocusPainted(false);
-        quitButton.setContentAreaFilled(false);
-        quitButton.setBorderPainted(false);
-     // Increase the font size
-        Font pacificoFont = new Font("Pacifico", Font.PLAIN, 12);
-        Font largerFont = pacificoFont.deriveFont(pacificoFont.getSize() + 24f);
-        quitButton.setFont(largerFont);
-       
-     // Set the red "X" as the text
-        quitButton.setForeground(Color.RED);
-        quitButton.setText("X");
-        
-        quitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	dispose();
-            }
-        });
-        add(quitButton);
     }
 
     
-
     public void display() {
         setVisible(true);
     }
 
-    // Add this method to set up the UI components
-    public void setupUI() {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                createButtons();
-                display();
-            }
-        });
-    }
+    
 }
