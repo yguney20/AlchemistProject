@@ -55,7 +55,7 @@ public class PlayerDashboard extends JFrame {
     	
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 900, 505); // Adjust the size accordingly
+        setBounds(100, 100, 905, 550); // Adjust the size accordingly
         setResizable(false);
 
 
@@ -156,7 +156,7 @@ public class PlayerDashboard extends JFrame {
         JPanel chooseActionActionsPanel = new JPanel();
         chooseActionActionsPanel.setBackground(new Color(254, 255, 255));
         chooseActionActionsPanel.setBorder(roundedBorder);
-        chooseActionActionsPanel.setBounds(23, 169, 436, 294);
+        chooseActionActionsPanel.setBounds(23, 169, 436, 340);
         contentPane.add(chooseActionActionsPanel);
         chooseActionActionsPanel.setLayout(null);
         
@@ -253,6 +253,30 @@ public class PlayerDashboard extends JFrame {
         buyArtifactButton.setBackground(Color.WHITE);
         chooseActionActionsPanel.add(buyArtifactButton);
         
+        JLabel useArtifactButton = new JLabel("Use Artifact");
+        useArtifactButton.setOpaque(true);
+        useArtifactButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	useArtifactButton.setBackground(new Color(138,43,226));
+            	soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	useArtifactButton.setBackground(Color.WHITE);
+            }
+        });
+        
+        useArtifactButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        useArtifactButton.setBounds(4, 127, 425, 36);
+        useArtifactButton.setBorder(roundedBorder2);
+        useArtifactButton.setIconTextGap(0);
+        useArtifactButton.setHorizontalAlignment(SwingConstants.CENTER);
+        useArtifactButton.setFocusable(false);
+        useArtifactButton.setBackground(Color.WHITE);
+        chooseActionActionsPanel.add(useArtifactButton);
+
         JLabel makeExperimentButton = new JLabel("Make Experiment");
         makeExperimentButton.setOpaque(true);
         makeExperimentButton.addMouseListener(new MouseAdapter() {
@@ -269,7 +293,7 @@ public class PlayerDashboard extends JFrame {
         });
 
         makeExperimentButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        makeExperimentButton.setBounds(4, 127, 425, 36);
+        makeExperimentButton.setBounds(4, 168, 425, 36);
         makeExperimentButton.setBorder(roundedBorder2);
         makeExperimentButton.setIconTextGap(0);
         makeExperimentButton.setHorizontalAlignment(SwingConstants.CENTER);
@@ -292,7 +316,7 @@ public class PlayerDashboard extends JFrame {
             }
         });
         sellPotionButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        sellPotionButton.setBounds(4, 168, 425, 36);
+        sellPotionButton.setBounds(4, 210, 425, 36);
         sellPotionButton.setBorder(roundedBorder2);
         sellPotionButton.setIconTextGap(0);
         sellPotionButton.setHorizontalAlignment(SwingConstants.CENTER);
@@ -315,7 +339,7 @@ public class PlayerDashboard extends JFrame {
             }
         });
         publishTheoryButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        publishTheoryButton.setBounds(4, 210, 425, 36);
+        publishTheoryButton.setBounds(4, 252, 425, 36);
         publishTheoryButton.setBorder(roundedBorder2);
         publishTheoryButton.setIconTextGap(0);
         publishTheoryButton.setHorizontalAlignment(SwingConstants.CENTER);
@@ -339,13 +363,14 @@ public class PlayerDashboard extends JFrame {
         });
         
         debunkTheoryButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        debunkTheoryButton.setBounds(4, 252, 425, 36);
+        debunkTheoryButton.setBounds(4, 292, 425, 36);
         debunkTheoryButton.setBorder(roundedBorder2);
         debunkTheoryButton.setIconTextGap(0);
         debunkTheoryButton.setHorizontalAlignment(SwingConstants.CENTER);
         debunkTheoryButton.setFocusable(false);
         debunkTheoryButton.setBackground(Color.WHITE);
         chooseActionActionsPanel.add(debunkTheoryButton);
+        
         
         JPanel returnBackButtonPanel = new JPanel();
         returnBackButtonPanel.setBackground(new Color(254, 255, 255));
