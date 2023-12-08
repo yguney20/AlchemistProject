@@ -207,8 +207,8 @@ public class PlayerDashboard extends JFrame {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		
-        		//TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
-    			//transmuteIngredientScreen.display();
+        		TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
+    			transmuteIngredientScreen.display();
         		musicPlayer.stopSound();
         	}
         });

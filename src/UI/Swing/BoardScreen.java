@@ -130,7 +130,6 @@ public class BoardScreen extends JFrame implements ActionListener{
         });
 
         
-        
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(new Color(254, 255, 255));
         titlePanel.setBounds(280, 6, 340, 58);
@@ -209,6 +208,21 @@ public class BoardScreen extends JFrame implements ActionListener{
                 // Create an instance of DeductionBoard and display it
                
                 deductionBoard.display();
+            }
+        });
+        
+        //to update the game state when a player performs an action
+        JButton actionPerformedButton = new JButton("Action Performed");
+        actionPerformedButton.setBounds(362, 150, 174, 20);
+        contentPane.add(actionPerformedButton);
+        
+        actionPerformedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GameController gameController = GameController.getInstance();
+                if(gameController.getActionPerformed()) {
+                	gameController.updateState();
+                }
             }
         });
     }

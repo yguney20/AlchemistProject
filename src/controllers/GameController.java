@@ -62,5 +62,12 @@ public class GameController {
     public void transmuteIngredient(Player player, IngredientCard selectedIngredient) {
     	game.transmuteIngredient(player, selectedIngredient);
     }
+    
+    public void updateState() {
+    	game.updateState();
+    }
 
+    public boolean getActionPerformed() {
+    	return game.getActionPerformed();
+    }
 }

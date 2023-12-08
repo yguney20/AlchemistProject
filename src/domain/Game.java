@@ -81,6 +81,10 @@ public class Game { //Singleton Pattern
 	public Player getWinner() {
 		return winner;
 	}
+	
+	public boolean getActionPerformed() {
+		return actionPerformed;
+	}
 
     //-----------------------Game Related Functions--------------------------------------
 
@@ -260,7 +264,6 @@ public class Game { //Singleton Pattern
             	// Flow
                 player.getIngredientInventory().remove(selectedIngredient); 
                 ingredientDeck.add(selectedIngredient);
-                Collections.shuffle(ingredientDeck);
                 player.increaseGold(1);
                 actionPerformed = true;
             }
