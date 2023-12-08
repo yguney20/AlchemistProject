@@ -178,6 +178,7 @@ public class PlayerDashboard extends JFrame {
         		Player currentPlayer = gameController.getCurrentPlayer();
     			gameController.forageForIngredient(currentPlayer);
     			PlayerDashboard.this.setVisible(false);
+    			musicPlayer.stopSound();
         	}
         });
         forageForIngredientButton.setIcon(null);
@@ -208,6 +209,7 @@ public class PlayerDashboard extends JFrame {
         		
         		//TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
     			//transmuteIngredientScreen.display();
+        		musicPlayer.stopSound();
         	}
         });
         transmuteIngredientButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
