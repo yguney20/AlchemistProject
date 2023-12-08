@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -19,9 +20,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
+import UI.SoundPlayer;
 import controllers.GameController;
 import domain.GameObjects.Player;
 
@@ -35,12 +38,20 @@ public class PlayerDashboard extends JFrame {
 
     private JPanel contentPane;
     private GameController gameController;
+    private Point initialClick;
 
     /**
      * Create the frame.
      */
     public PlayerDashboard(GameController gameController) {
-    	playSound("UI/Swing/Sounds/medivalSoundtrack.wav");
+    	
+
+    	SoundPlayer musicPlayer = new SoundPlayer();
+    	SoundPlayer soundPlayer = new SoundPlayer();
+    	
+    	setUndecorated(true);
+
+    	musicPlayer.playSound("UI/Swing/Sounds/medivalSoundtrack.wav");
     	
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,6 +66,34 @@ public class PlayerDashboard extends JFrame {
         ImageRounder imageRounder = new ImageRounder(); //Custom image rounder :)
         
         Font playerInfoFont = new Font("Neuropol", Font.BOLD, 16);
+        
+        
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                initialClick = e.getPoint();
+                getComponentAt(initialClick);
+            }
+
+            public void mouseDragged(MouseEvent e) {
+                // get location of Window
+                int thisX = getLocation().x;
+                int thisY = getLocation().y;
+
+                // Determine how much the mouse moved since the initial click
+                int xMoved = e.getX() - initialClick.x;
+                int yMoved = e.getY() - initialClick.y;
+
+                // Move window to this position
+                int X = thisX + xMoved;
+                int Y = thisY + yMoved;
+                setLocation(X, Y);
+            }
+        };
+        
+        
+        addMouseListener(mouseAdapter);
+        addMouseMotionListener(mouseAdapter);
+        
         
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -127,7 +166,7 @@ public class PlayerDashboard extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
                 forageForIngredientButton.setBackground(new Color(138,43,226));
-                playSound("UI/Swing/Sounds/buttonSound.wav");
+                soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
             }
 
             @Override
@@ -157,7 +196,7 @@ public class PlayerDashboard extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
             	transmuteIngredientButton.setBackground(new Color(138,43,226));
-            	playSound("UI/Swing/Sounds/buttonSound.wav");
+            	soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
             }
 
             @Override
@@ -186,7 +225,7 @@ public class PlayerDashboard extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
             	buyArtifactButton.setBackground(new Color(138,43,226));
-            	playSound("UI/Swing/Sounds/buttonSound.wav");
+            	soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
             }
 
             @Override
@@ -218,7 +257,7 @@ public class PlayerDashboard extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
             	makeExperimentButton.setBackground(new Color(138,43,226));
-            	playSound("UI/Swing/Sounds/buttonSound.wav");
+            	soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
             }
 
             @Override
@@ -242,7 +281,7 @@ public class PlayerDashboard extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
             	sellPotionButton.setBackground(new Color(138,43,226));
-            	playSound("UI/Swing/Sounds/buttonSound.wav");
+            	soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
             }
 
             @Override
@@ -265,7 +304,7 @@ public class PlayerDashboard extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
             	publishTheoryButton.setBackground(new Color(138,43,226));
-            	playSound("UI/Swing/Sounds/buttonSound.wav");
+            	soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
             }
 
             @Override
@@ -288,7 +327,7 @@ public class PlayerDashboard extends JFrame {
             @Override
             public void mouseEntered(MouseEvent e) {
             	debunkTheoryButton.setBackground(new Color(138,43,226));
-            	playSound("UI/Swing/Sounds/buttonSound.wav");
+            	soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
             }
 
             @Override
@@ -316,7 +355,15 @@ public class PlayerDashboard extends JFrame {
         returnBackImage.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseEntered(MouseEvent e) {
-        		playSound("UI/Swing/Sounds/buttonSound.wav");
+        		soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
+        	}
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		musicPlayer.stopSound();
+        		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(returnBackImage);
+        		
+        		frame.dispose();
+        		
         	}
         });
         returnBackImage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -394,7 +441,7 @@ public class PlayerDashboard extends JFrame {
         ImageIcon resizedNicknameIcon = ImageResizer.getResizedIcon(nicknameImageSmallPanel, "/UI/Swing/Images/playerDashboardUI/nicknameImage.png");
         nicknameImageJLabel.setIcon(resizedNicknameIcon);
              
-        JLabel nicknameLabel = new JLabel("nicknameText");
+        JLabel nicknameLabel = new JLabel(gameController.getCurrentPlayer().getNickname());
         nicknameLabel.setBounds(141, 0, 133, 57);
         nicknamePanel.add(nicknameLabel);
         nicknameLabel.setFont(playerInfoFont);
@@ -421,7 +468,7 @@ public class PlayerDashboard extends JFrame {
         
         goldImageJLabel.setIcon(resizedGoldIcon);
    
-        JLabel goldLabel = new JLabel("goldText");
+        JLabel goldLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getGolds()));
         goldLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         goldLabel.setBounds(141, 0, 133, 57);
         goldPanel.add(goldLabel);
@@ -433,7 +480,7 @@ public class PlayerDashboard extends JFrame {
         playerInfoPanel.add(sicknessPanel);
         sicknessPanel.setLayout(null);
         
-        JLabel sicknessLabel = new JLabel("sicknessText");
+        JLabel sicknessLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getSicknessLevel()));
         sicknessLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         sicknessLabel.setBounds(141, 0, 133, 57);
         sicknessPanel.add(sicknessLabel);
@@ -464,7 +511,7 @@ public class PlayerDashboard extends JFrame {
         playerInfoPanel.add(reputationPanel);
         reputationPanel.setLayout(null);
         
-        JLabel reputationLabel = new JLabel("ReputationText");
+        JLabel reputationLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getReputationPoints()));
         reputationLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         reputationLabel.setBounds(141, 0, 133, 57);
         reputationPanel.add(reputationLabel);
@@ -544,10 +591,9 @@ public class PlayerDashboard extends JFrame {
             }
         });
         
-        
 
     }
-   
+  
     
     private Timer createPanelAnimationTimer(JPanel panel, int targetY, int duration) {
         int startY = panel.getY(); // Starting Y position (off-screen)
@@ -599,20 +645,6 @@ public class PlayerDashboard extends JFrame {
         
     }
     
-    private void playSound(String soundFilePath) {
-        try {
-            // Open an audio input stream.
-            URL url = this.getClass().getClassLoader().getResource(soundFilePath);
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
-            // Get a sound clip resource.
-            Clip clip = AudioSystem.getClip();
-            // Open audio clip and load samples from the audio input stream.
-            clip.open(audioIn);
-            clip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public void display() {
