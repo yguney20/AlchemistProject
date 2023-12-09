@@ -1,7 +1,9 @@
 package UI.Swing;
 
-import controllers.GameController;
 import javax.swing.*;
+
+import domain.controllers.GameController;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

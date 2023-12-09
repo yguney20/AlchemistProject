@@ -1,4 +1,4 @@
-package controllers;
+package domain.controllers;
 
 import java.util.List;
 
@@ -69,5 +69,17 @@ public class GameController {
 
     public boolean getActionPerformed() {
     	return game.getActionPerformed();
+    }
+
+    public List<IngredientCard> getIngredientDeck() {
+        return game.getIngredientDeck();
+    }
+
+    public List<ArtifactCard> getPlayerArtifactCards() {
+        return game.getGameState().getCurrentPlayer().getArtifactCards();
+    }
+
+    public void UseArtifactCard(ArtifactCard artifactCard, Player currentPlayer) {
+        game.useArtifactCard(artifactCard, currentPlayer);
     }
 }

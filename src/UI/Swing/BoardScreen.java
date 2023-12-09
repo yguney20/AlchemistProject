@@ -33,7 +33,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 
-import controllers.GameController;
+import domain.controllers.GameController;
 
 import javax.swing.UIManager;
 

@@ -1,4 +1,4 @@
-package controllers;
+package domain.controllers;
 
 import domain.Game;
 import domain.GameObjects.GameObjectFactory;

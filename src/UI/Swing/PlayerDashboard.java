@@ -25,8 +25,11 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import UI.SoundPlayer;
-import controllers.GameController;
+import UI.Swing.GameActions.BuyArtifactScreen;
+import UI.Swing.GameActions.SelectArtifactScreen;
+import UI.Swing.GameActions.TransmuteIngredientScreen;
 import domain.GameObjects.Player;
+import domain.controllers.GameController;
 
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
@@ -266,6 +269,16 @@ public class PlayerDashboard extends JFrame {
             public void mouseExited(MouseEvent e) {
             	useArtifactButton.setBackground(Color.WHITE);
             }
+
+            @Override
+        	public void mouseClicked(MouseEvent e) {
+        		
+        		SelectArtifactScreen selectArtifactScreen = new SelectArtifactScreen();
+    			selectArtifactScreen.display();
+        		
+
+        		
+        	}
         });
         
         useArtifactButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

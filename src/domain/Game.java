@@ -251,6 +251,12 @@ public class Game { //Singleton Pattern
                 .orElseThrow(() -> new IllegalArgumentException("Artifact Card not found for path: " + path));
     }
 
+    public void useArtifactCard(ArtifactCard card, Player player){
+        card.applyEffect(this);
+        player.getArtifactCards().remove(card);
+
+        
+    }
 
     //-----------------------Transmute Function ------------------------------------
     
