@@ -2,17 +2,22 @@ package UI.Swing;
 
 import javax.swing.*;
 
+import domain.Game;
+import domain.GameObjects.GameObjectFactory;
+import domain.GameObjects.Player;
 import domain.controllers.GameController;
+import domain.controllers.LoginController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class MenuScreen extends JFrame {
 
-    private GameController gameController = new GameController();
+    //private GameController gameController = GameController.getInstance();
     private JButton quitButton = new JButton("X");
     private JButton pauseButton = new JButton("Pause the Game");
     private JButton helpButton = new JButton("Help");
@@ -85,7 +90,11 @@ public class MenuScreen extends JFrame {
         });
 
         quitGameButton.addActionListener(e -> {
-            gameController.destroyInstance();
+            Game.destroyInstance();
+            GameObjectFactory.destroyInstance();
+            GameController.destroyInstance();
+            LoginController.destroyInstance();
+            Player.setPlayerList(new ArrayList<Player>());
             boardFrame.dispose();
             GameEntranceScreen entranceScreen = new GameEntranceScreen();
             entranceScreen.display();

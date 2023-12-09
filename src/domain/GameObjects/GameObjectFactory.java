@@ -23,7 +23,10 @@ public class GameObjectFactory { // Singleton Patterns
         return instance;
     }
     
-	
+    public static void destroyInstance() {
+        instance = null;
+    }
+    
 	//Create a player
 	public void createPlayer(String nickname, String avatar) {
 		Player player = new Player(nickname, avatar);
