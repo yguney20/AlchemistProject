@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import controllers.LoginController;
+import domain.controllers.LoginController;
 
 public class LoginScreen extends JFrame implements ActionListener{
 

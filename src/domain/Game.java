@@ -81,6 +81,10 @@ public class Game { //Singleton Pattern
 	public Player getWinner() {
 		return winner;
 	}
+	
+	public boolean getActionPerformed() {
+		return actionPerformed;
+	}
 
     //-----------------------Game Related Functions--------------------------------------
 
@@ -247,6 +251,12 @@ public class Game { //Singleton Pattern
                 .orElseThrow(() -> new IllegalArgumentException("Artifact Card not found for path: " + path));
     }
 
+    public void useArtifactCard(ArtifactCard card, Player player){
+        card.applyEffect(this);
+        player.getArtifactCards().remove(card);
+
+        
+    }
 
     //-----------------------Transmute Function ------------------------------------
     
@@ -269,7 +279,41 @@ public class Game { //Singleton Pattern
 
     }
 
+    //----------------------------------------------------------------
+    public void swapRight(IngredientCard ingredientCard) {
+        // Find the index of the ingredientCard in the first three cards
+        int index = -1;
+        for (int i = 0; i < 3; i++) {
+            if (ingredientDeck.get(i).equals(ingredientCard)) {
+                index = i;
+            }
+        }
+        if (index != -1) {
+            int swapIndex = (index + 1) % 3; // Calculate the index to swap with (circular)
+            IngredientCard temp = ingredientDeck.get(swapIndex);
+            ingredientDeck.set(swapIndex, ingredientDeck.get(index));
+            ingredientDeck.set(index, temp);
+        }
+    }
 
+    public void swapLeft(IngredientCard ingredientCard) {
+        // Find the index of the ingredientCard in the first three cards
+        int index = -1;
+        for (int i = 0; i < 3; i++) {
+            if (ingredientDeck.get(i).equals(ingredientCard)) {
+                index = i;
+                break;
+            }
+        }
+    
+        if (index != -1) {
+            int swapIndex = (index - 1 + 3) % 3; // Calculate the index to swap with (circular)
+            IngredientCard temp = ingredientDeck.get(swapIndex);
+            ingredientDeck.set(swapIndex, ingredientDeck.get(index));
+            ingredientDeck.set(index, temp);
+        }
+    }
+    
 }
 
 
