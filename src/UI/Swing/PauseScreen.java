@@ -31,7 +31,7 @@ public class PauseScreen extends JFrame {
 
         // Add a JLabel for the background image
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(new ImageIcon("src/UI/Swing/Images/screenBackground.jpg"));
+        backgroundLabel.setIcon(new ImageIcon(getClass().getResource("/UI/Swing/Images/screenBackground.jpg")));
         backgroundLabel.setBounds(0, 0, width, height);
         contentPane.add(backgroundLabel);
 

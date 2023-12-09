@@ -119,7 +119,7 @@ public class MenuScreen extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            Image backgroundImage = new ImageIcon("src/UI/Swing/Images/screenBackground.jpg").getImage();
+            Image backgroundImage = new ImageIcon(getClass().getResource("/UI/Swing/Images/screenBackground.jpg")).getImage();
             g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
         }
     }
