@@ -6,6 +6,7 @@ import domain.Game;
 import domain.GameObjects.ArtifactCard;
 import domain.GameObjects.IngredientCard;
 import domain.GameObjects.Player;
+import domain.GameObjects.ArtifactEffects.ElixirOfInsightEffect;
 
 public class GameController {
 	
@@ -51,6 +52,11 @@ public class GameController {
         return game.getArtifactDeck();
     }
 
+    public List<IngredientCard> getIngredientDeck() {
+        return game.getIngredientDeck();
+    }
+    
+
     public void buyArtifactCard(ArtifactCard artifact, Player currentPlayer) {
         game.buyArtifactCard(artifact, currentPlayer);
     }
@@ -78,16 +84,22 @@ public class GameController {
     public boolean getActionPerformed() {
     	return game.getActionPerformed();
     }
-
-    public List<IngredientCard> getIngredientDeck() {
-        return game.getIngredientDeck();
-    }
-
+    
     public List<ArtifactCard> getPlayerArtifactCards() {
         return game.getGameState().getCurrentPlayer().getArtifactCards();
     }
 
     public void UseArtifactCard(ArtifactCard artifactCard, Player currentPlayer) {
         game.useArtifactCard(artifactCard, currentPlayer);
+    }
+
+    public void swapRight(IngredientCard ingredientCard){
+       game.swapRight(ingredientCard);
+
+    }
+
+    public void swapLeft(IngredientCard ingredientCard){
+        game.swapLeft(ingredientCard);
+
     }
 }
