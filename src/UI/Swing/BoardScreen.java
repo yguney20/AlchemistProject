@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JScrollPane;
-import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -24,24 +22,21 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
-import java.awt.FlowLayout;
-import javax.swing.JSplitPane;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.MatteBorder;
 
 import domain.controllers.GameController;
 
-import javax.swing.UIManager;
 
-public class BoardScreen extends JFrame implements ActionListener{
+
+public class BoardScreen extends JFrame{
 
     private JPanel contentPane;
     private JButton dashboardPanel = new JButton();
-
+    private JLabel currentPlayerLabel;
+    private JLabel currentTurnLabel;
+    private JLabel currentRoundLabel;
+    private GameController gameController = GameController.getInstance();
     private JFrame frame;
 
 
@@ -50,7 +45,6 @@ public class BoardScreen extends JFrame implements ActionListener{
      */
     public BoardScreen() {
     	DeductionBoard deductionBoard = new DeductionBoard(this); // Pass 'this' as the reference to the BoardScreen
-    	addActionEvent();
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(50, 50, 900, 505); // Adjust the size accordingly
@@ -106,8 +100,19 @@ public class BoardScreen extends JFrame implements ActionListener{
         contentPane.add(playerIdNamePanel);
         playerIdNamePanel.setLayout(new GridLayout(0, 1, 0, 0));
         
-        JLabel playerIdNameLabel = new JLabel("Player ID:");
-        playerIdNamePanel.add(playerIdNameLabel);
+        //JLabel playerIdNameLabel = new JLabel("Player ID:");
+        //playerIdNamePanel.add(playerIdNameLabel);
+        currentPlayerLabel = new JLabel("Current Player: ");
+        currentPlayerLabel.setText("Current Player: " + gameController.getCurrentPlayer().getNickname());
+        playerIdNamePanel.add(currentPlayerLabel);
+
+        currentTurnLabel = new JLabel("Current Turn: ");
+        currentTurnLabel.setText("Current Turn: " + gameController.getCurrentTurn());
+        playerIdNamePanel.add(currentTurnLabel);
+
+        currentRoundLabel = new JLabel("Current Round: ");
+        currentRoundLabel.setText("Current Round: " + gameController.getCurrentRound());
+        playerIdNamePanel.add(currentRoundLabel);
         
         JPanel menuPanel = new JPanel();
         menuPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
@@ -158,6 +163,13 @@ public class BoardScreen extends JFrame implements ActionListener{
         dashboardPanel.setBackground(Color.WHITE);
         dashboardPanel.setBounds(362, 88, 174, 58);
         contentPane.add(dashboardPanel);
+        dashboardPanel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+        			PlayerDashboard playerDashboard = new PlayerDashboard(gameController);
+        			playerDashboard.display();			
+            }
+        });
         
         JLabel playerDashboardNameLabel = new JLabel("Player Dashboard");
         dashboardPanel.add(playerDashboardNameLabel);
@@ -205,8 +217,7 @@ public class BoardScreen extends JFrame implements ActionListener{
         deductionPageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Create an instance of DeductionBoard and display it
-               
+                // Create an instance of DeductionBoard and display it              
                 deductionBoard.display();
             }
         });
@@ -219,28 +230,16 @@ public class BoardScreen extends JFrame implements ActionListener{
         actionPerformedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GameController gameController = GameController.getInstance();
                 if(gameController.getActionPerformed()) {
                 	gameController.updateState();
+                    currentPlayerLabel.setText("Current Player: " + gameController.getCurrentPlayer().getNickname());
+                    currentTurnLabel.setText("Current Turn: " + gameController.getCurrentTurn());
+                    currentRoundLabel.setText("Current Round: " + gameController.getCurrentRound());
+
                 }
             }
         });
     }
-
-
-
-    
-    public void addActionEvent() {
-    	dashboardPanel.addActionListener(this);
-    }
-    
-	public void actionPerformed(ActionEvent event) {
-		if(event.getSource()==dashboardPanel) {
-            GameController gameController = GameController.getInstance();
-			PlayerDashboard playerDashboard = new PlayerDashboard(gameController);
-			playerDashboard.display();			
-		}
-	}
 	
 	private void playSound(String soundFilePath) {
         try {

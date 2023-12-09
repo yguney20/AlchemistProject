@@ -35,6 +35,14 @@ public class GameController {
     	return game.getGameState().getCurrentPlayer();
     }
     
+    public int getCurrentTurn() {
+    	return game.getGameState().getCurrentTurn();
+    }
+    
+    public int getCurrentRound() {
+    	return game.getGameState().getCurrentRound();
+    }
+    
     public void forageForIngredient(Player p) {
     	game.forageForIngredient(p);
     }
