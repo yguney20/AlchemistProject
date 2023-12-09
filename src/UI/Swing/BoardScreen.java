@@ -32,7 +32,6 @@ import domain.controllers.GameController;
 public class BoardScreen extends JFrame{
 
     private JPanel contentPane;
-    private JButton dashboardPanel = new JButton();
     private JLabel currentPlayerLabel;
     private JLabel currentTurnLabel;
     private JLabel currentRoundLabel;
@@ -158,7 +157,7 @@ public class BoardScreen extends JFrame{
         gameBoardImage.setIcon(postResizeMenuImageIcon);
         titlePanel.add(gameBoardImage);
         
-        //JButton dashboardPanel = new JButton();
+        JButton dashboardPanel = new JButton();
         dashboardPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
         dashboardPanel.setBackground(Color.WHITE);
         dashboardPanel.setBounds(362, 88, 174, 58);

@@ -212,6 +212,7 @@ public class PlayerDashboard extends JFrame {
         		
         		TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
     			transmuteIngredientScreen.display();
+    			PlayerDashboard.this.setVisible(false);
         		musicPlayer.stopSound();
         	}
         });
@@ -242,8 +243,8 @@ public class PlayerDashboard extends JFrame {
         		
         		BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
     			buyArtifactScreen.display();
-        		
-
+    			PlayerDashboard.this.setVisible(false);
+    			musicPlayer.stopSound();
         		
         	}
         });
@@ -275,9 +276,10 @@ public class PlayerDashboard extends JFrame {
         		
         		SelectArtifactScreen selectArtifactScreen = new SelectArtifactScreen();
     			selectArtifactScreen.display();
-        		
+    			PlayerDashboard.this.setVisible(false);
+    			musicPlayer.stopSound();
 
-        		
+       		
         	}
         });
         
@@ -692,8 +694,6 @@ public class PlayerDashboard extends JFrame {
        
     }
 
-	
- 
 	
 }
 
