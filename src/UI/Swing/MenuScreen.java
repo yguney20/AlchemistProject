@@ -23,6 +23,7 @@ public class MenuScreen extends JFrame {
     private JButton helpButton = new JButton("Help");
     private JButton quitGameButton = new JButton("Quit the Game");
     private JButton backButton = new JButton("Back");
+    private JButton settingsButton = new JButton("Settings");
     private Frame boardFrame; // Reference to the main game frame
     private CustomPanel contentPane;
 
@@ -50,6 +51,7 @@ public class MenuScreen extends JFrame {
 
     private void setupButtons() {
         backButton.setBounds(10, 10, 75, 25);
+        settingsButton.setBounds(400, 100, 200, 50);
         pauseButton.setBounds(400, 200, 200, 50);
         helpButton.setBounds(400, 300, 200, 50);
         quitGameButton.setBounds(400, 400, 200, 50);
@@ -57,7 +59,7 @@ public class MenuScreen extends JFrame {
         quitButton.setFocusPainted(false);
         quitButton.setContentAreaFilled(false);
         quitButton.setBorderPainted(false);
-
+        
         Font pacificoFont = new Font("Pacifico", Font.PLAIN, 12);
         Font largerFont = pacificoFont.deriveFont(pacificoFont.getSize() + 24f);
         quitButton.setFont(largerFont);
@@ -69,6 +71,7 @@ public class MenuScreen extends JFrame {
         contentPane.add(helpButton);
         contentPane.add(quitGameButton);
         contentPane.add(quitButton);
+        contentPane.add(settingsButton);
     }
 
     private void setupButtonListeners() {
@@ -88,6 +91,15 @@ public class MenuScreen extends JFrame {
             HelpScreen helpScreen = new HelpScreen(this);
             helpScreen.display();
         });
+        
+        settingsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                SettingsScreen settingsScreen = new SettingsScreen(MenuScreen.this);
+                settingsScreen.display();
+            }
+        });
 
         quitGameButton.addActionListener(e -> {
             Game.destroyInstance();
@@ -106,6 +118,8 @@ public class MenuScreen extends JFrame {
         addButtonHoverEffect(pauseButton);
         addButtonHoverEffect(helpButton);
         addButtonHoverEffect(quitGameButton);
+        addButtonHoverEffect(settingsButton);
+
     }
 
     private void addButtonHoverEffect(JButton button) {
