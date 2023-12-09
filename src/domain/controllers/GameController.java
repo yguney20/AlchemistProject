@@ -6,6 +6,7 @@ import domain.Game;
 import domain.GameObjects.ArtifactCard;
 import domain.GameObjects.IngredientCard;
 import domain.GameObjects.Player;
+import domain.GameObjects.ArtifactEffects.ElixirOfInsightEffect;
 
 public class GameController {
 	
@@ -81,5 +82,15 @@ public class GameController {
 
     public void UseArtifactCard(ArtifactCard artifactCard, Player currentPlayer) {
         game.useArtifactCard(artifactCard, currentPlayer);
+    }
+
+    public void swapRight(IngredientCard ingredientCard){
+       game.swapRight(ingredientCard);
+
+    }
+
+    public void swapLeft(IngredientCard ingredientCard){
+        game.swapLeft(ingredientCard);
+
     }
 }

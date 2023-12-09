@@ -31,6 +31,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 
 
@@ -54,9 +55,9 @@ import javax.swing.JLabel;
     private JLabel ingredientLabel0;
     private JLabel ingredientLabel1;
     private JLabel ingredientLabel2;
-    private IngredientCard ingredientCard0 = gameController.getIngredientDeck().get(0); 
-    private IngredientCard ingredientCard1 = gameController.getIngredientDeck().get(1); 
-    private IngredientCard ingredientCard2 = gameController.getIngredientDeck().get(2); 
+    private IngredientCard ingredientCard0;
+    private IngredientCard ingredientCard1;
+    private IngredientCard ingredientCard2; 
     
 
 	/**
@@ -137,6 +138,10 @@ import javax.swing.JLabel;
 	
 	public void addIngredients() {
 		try {
+
+            ingredientCard0 = gameController.getIngredientDeck().get(0); 
+            ingredientCard1 = gameController.getIngredientDeck().get(1); 
+            ingredientCard2 = gameController.getIngredientDeck().get(2); 
 
 	        
 	        int buttonWidth = 150;
@@ -261,27 +266,8 @@ import javax.swing.JLabel;
         message.setVisible(false);
         contentPane.add(message);
 	}
-	
-	
-	public void addActionEvent() {
-		doneButton.addActionListener(this);
-        rightButton.addActionListener(this);
-        leftButton.addActionListener(this);
-	}
-	
-	public void actionPerformed(ActionEvent event) {
-        if (event.getSource() == rightButton) {
-            swapRight();
-        } else if (event.getSource() == leftButton) {
-            swapLeft();
-        } else if (event.getSource() == doneButton) {
-            // ... handle done action
-        }
-		
-	}
-	
-	
-	public void setImage(String path, JButton button) throws IOException {
+
+    public void setImage(String path, JButton button) throws IOException {
 		
 		// Read the original image
         BufferedImage originalImage = ImageIO.read(getClass().getResource(path));
@@ -303,14 +289,51 @@ import javax.swing.JLabel;
         
 	}
 	
+	
+	public void addActionEvent() {
+		doneButton.addActionListener(this);
+        rightButton.addActionListener(this);
+        leftButton.addActionListener(this);
+	}
+	
+	public void actionPerformed(ActionEvent event) {
+        
+      
+        if (event.getSource() == rightButton) {
+            if (selectedIngredientCard == null) {
+            // Show a message prompting the user to select a card
+            JOptionPane.showMessageDialog(this, "Select a card before swapping", "No card selected", JOptionPane.INFORMATION_MESSAGE);
+            return; // Exit the method if no card is selected
+            }else {
+
+            gameController.swapRight(selectedIngredientCard);
+            updateCardPositions();
+            selectedIngredientCard = null;
+            }
+            
+        } else if (event.getSource() == leftButton) {
+            if (selectedIngredientCard == null) {
+            // Show a message prompting the user to select a card
+             JOptionPane.showMessageDialog(this, "Select a card before swapping", "No card selected", JOptionPane.INFORMATION_MESSAGE);
+            return; // Exit the method if no card is selected
+            }else{
+                gameController.swapLeft(selectedIngredientCard);
+                updateCardPositions();
+                selectedIngredientCard = null;
+            }
+        } else if (event.getSource() == doneButton) {
+            this.setVisible(false);
+        }
+		
+	}
+		
 
 
     private IngredientCard handleIngredientSelection(JButton button) {            
-    	
-       
-            if (button.getText().equals(ingredientCard0.getName())) {
+            
+            if (button.getText().equals(ingredientButton0.getText())) {
                 selectedIngredientCard = ingredientCard0;
-            } else if (button.getText().equals(ingredientCard1.getName())) {
+            } else if (button.getText().equals(ingredientButton1.getText())) {
                 selectedIngredientCard = ingredientCard1;
             } else {
                 selectedIngredientCard = ingredientCard2;
@@ -321,101 +344,54 @@ import javax.swing.JLabel;
             selected.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
             selected.setVisible(true);
             contentPane.setComponentZOrder(selected, 0);
+            System.out.println("button text after :" + button.getText());
+            System.out.println("Selected ingredient: " + selectedIngredientCard.getName());
         }
         return selectedIngredientCard;
     }
 
-
-
-    /*
-     * Burası değişicek logic yanlış cartlartı değiştiriyoruz a
-     */
-
-    private void swapRight() {
-        if (selectedIngredientCard == ingredientCard0) {
-            // Swap ingredientCard0 with ingredientCard1
-            IngredientCard temp = ingredientCard0;
-            ingredientCard0 = ingredientCard1;
-            ingredientCard1 = temp;
-            updateCardPositions();
-            selected.setVisible(false);
-            contentPane.setComponentZOrder(selected, 0);
-            selectedIngredientCard = null;
-        } else if (selectedIngredientCard == ingredientCard1) {
-            // Swap ingredientCard1 with ingredientCard2
-            IngredientCard temp = ingredientCard1;
-            ingredientCard1 = ingredientCard2;
-            ingredientCard2 = temp;
-            updateCardPositions();
-            selected.setVisible(false);
-            contentPane.setComponentZOrder(selected, 0);
-            selectedIngredientCard = null;
-        }else{
-             System.out.println("III bu kart ingredientCard2 sağa gidemez");
-        }
-        // No action for ingredientCard2, as it can't be swapped right
+    private void updateCardReferences() {
+        // Update the ingredient card references to match the current state of the deck
+        ingredientCard0 = gameController.getIngredientDeck().get(0);
+        ingredientCard1 = gameController.getIngredientDeck().get(1);
+        ingredientCard2 = gameController.getIngredientDeck().get(2);
     }
-    
-    // Method to swap the currently selected card to the left
-    private void swapLeft() {
-        if (selectedIngredientCard == ingredientCard1) {
-            // Swap ingredientCard1 with ingredientCard0
-            IngredientCard temp = ingredientCard1;
-            ingredientCard1 = ingredientCard0;
-            ingredientCard0 = temp;
-            updateCardPositions();
-            selected.setVisible(false);
-            contentPane.setComponentZOrder(selected, 0);
-            selectedIngredientCard = null;
-        } else if (selectedIngredientCard == ingredientCard2) {
-            // Swap ingredientCard2 with ingredientCard1
-            IngredientCard temp = ingredientCard2;
-            ingredientCard2 = ingredientCard1;
-            ingredientCard1 = temp;
-            updateCardPositions();
-            selected.setVisible(false);
-            contentPane.setComponentZOrder(selected, 0);
-            selectedIngredientCard = null;
-            
 
 
-        }
-        else{
-            System.out.println("III bu kart ingredientCard0 sola gidemez");
-            
-        }
-        // No action for ingredientCard0, as it can't be swapped left
-    }
-    
-    // Method to update the UI after swapping cards
+
     private void updateCardPositions() {
-        try {
-            setImage(ingredientCard0.getImagePath(), ingredientButton0);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        ingredientLabel0.setText(ingredientCard0.getName());
-        
-        try {
-            setImage(ingredientCard1.getImagePath(), ingredientButton1);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        ingredientLabel1.setText(ingredientCard1.getName());
-        
-        try {
-            setImage(ingredientCard2.getImagePath(), ingredientButton2);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        ingredientLabel2.setText(ingredientCard2.getName());
-        
+        // Update references first
+        updateCardReferences();
+    
+        // Update images and texts for all buttons
+        updateButton(ingredientButton0, ingredientCard0, ingredientLabel0);
+        updateButton(ingredientButton1, ingredientCard1, ingredientLabel1);
+        updateButton(ingredientButton2, ingredientCard2, ingredientLabel2);
+    
+        // Reset selected card and hide the selected label
+        selectedIngredientCard = null;
+        selected.setVisible(false);
+    
         // Repaint the panel to reflect changes
         contentPane.repaint();
     }
+    
+    private void updateButton(JButton button, IngredientCard card, JLabel label) {
+        // Update button and label based on the card
+        try {
+            setImage(card.getImagePath(), button);
+            button.setText(card.getName());
+            label.setText(card.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    
+    
+    
+    
     
     
 }
