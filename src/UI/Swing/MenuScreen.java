@@ -51,10 +51,10 @@ public class MenuScreen extends JFrame {
 
     private void setupButtons() {
         backButton.setBounds(10, 10, 75, 25);
-        settingsButton.setBounds(400, 100, 200, 50);
         pauseButton.setBounds(400, 200, 200, 50);
         helpButton.setBounds(400, 300, 200, 50);
-        quitGameButton.setBounds(400, 400, 200, 50);
+        settingsButton.setBounds(400, 400, 200, 50);
+        quitGameButton.setBounds(400, 500, 200, 50);
         quitButton.setBounds(getWidth() - 70, 20, 80, 20);
         quitButton.setFocusPainted(false);
         quitButton.setContentAreaFilled(false);
