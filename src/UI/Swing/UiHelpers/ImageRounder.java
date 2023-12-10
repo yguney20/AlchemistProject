@@ -1,4 +1,4 @@
-package UI.Swing;
+package UI.Swing.UiHelpers;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;

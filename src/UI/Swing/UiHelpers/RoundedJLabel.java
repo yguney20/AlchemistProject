@@ -1,4 +1,4 @@
-package UI.Swing;
+package UI.Swing.UiHelpers;
 
 import javax.swing.*;
 import java.awt.*;

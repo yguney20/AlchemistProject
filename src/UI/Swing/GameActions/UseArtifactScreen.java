@@ -1,4 +1,4 @@
-package UI.Swing;
+package UI.Swing.GameActions;
 
 import java.awt.Color;
 import java.awt.Font;

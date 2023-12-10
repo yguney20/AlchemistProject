@@ -28,6 +28,11 @@ import UI.SoundPlayer;
 import UI.Swing.GameActions.BuyArtifactScreen;
 import UI.Swing.GameActions.SelectArtifactScreen;
 import UI.Swing.GameActions.TransmuteIngredientScreen;
+import UI.Swing.UiHelpers.ImageResizer;
+import UI.Swing.UiHelpers.ImageRounder;
+import UI.Swing.UiHelpers.RoundedBorder;
+import UI.Swing.UiHelpers.RoundedCornerPanel;
+import UI.Swing.UiHelpers.RoundedJLabel;
 import domain.GameObjects.Player;
 import domain.controllers.GameController;
 

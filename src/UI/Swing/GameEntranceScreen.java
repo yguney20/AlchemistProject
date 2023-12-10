@@ -2,6 +2,10 @@ package UI.Swing;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import UI.Swing.MenuScreens.HelpScreen;
+import UI.Swing.MenuScreens.SettingsScreen;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

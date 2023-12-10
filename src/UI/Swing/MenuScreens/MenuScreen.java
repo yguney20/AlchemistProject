@@ -1,7 +1,8 @@
-package UI.Swing;
+package UI.Swing.MenuScreens;
 
 import javax.swing.*;
 
+import UI.Swing.GameEntranceScreen;
 import domain.Game;
 import domain.GameObjects.GameObjectFactory;
 import domain.GameObjects.Player;

@@ -1,4 +1,4 @@
-package UI.Swing;
+package UI.Swing.MenuScreens;
 
 import javax.swing.*;
 import java.awt.*;
