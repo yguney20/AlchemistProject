@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controllers.GameController;
+import domain.controllers.GameController;
 import domain.GameObjects.IngredientCard;
 import domain.GameObjects.Player;
 

@@ -156,9 +156,9 @@ import javax.swing.JOptionPane;
             int x3 = 575;
 	        int y3 = 40;
 
-            ingredientButton0 = new JButton(ingredientCard0.getName());
-            ingredientButton1 = new JButton(ingredientCard1.getName());
-            ingredientButton2 = new JButton(ingredientCard2.getName());
+            ingredientButton0 = new JButton(Integer.toString(ingredientCard0.getCardId()));
+            ingredientButton1 = new JButton(Integer.toString(ingredientCard1.getCardId()));
+            ingredientButton2 = new JButton(Integer.toString(ingredientCard2.getCardId()));
 
             ingredientButton0.setBounds(x1, y1, buttonWidth, buttonHeight);
 	        ingredientButton0.setContentAreaFilled(false);
@@ -380,17 +380,12 @@ import javax.swing.JOptionPane;
         // Update button and label based on the card
         try {
             setImage(card.getImagePath(), button);
-            button.setText(card.getName());
+            button.setText(Integer.toString(card.getCardId()));
             label.setText(card.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-    
-    
-    
     
     
     
