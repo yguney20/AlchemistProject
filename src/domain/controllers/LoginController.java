@@ -5,25 +5,24 @@ import domain.GameObjects.GameObjectFactory;
 
 public class LoginController {
 	
+	private static LoginController instance;
+	
 	private final GameObjectFactory gameObjectFactory;
 	private final Game game;
-	
-    private static class LoginControllerContainer {
-        private static LoginController instance;
-    }
 
     public static LoginController getInstance() {
-        if (LoginControllerContainer.instance == null) {
-            LoginControllerContainer.instance = new LoginController();
+        if (instance == null) {
+            instance = new LoginController();
         }
-        return LoginControllerContainer.instance;
+        return instance;
     }
 	
     public static void destroyInstance() {
-        LoginControllerContainer.instance = null;
+        instance = null;
     }
     
-	public LoginController() {
+    //constructor should be private in Singleton
+	private LoginController() {
 		gameObjectFactory = GameObjectFactory.getInstance();
 		game = Game.getInstance();
 	}

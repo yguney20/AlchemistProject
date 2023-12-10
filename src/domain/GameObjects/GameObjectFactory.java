@@ -12,6 +12,7 @@ public class GameObjectFactory { // Singleton Patterns
 	
 	private static GameObjectFactory instance;
 		
+    //constructor should be private in Singleton
     private GameObjectFactory() {
     }
 
