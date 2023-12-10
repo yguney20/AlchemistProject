@@ -161,7 +161,7 @@ public class BoardScreen extends JFrame{
         JButton dashboardPanel = new JButton();
         dashboardPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
         dashboardPanel.setBackground(Color.WHITE);
-        dashboardPanel.setBounds(362, 88, 174, 58);
+        dashboardPanel.setBounds(362, 70, 174, 58);
         contentPane.add(dashboardPanel);
         dashboardPanel.addActionListener(new ActionListener() {
             @Override
@@ -225,7 +225,7 @@ public class BoardScreen extends JFrame{
         
         //to update the game state when a player performs an action
         JButton actionPerformedButton = new JButton("Action Performed");
-        actionPerformedButton.setBounds(362, 150, 174, 20);
+        actionPerformedButton.setBounds(362, 130, 174, 20);
         contentPane.add(actionPerformedButton);
         
         actionPerformedButton.addActionListener(new ActionListener() {

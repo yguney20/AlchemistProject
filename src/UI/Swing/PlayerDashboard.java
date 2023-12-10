@@ -386,6 +386,47 @@ public class PlayerDashboard extends JFrame {
         debunkTheoryButton.setBackground(Color.WHITE);
         chooseActionActionsPanel.add(debunkTheoryButton);
         
+        JPanel ingredientsPanel = new JPanel();
+        ingredientsPanel.setBackground(new Color(254, 255, 255));
+        ingredientsPanel.setBorder(roundedBorder);
+        ingredientsPanel.setBounds(519, 457, 325, 52);
+        contentPane.add(ingredientsPanel);
+        ingredientsPanel.setLayout(null);
+        
+        JLabel showIngredientsButton = new JLabel("My Ingredients");
+        showIngredientsButton.setBounds(6, 6, 307, 36);
+        ingredientsPanel.add(showIngredientsButton);
+        showIngredientsButton.setOpaque(true);
+        showIngredientsButton.addMouseListener(new MouseAdapter() {
+        	 @Override
+             public void mouseEntered(MouseEvent e) {
+        		showIngredientsButton.setBackground(new Color(138,43,226));
+             	soundPlayer.playSound("UI/Swing/Sounds/buttonSound.wav");
+             }
+
+             @Override
+             public void mouseExited(MouseEvent e) {
+            	showIngredientsButton.setBackground(Color.WHITE);
+             }
+
+             @Override
+         	public void mouseClicked(MouseEvent e) {
+            	 
+            	PlayerIngredientsScreen myIngredientsScreen = new PlayerIngredientsScreen();
+            	myIngredientsScreen.display();         		
+     			PlayerDashboard.this.setVisible(false);
+     			musicPlayer.stopSound();
+
+         	}
+        });
+        
+        showIngredientsButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        showIngredientsButton.setBorder(roundedBorder2);
+        showIngredientsButton.setIconTextGap(0);
+        showIngredientsButton.setHorizontalAlignment(SwingConstants.CENTER);
+        showIngredientsButton.setFocusable(false);
+        showIngredientsButton.setBackground(Color.WHITE);
+        
         
         JPanel returnBackButtonPanel = new JPanel();
         returnBackButtonPanel.setBackground(new Color(254, 255, 255));
@@ -599,17 +640,23 @@ public class PlayerDashboard extends JFrame {
                 Timer sellTimer = createLabelAnimationTimer(sellPotionButton, 4, 500);
                 Timer publishTimer = createLabelAnimationTimer(publishTheoryButton, 4, 500);
                 Timer debunkTimer = createLabelAnimationTimer(debunkTheoryButton, 4, 500);
+                Timer useTimer = createLabelAnimationTimer(useArtifactButton, 4, 500);
+                Timer ingredientTimer = createLabelAnimationTimer(showIngredientsButton, 4, 500);
+                
 
                 // Start label animations with delays
                 int labelDelay = 100; // Delay between each label's animation
                 forageTimer.start();
                 new Timer(labelDelay, (e1) -> transmuteTimer.start()).start();
                 new Timer(labelDelay * 2, (e2) -> buyTimer.start()).start();
-                new Timer(labelDelay * 3, (e3) -> experimentTimer.start()).start();
-                new Timer(labelDelay * 4, (e4) -> sellTimer.start()).start();
-                new Timer(labelDelay * 5, (e5) -> publishTimer.start()).start();
-                new Timer(labelDelay * 6, (e6) -> {
-                    debunkTimer.start();
+                new Timer(labelDelay * 3, (e3) -> useTimer.start()).start();
+                new Timer(labelDelay * 4, (e4) -> experimentTimer.start()).start();
+                new Timer(labelDelay * 5, (e5) -> sellTimer.start()).start();
+                new Timer(labelDelay * 6, (e6) -> publishTimer.start()).start();
+                new Timer(labelDelay * 7, (e7) -> debunkTimer.start()).start();
+                	
+                new Timer(labelDelay * 8, (e8) -> {
+                	ingredientTimer.start();
                     // Start panel animations after a further delay
                     
                 }).start();
