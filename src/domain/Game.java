@@ -8,7 +8,7 @@ import domain.GameObjects.*;
 
 public class Game { //Singleton Pattern
 	
-	private static Game game_instance = null;
+	private static Game game_instance;
 
     private List<Player> players;
     private List<IngredientCard> ingredientDeck;
@@ -22,8 +22,8 @@ public class Game { //Singleton Pattern
     Player winner = null;
     private boolean actionPerformed;
     
-    
-    public Game() {
+    //constructor should be private in Singleton
+    private Game() {
     	
         this.players = Player.getPlayerList();      
         this.ingredientDeck = GameObjectFactory.getInstance().createIngredientDeck();
@@ -35,6 +35,7 @@ public class Game { //Singleton Pattern
         this.actionPerformed = false;
         
     }
+    
     //---------------------Singleton Methods----------------------------------------
     
     public static Game getInstance() {

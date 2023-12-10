@@ -10,25 +10,23 @@ import domain.GameObjects.ArtifactEffects.ElixirOfInsightEffect;
 
 public class GameController {
 	
+	private static GameController instance;
+
 	private final Game game;
 
-	
-	private static class GameControllerContainer {
-        private static GameController instance;
-    }
-
     public static GameController getInstance() {
-        if (GameControllerContainer.instance == null) {
-            GameControllerContainer.instance = new GameController();
+        if (instance == null) {
+            instance = new GameController();
         }
-        return GameControllerContainer.instance;
+        return instance;
     }
 	
     public static void destroyInstance() {
-        GameControllerContainer.instance = null;
+        instance = null;
     }
     
-    public GameController() {
+    //constructor should be private in Singleton
+    private GameController() {
 		game = Game.getInstance();
     }
     
