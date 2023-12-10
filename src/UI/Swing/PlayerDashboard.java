@@ -411,9 +411,9 @@ public class PlayerDashboard extends JFrame {
 
              @Override
          	public void mouseClicked(MouseEvent e) {
-         		
-         		//create new ingredient cards screen
-     			//display it   ingredienCardScreen.display();
+            	 
+            	PlayerIngredientsScreen myIngredientsScreen = new PlayerIngredientsScreen();
+            	myIngredientsScreen.display();         		
      			PlayerDashboard.this.setVisible(false);
      			musicPlayer.stopSound();
 
