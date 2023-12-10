@@ -1,6 +1,9 @@
 package domain.GameObjects.ArtifactEffects;
 
+import java.util.List;
+
 import domain.Game;
+import domain.GameObjects.IngredientCard;
 
 /**
  * ElixirOfInsightEffect is an implementation of the ArtifactEffect interface.
@@ -16,8 +19,6 @@ public class ElixirOfInsightEffect implements ArtifactEffect {
         }
     }
 
-    
 
-    
     
 }

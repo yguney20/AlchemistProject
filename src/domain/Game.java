@@ -1,6 +1,5 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import domain.GameObjects.*;
 
 public class Game { //Singleton Pattern
 	
-	private static Game game_instance = null;
+	private static Game game_instance;
 
     private List<Player> players;
     private List<IngredientCard> ingredientDeck;
@@ -21,19 +20,22 @@ public class Game { //Singleton Pattern
     private boolean isPaused;
     private GameState gameState;
     Player winner = null;
+    private boolean actionPerformed;
     
-    
-    public Game() {
+    //constructor should be private in Singleton
+    private Game() {
     	
         this.players = Player.getPlayerList();      
-        this.ingredientDeck = GameObjectFactory.createIngredientDeck();
-        this.artifactDeck = new ArrayList<>();
+        this.ingredientDeck = GameObjectFactory.getInstance().createIngredientDeck();
+        this.artifactDeck = GameObjectFactory.getInstance().createArtifactDeck();
         this.totalRounds = 3; // Set the total number of rounds
         this.currentRound = 1;
         this.currentTurn = 1;
         this.gameState = new GameState(players, currentRound, currentTurn, currentPlayer, isPaused);
+        this.actionPerformed = false;
         
     }
+    
     //---------------------Singleton Methods----------------------------------------
     
     public static Game getInstance() {
@@ -80,16 +82,12 @@ public class Game { //Singleton Pattern
 	public Player getWinner() {
 		return winner;
 	}
+	
+	public boolean getActionPerformed() {
+		return actionPerformed;
+	}
 
     //-----------------------Game Related Functions--------------------------------------
-	public void play() {
-		initializeGame();
-		
-		while (!isGameOver()) {
-			playTurn();
-		}
-		
-	}
 
     public void initializeGame() {
     	
@@ -103,22 +101,16 @@ public class Game { //Singleton Pattern
     		p.getIngredientInventory().add(i2);
     	}
     	
-        Player currentPlayer = players.get(0);
+        currentPlayer = players.get(0);
         
-        gameState = new GameState(players, 1, 1, currentPlayer, false);
-        System.out.println(currentPlayer);
-
-        System.out.println(currentPlayer.getIngredientInventory());
+        gameState.setCurrentPlayer(currentPlayer);
+        System.out.println(gameState);
       
     }
     
-    public void playTurn() {
-        if (!gameState.isPaused()) {
-        	
-            // Perform actions for the current turn
-
-            // Move to the next player
-            int currentPlayerIndex = players.indexOf(currentPlayer);
+    public void updateState() {
+    	
+    		int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             currentPlayer = players.get(currentPlayerIndex);
 
@@ -142,7 +134,8 @@ public class Game { //Singleton Pattern
             gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentRound(currentRound);
             gameState.setCurrentTurn(currentTurn);
-        }
+            actionPerformed = false;
+            System.out.println(gameState);
     }
     
     //end game method
@@ -210,47 +203,118 @@ public class Game { //Singleton Pattern
     }
     
     public void forageForIngredient(Player p) {
-    	if (!ingredientDeck.isEmpty()) {
-    		IngredientCard selectedCard = drawIngredientCard();
-    		p.getIngredientInventory().add(selectedCard);
+    	if(!actionPerformed) {
+        	if (!ingredientDeck.isEmpty()) {
+        		IngredientCard selectedCard = drawIngredientCard();
+        		p.getIngredientInventory().add(selectedCard);
+                actionPerformed = true;
+                System.out.println(p.getIngredientInventory());
+
+        	} else {
+                notifyPlayers("The ingredient deck is empty.");
+        	}
     	} else {
-            notifyPlayers("The ingredient deck is empty.");
+            notifyPlayers("Action already performed.");
+
     	}
+
     }
 
     //-----------------------Artifact Related Functions ------------------------------------
     // Additional logic will be added (Not finished)
     public void buyArtifactCard(ArtifactCard card, Player player) {
         try {
-            if (card.isImmadiate()){
-                card.applyEffect(this);
-            } else {
-                player.addArtifactCard(card);
-            }
-            
+        	if(!actionPerformed) {
+                if (card.isImmadiate()){
+                    card.applyEffect(this);
+                } else {
+                    player.addArtifactCard(card);
+                }
+                artifactDeck.remove(card);
+                player.reduceGold(card.getGoldValue());
+                actionPerformed = true;
+                System.out.println(player.getArtifactCards());
+                System.out.println(player);
+        	} else {
+                notifyPlayers("Action already performed.");
+        	}
+        
         } catch (IllegalStateException e) {
             // Handle the case where a one-time use card is attempted to be used again
             System.out.println(e.getMessage());
         }
     }
     
-  //-----------------------Transmute Function ------------------------------------
+     public ArtifactCard getArtifactCardByPath(String path) {
+        return artifactDeck.stream()
+                .filter(card -> card.getImagePath().equals(path))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Artifact Card not found for path: " + path));
+    }
+
+    public void useArtifactCard(ArtifactCard card, Player player){
+        card.applyEffect(this);
+        player.getArtifactCards().remove(card);
+
+        
+    }
+
+    //-----------------------Transmute Function ------------------------------------
     
     public void transmuteIngredient(Player player, IngredientCard selectedIngredient) {
-        // Preconditions
-        if (player.getIngredientInventory().isEmpty()) {
-        	notifyPlayers("ingredient card not found.");
+    	if(!actionPerformed) {
+            // Preconditions
+            if (player.getIngredientInventory().isEmpty()) {
+            	notifyPlayers("ingredient card not found.");
+            }
+            else {
+            	// Flow
+                player.getIngredientInventory().remove(selectedIngredient); 
+                ingredientDeck.add(selectedIngredient);
+                player.increaseGold(1);
+                actionPerformed = true;
+            }
+    	} else {
+            notifyPlayers("Action already performed.");
+    	}
+
+    }
+
+    //----------------------------------------------------------------
+    public void swapRight(IngredientCard ingredientCard) {
+        // Find the index of the ingredientCard in the first three cards
+        int index = -1;
+        for (int i = 0; i < 3; i++) {
+            if (ingredientDeck.get(i).equals(ingredientCard)) {
+                index = i;
+            }
         }
-        else {
-        	// Flow
-            player.getIngredientInventory().remove(selectedIngredient); 
-            ingredientDeck.add(selectedIngredient);
-            Collections.shuffle(ingredientDeck);
-            player.increaseGold(1);      	
+        if (index != -1) {
+            int swapIndex = (index + 1) % 3; // Calculate the index to swap with (circular)
+            IngredientCard temp = ingredientDeck.get(swapIndex);
+            ingredientDeck.set(swapIndex, ingredientDeck.get(index));
+            ingredientDeck.set(index, temp);
         }
     }
 
-
+    public void swapLeft(IngredientCard ingredientCard) {
+        // Find the index of the ingredientCard in the first three cards
+        int index = -1;
+        for (int i = 0; i < 3; i++) {
+            if (ingredientDeck.get(i).equals(ingredientCard)) {
+                index = i;
+                break;
+            }
+        }
+    
+        if (index != -1) {
+            int swapIndex = (index - 1 + 3) % 3; // Calculate the index to swap with (circular)
+            IngredientCard temp = ingredientDeck.get(swapIndex);
+            ingredientDeck.set(swapIndex, ingredientDeck.get(index));
+            ingredientDeck.set(index, temp);
+        }
+    }
+    
 }
 
 

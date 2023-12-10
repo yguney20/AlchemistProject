@@ -10,13 +10,13 @@ public class PotionCard {
 		 	private String potionName;
 		    private String potionType;
 
-		    private List<IngredientCard> ingredients;		    
+		    		    
 		    private String description;
 		    
-		    public PotionCard(String potionName, String potionType, List<IngredientCard> ingredients, String description) {
+		    public PotionCard(String potionName, String potionType, String description) {
 		        this.potionName = potionName;
 		        this.potionType = potionType;
-		        this.ingredients = ingredients;
+		        
 		        this.description = description;
 		        
 
@@ -39,13 +39,9 @@ public class PotionCard {
 		        this.potionType = potionType;
 		    }
 
-		    public List<IngredientCard> getIngredients() {
-		        return ingredients;
-		    }
+		    
 
-		    public void setIngredients(List<IngredientCard> ingredients) {
-		        this.ingredients = ingredients;
-		    }
+		    
 
 
 		    public String getDescription() {

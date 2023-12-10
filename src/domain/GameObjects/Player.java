@@ -2,6 +2,7 @@
 
  import java.util.ArrayList;
  import java.util.List;
+import java.util.Objects;
 
  public class Player {
      private String nickname;
@@ -14,6 +15,44 @@
      private int reputationPoints;
      private double score;
  	 private static ArrayList<Player> playerList = new ArrayList<Player>();
+ 	 private ArrayList<Deduction> deductions = new ArrayList<Deduction>();
+ 	 
+ 	 public class Deduction{
+ 		 int x;
+ 		 int y;
+ 		 int sign_num;
+ 		 
+ 		 Deduction(int x, int y, int sign_num) {
+ 			 this.x = x;
+ 			 this.y = y;
+ 			 this.sign_num = sign_num;
+ 		 }
+
+		public int getX() {
+			return x;
+		}
+
+		public void setX(int x) {
+			this.x = x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public void setY(int y) {
+			this.y = y;
+		}
+
+		public int getSign_num() {
+			return sign_num;
+		}
+
+		public void setSign_num(int sign_num) {
+			this.sign_num = sign_num;
+		} 		 
+ 		 
+ 	 }
 
 
      public Player(String nickname, String avatar) {
@@ -37,8 +76,18 @@
                  "\n\tsicknessLevel=" + sicknessLevel +
                  "\n}";
      }
+     
 
-     public static ArrayList<Player> getPlayerList() {
+     public ArrayList<Deduction> getDeductions() {
+		return deductions;
+	}
+     
+    public void addDeduction(int x, int y, int sign_num) {
+    	Deduction newDeduction = new Deduction(x, y, sign_num);
+    	deductions.add(newDeduction);
+    }
+
+	public static ArrayList<Player> getPlayerList() {
 		return playerList;
 	}
 
@@ -145,5 +194,6 @@
     public void addArtifactCard(ArtifactCard card) {
         this.artifactCards.add(card);
     }
+    
  }
 
