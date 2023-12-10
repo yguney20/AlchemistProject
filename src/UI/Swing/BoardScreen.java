@@ -43,7 +43,8 @@ public class BoardScreen extends JFrame{
      * Create the frame.
      */
     public BoardScreen() {
-    	DeductionBoard deductionBoard = new DeductionBoard(this); // Pass 'this' as the reference to the BoardScreen
+    	DeductionBoard deductionBoard = new DeductionBoard(this);
+    	gameController.setBoardScreen(this);// Pass 'this' as the reference to the BoardScreen
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(50, 50, 900, 505); // Adjust the size accordingly
@@ -217,7 +218,8 @@ public class BoardScreen extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create an instance of DeductionBoard and display it              
-                deductionBoard.display();
+                //deductionBoard.display();
+            	gameController.displayDeductionBoardForCurrentPlayer();
             }
         });
         

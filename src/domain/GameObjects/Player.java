@@ -17,7 +17,7 @@ import java.util.Objects;
  	 private static ArrayList<Player> playerList = new ArrayList<Player>();
  	 private ArrayList<Deduction> deductions = new ArrayList<Deduction>();
  	 
- 	 private class Deduction{
+ 	 public class Deduction{
  		 int x;
  		 int y;
  		 int sign_num;

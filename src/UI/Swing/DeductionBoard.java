@@ -3,6 +3,8 @@ package UI.Swing;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import domain.controllers.GameController;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -19,7 +21,7 @@ public class DeductionBoard extends JFrame {
     private Sign selectedSign = Sign.BLUE_PLUS; // Default sign
 
     // Enum to represent different signs
-    enum Sign {
+    public enum Sign {
         BLUE_PLUS, RED_PLUS, GREEN_PLUS, BLUE_MINUS, RED_MINUS, GREEN_MINUS, NEUTRAL, RED_CROSS
     }
 
@@ -133,6 +135,10 @@ public class DeductionBoard extends JFrame {
         	@Override
             public void mouseClicked(MouseEvent e) {
                 // Add the new sign placement to the list
+        		int x = e.getX();
+                int y = e.getY();
+
+                GameController.getInstance().playerMadeDeduction(x, y, selectedSign.ordinal());
                 signPlacements.add(new SignPlacement(e.getPoint(), selectedSign));
                 // Repaint the panel to show the new sign
                 deductionBoardPanel.repaint();
@@ -146,6 +152,18 @@ public class DeductionBoard extends JFrame {
     
     public void display() {
         setVisible(true); // Show the board
+    }
+    
+    public void clearSignPlacements() {
+        signPlacements.clear();
+        repaint(); // Repaint to update the UI
+    }
+
+    public void addSignPlacement(Point point, Sign sign) {
+        // Add a new sign placement
+        signPlacements.add(new SignPlacement(point, sign));
+        // Repaint the panel to reflect the new sign
+        repaint();
     }
 
     public static void main(String[] args) {
