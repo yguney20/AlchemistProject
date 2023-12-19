@@ -1,7 +1,7 @@
 package domain.controllers;
 
 import domain.Game;
-import domain.GameObjects.GameObjectFactory;
+import domain.gameobjects.GameObjectFactory;
 
 public class LoginController {
 	

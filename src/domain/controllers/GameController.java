@@ -5,12 +5,12 @@ import java.util.Map;
 import java.awt.Point;
 import java.util.HashMap;
 import domain.Game;
-import domain.GameObjects.ArtifactCard;
-import domain.GameObjects.IngredientCard;
-import domain.GameObjects.Player;
-import domain.GameObjects.ArtifactEffects.ElixirOfInsightEffect;
-import UI.Swing.BoardScreen;
-import UI.Swing.DeductionBoard;
+import domain.gameobjects.ArtifactCard;
+import domain.gameobjects.IngredientCard;
+import domain.gameobjects.Player;
+import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
+import ui.swing.screens.BoardScreen;
+import ui.swing.screens.DeductionBoard;
 
 public class GameController {
 	

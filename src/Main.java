@@ -1,4 +1,4 @@
-import UI.Swing.*;
+import ui.swing.screens.*;
 
 public class Main {
     public static void main(String[] args) {

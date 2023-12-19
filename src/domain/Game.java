@@ -3,7 +3,7 @@ package domain;
 import java.util.Collections;
 import java.util.List;
 
-import domain.GameObjects.*;
+import domain.gameobjects.*;
 
 
 public class Game { //Singleton Pattern

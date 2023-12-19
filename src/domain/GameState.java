@@ -2,7 +2,7 @@ package domain;
 
 import java.util.List;
 
-import domain.GameObjects.Player;
+import domain.gameobjects.Player;
 
 public class GameState {
 	
