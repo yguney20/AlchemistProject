@@ -279,6 +279,7 @@ public class Game { //Singleton Pattern
     	}
 
     }
+    //make
     public void makeExperiment(Player player, IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
     	if(!actionPerformed) {
     		PotionCard potionCard = null;
@@ -308,7 +309,7 @@ public class Game { //Singleton Pattern
     				}
     			}		
     		}
-    		
+    		//
     	}
     	else {
     		notifyPlayers("Action already performed.");
