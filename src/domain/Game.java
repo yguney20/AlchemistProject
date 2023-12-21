@@ -279,6 +279,41 @@ public class Game { //Singleton Pattern
     	}
 
     }
+    public void makeExperiment(Player player, IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
+    	if(!actionPerformed) {
+    		PotionCard potionCard = null;
+    		if(player.getIngredientInventory().size()< 2) {
+    			notifyPlayers("There are not enough ingredient cards.");
+    		}
+    		else {
+    			potionCard =  GameObjectFactory.getInstance().potionMaker(firstCard, secondCard);
+    			player.getPotionInventory().add(potionCard);
+    			player.getIngredientInventory().remove(firstCard);
+    			player.getIngredientInventory().remove(secondCard);
+    			System.out.println(potionCard.getDescription());
+    			
+    			//for student
+    			if(student) {
+    				if(potionCard.getPotionType().equals("NEGATIVE")) {
+    					player.reduceGold(1);
+    				}
+    			}
+    			//for themselves
+    			else {
+    				if(potionCard.getPotionType().equals("NEGATIVE")) {
+    					player.increaseSickness(1);
+    					if(player.getSicknessLevel() == 3) {
+    						player.setGolds(0);
+    					}				
+    				}
+    			}		
+    		}
+    		
+    	}
+    	else {
+    		notifyPlayers("Action already performed.");
+    	}	
+    }
 
     //----------------------------------------------------------------
     public void swapRight(IngredientCard ingredientCard) {
