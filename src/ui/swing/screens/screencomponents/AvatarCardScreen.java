@@ -1,7 +1,5 @@
 package ui.swing.screens.screencomponents;
 
-import ui.swing.model.*;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +7,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -16,10 +15,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Area;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
+
+import ui.swing.desingsystem.RoundedCornerPanel;
+import ui.swing.model.CardModel;
 
 public class AvatarCardScreen extends JPanel {
 
@@ -28,21 +36,25 @@ public class AvatarCardScreen extends JPanel {
     private final Timer timer;
     private final Timer timerStop;
     private final AvatarDescription avatarDescription;
-    private int y = 140;
+    private int y = 170;
     private int speed = 10;
     private boolean showing = false;
 
     private boolean isSelected = false;
     private boolean isHovered = false;
     
+
     public AvatarCardScreen(CardModel data) {
+
         this.data = data;
         initComponents();
         setOpaque(false);
+        
+        
         avatarDescription = new AvatarDescription(data.getTitle(), data.getDescription());
         avatarDescription.setLocation(0, y);
-        setPreferredSize(new Dimension(150, 200));
-        avatarDescription.setSize(new Dimension(150, 150));
+        setPreferredSize(new Dimension(180, 240));
+        avatarDescription.setSize(new Dimension(180, 180));
         add(avatarDescription);
         
         timer = new Timer(0, new ActionListener() {
@@ -50,8 +62,8 @@ public class AvatarCardScreen extends JPanel {
             public void actionPerformed(ActionEvent ae) {
                 if (showing) {
                     y -= speed;
-                    if (y <= 50) {
-                        y = 50;
+                    if (y <= 80) {
+                        y = 80;
                         avatarDescription.setLocation(0, y);
                         timer.stop();
                     } else {
@@ -59,8 +71,8 @@ public class AvatarCardScreen extends JPanel {
                     }
                 } else {
                     y += speed;
-                    if (y >= 140) {
-                        y = 140;
+                    if (y >= 170) {
+                        y = 170;
                         avatarDescription.setLocation(0, y);
                         timer.stop();
                     } else {
@@ -93,10 +105,14 @@ public class AvatarCardScreen extends JPanel {
         });
     }
 
-    public boolean isSelected() {
-		return isSelected;
+    public CardModel getData() {
+		return data;
 	}
 
+	public boolean isSelected() {
+		return isSelected;
+	}
+    
 	public void setSelected(boolean isSelected) {
 		this.isSelected = isSelected;
 	}
@@ -114,6 +130,8 @@ public class AvatarCardScreen extends JPanel {
 
         setLayout(null);
     }
+	
+
 
     @Override
     protected void paintComponent(Graphics grphcs) {
@@ -129,11 +147,11 @@ public class AvatarCardScreen extends JPanel {
         super.paint(grphcs);
         Graphics2D g2 = (Graphics2D) grphcs;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint g = new GradientPaint(0, getHeight(), new Color(250, 0, 245, 100), 0, getHeight() - 50, new Color(50, 0, 245, 0));
+        GradientPaint g = new GradientPaint(0, getHeight(), new Color(100, 0, 245, 100), 0, getHeight() - 50, new Color(50, 0, 245, 10));
         g2.setPaint(g);
         g2.fillRect(0, 0, getWidth(), getHeight());
         
-        
+         
         if (isSelected) {
             Graphics2D g2d = (Graphics2D) grphcs.create();
             GradientPaint g3 = new GradientPaint(0, getHeight(), new Color(215, 167, 0, 100), 0, getHeight() - 50, new Color(215, 167, 0, 250));
@@ -147,8 +165,8 @@ public class AvatarCardScreen extends JPanel {
     }
 
     private Rectangle getAutoSize(Icon image) {
-        int w = 150;
-        int h = 200;
+        int w = 180;
+        int h = 240;
         int iw = image.getIconWidth();
         int ih = image.getIconHeight();
         double xScale = (double) w / iw;
