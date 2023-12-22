@@ -4,10 +4,7 @@ import java.util.List;
 public class PotionCard {
 	
 
-	
-
-	
-		 	private String potionName;
+			private String potionName;
 		    private String potionType;
 
 		    		    
@@ -39,11 +36,6 @@ public class PotionCard {
 		        this.potionType = potionType;
 		    }
 
-		    
-
-		    
-
-
 		    public String getDescription() {
 		        return description;
 		    }
@@ -51,6 +43,12 @@ public class PotionCard {
 		    public void setDescription(String description) {
 		        this.description = description;
 		    }
+		    
+		 	@Override
+		 	public String toString() {
+		 		return "PotionCard [potionName=" + potionName + ", potionType=" + potionType + ", description=" + description
+				+ "]";
+	}
 	}
 
 

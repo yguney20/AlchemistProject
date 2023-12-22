@@ -164,4 +164,8 @@ public class GameController {
     public void sellPotion(IngredientCard i1, IngredientCard i2, String guarantee) {
     	game.sellPotion(i1, i2, guarantee);
     }
+    
+    public void makeExperiment(IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
+    	game.makeExperiment(firstCard, secondCard, student);
+    }
 }
