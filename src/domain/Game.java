@@ -221,6 +221,7 @@ public class Game { //Singleton Pattern
     }
 
     //-----------------------Artifact Related Functions ------------------------------------
+    
     // Additional logic will be added (Not finished)
     public void buyArtifactCard(ArtifactCard card, Player player) {
         try {
@@ -283,35 +284,38 @@ public class Game { //Singleton Pattern
     	}
 
     }
-    //make
-    public void makeExperiment(Player player, IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
+    
+    //-----------------------Make Experiment Function ------------------------------------
+
+    public void makeExperiment(IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
     	if(!actionPerformed) {
     		PotionCard potionCard = null;
-    		if(player.getIngredientInventory().size()< 2) {
+    		if(currentPlayer.getIngredientInventory().size()< 2) {
     			notifyPlayers("There are not enough ingredient cards.");
     		}
     		else {
     			potionCard =  GameObjectFactory.getInstance().potionMaker(firstCard, secondCard);
-    			player.getPotionInventory().add(potionCard);
-    			player.getIngredientInventory().remove(firstCard);
-    			player.getIngredientInventory().remove(secondCard);
-    			System.out.println(potionCard.getDescription());
+    			currentPlayer.getPotionInventory().add(potionCard);
+    			currentPlayer.getIngredientInventory().remove(firstCard);
+    			currentPlayer.getIngredientInventory().remove(secondCard);
+    			System.out.println(potionCard);
     			
     			//for student
     			if(student) {
     				if(potionCard.getPotionType().equals("NEGATIVE")) {
-    					player.reduceGold(1);
+    					currentPlayer.reduceGold(1);
     				}
     			}
     			//for themselves
     			else {
     				if(potionCard.getPotionType().equals("NEGATIVE")) {
-    					player.increaseSickness(1);
-    					if(player.getSicknessLevel() == 3) {
-    						player.setGolds(0);
+    					currentPlayer.increaseSickness(1);
+    					if(currentPlayer.getSicknessLevel() == 3) {
+    						currentPlayer.setGolds(0);
     					}				
     				}
-    			}		
+    			}
+    			actionPerformed = true;
     		}
     		//
     	}
@@ -368,7 +372,7 @@ public class Game { //Singleton Pattern
     		if(guarantee.equals("Positive") && !potion.getPotionType().equals("POSITIVE")){
     			currentPlayer.reduceGold(1);
     		}
-    		if(guarantee.equals("Positive/Neutral") && (potion.getPotionType().equals("POSITIVE") || potion.getPotionType().equals("Clear"))){
+    		if(guarantee.equals("Positive/Neutral") && (potion.getPotionType().equals("POSITIVE") || potion.getPotionType().equals("Neutral"))){
     			currentPlayer.increaseGold(2);
     		}
     		if(guarantee.equals("Positive/Neutral") && potion.getPotionType().equals("NEGATIVE")){
@@ -378,6 +382,7 @@ public class Game { //Singleton Pattern
     			currentPlayer.increaseGold(1);
     		}
     		actionPerformed = true;
+    		System.out.println(potion);
     		
     	} else {
     		notifyPlayers("Action already performed or preconditions are not met");

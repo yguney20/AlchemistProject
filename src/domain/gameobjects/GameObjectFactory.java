@@ -109,7 +109,7 @@ public class GameObjectFactory { // Singleton Patterns
         				firstIngredient.getMolecule().getBlueComponentSize(), secondIngredient.getMolecule().getBlueComponentSize()))
         			&& (areSameSizeAndDifferentSign(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
         	                firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize()))) {
-            potionCard = new PotionCard("Neutral Potion", "Clear", "Description for Neutral Potion");
+            potionCard = new PotionCard("Neutral Potion", "Neutral", "Description for Neutral Potion");
             
         } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getRedComponentSign(), secondIngredient.getMolecule().getRedComponentSign(),
                 firstIngredient.getMolecule().getRedComponentSize(), secondIngredient.getMolecule().getRedComponentSize())) {

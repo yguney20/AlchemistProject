@@ -313,6 +313,14 @@ public class PlayerDashboard extends JFrame {
             public void mouseExited(MouseEvent e) {
             	makeExperimentButton.setBackground(Color.WHITE);
             }
+            @Override
+        	public void mouseClicked(MouseEvent e) {
+            	MakeExperimentScreen makeExperimentScreen = new MakeExperimentScreen();
+        		makeExperimentScreen.display();
+        		PlayerDashboard.this.setVisible(false);
+       			musicPlayer.stopSound();
+        			
+        	}
         });
 
         makeExperimentButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
