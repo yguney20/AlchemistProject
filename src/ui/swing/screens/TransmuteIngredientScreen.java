@@ -54,6 +54,7 @@ public class TransmuteIngredientScreen extends JFrame  implements ActionListener
 		setBounds(100, 100, 913, 293);
 		
 		try {
+
 	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/loginbackground.jpg"));
 	        contentPane = new JPanel() {
 	            @Override

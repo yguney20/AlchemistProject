@@ -16,6 +16,7 @@ public class RoundedBorder extends AbstractBorder {
         this.borderColor = borderColor;
         this.thickness = thickness;
         this.shadowSize = shadowSize;
+        
         // Ensure shadow color has some transparency
         this.shadowColor = new Color(shadowColor.getRed(), shadowColor.getGreen(), shadowColor.getBlue(), shadowColor.getAlpha());
     }
@@ -53,6 +54,8 @@ public class RoundedBorder extends AbstractBorder {
         // Dispose graphics
         g2.dispose();
     }
+    
+    
 
     @Override
     public Insets getBorderInsets(Component c) {
