@@ -56,7 +56,7 @@ import javax.swing.JLabel;
 		setBounds(50, 555, 900, 350);
 		
 		try {
-	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/UI/Swing/Images/loginbackground.jpg"));
+	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/ui/swing/resources/images/loginbackground.jpg"));
 	        contentPane = new JPanel() {
 	            @Override
 	            protected void paintComponent(Graphics g) {
