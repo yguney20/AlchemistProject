@@ -33,13 +33,10 @@ import javax.swing.JLabel;
 public class PlayerIngredientsScreen extends JFrame{
 
 	private JPanel contentPane;
-	private JButton transmuteButton;
     private int initialX;
     private int initialY;
     private IngredientCard ingredientCard;
-    private JLabel selected;
     private GameController gameController = GameController.getInstance();
-    private JLabel message;
     List<IngredientCard> ingredientCards;
     private JButton quitButton = new JButton("X");
     

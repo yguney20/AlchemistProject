@@ -337,6 +337,16 @@ public class PlayerDashboard extends JFrame {
             public void mouseExited(MouseEvent e) {
             	sellPotionButton.setBackground(Color.WHITE);
             }
+            @Override
+        	public void mouseClicked(MouseEvent e) {
+            	if(gameController.getCurrentRound()>=2) {
+            		SellPotionScreen sellPotionScreen = new SellPotionScreen();
+        			sellPotionScreen.display();
+        			PlayerDashboard.this.setVisible(false);
+        			musicPlayer.stopSound();
+            	}
+        			
+        	}
         });
         sellPotionButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         sellPotionButton.setBounds(4, 210, 425, 36);
