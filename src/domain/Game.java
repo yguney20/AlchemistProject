@@ -314,7 +314,8 @@ public class Game { //Singleton Pattern
     						currentPlayer.setGolds(0);
     					}				
     				}
-    			}		
+    			}
+    			actionPerformed = true;
     		}
     		//
     	}
