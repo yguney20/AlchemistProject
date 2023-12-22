@@ -191,7 +191,7 @@ public class Game { //Singleton Pattern
         return currentRound > totalRounds;  // You can adjust the condition based on your game rules
     }
 
-    //----------------------Ingredient Card Related Functions-------------------------------
+    //----------------------Forage for Ingredient Functions-------------------------------
 
     public IngredientCard drawIngredientCard(){
     	if (!ingredientDeck.isEmpty()) {
@@ -225,16 +225,20 @@ public class Game { //Singleton Pattern
     public void buyArtifactCard(ArtifactCard card, Player player) {
         try {
         	if(!actionPerformed) {
-                if (card.isImmadiate()){
-                    card.applyEffect(this);
-                } else {
+        		if(currentPlayer.getGolds() >= card.getGoldValue()) {
+                    if (card.isImmadiate()){
+                        card.applyEffect(this);
+                    } 
+                    artifactDeck.remove(card);
                     player.addArtifactCard(card);
-                }
-                artifactDeck.remove(card);
-                player.reduceGold(card.getGoldValue());
-                actionPerformed = true;
-                System.out.println(player.getArtifactCards());
-                System.out.println(player);
+                    player.reduceGold(card.getGoldValue());
+                    actionPerformed = true;
+                    System.out.println(player.getArtifactCards());
+                    System.out.println(player);
+        		} else {
+        			notifyPlayers("You don't have enough golds.");
+        		}
+
         	} else {
                 notifyPlayers("Action already performed.");
         	}
@@ -351,6 +355,34 @@ public class Game { //Singleton Pattern
         }
     }
     
+    //-----------------------Sell a Potion Function ------------------------------------
+
+    public void sellPotion(IngredientCard i1, IngredientCard i2, String guarantee) {
+    	if(!actionPerformed && (currentRound >= 2) && (currentPlayer.getIngredientInventory().size() >= 2) && (currentPlayer.getGolds() >= 1) ) {
+    		PotionCard potion = GameObjectFactory.getInstance().potionMaker(i1, i2);
+    		currentPlayer.getIngredientInventory().remove(i1);
+    		currentPlayer.getIngredientInventory().remove(i2);
+    		if(guarantee.equals("Positive") && potion.getPotionType().equals("POSITIVE")){
+    			currentPlayer.increaseGold(3);
+    		}
+    		if(guarantee.equals("Positive") && !potion.getPotionType().equals("POSITIVE")){
+    			currentPlayer.reduceGold(1);
+    		}
+    		if(guarantee.equals("Positive/Neutral") && (potion.getPotionType().equals("POSITIVE") || potion.getPotionType().equals("Clear"))){
+    			currentPlayer.increaseGold(2);
+    		}
+    		if(guarantee.equals("Positive/Neutral") && potion.getPotionType().equals("NEGATIVE")){
+    			currentPlayer.reduceGold(1);
+    		}
+    		if(guarantee.equals("No Guarantee")){
+    			currentPlayer.increaseGold(1);
+    		}
+    		actionPerformed = true;
+    		
+    	} else {
+    		notifyPlayers("Action already performed or preconditions are not met");
+    	}
+    }
 }
 
 
