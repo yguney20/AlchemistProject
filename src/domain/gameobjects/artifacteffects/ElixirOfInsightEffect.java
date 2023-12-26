@@ -4,6 +4,7 @@ import java.util.List;
 
 import domain.Game;
 import domain.gameobjects.IngredientCard;
+import domain.gameobjects.Player;
 
 /**
  * ElixirOfInsightEffect is an implementation of the ArtifactEffect interface.
@@ -13,7 +14,7 @@ import domain.gameobjects.IngredientCard;
 public class ElixirOfInsightEffect implements ArtifactEffect {
 
     @Override
-    public void apply(Game game) {
+    public void apply(Game game, Player player) {
         if( game.getIngredientDeck().size() >= 3) {
             
         }

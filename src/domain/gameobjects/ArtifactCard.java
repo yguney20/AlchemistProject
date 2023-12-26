@@ -77,10 +77,13 @@ public class ArtifactCard {
         this.imagePath = imagePath;
     }
     
-    public void applyEffect(Game game) {
+    public void applyEffect(Game game, Player player){ 
         if(isUsed == false ){ 
-            effect.apply(game);
+            effect.apply(game, player);
             isUsed = true;
+            if (isOneTimeUse){
+                player.getArtifactCards().remove(this);
+            }
 
         } else if(isUsed == true && isOneTimeUse == false){
             throw new IllegalStateException("This one-per-round use artifact has already been used.");

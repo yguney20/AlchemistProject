@@ -16,6 +16,8 @@ import java.util.Objects;
      private double score;
  	 private static ArrayList<Player> playerList = new ArrayList<Player>();
  	 private ArrayList<Deduction> deductions = new ArrayList<Deduction>();
+     private boolean magicMortarActive = false;
+
  	 
  	 public class Deduction{
  		 int x;
@@ -53,6 +55,7 @@ import java.util.Objects;
 		} 		 
  		 
  	 }
+     
 
 
      public Player(String nickname, String avatar) {
@@ -151,43 +154,50 @@ import java.util.Objects;
 
 	public String getNickname() {
          return nickname;
-     }
+    }
 
-     public String getAvatar() {
+    public String getAvatar() {
          return avatar;
-     }
+    }
 
-     public int getGolds() {
+    public int getGolds() {
          return golds;
-     }
+    }
 
-     public void setGolds(int golds) {
-         this.golds = golds;
-     }
+    public void setGolds(int golds) {
+        this.golds = golds;
+    }
 
-     public List<IngredientCard> getIngredientInventory() {
-         return ingredientInventory;
-     }
+    public List<IngredientCard> getIngredientInventory() {
+        return ingredientInventory;
+    }
 
-     public List<PotionCard> getPotionInventory() {
-         return potionInventory;
-     }
+    public List<PotionCard> getPotionInventory() {
+        return potionInventory;
+    }
 
-     public int getSicknessLevel() {
-         return sicknessLevel;
-     }
+    public int getSicknessLevel() {
+        return sicknessLevel;
+    }
 
-     public void setSicknessLevel(int sicknessLevel) {
-         this.sicknessLevel = sicknessLevel;
-     }
+    public void setSicknessLevel(int sicknessLevel) {
+        this.sicknessLevel = sicknessLevel;
+    }
 
-     public int getReputationPoints() {
-         return reputationPoints;
-     }
+    public int getReputationPoints() {
+        return reputationPoints;
+    }
 
-     public void setReputationPoints(int reputationPoints) {
-         this.reputationPoints = reputationPoints;
-     }
+    public void setReputationPoints(int reputationPoints) {
+        this.reputationPoints = reputationPoints;
+    }
+    public boolean isMagicMortarActive() {
+        return magicMortarActive;
+    }
+    
+    public void setMagicMortarActive(boolean magicMortarActive) {
+        this.magicMortarActive = magicMortarActive;
+    }
 
      
      // Adds an artifact card to the player's collection.

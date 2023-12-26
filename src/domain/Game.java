@@ -2,6 +2,8 @@ package domain;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+
 
 import domain.gameobjects.*;
 
@@ -123,6 +125,7 @@ public class Game { //Singleton Pattern
                     currentTurn = 1;
                     currentRound++;
 
+
                     // Check if all rounds have been completed
                     if (currentRound > totalRounds) {
                         endGame();
@@ -136,6 +139,13 @@ public class Game { //Singleton Pattern
             gameState.setCurrentTurn(currentTurn);
             actionPerformed = false;
             System.out.println(gameState);
+    }
+
+    public void endRound() {
+        for (Player player : players) {
+            resetArtifactCards(player);
+        }
+        // Include any other end-of-round logic here
     }
     
     //end game method
@@ -228,7 +238,7 @@ public class Game { //Singleton Pattern
         	if(!actionPerformed) {
         		if(currentPlayer.getGolds() >= card.getGoldValue()) {
                     if (card.isImmadiate()){
-                        card.applyEffect(this);
+                        useArtifactCard(card, player);
                     } 
                     artifactDeck.remove(card);
                     player.addArtifactCard(card);
@@ -250,7 +260,7 @@ public class Game { //Singleton Pattern
         }
     }
     
-     public ArtifactCard getArtifactCardByPath(String path) {
+    public ArtifactCard getArtifactCardByPath(String path) {
         return artifactDeck.stream()
                 .filter(card -> card.getImagePath().equals(path))
                 .findFirst()
@@ -258,10 +268,15 @@ public class Game { //Singleton Pattern
     }
 
     public void useArtifactCard(ArtifactCard card, Player player){
-        card.applyEffect(this);
-        player.getArtifactCards().remove(card);
+        card.applyEffect(this, player);
+    }
 
-        
+    //Resets the each players artifact
+
+    private void resetArtifactCards(Player player) {
+        for (ArtifactCard card : player.getArtifactCards()) {
+            card.resetForNewRound();
+        }
     }
 
     //-----------------------Transmute Function ------------------------------------
@@ -294,12 +309,21 @@ public class Game { //Singleton Pattern
     			notifyPlayers("There are not enough ingredient cards.");
     		}
     		else {
-    			potionCard =  GameObjectFactory.getInstance().potionMaker(firstCard, secondCard);
-    			currentPlayer.getPotionInventory().add(potionCard);
-    			currentPlayer.getIngredientInventory().remove(firstCard);
-    			currentPlayer.getIngredientInventory().remove(secondCard);
-    			System.out.println(potionCard);
-    			
+                potionCard =  GameObjectFactory.getInstance().potionMaker(firstCard, secondCard);
+                currentPlayer.getPotionInventory().add(potionCard);
+                if (currentPlayer.isMagicMortarActive()){
+                    Random random = new Random();
+                    boolean keepFirstCard = random.nextBoolean(); // Randomly returns true or false
+                    if (keepFirstCard) {
+                         currentPlayer.getIngredientInventory().remove(secondCard);
+                    } else {
+                         currentPlayer.getIngredientInventory().remove(firstCard);
+                    }
+                } else {
+                    currentPlayer.getIngredientInventory().remove(firstCard);
+                    currentPlayer.getIngredientInventory().remove(secondCard);
+                    System.out.println(potionCard);
+                }
     			//for student
     			if(student) {
     				if(potionCard.getPotionType().equals("NEGATIVE")) {
