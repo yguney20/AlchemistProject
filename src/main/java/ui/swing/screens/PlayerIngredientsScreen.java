@@ -20,8 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import domain.gameobjects.IngredientCard;
 import domain.controllers.GameController;
+import domain.gameobjects.IngredientCard;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;

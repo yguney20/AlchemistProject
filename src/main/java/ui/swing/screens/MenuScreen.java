@@ -3,10 +3,10 @@ package ui.swing.screens;
 import javax.swing.*;
 
 import domain.Game;
-import domain.gameobjects.GameObjectFactory;
-import domain.gameobjects.Player;
 import domain.controllers.GameController;
 import domain.controllers.LoginController;
+import domain.gameobjects.GameObjectFactory;
+import domain.gameobjects.Player;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

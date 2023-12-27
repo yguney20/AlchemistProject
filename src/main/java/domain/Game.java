@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-
 import domain.gameobjects.*;
 
 
@@ -51,6 +50,10 @@ public class Game { //Singleton Pattern
         game_instance = null;
     }
 
+    public static void resetInstance(){
+        
+    }
+
     //----------------------Getters and Setters------------------------
 
 	public List<Player> getPlayers() {
@@ -88,6 +91,14 @@ public class Game { //Singleton Pattern
 	public boolean getActionPerformed() {
 		return actionPerformed;
 	}
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setActionPerformed(boolean actionPerformed) {
+        this.actionPerformed = actionPerformed;
+    }
 
     //-----------------------Game Related Functions--------------------------------------
 

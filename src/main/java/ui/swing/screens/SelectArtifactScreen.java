@@ -20,9 +20,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import domain.controllers.GameController;
 import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.Player;
-import domain.controllers.GameController;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;

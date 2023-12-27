@@ -1,7 +1,7 @@
 package domain.gameobjects;
 
-import domain.Game;
 import domain.gameobjects.artifacteffects.ArtifactEffect;
+import domain.Game;
 
 public class ArtifactCard {
 	

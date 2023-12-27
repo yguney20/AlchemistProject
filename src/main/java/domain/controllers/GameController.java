@@ -2,13 +2,16 @@ package domain.controllers;
 
 import java.util.List;
 import java.util.Map;
-import java.awt.Point;
-import java.util.HashMap;
+
 import domain.Game;
 import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.IngredientCard;
 import domain.gameobjects.Player;
 import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
+
+import java.awt.Point;
+import java.util.HashMap;
+
 import ui.swing.screens.BoardScreen;
 import ui.swing.screens.DeductionBoard;
 

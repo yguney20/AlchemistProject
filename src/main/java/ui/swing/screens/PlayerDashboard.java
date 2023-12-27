@@ -24,13 +24,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
+import domain.controllers.GameController;
+import domain.gameobjects.Player;
 import ui.swing.helper.SoundPlayer;
 import ui.swing.screens.BuyArtifactScreen;
 import ui.swing.screens.SelectArtifactScreen;
 import ui.swing.screens.TransmuteIngredientScreen;
-import domain.gameobjects.Player;
-import domain.controllers.GameController;
-
 import ui.swing.desingsystem.*;
 
 import java.awt.Cursor;

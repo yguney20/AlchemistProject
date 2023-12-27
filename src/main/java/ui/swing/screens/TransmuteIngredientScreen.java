@@ -1,7 +1,6 @@
 package ui.swing.screens;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -21,9 +20,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import domain.controllers.GameController;
 import domain.gameobjects.IngredientCard;
 import domain.gameobjects.Player;
-import domain.controllers.GameController;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -32,22 +31,15 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 
-public class SellPotionScreen extends JFrame implements ActionListener{
+public class TransmuteIngredientScreen extends JFrame  implements ActionListener{
 
 	private JPanel contentPane;
-	private JButton positiveGuaranteeButton;
-	private JButton noGuaranteeButton;
-	private JButton positiveOrNeutralButton;
-	private JButton sellPotionButton;
+	private JButton transmuteButton;
     private int initialX;
     private int initialY;
-    private JButton selectedGuaranteeButton;
-    private String guarantee;
-    private IngredientCard ingredientCard1;
-    private IngredientCard ingredientCard2;
+    private IngredientCard ingredientCard;
+    private JLabel selected;
     private GameController gameController = GameController.getInstance();
-    private JLabel ingredient1Label;
-    private JLabel ingredient2Label;
     private JLabel message;
     List<IngredientCard> ingredientCards;
     private JButton quitButton = new JButton("X");
@@ -56,12 +48,13 @@ public class SellPotionScreen extends JFrame implements ActionListener{
 	/**
 	 * Create the frame.
 	 */
-	public SellPotionScreen() {
-		setTitle("Sell a Potion");
+	public TransmuteIngredientScreen() {
+		setTitle("Transmute Ingredient");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 913, 293);
 		
 		try {
+
 	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/loginbackground.jpg"));
 	        contentPane = new JPanel() {
 	            @Override
@@ -98,11 +91,11 @@ public class SellPotionScreen extends JFrame implements ActionListener{
 	        });
 	        add(quitButton);
 
+	        
+	        addIngredients();
 	        addJButtons();
 	        addJLabels();
-	        addIngredients();
 	        addActionEvent();
-
 		
         } catch (IOException e) {
             e.printStackTrace();
@@ -134,7 +127,7 @@ public class SellPotionScreen extends JFrame implements ActionListener{
 		try {
 			
 			ingredientCards = gameController.getCurrentPlayer().getIngredientInventory(); 
-	        int x = 200;
+	        int x = 25;
 	        int y = 20;
 	        int buttonWidth = 139;
 	        int buttonHeight = 165;
@@ -174,44 +167,24 @@ public class SellPotionScreen extends JFrame implements ActionListener{
 	
 	public void addJButtons() {
 		
-		sellPotionButton = new JButton("Make Potion and Sell");
-		sellPotionButton.setBounds(391, 222, 200, 23);
-		contentPane.add(sellPotionButton);
-		
-		positiveGuaranteeButton = new JButton("Positive");
-		positiveGuaranteeButton.setBounds(10,20,150,25);
-		contentPane.add(positiveGuaranteeButton);
-		
-		positiveOrNeutralButton = new JButton("Positive or Neutral");
-		positiveOrNeutralButton.setBounds(10,60,150,25);
-		contentPane.add(positiveOrNeutralButton);
-		
-		noGuaranteeButton = new JButton("No Guarantee");
-		noGuaranteeButton.setBounds(10,100,150,25);
-		contentPane.add(noGuaranteeButton);
+		transmuteButton = new JButton("TRANSMUTE");
+		transmuteButton.setBounds(391, 222, 120, 23);
+		contentPane.add(transmuteButton);
 		
 	}
 	
 	public void addJLabels() {
 		
-        ingredient1Label = new JLabel("INGREDIENT 1");
-        ingredient1Label.setBackground(Color.RED);
-        ingredient1Label.setForeground(Color.WHITE); 
-        ingredient1Label.setFont(new Font("Arial", Font.BOLD, 15)); 
-        ingredient1Label.setOpaque(true);
-        ingredient1Label.setVisible(false);
-        contentPane.add(ingredient1Label);
+        selected = new JLabel("SELECTED");
+        selected.setBackground(Color.RED);
+        selected.setForeground(Color.WHITE); 
+        selected.setFont(new Font("Arial", Font.BOLD, 15)); 
+        selected.setOpaque(true);
+        selected.setVisible(false);
+        contentPane.add(selected);
         
-        ingredient2Label = new JLabel("INGREDIENT 2");
-        ingredient2Label.setBackground(Color.RED);
-        ingredient2Label.setForeground(Color.WHITE); 
-        ingredient2Label.setFont(new Font("Arial", Font.BOLD, 15)); 
-        ingredient2Label.setOpaque(true);
-        ingredient2Label.setVisible(false);
-        contentPane.add(ingredient2Label);
-        
-        message = new JLabel("Please select 2 ingredients and a guarantee");
-        message.setBounds(250, 0, 350, 30); // Increased height for better visibility
+        message = new JLabel("Please select an ingredient");
+        message.setBounds(350, 0, 200, 30); // Increased height for better visibility
         message.setForeground(Color.WHITE);
         message.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15)); // Larger and italic
         message.setBackground(new Color(0, 0, 0, 200)); // Semi-transparent black background
@@ -222,42 +195,25 @@ public class SellPotionScreen extends JFrame implements ActionListener{
 	
 	public void addActionEvent() {
 		//elixirOfInsight.addActionListener(this);
-		sellPotionButton.addActionListener(this);
-		positiveGuaranteeButton.addActionListener(this);
-		noGuaranteeButton.addActionListener(this);
-		positiveOrNeutralButton.addActionListener(this);
-		
+		transmuteButton.addActionListener(this);
 	}
 	
 	public void actionPerformed(ActionEvent event) {
-		
-		if(event.getSource()==positiveGuaranteeButton) {
-			handleGuaranteeSelection(positiveGuaranteeButton);
-			guarantee = "Positive";
-		}
-		if(event.getSource()==noGuaranteeButton) {
-			handleGuaranteeSelection(noGuaranteeButton);
-			guarantee = "No Guarantee";
-		}
-		if(event.getSource()==positiveOrNeutralButton) {
-			handleGuaranteeSelection(positiveOrNeutralButton);
-			guarantee = "Positive/Neutral";
-		}
-		if(event.getSource()==sellPotionButton) {
-			if(ingredientCard1!=null && ingredientCard2!=null && guarantee!=null) {
-				gameController.sellPotion(ingredientCard1, ingredientCard2, guarantee);
+
+		if(event.getSource()==transmuteButton) {
+			if(ingredientCard==null) {
+				message.setVisible(true);
+                contentPane.setComponentZOrder(message, 0);
+			} else {
+				Player currentPlayer = gameController.getCurrentPlayer();
+				gameController.transmuteIngredient(currentPlayer, ingredientCard);
 				this.setVisible(false);
 			}
-			else {
-				message.setVisible(true);
-			}
-		}
-		
 
+		}
 	}
 	
-		
-public void setImage(String path, JButton button) throws IOException {
+	public void setImage(String path, JButton button) throws IOException {
 		
 		// Read the original image
         BufferedImage originalImage = ImageIO.read(getClass().getResource(path));
@@ -278,76 +234,24 @@ public void setImage(String path, JButton button) throws IOException {
         button.setIcon(new ImageIcon(scaledImage));
         
 	}
-
-	private void handleGuaranteeSelection(JButton button) {
-		// Revert the color of the previously selected guarantee button
-		if (selectedGuaranteeButton != null) {
-			selectedGuaranteeButton.setBackground(null);
-		}	
-
-		// Set the color of the newly selected guarantee button
-		button.setBackground(Color.GREEN);
-		selectedGuaranteeButton = button;
-	}
 	
-	 private void handleIngredientSelection(JButton button) {            
-	    	IngredientCard selectedIngredientCard = null;
-	        for (IngredientCard card : ingredientCards) {
-	            if (button.getText().equals(card.getName())) {
-	                selectedIngredientCard = card;
-	                break;
-	            }
-	        }
+    private void handleIngredientSelection(JButton button) {            
+    	IngredientCard selectedIngredientCard = null;
+        for (IngredientCard card : ingredientCards) {
+            if (button.getText().equals(card.getName())) {
+                selectedIngredientCard = card;
+                break;
+            }
+        }
 
-	        if (selectedIngredientCard != null) {
-	        	if(ingredientCard1 == null && ingredientCard2 == null) {
-	        		ingredientCard1 = selectedIngredientCard;
-		            ingredient1Label.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
-		            ingredient1Label.setVisible(true);
-		            contentPane.setComponentZOrder(ingredient1Label, 0);
-	        	}
-	        	else if(ingredientCard1 != null && ingredientCard2 == null) {
-	        		if(ingredientCard1.equals(selectedIngredientCard)) {
-	        			ingredientCard1 = null;
-	        			ingredient1Label.setVisible(false);
-	        		} else {
-	        			ingredientCard2 = selectedIngredientCard;
-			            ingredient2Label.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
-			            ingredient2Label.setVisible(true);
-			            contentPane.setComponentZOrder(ingredient2Label, 0);
-	        		}
-	        	}
-	        	else if(ingredientCard1 == null && ingredientCard2 != null) {
-	        		if(ingredientCard2.equals(selectedIngredientCard)) {
-	        			ingredientCard2 = null;
-	        			ingredient2Label.setVisible(false);
-	        		} else {
-	        			ingredientCard1 = selectedIngredientCard;
-			            ingredient1Label.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
-			            ingredient1Label.setVisible(true);
-			            contentPane.setComponentZOrder(ingredient1Label, 0);
-	        		}
-	        	}
-	        	else if(ingredientCard1 != null && ingredientCard2 != null) {
-	        		if(ingredientCard1.equals(selectedIngredientCard)) {
-	        			ingredientCard1 = null;
-	        			ingredient1Label.setVisible(false);	        			
-	        		}
-	        		else if(ingredientCard2.equals(selectedIngredientCard)) {
-	        			ingredientCard2 = null;
-	        			ingredient2Label.setVisible(false);	        			
-	        		}
-	        		else {
-	        			ingredientCard2 = selectedIngredientCard;
-			            ingredient2Label.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
-			            ingredient2Label.setVisible(true);
-			            contentPane.setComponentZOrder(ingredient2Label, 0);
-	        		}
+        if (selectedIngredientCard != null) {
+            ingredientCard = selectedIngredientCard;
 
-	        	}
-
-	        }
-	    }
-	
+            // Set the selected label position based on the clicked button
+            selected.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
+            selected.setVisible(true);
+            contentPane.setComponentZOrder(selected, 0);
+        }
+    }
 }
 
