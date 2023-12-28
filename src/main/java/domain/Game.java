@@ -107,23 +107,40 @@ public class Game { //Singleton Pattern
     //-----------------------Game Related Functions--------------------------------------
 
     public void initializeGame() {
-    	
-    	Collections.shuffle(players);
-    	 
-    	for (Player p : players) {
-    		p.setGolds(10);
-    		IngredientCard i1= drawIngredientCard();
-    		IngredientCard i2= drawIngredientCard();
-    		p.getIngredientInventory().add(i1);
-    		p.getIngredientInventory().add(i2);
-    	}
-    	
-        currentPlayer = players.get(0);
+        // Null check for players
+        if (players == null || players.isEmpty()) {
+            throw new IllegalStateException("Player list is null or empty.");
+        }
+
+        // Null check for ingredient deck
+        if (ingredientDeck == null || ingredientDeck.isEmpty()) {
+            throw new IllegalStateException("Ingredient deck is null or empty.");
+        }
         
+        // Check the number of players
+        int numPlayers = players.size();
+        if (numPlayers < 2 || numPlayers > 4) {
+            throw new IllegalStateException("Invalid number of players. The game supports 2 to 4 players.");
+        }
+
+        // Shuffle the players
+        Collections.shuffle(players);
+
+        for (Player p : players) {
+            p.setGolds(10); // give 10 golds to each player
+            // give 2 ingredient cards to each player
+            IngredientCard i1 = drawIngredientCard();
+            IngredientCard i2 = drawIngredientCard();
+            p.getIngredientInventory().add(i1);
+            p.getIngredientInventory().add(i2);
+        }
+
+        currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
+
         gameState.setCurrentPlayer(currentPlayer);
         System.out.println(gameState);
-      
     }
+
     
     public void updateState() {
     	
@@ -148,10 +165,12 @@ public class Game { //Singleton Pattern
                     }
                 }
             }
-
+            
+            // update the game state attributes
             gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentRound(currentRound);
             gameState.setCurrentTurn(currentTurn);
+            // set actionPerformed to false since we moved on to the next player
             actionPerformed = false;
             System.out.println(gameState);
     }
@@ -180,8 +199,7 @@ public class Game { //Singleton Pattern
         System.out.println("Game Over! Winner: " + winner.getNickname() + " with a score of " + maxScore);
     }
 
-	//Takes a player and calculates the score (Bunu belki degistirebiliriz 
-    // ya t�m playerlari hesaplar birinciyi doner gibi gibi... )
+	//Takes a player and calculates the score 
     public double calculateFinalScore(Player currentPlayer) {
         int goldsForScore = currentPlayer.getGolds();
         goldsForScore += currentPlayer.getArtifactCards().size() * 2;
@@ -213,7 +231,7 @@ public class Game { //Singleton Pattern
     }
     
     private boolean isGameOver() {
-        return currentRound > totalRounds;  // You can adjust the condition based on your game rules
+        return currentRound > totalRounds; 
     }
 
     //----------------------Forage for Ingredient Functions-------------------------------
