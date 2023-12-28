@@ -150,4 +150,30 @@ public class GameTest {
         assertThrows(IllegalStateException.class, () -> game.initializeGame());
     }
 
+    @Test
+    @DisplayName("Test shuffling players statistically over multiple iterations")
+    public void testPlayersAreShuffledStatistically() {
+        List<Player> players = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            players.add(Mockito.mock(Player.class));
+        }
+        
+        game.setPlayers(players);
+        
+        boolean orderChanged = false;
+        List<Player> originalOrder = new ArrayList<>(players);
+        
+        // Repeat the shuffle and check several times
+        for (int i = 0; i < 100; i++) {
+            game.initializeGame();
+            if (!originalOrder.equals(game.getPlayers())) {
+                orderChanged = true;
+                break;
+            }
+            // Reset the players list to the original order for the next iteration
+            game.setPlayers(new ArrayList<>(originalOrder));
+        }
+
+        assertTrue(orderChanged, "The order of players should change after shuffling over multiple iterations");
+    }
 }
