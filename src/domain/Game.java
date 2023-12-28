@@ -183,7 +183,19 @@ public class Game { //Singleton Pattern
         }
     }
 
-    public void resumeGame() {
+    public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public void setActionPerformed(boolean actionPerformed) {
+		this.actionPerformed = actionPerformed;
+	}
+
+	public void resumeGame() {
         if (gameState.isPaused()) {
             gameState.setPaused(false);
             // Notify all players
