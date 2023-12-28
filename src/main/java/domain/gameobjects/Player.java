@@ -11,7 +11,8 @@ import java.util.Objects;
      private List<IngredientCard> ingredientInventory;
      private List<PotionCard> potionInventory;
      private List<ArtifactCard> artifactCards;
-     private int sicknessLevel;
+     private List<PublicationCard> publicationCards;
+   	 private int sicknessLevel;
      private int reputationPoints;
      private double score;
  	 private static ArrayList<Player> playerList = new ArrayList<Player>();
@@ -191,6 +192,15 @@ import java.util.Objects;
     public void setReputationPoints(int reputationPoints) {
         this.reputationPoints = reputationPoints;
     }
+    
+    public List<PublicationCard> getPublicationCards() {
+		return publicationCards;
+	}
+
+	public void setPublicationCards(List<PublicationCard> publicationCards) {
+		this.publicationCards = publicationCards;
+	}
+	
     public boolean isMagicMortarActive() {
         return magicMortarActive;
     }
@@ -199,7 +209,6 @@ import java.util.Objects;
         this.magicMortarActive = magicMortarActive;
     }
 
-     
      // Adds an artifact card to the player's collection.
     public void addArtifactCard(ArtifactCard card) {
         this.artifactCards.add(card);

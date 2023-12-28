@@ -445,6 +445,37 @@ public class Game { //Singleton Pattern
     		notifyPlayers("Action already performed or preconditions are not met");
     	}
     }
+    
+    //----------------------Publish Theory Functions-------------------------------
+    
+    public Theory findTheorybyIngredient(IngredientCard ingredient) {
+    	for(Theory t : Theory.getTheoryList()) {
+    		if(t.getIngredient().equals(ingredient)) {
+    			return t;
+    		}
+    	}
+    	return null;    	
+    }
+    
+    public void publishTheory(IngredientCard ingredient, Molecule molecule) {
+    	if(!actionPerformed && currentPlayer.getGolds()>=1 && currentRound>=2) {
+    		if(findTheorybyIngredient(ingredient)==null) {
+    			
+    			Theory theory = new Theory(ingredient, molecule);
+    			PublicationCard pcard = new PublicationCard(currentPlayer, theory);
+    			currentPlayer.increaseReputation(1);
+    			currentPlayer.reduceGold(1);
+    			actionPerformed = true;
+    			
+    		} else {
+        		notifyPlayers("A theory already published about this ingredient");
+    		}
+    		   		
+    	} else {
+    		notifyPlayers("Action already performed or preconditions are not met");
+    	}
+    }
+
 }
 
 

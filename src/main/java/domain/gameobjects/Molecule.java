@@ -11,6 +11,7 @@ public class Molecule {
     private Sign greenComponentSign;
     private Size blueComponentSize;
     private Sign blueComponentSign;
+	private String imagePath;
 
     public Molecule(Size redComponentSize, Sign redComponentSign, 
             Size greenComponentSize, Sign greenComponentSign, 
@@ -58,4 +59,14 @@ public class Molecule {
     public Sign getBlueComponentSign() {
     	return blueComponentSign;
     }
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+    
+    
 }

@@ -5,22 +5,31 @@ public class PotionCard {
 	
 
 			private String potionName;
-		    private String potionType;
-
-		    		    
+		    private String potionType;		    
 		    private String description;
+		    private String imagePath;
 		    
-		    public PotionCard(String potionName, String potionType, String description) {
+		    public PotionCard(String potionName, String potionType, String description, String imagePath) {
 		        this.potionName = potionName;
-		        this.potionType = potionType;
-		        
+		        this.potionType = potionType;		        
 		        this.description = description;
+		        this.imagePath = imagePath;
 		        
 
 		    }
 		    
 		    
-		    public String getPotionName() {
+		    public String getImagePath() {
+				return imagePath;
+			}
+
+
+			public void setImagePath(String imagePath) {
+				this.imagePath = imagePath;
+			}
+
+
+			public String getPotionName() {
 		        return potionName;
 		    }
 

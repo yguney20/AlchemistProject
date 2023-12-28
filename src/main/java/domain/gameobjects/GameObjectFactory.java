@@ -13,6 +13,14 @@ import domain.gameobjects.artifacteffects.MagicMortarEffect;
 public class GameObjectFactory { // Singleton Patterns
 	
 	private static GameObjectFactory instance;
+	private static String redPositivePath;
+	private static String redNegativePath;
+	private static String bluePositivePath;
+	private static String blueNegativePath;
+	private static String greenPositivePath;
+	private static String greenNegativePath;
+	private static String neutralPath;
+
 		
     //constructor should be private in Singleton
     private GameObjectFactory() {
@@ -113,20 +121,37 @@ public class GameObjectFactory { // Singleton Patterns
         				firstIngredient.getMolecule().getBlueComponentSize(), secondIngredient.getMolecule().getBlueComponentSize()))
         			&& (areSameSizeAndDifferentSign(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
         	                firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize()))) {
-            potionCard = new PotionCard("Neutral Potion", "Neutral", "Description for Neutral Potion");
+            potionCard = new PotionCard("Neutral Potion", "Neutral", "Description for Neutral Potion", neutralPath);
             
         } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getRedComponentSign(), secondIngredient.getMolecule().getRedComponentSign(),
                 firstIngredient.getMolecule().getRedComponentSize(), secondIngredient.getMolecule().getRedComponentSize())) {
             String redSignString = firstIngredient.getMolecule().getRedComponentSign().toString();
-            potionCard = new PotionCard("Red Potion", redSignString, "Description for Red Potion");
+            if(redSignString.equals("POSITIVE")) {
+                potionCard = new PotionCard("Red Potion", "POSITIVE", "Red Positive", redPositivePath);
+
+            } else {
+                potionCard = new PotionCard("Red Potion","NEGATIVE", "Red Negative", redNegativePath);
+
+            }
         } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getBlueComponentSign(), secondIngredient.getMolecule().getBlueComponentSign(),
                 firstIngredient.getMolecule().getBlueComponentSize(), secondIngredient.getMolecule().getBlueComponentSize())) {
             String blueSignString = firstIngredient.getMolecule().getBlueComponentSign().toString();
-            potionCard = new PotionCard("Blue Potion", blueSignString, "Description for Blue Potion");
+            if(blueSignString.equals("POSITIVE")) {
+                potionCard = new PotionCard("Blue Potion", "POSITIVE", "Blue Positive", bluePositivePath);
+
+            } else {
+                potionCard = new PotionCard("Blue Potion","NEGATIVE", "Blue Negative", blueNegativePath);
+            }
+            
         } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
                 firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize())) {
             String greenSignString = firstIngredient.getMolecule().getGreenComponentSign().toString();
-            potionCard = new PotionCard("Green Potion", greenSignString, "Description for Green Potion");
+            if(greenSignString.equals("POSITIVE")) {
+                potionCard = new PotionCard("Green Potion", "POSITIVE", "Green Positive", greenPositivePath);
+
+            } else {
+                potionCard = new PotionCard("Green Potion","NEGATIVE", "Green Negative", greenNegativePath);
+            }            
         }
 
         return potionCard;
