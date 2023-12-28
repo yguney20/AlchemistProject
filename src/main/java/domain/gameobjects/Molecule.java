@@ -15,13 +15,14 @@ public class Molecule {
 
     public Molecule(Size redComponentSize, Sign redComponentSign, 
             Size greenComponentSize, Sign greenComponentSign, 
-            Size blueComponentSize, Sign blueComponentSign) {
+            Size blueComponentSize, Sign blueComponentSign, String imagePath) {
     	this.redComponentSize = redComponentSize;
     	this.redComponentSign = redComponentSign;
     	this.greenComponentSize = greenComponentSize;
     	this.greenComponentSign = greenComponentSign;
     	this.blueComponentSize = blueComponentSize;
     	this.blueComponentSign = blueComponentSign;
+    	this.imagePath = imagePath;
     }
 
     @Override

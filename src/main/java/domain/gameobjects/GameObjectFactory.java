@@ -13,6 +13,7 @@ import domain.gameobjects.artifacteffects.MagicMortarEffect;
 public class GameObjectFactory { // Singleton Patterns
 	
 	private static GameObjectFactory instance;
+	
 	private static String redPositivePath;
 	private static String redNegativePath;
 	private static String bluePositivePath;
@@ -20,6 +21,16 @@ public class GameObjectFactory { // Singleton Patterns
 	private static String greenPositivePath;
 	private static String greenNegativePath;
 	private static String neutralPath;
+	
+	private static String molecule1image = "/ui/swing/resources/images/molecules/molecule1.png";
+	private static String molecule2image = "/ui/swing/resources/images/molecules/molecule2.png";
+	private static String molecule3image = "/ui/swing/resources/images/molecules/molecule3.png";
+	private static String molecule4image = "/ui/swing/resources/images/molecules/molecule4.png";
+	private static String molecule5image = "/ui/swing/resources/images/molecules/molecule5.png";
+	private static String molecule6image = "/ui/swing/resources/images/molecules/molecule6.png";
+	private static String molecule7image = "/ui/swing/resources/images/molecules/molecule7.png";
+	private static String molecule8image = "/ui/swing/resources/images/molecules/molecule8.png";
+
 
 		
     //constructor should be private in Singleton
@@ -47,14 +58,14 @@ public class GameObjectFactory { // Singleton Patterns
     public static List<Molecule> createMoleculeList() {
         List<Molecule> molecules = new ArrayList<>();
 
-        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE));
-        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE));
-        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE));
-        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE));
-        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE));
-        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE));
-        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE));
-        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE));
+        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, molecule4image ));
+        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, molecule3image));
+        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, molecule7image));
+        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, molecule5image));
+        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, molecule1image));
+        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, molecule6image));
+        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, molecule2image));
+        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, molecule8image));
 
         return molecules;
     }
