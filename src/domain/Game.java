@@ -23,6 +23,7 @@ public class Game { //Singleton Pattern
     private GameState gameState;
     Player winner = null;
     private boolean actionPerformed;
+    private boolean gameOver = false;
     
     //constructor should be private in Singleton
     private Game() {
@@ -149,7 +150,7 @@ public class Game { //Singleton Pattern
     }
     
     //end game method
-    private void endGame() {
+    public void endGame() {
     	double maxScore = Double.MIN_VALUE;
 
         for (Player player : players) {
@@ -163,6 +164,7 @@ public class Game { //Singleton Pattern
         }
 
         System.out.println("Game Over! Winner: " + winner.getNickname() + " with a score of " + maxScore);
+        gameOver = true;
     }
 
 	//Takes a player and calculates the score (Bunu belki degistirebiliriz 
@@ -209,8 +211,8 @@ public class Game { //Singleton Pattern
         System.out.println(message);
     }
     
-    private boolean isGameOver() {
-        return currentRound > totalRounds;  // You can adjust the condition based on your game rules
+    public boolean isGameOver() {
+    	return gameOver;  // You can adjust the condition based on your game rules
     }
 
     //----------------------Forage for Ingredient Functions-------------------------------
@@ -225,7 +227,7 @@ public class Game { //Singleton Pattern
     }
     
     public void forageForIngredient(Player p) {
-    	if(!actionPerformed) {
+    	if(!actionPerformed && !isGameOver()) {
         	if (!ingredientDeck.isEmpty()) {
         		IngredientCard selectedCard = drawIngredientCard();
         		p.getIngredientInventory().add(selectedCard);
@@ -236,7 +238,7 @@ public class Game { //Singleton Pattern
                 notifyPlayers("The ingredient deck is empty.");
         	}
     	} else {
-            notifyPlayers("Action already performed.");
+            notifyPlayers("Action already performed or Game Over.");
 
     	}
 

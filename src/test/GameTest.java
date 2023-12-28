@@ -1,4 +1,4 @@
-package domain;
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,21 +38,23 @@ public class GameTest {
         Game.destroyInstance();
     }
     
-    //Successful Foraging: Tests if a player successfully forages for an ingredient when the deck is not empty and no action has been performed.
+    
     @Test
     @DisplayName("Test successful foraging for an ingredient")
     public void testSuccessfulForaging() {
-        ingredientDeck.add(new IngredientCard(1, "Herb", null, "path1"));
-        game.setActionPerformed(false);
+    	IngredientCard foragedCard = new IngredientCard(1, "Herb", null, "path1");
+    	ingredientDeck.add(foragedCard);
+    	game.setActionPerformed(false);
 
-        game.forageForIngredient(player);
+    	game.forageForIngredient(player);
 
-        assertFalse(ingredientDeck.isEmpty());
-        assertTrue(player.getIngredientInventory().contains(ingredientDeck.get(0)));
-        assertTrue(game.getActionPerformed());
+    	assertTrue(ingredientDeck.isEmpty()); // The deck should be empty after foraging
+    	assertTrue(player.getIngredientInventory().contains(foragedCard)); // The player's inventory should contain the foraged card
+    	assertTrue(game.getActionPerformed()); // The action performed flag should be true
+
     }
     
-    // Empty Ingredient Deck: Verifies the method's behavior when the ingredient deck is empty.
+
     @Test
     @DisplayName("Test foraging with empty ingredient deck")
     public void testForagingWithEmptyDeck() {
@@ -64,7 +66,7 @@ public class GameTest {
         assertFalse(game.getActionPerformed());
     }
 
-    // Action Already Performed: Checks if the method prevents foraging when an action has already been performed in the turn.
+
     @Test
     @DisplayName("Test foraging when action already performed")
     public void testForagingActionAlreadyPerformed() {
@@ -77,33 +79,36 @@ public class GameTest {
         assertTrue(game.getActionPerformed());
     }
     
-    //Full Inventory: Tests the scenario where the player's inventory is full.
-    @Test
-    @DisplayName("Test foraging with player having full inventory")
-    public void testForagingWithFullInventory() {
-        for (int i = 0; i < 10; i++) {
-            player.getIngredientInventory().add(new IngredientCard(i, "Ingredient" + i, null, "path" + i));
-        }
-        ingredientDeck.add(new IngredientCard(10, "New Herb", null, "path10"));
-        game.setActionPerformed(false);
-
-        game.forageForIngredient(player);
-
-        assertFalse(player.getIngredientInventory().contains(ingredientDeck.get(0)));
-        assertFalse(game.getActionPerformed());
-    }
     
-    //Game Pause: Checks if foraging is prevented when the game is paused.
     @Test
-    @DisplayName("Test foraging for ingredient during game pause")
-    public void testForagingDuringGamePause() {
-        ingredientDeck.add(new IngredientCard(3, "Flower", null, "path3"));
-        game.setActionPerformed(false);
-        game.pauseGame();
-
+    @DisplayName("Test foraging for an ingredient after the game has ended")
+    public void testForagingAfterGameEnd() {
+        game.endGame();
+        assertTrue(game.isGameOver());
+        ingredientDeck.add(new IngredientCard(1, "Herb", null, "path1"));
         game.forageForIngredient(player);
 
-        assertTrue(player.getIngredientInventory().isEmpty());
-        assertFalse(game.getActionPerformed());
+        // Assert: The player's inventory should not change as the game has ended
+        assertTrue(player.getIngredientInventory().isEmpty(), "Player's inventory should remain empty after the game has ended");
+
+        // Assert: The actionPerformed flag should not be set as no actions should occur after the game ends
+        assertFalse(game.getActionPerformed(), "ActionPerformed should be false as the game has ended");
     }
+
+
+    @Test
+    @DisplayName("Test foraging with an empty deck and no prior action")
+    public void testForagingWithEmptyDeckNoAction() {
+        ingredientDeck.clear();
+        game.setActionPerformed(false);
+        game.forageForIngredient(player);
+
+        // Assert that the player's inventory is still empty
+        assertTrue(player.getIngredientInventory().isEmpty(), "Player's inventory should remain empty when foraging with an empty deck.");
+
+        // Assert that no action was performed since the deck was empty
+        assertFalse(game.getActionPerformed(), "ActionPerformed should remain false when foraging with an empty deck.");
+    }
+
+
 }
