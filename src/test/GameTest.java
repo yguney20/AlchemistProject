@@ -9,6 +9,8 @@ import java.util.List;
 import domain.Game;
 import domain.gameobjects.*;
 
+//Glass-Box Testing 
+
 public class GameTest {
     private Game game;
     private Player player;
