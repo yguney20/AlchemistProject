@@ -81,6 +81,27 @@ public class GameTest {
     
     //--------------tests for initialize game----------------------
     
+    /**
+     * Method: initializeGame()
+     * Initializes the game by providing initial resources to players.
+     * 
+     * REQUIRES: 
+     * The players list and ingredient deck must be non-null and not empty.
+     * The number of players must be between 2 and 4 (inclusive).
+     * 
+     * 
+     * MODIFIES: 
+     * The player objects by setting their gold and ingredient inventory.
+     * The game state by shuffling players and setting the current player.
+     * 
+     * 
+     * EFFECTS:
+     * Players receive 10 gold each.
+     * Each player is given 2 ingredient cards drawn from the ingredient deck.
+     * The players are shuffled, and the current player is set to the first player in the shuffled list.
+     *
+     */
+    
     @Test
     @DisplayName("Test initializing the game with a null player list")
     public void testInitializeGameWithNullPlayerList() {
