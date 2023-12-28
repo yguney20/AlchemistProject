@@ -96,6 +96,10 @@ public class Game { //Singleton Pattern
         return currentPlayer;
     }
 
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
     public void setActionPerformed(boolean actionPerformed) {
         this.actionPerformed = actionPerformed;
     }
@@ -244,7 +248,7 @@ public class Game { //Singleton Pattern
     //-----------------------Artifact Related Functions ------------------------------------
     
     // Additional logic will be added (Not finished)
-    public void buyArtifactCard(ArtifactCard card, Player player) {
+   public void buyArtifactCard(ArtifactCard card, Player player) {
         try {
         	if(!actionPerformed) {
         		if(currentPlayer.getGolds() >= card.getGoldValue()) {
@@ -269,7 +273,7 @@ public class Game { //Singleton Pattern
             // Handle the case where a one-time use card is attempted to be used again
             System.out.println(e.getMessage());
         }
-    }
+    } 
     
     public ArtifactCard getArtifactCardByPath(String path) {
         return artifactDeck.stream()
