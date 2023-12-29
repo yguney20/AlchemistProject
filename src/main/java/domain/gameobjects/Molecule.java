@@ -1,5 +1,6 @@
 package domain.gameobjects;
 
+import java.util.ArrayList;
 
 public class Molecule {
 	
@@ -12,6 +13,8 @@ public class Molecule {
     private Size blueComponentSize;
     private Sign blueComponentSign;
 	private String imagePath;
+	private static ArrayList<Molecule> moleculeList = new ArrayList<Molecule>();
+
 
     public Molecule(Size redComponentSize, Sign redComponentSign, 
             Size greenComponentSize, Sign greenComponentSign, 
@@ -23,9 +26,21 @@ public class Molecule {
     	this.blueComponentSize = blueComponentSize;
     	this.blueComponentSign = blueComponentSign;
     	this.imagePath = imagePath;
+    	moleculeList.add(this);
     }
 
-    @Override
+    
+    public static ArrayList<Molecule> getMoleculeList() {
+		return moleculeList;
+	}
+
+
+	public static void setMoleculeList(ArrayList<Molecule> moleculeList) {
+		Molecule.moleculeList = moleculeList;
+	}
+
+
+	@Override
     public String toString() {
         return "Molecule{" +
                 "redComponentSize=" + redComponentSize +

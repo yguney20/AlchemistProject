@@ -69,12 +69,9 @@ public class GameObjectFactory { // Singleton Patterns
 
         return molecules;
     }
-
-    /*Creates a new ingredient list for the given molecule list. 
-    *Each ingredient will have a different molecule for each Game*/
-    public List<IngredientCard> createIngredientDeck() {
-    	List<Molecule> moleculeList = createMoleculeList();
-        List<IngredientCard> ingredients = new ArrayList<>();
+    
+    public Map<String, String> createIngredientNameAndPathList(){
+    	
         Map<String, String> ingredientImages = new HashMap<>();
 
         ingredientImages.put("Moon Blossom", "/ui/swing/resources/images/ingredientCards/Moon Blossom.png");
@@ -85,7 +82,16 @@ public class GameObjectFactory { // Singleton Patterns
         ingredientImages.put("Verdant Fern", "/ui/swing/resources/images/ingredientCards/Verdant Fern.png");
         ingredientImages.put("Dandelion Root", "/ui/swing/resources/images/ingredientCards/Dandelion Root.png");
         ingredientImages.put("Dragon Powder", "/ui/swing/resources/images/ingredientCards/Dragon Powder.png");
+        
+        return ingredientImages;
+    }
 
+    /*Creates a new ingredient list for the given molecule list. 
+    *Each ingredient will have a different molecule for each Game*/
+    public List<IngredientCard> createIngredientDeck() {
+    	List<Molecule> moleculeList = createMoleculeList();
+        List<IngredientCard> ingredients = new ArrayList<>();
+        Map<String, String> ingredientImages = createIngredientNameAndPathList();
 
         List<String> ingredientNames = new ArrayList<> (List.of("Moon Blossom", "Crystalite", "Shimmer Fungus", "Golden Mold",
                 "Starlight Nectar", "Verdant Fern", "Dandelion Root", "Dragon Powder"));

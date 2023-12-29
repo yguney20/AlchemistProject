@@ -1,20 +1,33 @@
 package domain.gameobjects;
 
+import java.util.ArrayList;
+
 public class IngredientCard {
 	
 	private int cardId;
 	private String name;
     private Molecule molecule;
 	private String imagePath;
+	private static ArrayList<IngredientCard> ingredientList = new ArrayList<IngredientCard>();
+
 
 	public IngredientCard(int cardId, String name, Molecule molecule, String imagePath) {
 	    this.cardId = cardId;
 	    this.name = name;
 	    this.molecule = molecule;
 		this.imagePath = imagePath;
+		ingredientList.add(this);
 	}
 	
-    @Override
+    public static ArrayList<IngredientCard> getIngredientList() {
+		return ingredientList;
+	}
+
+	public static void setIngredientList(ArrayList<IngredientCard> ingredientList) {
+		IngredientCard.ingredientList = ingredientList;
+	}
+
+	@Override
     public String toString() {
         return "IngredientCard{" +
                 "\n\tcardId=" + cardId +
