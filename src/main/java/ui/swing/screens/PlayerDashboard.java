@@ -379,12 +379,12 @@ public class PlayerDashboard extends JFrame {
             }
             @Override
         	public void mouseClicked(MouseEvent e) {
-            	//if(gameController.getCurrentRound()>=2) {
+            	if(gameController.getCurrentRound()>=2) {
             		PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
         			publishTheoryScreen.display();
         			PlayerDashboard.this.setVisible(false);
         			musicPlayer.stopSound();
-            	//}
+            	}
         			
         	}
         });
