@@ -14,13 +14,13 @@ public class GameObjectFactory { // Singleton Patterns
 	
 	private static GameObjectFactory instance;
 	
-	private static String redPositivePath;
-	private static String redNegativePath;
-	private static String bluePositivePath;
-	private static String blueNegativePath;
-	private static String greenPositivePath;
-	private static String greenNegativePath;
-	private static String neutralPath;
+	private static String redPositivePath = "/ui/swing/resources/images/potions/red+.png";
+	private static String redNegativePath = "/ui/swing/resources/images/potions/red-.png";
+	private static String bluePositivePath = "/ui/swing/resources/images/potions/blue+.png";
+	private static String blueNegativePath = "/ui/swing/resources/images/potions/blue-.png";
+	private static String greenPositivePath = "/ui/swing/resources/images/potions/green+.png";
+	private static String greenNegativePath = "/ui/swing/resources/images/potions/green-.png";
+	private static String neutralPath = "/ui/swing/resources/images/potions/neutral.png";
 	
 	private static String molecule1image = "/ui/swing/resources/images/molecules/molecule1.png";
 	private static String molecule2image = "/ui/swing/resources/images/molecules/molecule2.png";

@@ -48,7 +48,6 @@ public class PublishTheoryScreen extends JFrame implements ActionListener{
     List<IngredientCard> ingredientCards = IngredientCard.getIngredientList();
     List<Molecule> molecules = Molecule.getMoleculeList();
     private JButton quitButton = new JButton("X");
-    Game game = Game.getInstance();
     
 
 	/**
@@ -271,7 +270,7 @@ public class PublishTheoryScreen extends JFrame implements ActionListener{
                 contentPane.setComponentZOrder(message, 0);
 			} else {
 				gameController.publishTheory(ingredientCard, molecule);
-				if(!game.getActionPerformed()) {
+				if(!gameController.getActionPerformed()) {
 					message.setVisible(false);
 					message2.setVisible(true);
 				} else {

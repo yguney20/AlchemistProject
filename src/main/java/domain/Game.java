@@ -335,14 +335,14 @@ public class Game { //Singleton Pattern
     
     //-----------------------Make Experiment Function ------------------------------------
 
-    public void makeExperiment(IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
+    public PotionCard makeExperiment(IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
     	if(!actionPerformed) {
-    		PotionCard potionCard = null;
     		if(currentPlayer.getIngredientInventory().size()< 2) {
     			notifyPlayers("There are not enough ingredient cards.");
+    			return null;
     		}
     		else {
-                potionCard =  GameObjectFactory.getInstance().potionMaker(firstCard, secondCard);
+                PotionCard potionCard =  GameObjectFactory.getInstance().potionMaker(firstCard, secondCard);
                 currentPlayer.getPotionInventory().add(potionCard);
                 if (currentPlayer.isMagicMortarActive()){
                     Random random = new Random();
@@ -373,11 +373,13 @@ public class Game { //Singleton Pattern
     				}
     			}
     			actionPerformed = true;
+    			return potionCard;
     		}
     		//
     	}
     	else {
     		notifyPlayers("Action already performed.");
+    		return null;
     	}	
     }
 
