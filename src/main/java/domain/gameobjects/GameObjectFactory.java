@@ -13,6 +13,25 @@ import domain.gameobjects.artifacteffects.MagicMortarEffect;
 public class GameObjectFactory { // Singleton Patterns
 	
 	private static GameObjectFactory instance;
+	
+	private static String redPositivePath = "/ui/swing/resources/images/potions/red+.png";
+	private static String redNegativePath = "/ui/swing/resources/images/potions/red-.png";
+	private static String bluePositivePath = "/ui/swing/resources/images/potions/blue+.png";
+	private static String blueNegativePath = "/ui/swing/resources/images/potions/blue-.png";
+	private static String greenPositivePath = "/ui/swing/resources/images/potions/green+.png";
+	private static String greenNegativePath = "/ui/swing/resources/images/potions/green-.png";
+	private static String neutralPath = "/ui/swing/resources/images/potions/neutral.png";
+	
+	private static String molecule1image = "/ui/swing/resources/images/molecules/molecule1.png";
+	private static String molecule2image = "/ui/swing/resources/images/molecules/molecule2.png";
+	private static String molecule3image = "/ui/swing/resources/images/molecules/molecule3.png";
+	private static String molecule4image = "/ui/swing/resources/images/molecules/molecule4.png";
+	private static String molecule5image = "/ui/swing/resources/images/molecules/molecule5.png";
+	private static String molecule6image = "/ui/swing/resources/images/molecules/molecule6.png";
+	private static String molecule7image = "/ui/swing/resources/images/molecules/molecule7.png";
+	private static String molecule8image = "/ui/swing/resources/images/molecules/molecule8.png";
+
+
 		
     //constructor should be private in Singleton
     private GameObjectFactory() {
@@ -39,23 +58,20 @@ public class GameObjectFactory { // Singleton Patterns
     public static List<Molecule> createMoleculeList() {
         List<Molecule> molecules = new ArrayList<>();
 
-        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE));
-        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE));
-        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE));
-        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE));
-        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE));
-        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE));
-        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE));
-        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE));
+        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, molecule4image ));
+        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, molecule3image));
+        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, molecule7image));
+        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, molecule5image));
+        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, molecule1image));
+        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, molecule6image));
+        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, molecule2image));
+        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, molecule8image));
 
         return molecules;
     }
-
-    /*Creates a new ingredient list for the given molecule list. 
-    *Each ingredient will have a different molecule for each Game*/
-    public List<IngredientCard> createIngredientDeck() {
-    	List<Molecule> moleculeList = createMoleculeList();
-        List<IngredientCard> ingredients = new ArrayList<>();
+    
+    public Map<String, String> createIngredientNameAndPathList(){
+    	
         Map<String, String> ingredientImages = new HashMap<>();
 
         ingredientImages.put("Moon Blossom", "/ui/swing/resources/images/ingredientCards/Moon Blossom.png");
@@ -66,7 +82,16 @@ public class GameObjectFactory { // Singleton Patterns
         ingredientImages.put("Verdant Fern", "/ui/swing/resources/images/ingredientCards/Verdant Fern.png");
         ingredientImages.put("Dandelion Root", "/ui/swing/resources/images/ingredientCards/Dandelion Root.png");
         ingredientImages.put("Dragon Powder", "/ui/swing/resources/images/ingredientCards/Dragon Powder.png");
+        
+        return ingredientImages;
+    }
 
+    /*Creates a new ingredient list for the given molecule list. 
+    *Each ingredient will have a different molecule for each Game*/
+    public List<IngredientCard> createIngredientDeck() {
+    	List<Molecule> moleculeList = createMoleculeList();
+        List<IngredientCard> ingredients = new ArrayList<>();
+        Map<String, String> ingredientImages = createIngredientNameAndPathList();
 
         List<String> ingredientNames = new ArrayList<> (List.of("Moon Blossom", "Crystalite", "Shimmer Fungus", "Golden Mold",
                 "Starlight Nectar", "Verdant Fern", "Dandelion Root", "Dragon Powder"));
@@ -113,20 +138,37 @@ public class GameObjectFactory { // Singleton Patterns
         				firstIngredient.getMolecule().getBlueComponentSize(), secondIngredient.getMolecule().getBlueComponentSize()))
         			&& (areSameSizeAndDifferentSign(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
         	                firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize()))) {
-            potionCard = new PotionCard("Neutral Potion", "Neutral", "Description for Neutral Potion");
+            potionCard = new PotionCard("Neutral Potion", "Neutral", "Description for Neutral Potion", neutralPath);
             
         } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getRedComponentSign(), secondIngredient.getMolecule().getRedComponentSign(),
                 firstIngredient.getMolecule().getRedComponentSize(), secondIngredient.getMolecule().getRedComponentSize())) {
             String redSignString = firstIngredient.getMolecule().getRedComponentSign().toString();
-            potionCard = new PotionCard("Red Potion", redSignString, "Description for Red Potion");
+            if(redSignString.equals("POSITIVE")) {
+                potionCard = new PotionCard("Red Potion", "POSITIVE", "Red Positive", redPositivePath);
+
+            } else {
+                potionCard = new PotionCard("Red Potion","NEGATIVE", "Red Negative", redNegativePath);
+
+            }
         } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getBlueComponentSign(), secondIngredient.getMolecule().getBlueComponentSign(),
                 firstIngredient.getMolecule().getBlueComponentSize(), secondIngredient.getMolecule().getBlueComponentSize())) {
             String blueSignString = firstIngredient.getMolecule().getBlueComponentSign().toString();
-            potionCard = new PotionCard("Blue Potion", blueSignString, "Description for Blue Potion");
+            if(blueSignString.equals("POSITIVE")) {
+                potionCard = new PotionCard("Blue Potion", "POSITIVE", "Blue Positive", bluePositivePath);
+
+            } else {
+                potionCard = new PotionCard("Blue Potion","NEGATIVE", "Blue Negative", blueNegativePath);
+            }
+            
         } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
                 firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize())) {
             String greenSignString = firstIngredient.getMolecule().getGreenComponentSign().toString();
-            potionCard = new PotionCard("Green Potion", greenSignString, "Description for Green Potion");
+            if(greenSignString.equals("POSITIVE")) {
+                potionCard = new PotionCard("Green Potion", "POSITIVE", "Green Positive", greenPositivePath);
+
+            } else {
+                potionCard = new PotionCard("Green Potion","NEGATIVE", "Green Negative", greenNegativePath);
+            }            
         }
 
         return potionCard;

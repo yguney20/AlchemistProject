@@ -1,6 +1,7 @@
 package ui.swing.screens;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -24,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 import domain.controllers.GameController;
 import domain.gameobjects.IngredientCard;
 import domain.gameobjects.Player;
+import domain.gameobjects.PotionCard;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -151,6 +153,7 @@ public class MakeExperimentScreen extends JFrame implements ActionListener{
 	        	contentPane.add(ingredientButton);
 
 	        	// Add action listener for each artifact button
+	        	
 	        	ingredientButton.addActionListener(e -> handleIngredientSelection(ingredientButton));
 	        
 	        	ingredientButtonMap.put(card, ingredientButton);
@@ -243,8 +246,22 @@ public class MakeExperimentScreen extends JFrame implements ActionListener{
 		}
 		if(event.getSource()==makeExperimentButton) {
 			if(ingredientCard1!=null && ingredientCard2!=null && tester!=null) {
-				gameController.makeExperiment(ingredientCard1, ingredientCard2, tester);
-				this.setVisible(false);
+				try {
+					PotionCard potionCard = gameController.makeExperiment(ingredientCard1, ingredientCard2, tester);
+					JButton potion = new JButton();
+					potion.setBounds(370, 10, 200, 230);
+		        	potion.setContentAreaFilled(false);
+		        	potion.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));
+					setImage(potionCard.getImagePath(), potion);
+		        	contentPane.add(potion);
+		            contentPane.setComponentZOrder(potion, 0);
+		            contentPane.repaint();
+
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			else {
 				message.setVisible(true);
@@ -255,7 +272,7 @@ public class MakeExperimentScreen extends JFrame implements ActionListener{
 	}
 	
 		
-public void setImage(String path, JButton button) throws IOException {
+	public void setImage(String path, JButton button) throws IOException {
 		
 		// Read the original image
         BufferedImage originalImage = ImageIO.read(getClass().getResource(path));

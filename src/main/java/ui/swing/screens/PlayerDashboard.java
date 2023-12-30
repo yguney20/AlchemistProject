@@ -377,6 +377,16 @@ public class PlayerDashboard extends JFrame {
             public void mouseExited(MouseEvent e) {
             	publishTheoryButton.setBackground(Color.WHITE);
             }
+            @Override
+        	public void mouseClicked(MouseEvent e) {
+            	if(gameController.getCurrentRound()>=2) {
+            		PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
+        			publishTheoryScreen.display();
+        			PlayerDashboard.this.setVisible(false);
+        			musicPlayer.stopSound();
+            	}
+        			
+        	}
         });
         publishTheoryButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         publishTheoryButton.setBounds(4, 252, 425, 36);

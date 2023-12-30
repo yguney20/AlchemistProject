@@ -5,8 +5,11 @@ import java.util.Map;
 
 import domain.Game;
 import domain.gameobjects.ArtifactCard;
+import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.IngredientCard;
+import domain.gameobjects.Molecule;
 import domain.gameobjects.Player;
+import domain.gameobjects.PotionCard;
 import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
 
 import java.awt.Point;
@@ -20,6 +23,7 @@ public class GameController {
 	private static GameController instance;
 	private BoardScreen boardScreen;
 	private final Game game;
+	private final GameObjectFactory gameObjectFactory;
 	private Map<Player, DeductionBoard> playerDeductionBoards = new HashMap<>();
 	
     public static GameController getInstance() {
@@ -36,6 +40,7 @@ public class GameController {
     //constructor should be private in Singleton
     private GameController() {
 		game = Game.getInstance();
+		gameObjectFactory = GameObjectFactory.getInstance();
 		initializeDeductionBoards();
     }
     
@@ -91,8 +96,6 @@ public class GameController {
         }
     }
 
-
-    
     public Player getCurrentPlayer(){
     	return game.getGameState().getCurrentPlayer();
     }
@@ -168,7 +171,15 @@ public class GameController {
     	game.sellPotion(i1, i2, guarantee);
     }
     
-    public void makeExperiment(IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
-    	game.makeExperiment(firstCard, secondCard, student);
+    public PotionCard makeExperiment(IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
+    	return game.makeExperiment(firstCard, secondCard, student);
+    }
+    
+    public Map<String, String> createIngredientNameAndPathList(){
+    	return gameObjectFactory.createIngredientNameAndPathList();
+    }
+    
+    public void publishTheory(IngredientCard ingredient, Molecule molecule) {
+    	game.publishTheory(ingredient, molecule);
     }
 }
