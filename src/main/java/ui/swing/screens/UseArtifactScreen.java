@@ -54,6 +54,7 @@ import javax.swing.JLabel;
 		setTitle("Use Artifact");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, 555, 900, 350);
+        setUndecorated(true);
 		
 		try {
 	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/loginbackground.jpg"));

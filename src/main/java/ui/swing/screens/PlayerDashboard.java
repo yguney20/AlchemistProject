@@ -61,7 +61,7 @@ public class PlayerDashboard extends JFrame {
     	
     	setUndecorated(true);
 
-    	musicPlayer.playSound(musicPath);
+    	//musicPlayer.playSound(musicPath);
     	
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

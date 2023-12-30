@@ -20,6 +20,12 @@ public class ElixirOfInsightEffect implements ArtifactEffect {
         }
     }
 
+    @Override
+    public void applyOnMakeExperiment(Player player, IngredientCard firstCard, IngredientCard secondCard) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'applyOnMakeExperiment'");
+    }
+
 
     
 }

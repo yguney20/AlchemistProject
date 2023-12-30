@@ -57,6 +57,7 @@ public class PublishTheoryScreen extends JFrame implements ActionListener{
 		setTitle("Publish Theory");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(10, 10, 1500, 600);
+		setUndecorated(true);
 		
 		try {
 	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/loginbackground.jpg"));

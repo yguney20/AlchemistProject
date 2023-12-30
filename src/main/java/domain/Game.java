@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import domain.gameobjects.*;
+import domain.gameobjects.artifacteffects.ArtifactEffect;
+import domain.gameobjects.artifacteffects.MagicMortarEffect;
 
 
 public class Game { //Singleton Pattern
@@ -265,51 +267,87 @@ public class Game { //Singleton Pattern
 
     //-----------------------Artifact Related Functions ------------------------------------
     
-    // Additional logic will be added (Not finished)
-   public void buyArtifactCard(ArtifactCard card, Player player) {
-        try {
-        	if(!actionPerformed) {
-        		if(currentPlayer.getGolds() >= card.getGoldValue()) {
-                    if (card.isImmadiate()){
-                        useArtifactCard(card, player);
-                    } 
-                    artifactDeck.remove(card);
-                    player.addArtifactCard(card);
-                    player.reduceGold(card.getGoldValue());
-                    actionPerformed = true;
-                    System.out.println(player.getArtifactCards());
-                    System.out.println(player);
-        		} else {
-        			notifyPlayers("You don't have enough golds.");
-        		}
-
-        	} else {
-                notifyPlayers("Action already performed.");
-        	}
-        
-        } catch (IllegalStateException e) {
-            // Handle the case where a one-time use card is attempted to be used again
-            System.out.println(e.getMessage());
+    /**
+     * Attempts to purchase an artifact card for the player.
+     * If the player has enough golds and the action hasn't been performed,
+     * the card is purchased and, if immediate, used.
+     *
+     * @param card   the artifact card to be purchased
+     * @param player the player attempting to buy the artifact card
+     */
+    public void buyArtifactCard(ArtifactCard card, Player player) {
+        if (card == null || player == null) {
+            throw new IllegalArgumentException("Card or player cannot be null.");
         }
-    } 
+
+        if (actionPerformed) {
+            notifyPlayers("Action already performed.");
+            return;
+        }
+
+        if (!playerCanAfford(player, card)) {
+            notifyPlayers("You don't have enough golds.");
+            return;
+        }
+
+        completeArtifactPurchase(card, player);
+    }
+
+    private boolean playerCanAfford(Player player, ArtifactCard card) {
+        return player.getGolds() >= card.getGoldValue();
+    }
+    
+    private void completeArtifactPurchase(ArtifactCard card, Player player) {
+        if (card.isImmadiate()) {
+            useArtifactCard(card, player);
+        }
+    
+        artifactDeck.remove(card);
+        player.addArtifactCard(card);
+        player.reduceGold(card.getGoldValue());
+        actionPerformed = true;
+    }
+
+    /**
+     * Applies the effect of an artifact card to the player.
+     *
+     * @param card   the artifact card whose effect is to be applied
+     * @param player the player who is using the artifact card
+     */
+    public void useArtifactCard(ArtifactCard card, Player player) {
+        if (card == null || player == null) {
+            throw new IllegalArgumentException("Card or player cannot be null.");
+        }
+
+        try {
+            card.applyEffect(this, player);
+        } catch (IllegalStateException e) {
+            System.out.println("Error using artifact card: " + e.getMessage());
+            // Consider logging the error or rethrowing a custom exception
+        }
+    }
+
+    private void resetArtifactCards(Player player) {
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null.");
+        }
+    
+        for (ArtifactCard card : player.getArtifactCards()) {
+            if (card != null) {
+                card.resetForNewRound();
+            }
+        }
+    }
     
     public ArtifactCard getArtifactCardByPath(String path) {
+        if (path == null || path.isEmpty()) {
+            throw new IllegalArgumentException("Path cannot be null or empty.");
+        }
+        
         return artifactDeck.stream()
                 .filter(card -> card.getImagePath().equals(path))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Artifact Card not found for path: " + path));
-    }
-
-    public void useArtifactCard(ArtifactCard card, Player player){
-        card.applyEffect(this, player);
-    }
-
-    //Resets the each players artifact
-
-    private void resetArtifactCards(Player player) {
-        for (ArtifactCard card : player.getArtifactCards()) {
-            card.resetForNewRound();
-        }
     }
 
     //-----------------------Transmute Function ------------------------------------
@@ -335,53 +373,75 @@ public class Game { //Singleton Pattern
     
     //-----------------------Make Experiment Function ------------------------------------
 
-    public PotionCard makeExperiment(IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
-    	if(!actionPerformed) {
-    		if(currentPlayer.getIngredientInventory().size()< 2) {
-    			notifyPlayers("There are not enough ingredient cards.");
-    			return null;
-    		}
-    		else {
-                PotionCard potionCard =  GameObjectFactory.getInstance().potionMaker(firstCard, secondCard);
-                currentPlayer.getPotionInventory().add(potionCard);
-                if (currentPlayer.isMagicMortarActive()){
-                    Random random = new Random();
-                    boolean keepFirstCard = random.nextBoolean(); // Randomly returns true or false
-                    if (keepFirstCard) {
-                         currentPlayer.getIngredientInventory().remove(secondCard);
-                    } else {
-                         currentPlayer.getIngredientInventory().remove(firstCard);
-                    }
-                } else {
-                    currentPlayer.getIngredientInventory().remove(firstCard);
-                    currentPlayer.getIngredientInventory().remove(secondCard);
-                    System.out.println(potionCard);
-                }
-    			//for student
-    			if(student) {
-    				if(potionCard.getPotionType().equals("NEGATIVE")) {
-    					currentPlayer.reduceGold(1);
-    				}
-    			}
-    			//for themselves
-    			else {
-    				if(potionCard.getPotionType().equals("NEGATIVE")) {
-    					currentPlayer.increaseSickness(1);
-    					if(currentPlayer.getSicknessLevel() == 3) {
-    						currentPlayer.setGolds(0);
-    					}				
-    				}
-    			}
-    			actionPerformed = true;
-    			return potionCard;
-    		}
-    		//
-    	}
-    	else {
-    		notifyPlayers("Action already performed.");
-    		return null;
-    	}	
+    /**
+     * Conducts an experiment to create a potion using two ingredient cards.
+     * If a student is conducting the experiment, different outcomes are considered.
+     *
+     * @param firstCard the first ingredient card
+     * @param secondCard the second ingredient card
+     * @param student flag indicating if a student is conducting the experiment
+     * @return the created potion card, or null if the experiment cannot be conducted
+     */
+    public PotionCard makeExperiment(IngredientCard firstCard, IngredientCard secondCard, boolean student) {
+        if (firstCard == null || secondCard == null) {
+            throw new IllegalArgumentException("Ingredient cards cannot be null.");
+        }
+
+        if (actionPerformed) {
+            notifyPlayers("Action already performed.");
+            return null;
+        }
+
+        if (currentPlayer.getIngredientInventory().size() < 2) {
+            notifyPlayers("There are not enough ingredient cards.");
+            return null;
+        }
+
+        PotionCard potionCard = makePotion(firstCard, secondCard);
+        processExperimentOutcome(potionCard, student);
+        actionPerformed = true;
+        return potionCard;
     }
+
+    private PotionCard makePotion(IngredientCard firstCard, IngredientCard secondCard) {
+        PotionCard potionCard = GameObjectFactory.getInstance().potionMaker(firstCard, secondCard);
+        currentPlayer.getPotionInventory().add(potionCard);
+
+        if (currentPlayer.isMagicMortarActive()) {
+            ArtifactEffect currentEffect = currentPlayer.getArtifactCard("Magic Mortar").getEffect();
+            if (currentEffect != null) {
+                currentEffect.applyOnMakeExperiment(currentPlayer, firstCard, secondCard);
+            }
+        } else {
+            removeUsedIngredients(firstCard, secondCard);
+        }
+
+        return potionCard;
+    }
+
+    private void removeUsedIngredients(IngredientCard firstCard, IngredientCard secondCard) {
+        currentPlayer.getIngredientInventory().remove(firstCard);
+        currentPlayer.getIngredientInventory().remove(secondCard);
+    }
+
+    private void processExperimentOutcome(PotionCard potionCard, boolean student) {
+        if (potionCard == null) {
+            throw new IllegalArgumentException("Potion card cannot be null.");
+        }
+
+        if (potionCard.getPotionType().equals("NEGATIVE")) {
+            if (student) {
+                currentPlayer.reduceGold(1);
+            } else {
+                currentPlayer.increaseSickness(1);
+                if (currentPlayer.getSicknessLevel() == 3) {
+                    currentPlayer.setGolds(0);
+                }
+            }
+        }
+    }
+
+
 
     //----------------------------------------------------------------
     public void swapRight(IngredientCard ingredientCard) {
@@ -459,24 +519,48 @@ public class Game { //Singleton Pattern
     	return null;    	
     }
     
+    /**
+     * Allows the player to publish a theory based on an ingredient and molecule.
+     * If the player has the Printing Press artifact, the gold cost is waived.
+     *
+     * @param ingredient the ingredient card used in the theory
+     * @param molecule the molecule associated with the theory
+     */
     public void publishTheory(IngredientCard ingredient, Molecule molecule) {
-    	if(!actionPerformed && currentPlayer.getGolds()>=1 && currentRound>=2) {
-    		if(findTheorybyIngredient(ingredient)==null) {
-    			
-    			Theory theory = new Theory(ingredient, molecule);
-    			PublicationCard pcard = new PublicationCard(currentPlayer, theory);
-    			currentPlayer.increaseReputation(1);
-    			currentPlayer.reduceGold(1);
-    			actionPerformed = true;
-    			
-    		} else {
-        		notifyPlayers("A theory already published about this ingredient");
-    		}
-    		   		
-    	} else {
-    		notifyPlayers("Action already performed or preconditions are not met");
-    	}
+        if (ingredient == null || molecule == null) {
+            throw new IllegalArgumentException("Ingredient and molecule cannot be null.");
+        }
+
+        if (actionPerformed) {
+            notifyPlayers("Action already performed.");
+            return;
+        }
+
+        if (currentRound < 2) {
+            notifyPlayers("Cannot publish theory before round 2.");
+            return;
+        }
+
+        if (findTheorybyIngredient(ingredient) != null) {
+            notifyPlayers("A theory already published about this ingredient");
+            return;
+        }
+
+        createAndPublishTheory(currentPlayer, ingredient, molecule);
     }
+
+    private void createAndPublishTheory(Player player, IngredientCard ingredient, Molecule molecule) {
+        Theory theory = new Theory(ingredient, molecule);
+        PublicationCard pcard = new PublicationCard(player, theory);
+        player.increaseReputation(1);
+
+        if (!player.isPrintingPressActive()){
+            player.reduceGold(1);
+        }
+
+        actionPerformed = true;
+    }
+
 
 }
 
