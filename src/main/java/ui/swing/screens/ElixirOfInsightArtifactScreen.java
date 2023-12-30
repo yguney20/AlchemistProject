@@ -67,6 +67,7 @@ import javax.swing.JOptionPane;
 		setTitle("Elixir of Insight");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(50, 555, 900, 350);
+        setUndecorated(true);
 		
 		try {
 	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/UI/Swing/Images/loginbackground.jpg"));

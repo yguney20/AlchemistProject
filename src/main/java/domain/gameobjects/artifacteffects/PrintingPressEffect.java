@@ -4,12 +4,12 @@ import domain.Game;
 import domain.gameobjects.IngredientCard;
 import domain.gameobjects.Player;
 
-public class PhilosophersCompassEffect implements ArtifactEffect{
-
+public class PrintingPressEffect implements ArtifactEffect {
+    
     @Override
-    public void apply(Game game, Player player) {
-        
-        
+    public void apply(Game game, Player player ) {
+        // Logic for Printing Press - allows publishing a theory without paying gold
+        player.setPrintingPressActive(true);
     }
 
     @Override
@@ -17,7 +17,5 @@ public class PhilosophersCompassEffect implements ArtifactEffect{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'applyOnMakeExperiment'");
     }
-
 }
-
 

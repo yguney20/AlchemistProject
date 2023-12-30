@@ -18,6 +18,7 @@ import java.util.Objects;
  	 private static ArrayList<Player> playerList = new ArrayList<Player>();
  	 private ArrayList<Deduction> deductions = new ArrayList<Deduction>();
      private boolean magicMortarActive = false;
+     private boolean printingPressActive = false;
 
  	 
  	 public class Deduction{
@@ -209,10 +210,29 @@ import java.util.Objects;
         this.magicMortarActive = magicMortarActive;
     }
 
+    public boolean isPrintingPressActive() {
+        return printingPressActive;
+    }
+
+    public void setPrintingPressActive(boolean printingPressActive) {
+        this.printingPressActive = printingPressActive;
+    }
+
+
      // Adds an artifact card to the player's collection.
     public void addArtifactCard(ArtifactCard card) {
         this.artifactCards.add(card);
     }
+
+    public ArtifactCard getArtifactCard(String name) {
+        for (ArtifactCard card : this.artifactCards) {
+            if (card.getName().equals(name)) {
+                return card;
+            }
+        }
+        return null;
+    }
+
     
  }
 

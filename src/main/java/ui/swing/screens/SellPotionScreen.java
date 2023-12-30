@@ -60,6 +60,7 @@ public class SellPotionScreen extends JFrame implements ActionListener{
 		setTitle("Sell a Potion");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 913, 293);
+		setUndecorated(true);
 		
 		try {
 	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/loginbackground.jpg"));
