@@ -12,24 +12,16 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import domain.controllers.GameController;
 import domain.gameobjects.IngredientCard;
-import domain.gameobjects.Player;
-
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
 
 
     public class UseArtifactScreen extends JFrame  implements ActionListener {
@@ -39,7 +31,6 @@ import javax.swing.JLabel;
 	private JButton doneButton;
     private int initialX;
     private int initialY;
-    private IngredientCard ingredientCard;
     private JLabel selected;
     private GameController gameController = GameController.getInstance();
     private JLabel message;
@@ -217,24 +208,4 @@ import javax.swing.JLabel;
         
 	}
 	
-
-    private void handleIngredientSelection(JButton button) {            
-    	IngredientCard selectedIngredientCard = null;
-        for (IngredientCard card : ingredientCards) {
-            if (button.getText().equals(card.getName())) {
-                selectedIngredientCard = card;
-                break;
-            }
-        }
-
-        if (selectedIngredientCard != null) {
-            ingredientCard = selectedIngredientCard;
-
-            // Set the selected label position based on the clicked button
-            selected.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
-            selected.setVisible(true);
-            contentPane.setComponentZOrder(selected, 0);
-        }
-    }
 }
-

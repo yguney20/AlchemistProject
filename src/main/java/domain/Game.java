@@ -247,33 +247,56 @@ public class Game { //Singleton Pattern
 
     //-----------------------Artifact Related Functions ------------------------------------
     
-    // Additional logic will be added (Not finished)
-   public void buyArtifactCard(ArtifactCard card, Player player) {
-        try {
-        	if(!actionPerformed) {
-        		if(currentPlayer.getGolds() >= card.getGoldValue()) {
-                    if (card.isImmadiate()){
-                        useArtifactCard(card, player);
-                    } 
-                    artifactDeck.remove(card);
-                    player.addArtifactCard(card);
-                    player.reduceGold(card.getGoldValue());
-                    actionPerformed = true;
-                    System.out.println(player.getArtifactCards());
-                    System.out.println(player);
-        		} else {
-        			notifyPlayers("You don't have enough golds.");
-        		}
-
-        	} else {
-                notifyPlayers("Action already performed.");
-        	}
         
-        } catch (IllegalStateException e) {
-            // Handle the case where a one-time use card is attempted to be used again
-            System.out.println(e.getMessage());
+    /**
+     * Attempts to purchase an artifact card for the current player.
+     * Requires:
+     *  - The 'card' and 'player' objects must not be null.
+     *  - The 'Game' instance must be initialized.'
+     * Modifies:
+     *  - This method can modify the state of the player (gold amount and artifact cards).
+     *  - It may also modify the game state by setting actionPerformed to true.
+     *  - It may modify the artifact deck by removing the purchased card.
+     * Effects:
+     *  - If actionPerformed is false, the player has enough gold, and the card is in the deck,
+     *    the card is purchased: gold is deducted from the player, the card is added to the player's artifacts,
+     *    and actionPerformed is set to true.
+     *  - If the card is immediate-use, it is used right away.
+     *  - If the player does not have enough gold or actionPerformed is already true, 
+     *    no changes are made, and a message is sent to the player.
+     *  - Throws IllegalArgumentException if card or player is null.
+     */
+    public void buyArtifactCard(ArtifactCard card, Player player) {
+        // Null check for the card and player
+        if (card == null || player == null) {
+            throw new IllegalArgumentException("Card or player cannot be null.");
         }
-    } 
+
+        // Attempt to perform the action only if it has not been done already
+        if (!actionPerformed) {
+            // Check if the player has enough golds
+            if (currentPlayer.getGolds() >= card.getGoldValue()) {
+                // Process immediate-use card
+                if (card.isImmadiate()) {
+                    useArtifactCard(card, player);
+                }
+                
+                // Remove card from the deck and update player's state
+                artifactDeck.remove(card);
+                player.addArtifactCard(card);
+                player.reduceGold(card.getGoldValue());
+                actionPerformed = true;
+
+            } else {
+                // Notify if the player doesn't have enough golds
+                notifyPlayers("You don't have enough golds.");
+            }
+        } else {
+            // Notify if an action has already been performed
+            notifyPlayers("Action already performed.");
+        }
+    }
+
     
     public ArtifactCard getArtifactCardByPath(String path) {
         return artifactDeck.stream()
