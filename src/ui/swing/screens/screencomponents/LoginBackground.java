@@ -25,10 +25,7 @@ public class LoginBackground extends JPanel {
 	
 	private MediaPlayerFactory factory;
     private EmbeddedMediaPlayer mediaPlayer;
-
     private LoginOverlay loginOverlay;
-
-	
 	public LoginBackground() {
 		init();
 	}
