@@ -560,6 +560,48 @@ public class Game { //Singleton Pattern
 
         actionPerformed = true;
     }
+    public void debunkTheory (PublicationCard publicationCard ,Molecule molecule) {
+    	if (publicationCard == null || molecule == null) {
+            throw new IllegalArgumentException("publicationCard and molecule cannot be null.");
+        }
+    	if (actionPerformed) {
+            notifyPlayers("Action already performed.");
+            return;
+        }
+    	if (currentRound < 3) {
+            notifyPlayers("Cannot debunk theory before round 3.");
+            return;
+        }
+    	if (findTheorybyIngredient(publicationCard.getTheory().getIngredient()) == null) {
+            notifyPlayers("There are no published theories about this content.");
+            return;
+        }
+    	if(publicationCard.getTheory().getMolecule().equals(molecule)) {
+    		notifyPlayers("both theory are the same.");
+    		return;
+    	}
+    	if(checkForMolecule(molecule,publicationCard.getTheory().getIngredient().getMolecule())) {
+    		publicationCard.getOwner().reduceReputation(1);
+    		Theory.getTheoryList().remove(publicationCard.getTheory());
+    		//debunk theory de altın harcamasına gerek var mı?
+    		publishTheory(publicationCard.getTheory().getIngredient(), molecule);
+    		currentPlayer.increaseReputation(1);
+    		//
+    	}
+    	else {
+    		currentPlayer.reduceReputation(1);
+    	}
+    	
+    }
+    private boolean checkForMolecule(Molecule firstMolecule,Molecule secondMolecule) {
+    	if(firstMolecule.equals(secondMolecule)) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+    	
+    }
 
 
 }
