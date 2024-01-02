@@ -609,10 +609,10 @@ public class Game { //Singleton Pattern
             publicationCard.getOwner().reduceReputation(1);
 
             // Create a new Theory with the provided molecule and the ingredient
-            Theory theory = new Theory(publicationCard.getTheory().getIngredient(), molecule);
+            Theory theoryy = new Theory(publicationCard.getTheory().getIngredient(), molecule);
 
             // Create a new PublicationCard for the current player with the new theory
-            PublicationCard pcard = new PublicationCard(currentPlayer, theory);
+            PublicationCard pcardd = new PublicationCard(currentPlayer, theoryy);
 
             // Increase current player's reputation by 2
             currentPlayer.increaseReputation(2);
