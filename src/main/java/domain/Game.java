@@ -352,24 +352,37 @@ public class Game { //Singleton Pattern
 
     //-----------------------Transmute Function ------------------------------------
     
+    /**
+     * Transmutes the selected ingredient for a player, converting it into gold.
+     * Only allows the transmutation to occur if the action has not been performed already.
+     *
+     * @param player The player performing the transmutation.
+     * @param selectedIngredient The ingredient card to be transmuted.
+     */
     public void transmuteIngredient(Player player, IngredientCard selectedIngredient) {
-    	if(!actionPerformed) {
+        // Check if the action has already been performed
+        if (!actionPerformed) {
             // Preconditions
             if (player.getIngredientInventory().isEmpty()) {
-            	notifyPlayers("ingredient card not found.");
-            }
-            else {
-            	// Flow
-                player.getIngredientInventory().remove(selectedIngredient); 
+                // Notify players if the player's ingredient inventory is empty
+                notifyPlayers("Ingredient card not found.");
+            } else {
+                // Flow
+                // Remove the selected ingredient from the player's inventory
+                player.getIngredientInventory().remove(selectedIngredient);
+                // Add the selected ingredient to the main ingredient deck
                 ingredientDeck.add(selectedIngredient);
+                // Increase the player's gold by 1 as a result of the transmutation
                 player.increaseGold(1);
+                // Mark the action as performed
                 actionPerformed = true;
             }
-    	} else {
+        } else {
+            // Notify players if the action has already been performed
             notifyPlayers("Action already performed.");
-    	}
-
+        }
     }
+
     
     //-----------------------Make Experiment Function ------------------------------------
 
@@ -560,48 +573,63 @@ public class Game { //Singleton Pattern
 
         actionPerformed = true;
     }
-    public void debunkTheory (PublicationCard publicationCard ,Molecule molecule) {
-    	if (publicationCard == null || molecule == null) {
+    public void debunkTheory(PublicationCard publicationCard, Molecule molecule) {
+        // Check if either publicationCard or molecule is null
+        if (publicationCard == null || molecule == null) {
             throw new IllegalArgumentException("publicationCard and molecule cannot be null.");
         }
-    	if (actionPerformed) {
+
+        // Check if the action has already been performed
+        if (actionPerformed) {
             notifyPlayers("Action already performed.");
             return;
         }
-    	if (currentRound < 3) {
+
+        // Check if the current round is less than 3
+        if (currentRound < 3) {
             notifyPlayers("Cannot debunk theory before round 3.");
             return;
         }
-    	if (findTheorybyIngredient(publicationCard.getTheory().getIngredient()) == null) {
+
+        // Check if there is no published theory about the ingredient in the given publicationCard
+        if (findTheorybyIngredient(publicationCard.getTheory().getIngredient()) == null) {
             notifyPlayers("There are no published theories about this content.");
             return;
         }
-    	if(publicationCard.getTheory().getMolecule().equals(molecule)) {
-    		notifyPlayers("both theory are the same.");
-    		return;
-    	}
-    	if(checkForMolecule(molecule,publicationCard.getTheory().getIngredient().getMolecule())) {
-    		publicationCard.getOwner().reduceReputation(1);
-    		Theory.getTheoryList().remove(publicationCard.getTheory());
-    		//debunk theory de altın harcamasına gerek var mı?
-    		publishTheory(publicationCard.getTheory().getIngredient(), molecule);
-    		currentPlayer.increaseReputation(1);
-    		//
-    	}
-    	else {
-    		currentPlayer.reduceReputation(1);
-    	}
-    	
+
+        // Check if the molecule in the publicationCard's theory is the same as the provided molecule
+        if (publicationCard.getTheory().getMolecule().equals(molecule)) {
+            notifyPlayers("Both theories are the same.");
+            return;
+        }
+
+        // Check if the provided molecule matches the expected molecule for the ingredient
+        if (checkForMolecule(molecule, publicationCard.getTheory().getIngredient().getMolecule())) {
+            // Reduce owner's reputation by 1
+            publicationCard.getOwner().reduceReputation(1);
+
+            // Create a new Theory with the provided molecule and the ingredient
+            Theory theory = new Theory(publicationCard.getTheory().getIngredient(), molecule);
+
+            // Create a new PublicationCard for the current player with the new theory
+            PublicationCard pcard = new PublicationCard(currentPlayer, theory);
+
+            // Increase current player's reputation by 2
+            currentPlayer.increaseReputation(2);
+
+            // Remove the old theory from the list
+            Theory.getTheoryList().remove(publicationCard.getTheory());
+        } else {
+            // If the molecules don't match, reduce current player's reputation by 1
+            currentPlayer.reduceReputation(1);
+        }
     }
-    private boolean checkForMolecule(Molecule firstMolecule,Molecule secondMolecule) {
-    	if(firstMolecule.equals(secondMolecule)) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
-    	
+
+    // Helper method to check if two molecules are equal
+    private boolean checkForMolecule(Molecule firstMolecule, Molecule secondMolecule) {
+        return firstMolecule.equals(secondMolecule);
     }
+
 
 
 }
