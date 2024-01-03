@@ -573,11 +573,16 @@ public class Game { //Singleton Pattern
 
         actionPerformed = true;
     }
-    public void debunkTheory(PublicationCard publicationCard, Molecule molecule) {
+    public void debunkTheory(PublicationCard publicationCard) {
         // Check if either publicationCard or molecule is null
-        if (publicationCard == null || molecule == null) {
+        if (publicationCard == null) {
             throw new IllegalArgumentException("publicationCard and molecule cannot be null.");
         }
+        
+        // Extract relevant information from the publicationCard
+        IngredientCard ingredient = publicationCard.getTheory().getIngredient();
+        Molecule theoryMolecule = publicationCard.getTheory().getMolecule();
+        Molecule ingredientMolecule = publicationCard.getTheory().getIngredient().getMolecule();
 
         // Check if the action has already been performed
         if (actionPerformed) {
@@ -592,36 +597,22 @@ public class Game { //Singleton Pattern
         }
 
         // Check if there is no published theory about the ingredient in the given publicationCard
-        if (findTheorybyIngredient(publicationCard.getTheory().getIngredient()) == null) {
+        if (findTheorybyIngredient(ingredient) == null) {
             notifyPlayers("There are no published theories about this content.");
             return;
         }
 
-        // Check if the molecule in the publicationCard's theory is the same as the provided molecule
-        if (publicationCard.getTheory().getMolecule().equals(molecule)) {
-            notifyPlayers("Both theories are the same.");
-            return;
-        }
-
-        // Check if the provided molecule matches the expected molecule for the ingredient
-        if (checkForMolecule(molecule, publicationCard.getTheory().getIngredient().getMolecule())) {
-            // Reduce owner's reputation by 1
-            publicationCard.getOwner().reduceReputation(1);
-
-            // Create a new Theory with the provided molecule and the ingredient
-            Theory theoryy = new Theory(publicationCard.getTheory().getIngredient(), molecule);
-
-            // Create a new PublicationCard for the current player with the new theory
-            PublicationCard pcardd = new PublicationCard(currentPlayer, theoryy);
-
-            // Increase current player's reputation by 2
-            currentPlayer.increaseReputation(2);
-
-            // Remove the old theory from the list
-            Theory.getTheoryList().remove(publicationCard.getTheory());
-        } else {
-            // If the molecules don't match, reduce current player's reputation by 1
+        // Check if the molecules match and perform appropriate actions
+        if (checkForMolecule(theoryMolecule, ingredientMolecule)) {
             currentPlayer.reduceReputation(1);
+            ValidatedTheory validatedTheory = new ValidatedTheory(ingredient, theoryMolecule);
+            Theory.getTheoryList().remove(publicationCard.getTheory());
+            notifyPlayers(validatedTheory.toString());
+        } else {
+            currentPlayer.increaseReputation(2);
+            publicationCard.getOwner().reduceReputation(1);
+            ValidatedTheory validatedTheoryy = new ValidatedTheory(ingredient, ingredientMolecule);
+            notifyPlayers(validatedTheoryy.toString());
         }
     }
 
@@ -629,6 +620,7 @@ public class Game { //Singleton Pattern
     private boolean checkForMolecule(Molecule firstMolecule, Molecule secondMolecule) {
         return firstMolecule.equals(secondMolecule);
     }
+
 
 
 
