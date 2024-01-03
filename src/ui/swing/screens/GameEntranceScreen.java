@@ -45,7 +45,7 @@ public class GameEntranceScreen extends JFrame{
         
         
         try {
-           BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/UI/Swing/Resources/Images/entranceUI/background.jpeg"));
+           BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/background.jpeg"));
            
             // Create a custom JPanel with the background image
             backgroundPanel = new JPanel() {
