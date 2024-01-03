@@ -576,7 +576,7 @@ public class Game { //Singleton Pattern
     public void debunkTheory(PublicationCard publicationCard) {
         // Check if either publicationCard or molecule is null
         if (publicationCard == null) {
-            throw new IllegalArgumentException("publicationCard and molecule cannot be null.");
+            throw new IllegalArgumentException("publicationCard cannot be null.");
         }
         
         // Extract relevant information from the publicationCard
@@ -598,7 +598,7 @@ public class Game { //Singleton Pattern
 
         // Check if there is no published theory about the ingredient in the given publicationCard
         if (findTheorybyIngredient(ingredient) == null) {
-            notifyPlayers("There are no published theories about this content.");
+            notifyPlayers("There are no published theories about this ingredient.");
             return;
         }
 

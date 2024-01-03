@@ -132,49 +132,57 @@ public class GameObjectFactory { // Singleton Patterns
 
     
     public PotionCard potionMaker(IngredientCard firstIngredient, IngredientCard secondIngredient) {
+        // Initialize potionCard as null
         PotionCard potionCard = null;
 
+        // Check if the ingredients can create a Neutral Potion
         if ((areSameSizeAndDifferentSign(firstIngredient.getMolecule().getRedComponentSign(), secondIngredient.getMolecule().getRedComponentSign(),
                 firstIngredient.getMolecule().getRedComponentSize(), secondIngredient.getMolecule().getRedComponentSize())) 
         		&& (areSameSizeAndDifferentSign(firstIngredient.getMolecule().getBlueComponentSign(), secondIngredient.getMolecule().getBlueComponentSign(),
         				firstIngredient.getMolecule().getBlueComponentSize(), secondIngredient.getMolecule().getBlueComponentSize()))
-        			&& (areSameSizeAndDifferentSign(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
-        	                firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize()))) {
+        					&& (areSameSizeAndDifferentSign(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
+                	                firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize()))) {
+            // Create a Neutral Potion
             potionCard = new PotionCard("Neutral Potion", "Neutral", "Description for Neutral Potion", neutralPath);
-            
-        } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getRedComponentSign(), secondIngredient.getMolecule().getRedComponentSign(),
+        } 
+        // Check if the ingredients can create a Red Potion
+        else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getRedComponentSign(), secondIngredient.getMolecule().getRedComponentSign(),
                 firstIngredient.getMolecule().getRedComponentSize(), secondIngredient.getMolecule().getRedComponentSize())) {
             String redSignString = firstIngredient.getMolecule().getRedComponentSign().toString();
+            // Check if the Red Potion is positive or negative
             if(redSignString.equals("POSITIVE")) {
                 potionCard = new PotionCard("Red Potion", "POSITIVE", "Red Positive", redPositivePath);
-
             } else {
                 potionCard = new PotionCard("Red Potion","NEGATIVE", "Red Negative", redNegativePath);
-
             }
-        } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getBlueComponentSign(), secondIngredient.getMolecule().getBlueComponentSign(),
+        } 
+        // Check if the ingredients can create a Blue Potion
+        else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getBlueComponentSign(), secondIngredient.getMolecule().getBlueComponentSign(),
                 firstIngredient.getMolecule().getBlueComponentSize(), secondIngredient.getMolecule().getBlueComponentSize())) {
             String blueSignString = firstIngredient.getMolecule().getBlueComponentSign().toString();
+            // Check if the Blue Potion is positive or negative
             if(blueSignString.equals("POSITIVE")) {
                 potionCard = new PotionCard("Blue Potion", "POSITIVE", "Blue Positive", bluePositivePath);
-
             } else {
                 potionCard = new PotionCard("Blue Potion","NEGATIVE", "Blue Negative", blueNegativePath);
             }
-            
-        } else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
+        } 
+        // Check if the ingredients can create a Green Potion
+        else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
                 firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize())) {
             String greenSignString = firstIngredient.getMolecule().getGreenComponentSign().toString();
+            // Check if the Green Potion is positive or negative
             if(greenSignString.equals("POSITIVE")) {
                 potionCard = new PotionCard("Green Potion", "POSITIVE", "Green Positive", greenPositivePath);
-
             } else {
                 potionCard = new PotionCard("Green Potion","NEGATIVE", "Green Negative", greenNegativePath);
             }            
         }
 
+        // Return the created potionCard (can be null if no match is found)
         return potionCard;
     }
+
 
     private boolean areSameSizeAndDifferentSign(Molecule.Sign sign1, Molecule.Sign sign2, Molecule.Size size1, Molecule.Size size2) {
         return size1.equals(size2) && !sign1.equals(sign2);
