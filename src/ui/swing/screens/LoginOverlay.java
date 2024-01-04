@@ -24,6 +24,7 @@ import javax.swing.border.LineBorder;
 import com.formdev.flatlaf.util.UIScale;
 
 import domain.controllers.LoginController;
+import javafx.application.Application;
 import ui.swing.desingsystem.RoundedBorder;
 import ui.swing.desingsystem.RoundedCornerPanel;
 import ui.swing.model.CardModel;
@@ -234,7 +235,8 @@ public class LoginOverlay extends JWindow {
         	loginController.initializeGame();
         	frame.dispose();
         	BoardScreen board = new BoardScreen();
-			board.display();
+			//board.display();
+        	Application.launch(BoardScreen.class);
         }
 
         
