@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import domain.gameobjects.*;
+import domain.gameobjects.Molecule.Component;
 import domain.gameobjects.artifacteffects.ArtifactEffect;
 import domain.gameobjects.artifacteffects.MagicMortarEffect;
 
@@ -456,7 +457,7 @@ public class Game { //Singleton Pattern
 
 
 
-    //----------------------------------------------------------------
+    //--------------------Swap functions for Elixir Of Insight -----------------------------
     public void swapRight(IngredientCard ingredientCard) {
         // Find the index of the ingredientCard in the first three cards
         int index = -1;
@@ -573,52 +574,69 @@ public class Game { //Singleton Pattern
 
         actionPerformed = true;
     }
-    public void debunkTheory(PublicationCard publicationCard) {
-        // Check if either publicationCard or molecule is null
+
+
+    //----------------------Debunk Theory Functions-------------------------------
+    /**
+    * Debunks a theory presented in a publication card.
+    * Reduces the reputation of the current player if the theory is correct,
+    * otherwise increases it and reduces the reputation of the theory's owner.
+    * Pre-conditions are validated before proceeding with debunking.
+    *
+    * @param publicationCard the publication card containing the theory to be debunked
+    * @param component the component being used to debunk the theory
+    * @throws IllegalArgumentException if publicationCard is null
+    * @throws IllegalStateException if action already performed or other preconditions are not met
+    */
+    public void debunkTheory(PublicationCard publicationCard, Component component) {
+        validateDebunkingPreconditions(publicationCard);
+
+        IngredientCard ingredient = publicationCard.getTheory().getIngredient();
+        Molecule theoryMolecule = publicationCard.getTheory().getMolecule();
+        Molecule ingredientMolecule = ingredient.getMolecule();
+        Molecule.Sign componentSign = ingredientMolecule.getComponentSign(component);
+
+        if (theoryMolecule.compareComponent(ingredientMolecule, component)) {
+            handleCorrectTheory(publicationCard);
+        } else {
+            handleIncorrectTheory(publicationCard);
+        }
+        ValidatedAspect validatedAspect = new ValidatedAspect(ingredient, component,componentSign);
+        actionPerformed = true;
+    }
+
+    /* Checks if publication card is null, if action is already performed, if round is appropriate,
+    * and if there are existing theories about the ingredient. */ 
+    private void validateDebunkingPreconditions(PublicationCard publicationCard) {
         if (publicationCard == null) {
             throw new IllegalArgumentException("publicationCard cannot be null.");
         }
-        
-        // Extract relevant information from the publicationCard
-        IngredientCard ingredient = publicationCard.getTheory().getIngredient();
-        Molecule theoryMolecule = publicationCard.getTheory().getMolecule();
-        Molecule ingredientMolecule = publicationCard.getTheory().getIngredient().getMolecule();
 
-        // Check if the action has already been performed
         if (actionPerformed) {
             notifyPlayers("Action already performed.");
-            return;
+            throw new IllegalStateException("Cannot perform action again in this round.");
         }
 
-        // Check if the current round is less than 3
         if (currentRound < 3) {
-            notifyPlayers("Cannot debunk theory before round 3.");
-            return;
+            throw new IllegalStateException("Cannot debunk theory before round 3.");
         }
 
-        // Check if there is no published theory about the ingredient in the given publicationCard
-        if (findTheorybyIngredient(ingredient) == null) {
-            notifyPlayers("There are no published theories about this ingredient.");
-            return;
-        }
-
-        // Check if the molecules match and perform appropriate actions
-        if (checkForMolecule(theoryMolecule, ingredientMolecule)) {
-            currentPlayer.reduceReputation(1);
-            ValidatedTheory validatedTheory = new ValidatedTheory(ingredient, theoryMolecule);
-            Theory.getTheoryList().remove(publicationCard.getTheory());
-            notifyPlayers(validatedTheory.toString());
-        } else {
-            currentPlayer.increaseReputation(2);
-            publicationCard.getOwner().reduceReputation(1);
-            ValidatedTheory validatedTheoryy = new ValidatedTheory(ingredient, ingredientMolecule);
-            notifyPlayers(validatedTheoryy.toString());
+        if (findTheorybyIngredient(publicationCard.getTheory().getIngredient()) == null) {
+            throw new IllegalStateException("No published theories about this ingredient.");
         }
     }
 
-    // Helper method to check if two molecules are equal
-    private boolean checkForMolecule(Molecule firstMolecule, Molecule secondMolecule) {
-        return firstMolecule.equals(secondMolecule);
+    private void handleCorrectTheory(PublicationCard publicationCard) {
+        currentPlayer.reduceReputation(1);
+       
+        Theory.getTheoryList().remove(publicationCard.getTheory());
+        notifyPlayers("Theory validated and debunking failed.");
+    }
+
+    private void handleIncorrectTheory(PublicationCard publicationCard) {
+        currentPlayer.increaseReputation(2);
+        publicationCard.getOwner().reduceReputation(1);
+        notifyPlayers("Theory debunked successfully.");
     }
 
 

@@ -6,6 +6,7 @@ public class Molecule {
 	
 	public enum Size {BIG, SMALL};
 	public enum Sign {POSITIVE, NEGATIVE};
+    public enum Component { RED, GREEN, BLUE }
     private Size redComponentSize;
     private Sign redComponentSign;
     private Size greenComponentSize;
@@ -83,6 +84,35 @@ public class Molecule {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
-    
-    
+
+    public Sign getComponentSign(Component component) {
+        switch (component) {
+            case RED:
+                return this.getRedComponentSign();
+            case GREEN:
+                return this.getGreenComponentSign();
+            case BLUE:
+                return this.getBlueComponentSign();
+            default:
+                throw new IllegalArgumentException("Invalid component type");
+        }
+    }
+
+
+    public boolean compareComponent(Molecule otherMolecule, Component component) {
+        switch (component) {
+            case RED:
+                return this.redComponentSize == otherMolecule.redComponentSize
+                        && this.redComponentSign == otherMolecule.redComponentSign;
+            case GREEN:
+                return this.greenComponentSize == otherMolecule.greenComponentSize
+                        && this.greenComponentSign == otherMolecule.greenComponentSign;
+            case BLUE:
+                return this.blueComponentSize == otherMolecule.blueComponentSize
+                        && this.blueComponentSign == otherMolecule.blueComponentSign;
+            default:
+                throw new IllegalArgumentException("Invalid component type");
+        }
+    }
+  
 }
