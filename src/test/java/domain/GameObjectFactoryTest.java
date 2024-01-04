@@ -6,7 +6,8 @@ import org.mockito.Mockito;
 import domain.gameobjects.*;
 
 public class GameObjectFactoryTest {
-    // Instantiate the factory and mock objects for IngredientCard and Molecule
+    
+	// Instantiate the factory and mock objects for IngredientCard and Molecule
     private GameObjectFactory factory;
     private IngredientCard mockIngredient1;
     private IngredientCard mockIngredient2;
