@@ -635,12 +635,16 @@ public class Game { //Singleton Pattern
 
     private void handleIncorrectTheory(PublicationCard publicationCard) {
         currentPlayer.increaseReputation(2);
-        publicationCard.getOwner().reduceReputation(1);
+        if(publicationCard.getOwner().isWisdomIdolActive()){
+            ArtifactEffect effect = publicationCard.getOwner().getArtifactCard("Wisdom Idol").getEffect();
+            if(effect != null){
+                effect.applyOnDebunkTheory(publicationCard.getOwner());
+            }
+        } else{
+            publicationCard.getOwner().reduceReputation(1);
+        }
         notifyPlayers("Theory debunked successfully.");
     }
-
-
-
 
 }
 

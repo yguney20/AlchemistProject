@@ -26,6 +26,12 @@ public class ElixirOfInsightEffect implements ArtifactEffect {
         throw new UnsupportedOperationException("Unimplemented method 'applyOnMakeExperiment'");
     }
 
+    @Override
+    public void applyOnDebunkTheory(Player player) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'applyOnDebunkTheory'");
+    }
+
 
     
 }

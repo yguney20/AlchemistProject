@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import domain.gameobjects.Molecule.*;
-import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
-import domain.gameobjects.artifacteffects.MagicMortarEffect;
-import domain.gameobjects.artifacteffects.PrintingPressEffect;
+import domain.gameobjects.artifacteffects.*;
+
 
 public class GameObjectFactory { // Singleton Patterns
 	
@@ -123,7 +122,7 @@ public class GameObjectFactory { // Singleton Patterns
         artifactDeck.add(new ArtifactCard("Elixir of Insight", 3, new ElixirOfInsightEffect(), true, false,"/ui/swing/resources/images/artifactCards/Elixir Of Insight.png" ));
         artifactDeck.add(new ArtifactCard("Magic Mortar", 3, new MagicMortarEffect(), true, true,"/ui/swing/resources/images/artifactCards/Magic Mortar.png" ));
         artifactDeck.add((new ArtifactCard("Printing Press", 3, new PrintingPressEffect(), false, false,"/ui/swing/resources/images/artifactCards/Printing Press.png" )));
-
+        artifactDeck.add((new ArtifactCard("Wisdom Idol", 3, new WisdomIdolEffect(), true, false,"/ui/swing/resources/images/artifactCards/Wisdom Idol.png" )));
         // Add other artifacts here
 
         return artifactDeck;

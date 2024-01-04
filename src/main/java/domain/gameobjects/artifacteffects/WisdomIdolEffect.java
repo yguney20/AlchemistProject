@@ -4,12 +4,11 @@ import domain.Game;
 import domain.gameobjects.IngredientCard;
 import domain.gameobjects.Player;
 
-public class PhilosophersCompassEffect implements ArtifactEffect{
+public class WisdomIdolEffect implements ArtifactEffect {
 
     @Override
     public void apply(Game game, Player player) {
-        
-        
+      player.setWisdomIdolActive(true);
     }
 
     @Override
@@ -20,10 +19,10 @@ public class PhilosophersCompassEffect implements ArtifactEffect{
 
     @Override
     public void applyOnDebunkTheory(Player player) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'applyOnDebunkTheory'");
+        player.setWisdomIdolActive(false);
+        player.removeArtifactCard("Wisdom Idol");
     }
 
+    
+    
 }
-
-

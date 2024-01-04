@@ -19,6 +19,7 @@ import java.util.Objects;
  	 private ArrayList<Deduction> deductions = new ArrayList<Deduction>();
      private boolean magicMortarActive = false;
      private boolean printingPressActive = false;
+     private boolean wisdomIdolActive = false;
 
  	 
  	 public class Deduction{
@@ -218,6 +219,14 @@ import java.util.Objects;
         this.printingPressActive = printingPressActive;
     }
 
+    public boolean isWisdomIdolActive() {
+        return wisdomIdolActive;
+    }
+
+    public void setWisdomIdolActive(boolean wisdomIdolActive) {
+        this.wisdomIdolActive = wisdomIdolActive;
+    }
+
 
      // Adds an artifact card to the player's collection.
     public void addArtifactCard(ArtifactCard card) {
@@ -231,6 +240,15 @@ import java.util.Objects;
             }
         }
         return null;
+    }
+
+    public void removeArtifactCard(String name) {
+        for(ArtifactCard card: this.artifactCards){
+            if(card.getName().equals(name)){
+                this.artifactCards.remove(card);
+                break;
+            }
+        }
     }
 
     

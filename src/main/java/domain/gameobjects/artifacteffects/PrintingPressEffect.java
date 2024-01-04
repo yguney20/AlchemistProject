@@ -17,5 +17,11 @@ public class PrintingPressEffect implements ArtifactEffect {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'applyOnMakeExperiment'");
     }
+
+    @Override
+    public void applyOnDebunkTheory(Player player) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'applyOnDebunkTheory'");
+    }
 }
 

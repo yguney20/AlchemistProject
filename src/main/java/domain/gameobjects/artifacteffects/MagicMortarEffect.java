@@ -22,5 +22,13 @@ public class MagicMortarEffect implements  ArtifactEffect {
                     } else {
                          player.getIngredientInventory().remove(firstCard);
                     }
+          player.setMagicMortarActive(false);
+          player.removeArtifactCard("Magic Mortar");
     }
+
+@Override
+public void applyOnDebunkTheory(Player player) {
+     // TODO Auto-generated method stub
+     throw new UnsupportedOperationException("Unimplemented method 'applyOnDebunkTheory'");
+}
 }
