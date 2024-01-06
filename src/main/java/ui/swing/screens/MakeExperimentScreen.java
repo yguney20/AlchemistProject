@@ -248,7 +248,10 @@ public class MakeExperimentScreen extends JFrame implements ActionListener{
 		if(event.getSource()==makeExperimentButton) {
 			if(ingredientCard1!=null && ingredientCard2!=null && tester!=null) {
 				try {
-					PotionCard potionCard = gameController.makeExperiment(ingredientCard1, ingredientCard2, tester);
+					int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
+					int firstIngredientCardId = ingredientCard1.getCardId();
+					int secondIngredientcardId = ingredientCard2.getCardId();
+					PotionCard potionCard = gameController.makeExperiment(currentPlayerId, firstIngredientCardId, secondIngredientcardId, tester);
 					JButton potion = new JButton();
 					potion.setBounds(370, 10, 200, 230);
 		        	potion.setContentAreaFilled(false);

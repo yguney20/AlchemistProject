@@ -8,6 +8,7 @@ import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.IngredientCard;
 import domain.gameobjects.Molecule;
+import domain.gameobjects.Molecule.Component;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
 import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
@@ -108,8 +109,8 @@ public class GameController {
     	return game.getGameState().getCurrentRound();
     }
     
-    public void forageForIngredient(Player p) {
-    	game.forageForIngredient(p);
+    public void forageForIngredient(int playerId) {
+    	game.forageForIngredient(playerId);
     }
 
     public List<ArtifactCard> getAvailableArtifacts() {
@@ -121,8 +122,8 @@ public class GameController {
     }
     
 
-    public void buyArtifactCard(ArtifactCard artifact, Player currentPlayer) {
-        game.buyArtifactCard(artifact, currentPlayer);
+    public void buyArtifactCard(int playerId, int cardId) {
+        game.buyArtifactCard(playerId, cardId);
     }
     
     public ArtifactCard getArtifactCardByPath(String path) {
@@ -137,8 +138,8 @@ public class GameController {
         game.resumeGame();
     }
     
-    public void transmuteIngredient(Player player, IngredientCard selectedIngredient) {
-    	game.transmuteIngredient(player, selectedIngredient);
+    public void transmuteIngredient(int playerId, int ingredientId) {
+    	game.transmuteIngredient(playerId, ingredientId);
     }
     
     public void updateState() {
@@ -167,19 +168,23 @@ public class GameController {
 
     }
     
-    public void sellPotion(IngredientCard i1, IngredientCard i2, String guarantee) {
-    	game.sellPotion(i1, i2, guarantee);
+    public void sellPotion(int playerId, int ingredientCardId1, int ingredientCardId2, String guarantee) {
+    	game.sellPotion(playerId, ingredientCardId1, ingredientCardId2, guarantee);
     }
     
-    public PotionCard makeExperiment(IngredientCard firstCard,IngredientCard secondCard, boolean student ) {
-    	return game.makeExperiment(firstCard, secondCard, student);
+    public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId, boolean student ) {
+    	return game.makeExperiment(playerId, firstCardId, secondCardId, student);
     }
     
     public Map<String, String> createIngredientNameAndPathList(){
     	return gameObjectFactory.createIngredientNameAndPathList();
     }
     
-    public void publishTheory(IngredientCard ingredient, Molecule molecule) {
-    	game.publishTheory(ingredient, molecule);
+    public void publishTheory(int playerId, int ingredientId, int moleculeId) {
+    	game.publishTheory(playerId,ingredientId, moleculeId);
+    }
+
+    public void debunkTheory(int playerId, int publicationCardId, Component component){
+        game.debunkTheory(playerId, publicationCardId, component);
     }
 }

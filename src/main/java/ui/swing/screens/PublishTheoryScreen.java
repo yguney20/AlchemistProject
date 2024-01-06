@@ -270,7 +270,10 @@ public class PublishTheoryScreen extends JFrame implements ActionListener{
 				message.setVisible(true);
                 contentPane.setComponentZOrder(message, 0);
 			} else {
-				gameController.publishTheory(ingredientCard, molecule);
+				int playerId = gameController.getCurrentPlayer().getPlayerId();
+				int ingredientId = ingredientCard.getCardId();
+				int moleculeId = molecule.getMoleculeId();
+				gameController.publishTheory(playerId,ingredientId, moleculeId);
 				if(!gameController.getActionPerformed()) {
 					message.setVisible(false);
 					message2.setVisible(true);

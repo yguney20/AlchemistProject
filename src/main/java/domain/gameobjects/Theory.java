@@ -5,13 +5,16 @@ import java.util.ArrayList;
 public class Theory {
 	private IngredientCard ingredient;
 	private Molecule molecule;
-	 private static ArrayList<Theory> theoryList = new ArrayList<Theory>();
+	private static ArrayList<Theory> theoryList = new ArrayList<Theory>();
+	private int theoryId;
 
 	
-	public Theory(IngredientCard ingredient, Molecule molecule) {
+	public Theory(int theoryId,IngredientCard ingredient, Molecule molecule) {
 		this.ingredient = ingredient;
 		this.molecule = molecule;
+		this.theoryId = theoryId;
 		theoryList.add(this);
+		
 	}
 
 	public IngredientCard getIngredient() {
@@ -38,5 +41,11 @@ public class Theory {
 		Theory.theoryList = theoryList;
 	}
 	
-	
+	public int getTheoryId() {
+		return theoryId;
+	}
+
+	public void setTheoryId(int theoryId){
+		this.theoryId = theoryId;
+	}
 }

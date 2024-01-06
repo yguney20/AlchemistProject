@@ -246,7 +246,10 @@ public class SellPotionScreen extends JFrame implements ActionListener{
 		}
 		if(event.getSource()==sellPotionButton) {
 			if(ingredientCard1!=null && ingredientCard2!=null && guarantee!=null) {
-				gameController.sellPotion(ingredientCard1, ingredientCard2, guarantee);
+				int playerId = gameController.getCurrentPlayer().getPlayerId();
+				int firstIngredientId = ingredientCard1.getCardId();
+				int secondIngredientId = ingredientCard2.getCardId();
+				gameController.sellPotion(playerId,firstIngredientId, secondIngredientId, guarantee);
 				this.setVisible(false);
 			}
 			else {

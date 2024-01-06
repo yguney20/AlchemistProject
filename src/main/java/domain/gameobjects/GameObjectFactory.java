@@ -13,6 +13,12 @@ import domain.gameobjects.artifacteffects.*;
 public class GameObjectFactory { // Singleton Patterns
 	
 	private static GameObjectFactory instance;
+
+    // Counters for unique IDs
+    private int playerCounter = 1;
+    private static int moleculeCounter = 1;
+    private int artifactCounter = 1;
+    private int potionCounter = 1;
 	
 	private static String redPositivePath = "/ui/swing/resources/images/potions/red+.png";
 	private static String redNegativePath = "/ui/swing/resources/images/potions/red-.png";
@@ -52,20 +58,21 @@ public class GameObjectFactory { // Singleton Patterns
 	//Create a player
 	public void createPlayer(String nickname, String avatar) {
 		Player player = new Player(nickname, avatar);
+        player.setPlayerId(playerCounter++);
 	}
 
     //Create a Molecule list
     public static List<Molecule> createMoleculeList() {
         List<Molecule> molecules = new ArrayList<>();
 
-        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, molecule4image ));
-        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, molecule3image));
-        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, molecule7image));
-        molecules.add(new Molecule(Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, molecule5image));
-        molecules.add(new Molecule(Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, molecule1image));
-        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, molecule6image));
-        molecules.add(new Molecule(Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, molecule2image));
-        molecules.add(new Molecule(Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, molecule8image));
+        molecules.add(new Molecule(moleculeCounter++,Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, molecule4image ));
+        molecules.add(new Molecule(moleculeCounter++,Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, molecule3image));
+        molecules.add(new Molecule(moleculeCounter++,Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, molecule7image));
+        molecules.add(new Molecule(moleculeCounter++,Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, molecule5image));
+        molecules.add(new Molecule(moleculeCounter++,Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, molecule1image));
+        molecules.add(new Molecule(moleculeCounter++,Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE, Size.SMALL, Sign.POSITIVE, molecule6image));
+        molecules.add(new Molecule(moleculeCounter++,Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, Size.BIG, Sign.NEGATIVE, molecule2image));
+        molecules.add(new Molecule(moleculeCounter++,Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE, Size.BIG, Sign.POSITIVE, molecule8image));
 
         return molecules;
     }
@@ -119,10 +126,10 @@ public class GameObjectFactory { // Singleton Patterns
     public List<ArtifactCard> createArtifactDeck() {
         List<ArtifactCard> artifactDeck = new ArrayList<>();
 
-        artifactDeck.add(new ArtifactCard("Elixir of Insight", 3, new ElixirOfInsightEffect(), true, false,"/ui/swing/resources/images/artifactCards/Elixir Of Insight.png" ));
-        artifactDeck.add(new ArtifactCard("Magic Mortar", 3, new MagicMortarEffect(), true, true,"/ui/swing/resources/images/artifactCards/Magic Mortar.png" ));
-        artifactDeck.add((new ArtifactCard("Printing Press", 3, new PrintingPressEffect(), false, false,"/ui/swing/resources/images/artifactCards/Printing Press.png" )));
-        artifactDeck.add((new ArtifactCard("Wisdom Idol", 3, new WisdomIdolEffect(), true, false,"/ui/swing/resources/images/artifactCards/Wisdom Idol.png" )));
+        artifactDeck.add(new ArtifactCard(artifactCounter++, "Elixir of Insight", 3, new ElixirOfInsightEffect(), true, false,"/ui/swing/resources/images/artifactCards/Elixir Of Insight.png" ));
+        artifactDeck.add(new ArtifactCard(artifactCounter++, "Magic Mortar", 3, new MagicMortarEffect(), true, false,"/ui/swing/resources/images/artifactCards/Magic Mortar.png" ));
+        artifactDeck.add((new ArtifactCard(artifactCounter++, "Printing Press", 3, new PrintingPressEffect(), false, false,"/ui/swing/resources/images/artifactCards/Printing Press.png" )));
+        artifactDeck.add((new ArtifactCard(artifactCounter++, "Wisdom Idol", 3, new WisdomIdolEffect(), true, false,"/ui/swing/resources/images/artifactCards/Wisdom Idol.png" )));
         // Add other artifacts here
 
         return artifactDeck;
@@ -142,7 +149,7 @@ public class GameObjectFactory { // Singleton Patterns
         					&& (areSameSizeAndDifferentSign(firstIngredient.getMolecule().getGreenComponentSign(), secondIngredient.getMolecule().getGreenComponentSign(),
                 	                firstIngredient.getMolecule().getGreenComponentSize(), secondIngredient.getMolecule().getGreenComponentSize()))) {
             // Create a Neutral Potion
-            potionCard = new PotionCard("Neutral Potion", "Neutral", "Description for Neutral Potion", neutralPath);
+            potionCard = new PotionCard(potionCounter++,"Neutral Potion", "Neutral", "Description for Neutral Potion", neutralPath);
         } 
         // Check if the ingredients can create a Red Potion
         else if (areSameSignAndDifferentSize(firstIngredient.getMolecule().getRedComponentSign(), secondIngredient.getMolecule().getRedComponentSign(),
@@ -150,9 +157,9 @@ public class GameObjectFactory { // Singleton Patterns
             String redSignString = firstIngredient.getMolecule().getRedComponentSign().toString();
             // Check if the Red Potion is positive or negative
             if(redSignString.equals("POSITIVE")) {
-                potionCard = new PotionCard("Red Potion", "POSITIVE", "Red Positive", redPositivePath);
+                potionCard = new PotionCard(potionCounter++,"Red Potion", "POSITIVE", "Red Positive", redPositivePath);
             } else {
-                potionCard = new PotionCard("Red Potion","NEGATIVE", "Red Negative", redNegativePath);
+                potionCard = new PotionCard(potionCounter++,"Red Potion","NEGATIVE", "Red Negative", redNegativePath);
             }
         } 
         // Check if the ingredients can create a Blue Potion
@@ -161,9 +168,9 @@ public class GameObjectFactory { // Singleton Patterns
             String blueSignString = firstIngredient.getMolecule().getBlueComponentSign().toString();
             // Check if the Blue Potion is positive or negative
             if(blueSignString.equals("POSITIVE")) {
-                potionCard = new PotionCard("Blue Potion", "POSITIVE", "Blue Positive", bluePositivePath);
+                potionCard = new PotionCard(potionCounter++,"Blue Potion", "POSITIVE", "Blue Positive", bluePositivePath);
             } else {
-                potionCard = new PotionCard("Blue Potion","NEGATIVE", "Blue Negative", blueNegativePath);
+                potionCard = new PotionCard(potionCounter++,"Blue Potion","NEGATIVE", "Blue Negative", blueNegativePath);
             }
         } 
         // Check if the ingredients can create a Green Potion
@@ -172,9 +179,9 @@ public class GameObjectFactory { // Singleton Patterns
             String greenSignString = firstIngredient.getMolecule().getGreenComponentSign().toString();
             // Check if the Green Potion is positive or negative
             if(greenSignString.equals("POSITIVE")) {
-                potionCard = new PotionCard("Green Potion", "POSITIVE", "Green Positive", greenPositivePath);
+                potionCard = new PotionCard(potionCounter++,"Green Potion", "POSITIVE", "Green Positive", greenPositivePath);
             } else {
-                potionCard = new PotionCard("Green Potion","NEGATIVE", "Green Negative", greenNegativePath);
+                potionCard = new PotionCard(potionCounter++,"Green Potion","NEGATIVE", "Green Negative", greenNegativePath);
             }            
         }
 

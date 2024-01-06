@@ -4,7 +4,7 @@ import domain.gameobjects.artifacteffects.ArtifactEffect;
 import domain.Game;
 
 public class ArtifactCard {
-	
+	private int artifactId;
     private String name;
     private int goldValue;
     private ArtifactEffect effect;
@@ -14,7 +14,7 @@ public class ArtifactCard {
     private String imagePath;
 
     
-    public ArtifactCard(String name, int goldValue, ArtifactEffect effect, boolean isOneTimeUse, boolean isImmadiate, String imagePath) {
+    public ArtifactCard(int artifactId, String name, int goldValue, ArtifactEffect effect, boolean isOneTimeUse, boolean isImmadiate, String imagePath) {
         this.name = name;
         this.goldValue = goldValue;
         this.effect = effect;
@@ -22,9 +22,18 @@ public class ArtifactCard {
         this.isUsed = false;
         this.isImmadiate = isImmadiate;
         this.imagePath = imagePath;
+        this.artifactId = artifactId;
     }
 
     // Getters and setters
+
+    public int getArtifactId() {
+        return artifactId;
+    }
+    
+    public void setArtifactId(int artifactId) {
+        this.artifactId = artifactId;
+    }
     public String getName() {
         return name;
     }
@@ -81,9 +90,9 @@ public class ArtifactCard {
         if(isUsed == false ){ 
             effect.apply(game, player);
             isUsed = true;
-            if (isOneTimeUse){
-                player.getArtifactCards().remove(this);
-            }
+            // if (isOneTimeUse){
+            //     player.getArtifactCards().remove(this);
+            // }
 
         } else if(isUsed == true && isOneTimeUse == false){
             throw new IllegalStateException("This one-per-round use artifact has already been used.");

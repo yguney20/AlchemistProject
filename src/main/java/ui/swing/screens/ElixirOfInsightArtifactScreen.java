@@ -70,7 +70,7 @@ import javax.swing.JOptionPane;
         setUndecorated(true);
 		
 		try {
-	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/UI/Swing/Images/loginbackground.jpg"));
+	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/loginbackground.jpg"));
 	        contentPane = new JPanel() {
 	            @Override
 	            protected void paintComponent(Graphics g) {

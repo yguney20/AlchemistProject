@@ -2,152 +2,68 @@ package domain;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
-public class Server {
-    private ServerSocket serverSocket;
-    private final List<ClientHandler> clients = new ArrayList<>();
-    private boolean gameStarted = false; // Flag to indicate if the game has started
+public class Client {
+    private String hostname; // The IP address or hostname of the server
+    private int port; // The port number the server is listening on
+    private Socket socket; // The socket connecting to the server
+    private PrintWriter writer; // To send messages to the server
 
-    // Constructor to initialize server with a specific port
-    public Server(int port) throws IOException {
-        serverSocket = new ServerSocket(port);
-        System.out.println("Server started on port " + port);
+    // Constructor to initialize the client with the server's host and port
+    public Client(String hostname, int port) {
+        this.hostname = hostname;
+        this.port = port;
     }
 
-    // Main logic to execute the server
-    public void execute() {
-        System.out.println("Waiting for players...");
-
-        // Continuously listen for new clients until the game is started
-        while (!gameStarted) {
-            try {
-                // Accept new client connections
-                Socket socket = serverSocket.accept();
-                System.out.println("New player connected");
-
-                // Create and start a new ClientHandler thread for each connected client
-                ClientHandler newUser = new ClientHandler(socket, this);
-                clients.add(newUser);
-                newUser.start();
-
-                // If at least two clients are connected, notify the host to start the game
-                if (clients.size() >= 2) {
-                    notifyHostToStartGame();
-                }
-
-            } catch (IOException ex) {
-                System.out.println("Server exception: " + ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    // Broadcast a message to all clients except the sender
-    void broadcast(String message, ClientHandler excludeUser) {
-        for (ClientHandler aClient : clients) {
-            if (aClient != excludeUser) {
-                aClient.sendMessage(message);
-            }
-        }
-    }
-
-    // Notify the host to start the game
-    void notifyHostToStartGame() {
-        for (ClientHandler aClient : clients) {
-            if (aClient.isHost()) {
-                aClient.sendMessage("READY_TO_START");
-            }
-        }
-    }
-
-    // Remove a client from the list and close its socket
-    void removeClient(ClientHandler client) {
-        clients.remove(client);
-        System.out.println("Player left: " + client.getClientName());
-    }
-
-    // Main method to start the server
-    public static void main(String[] args) {
-        int port = 6666; // Set your port here
+    // Connect to the server
+    public boolean connect() {
         try {
-            Server server = new Server(port);
-            server.execute();
-        } catch (IOException e) {
-            System.out.println("Cannot start the server: " + e.getMessage());
-            e.printStackTrace();
+            socket = new Socket(hostname, port); // Create a new socket connection
+            System.out.println("Connected to the game server");
+
+            OutputStream output = socket.getOutputStream();
+            writer = new PrintWriter(output, true); // Set up PrintWriter for sending messages
+
+            return true; // Return true if connection is successful
+        } catch (UnknownHostException ex) {
+            System.out.println("Server not found: " + ex.getMessage()); // Handle unknown host exception
+        } catch (IOException ex) {
+            System.out.println("I/O Error: " + ex.getMessage()); // Handle IO exception
+        }
+        return false; // Return false if connection fails
+    }
+
+    // Send a message to the server
+    public void sendMessage(String message) {
+        writer.println(message);
+    }
+
+    // Disconnect from the server
+    public void disconnect() {
+        try {
+            if (socket != null) {
+                socket.close(); // Close the socket connection
+            }
+            if (writer != null) {
+                writer.close(); // Close the writer
+            }
+            System.out.println("Disconnected from the server");
+        } catch (IOException ex) {
+            System.out.println("Error while closing client: " + ex.getMessage());
         }
     }
 
-    // Inner class: ClientHandler
-    class ClientHandler extends Thread {
-        private Socket socket;
-        private Server server;
-        private PrintWriter writer;
-        private BufferedReader reader;
-        private String clientName;
-        private boolean isHost;
+    // Main method for testing the client
+    public static void main(String[] args) {
+        // Replace with the server's IP address and port
+        Client client = new Client("localhost", 6666);
+        if (client.connect()) {
+            System.out.println("Client successfully connected to server");
+            client.sendMessage("Hello from the client!"); // Send a test message
+            // More interactions or game logic here
 
-        // Constructor for ClientHandler
-        public ClientHandler(Socket socket, Server server) {
-            this.socket = socket;
-            this.server = server;
-            isHost = false;
-
-            try {
-                // Set up input and output streams for communication with the client
-                InputStream input = socket.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(input));
-                OutputStream output = socket.getOutputStream();
-                writer = new PrintWriter(output, true);
-            } catch (IOException ex) {
-                System.out.println("Error in ClientHandler: " + ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-
-        // Main logic for handling communication with a client
-        public void run() {
-            try {
-                // Read the client's name as the first message
-                clientName = reader.readLine();  
-                if (clients.size() == 1) { // First connected client is the host
-                    isHost = true;
-                }
-
-                String serverMessage;
-
-                // Continuously read messages from the client and broadcast them
-                while ((serverMessage = reader.readLine()) != null) {
-                    System.out.println(clientName + ": " + serverMessage);
-                    server.broadcast(clientName + ": " + serverMessage, this);
-                }
-            } catch (IOException ex) {
-                System.out.println("Error in ClientHandler: " + ex.getMessage());
-                ex.printStackTrace();
-            } finally {
-                // Remove client from the list and close its socket when done
-                server.removeClient(this);
-                try {
-                    socket.close();
-                } catch (IOException ex) {
-                    System.out.println("Error while closing the socket: " + ex.getMessage());
-                }
-            }
-        }
-
-        // Method to send a message to the client
-        void sendMessage(String message) {
-            writer.println(message);
-        }
-
-        // Getters for client's name and host status
-        String getClientName() {
-            return clientName;
-        }
-
-        boolean isHost() {
-            return isHost;
+            // Disconnect when done
+            client.disconnect();
         }
     }
 }

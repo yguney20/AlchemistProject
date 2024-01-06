@@ -3,7 +3,7 @@ package domain.gameobjects;
 import java.util.ArrayList;
 
 public class Molecule {
-	
+	private int moleculeId;
 	public enum Size {BIG, SMALL};
 	public enum Sign {POSITIVE, NEGATIVE};
     public enum Component { RED, GREEN, BLUE }
@@ -17,7 +17,7 @@ public class Molecule {
 	private static ArrayList<Molecule> moleculeList = new ArrayList<Molecule>();
 
 
-    public Molecule(Size redComponentSize, Sign redComponentSign, 
+    public Molecule(int moleculeId,Size redComponentSize, Sign redComponentSign, 
             Size greenComponentSize, Sign greenComponentSign, 
             Size blueComponentSize, Sign blueComponentSign, String imagePath) {
     	this.redComponentSize = redComponentSize;
@@ -27,6 +27,7 @@ public class Molecule {
     	this.blueComponentSize = blueComponentSize;
     	this.blueComponentSign = blueComponentSign;
     	this.imagePath = imagePath;
+        this.moleculeId = moleculeId;
     	moleculeList.add(this);
     }
 
@@ -51,6 +52,14 @@ public class Molecule {
                 ", blueComponentSize=" + blueComponentSize +
                 ", blueComponentSign=" + blueComponentSign +
                 '}';
+    }
+
+    public int getMoleculeId() {
+        return moleculeId;
+    }
+    
+    public void setMoleculeId(int moleculeId) {
+        this.moleculeId = moleculeId;
     }
     
     public Size getRedComponentSize() {

@@ -185,8 +185,8 @@ public class PlayerDashboard extends JFrame {
             }
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		Player currentPlayer = gameController.getCurrentPlayer();
-    			gameController.forageForIngredient(currentPlayer);
+        		int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
+    			gameController.forageForIngredient(currentPlayerId);
     			PlayerDashboard.this.setVisible(false);
     			musicPlayer.stopSound();
         	}

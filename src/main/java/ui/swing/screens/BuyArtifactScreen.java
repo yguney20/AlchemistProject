@@ -37,7 +37,7 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	private JButton buyButton;
     private int initialX;
     private int initialY;
-    private ArtifactCard artifactCard;
+    private int artifactCardId;
     private JLabel selected;
     private GameController gameController = GameController.getInstance();
     private JLabel message;
@@ -200,12 +200,12 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 
 		if(event.getSource()==buyButton) {
-			if(artifactCard==null) {
+			if(artifactCardId == 0) {
 				message.setVisible(true);
                 contentPane.setComponentZOrder(message, 0);
 			} else {
-				Player currentPlayer = gameController.getCurrentPlayer();
-				gameController.buyArtifactCard(artifactCard, currentPlayer);
+				int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
+				gameController.buyArtifactCard(currentPlayerId,artifactCardId);
 				this.setVisible(false);
 			}
 
@@ -235,16 +235,16 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	}
 	
     private void handleArtifactSelection(JButton button) {            
-    	ArtifactCard selectedArtifactCard = null;
+    	int selectedArtifactCardId = 0;
         for (ArtifactCard card : artifactCards) {
             if (button.getText().equals(card.getName())) {
-                selectedArtifactCard = card;
+                selectedArtifactCardId = card.getArtifactId();
                 break;
             }
         }
 
-        if (selectedArtifactCard != null) {
-            artifactCard = selectedArtifactCard;
+        if (selectedArtifactCardId != 0) {
+            artifactCardId = selectedArtifactCardId;
 
             // Set the selected label position based on the clicked button
             selected.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);

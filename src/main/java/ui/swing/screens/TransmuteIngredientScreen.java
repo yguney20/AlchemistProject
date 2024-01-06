@@ -205,8 +205,9 @@ public class TransmuteIngredientScreen extends JFrame  implements ActionListener
 				message.setVisible(true);
                 contentPane.setComponentZOrder(message, 0);
 			} else {
-				Player currentPlayer = gameController.getCurrentPlayer();
-				gameController.transmuteIngredient(currentPlayer, ingredientCard);
+				int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
+				int ingredientCardId = ingredientCard.getCardId();
+				gameController.transmuteIngredient(currentPlayerId, ingredientCardId);
 				this.setVisible(false);
 			}
 

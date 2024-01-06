@@ -2,22 +2,27 @@ package domain.gameobjects;
 import java.util.List;
 
 public class PotionCard {
-	
-
+			private int potionId;
 			private String potionName;
 		    private String potionType;		    
 		    private String description;
 		    private String imagePath;
 		    
-		    public PotionCard(String potionName, String potionType, String description, String imagePath) {
+		    public PotionCard(int potionId,String potionName, String potionType, String description, String imagePath) {
 		        this.potionName = potionName;
 		        this.potionType = potionType;		        
 		        this.description = description;
 		        this.imagePath = imagePath;
-		        
+		        this.potionId = potionId;
 
 		    }
-		    
+		    public int getPotionId() {
+				return potionId;
+			}
+			
+			public void setPotionId(int potionId) {
+				this.potionId = potionId;
+			}
 		    
 		    public String getImagePath() {
 				return imagePath;

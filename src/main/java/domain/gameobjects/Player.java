@@ -3,8 +3,12 @@
  import java.util.ArrayList;
  import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+
+import uk.co.caprica.vlcj.binding.internal.vlm_media_event;
 
  public class Player {
+     private int playerId;
      private String nickname;
      private String avatar; // This can be a path to the avatar image file 
      private int golds;
@@ -101,6 +105,10 @@ import java.util.Objects;
 		Player.playerList = playerList;
 	}
 
+    public void setPlayerId(int id){
+        this.playerId = id;
+    }
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
@@ -154,6 +162,10 @@ import java.util.Objects;
 	public void setPotionInventory(List<PotionCard> potionInventory) {
 		this.potionInventory = potionInventory;
 	}
+
+    public int getPlayerId() {
+        return playerId;
+    }
 
 	public String getNickname() {
          return nickname;
@@ -235,7 +247,7 @@ import java.util.Objects;
 
     public ArtifactCard getArtifactCard(String name) {
         for (ArtifactCard card : this.artifactCards) {
-            if (card.getName().equals(name)) {
+            if (card.getName() == name) {
                 return card;
             }
         }
