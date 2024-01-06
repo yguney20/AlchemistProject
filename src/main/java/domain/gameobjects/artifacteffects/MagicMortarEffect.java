@@ -26,9 +26,9 @@ public class MagicMortarEffect implements  ArtifactEffect {
           player.removeArtifactCard("Magic Mortar");
     }
 
-@Override
-public void applyOnDebunkTheory(Player player) {
-     // TODO Auto-generated method stub
-     throw new UnsupportedOperationException("Unimplemented method 'applyOnDebunkTheory'");
-}
+     @Override
+     public void applyOnDebunkTheory(Player player) {
+          // TODO Auto-generated method stub
+          throw new UnsupportedOperationException("Unimplemented method 'applyOnDebunkTheory'");
+     }
 }

@@ -38,6 +38,18 @@ public class Client {
         writer.println(message);
     }
 
+    // Method to receive a message from the server
+    public String receiveMessage() {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            // Blocking call, waits for a line of text from the server
+            return reader.readLine(); 
+        } catch (IOException e) {
+            System.err.println("Error receiving message from server: " + e.getMessage());
+            return null;
+        }
+    }
+
     // Disconnect from the server
     public void disconnect() {
         try {

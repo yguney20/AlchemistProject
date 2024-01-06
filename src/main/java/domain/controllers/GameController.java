@@ -12,6 +12,7 @@ import domain.gameobjects.Molecule.Component;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
 import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
+import domain.controllers.*;
 
 import java.awt.Point;
 import java.util.HashMap;
@@ -26,6 +27,8 @@ public class GameController {
 	private final Game game;
 	private final GameObjectFactory gameObjectFactory;
 	private Map<Player, DeductionBoard> playerDeductionBoards = new HashMap<>();
+    private boolean isOnlineMode = false;
+    private OnlineGameAdapter onlineGameAdapter;
 	
     public static GameController getInstance() {
         if (instance == null) {
@@ -36,6 +39,16 @@ public class GameController {
 	
     public static void destroyInstance() {
         instance = null;
+    }
+
+    // Method to set the game mode
+    public void setOnlineMode(boolean isOnline) {
+        this.isOnlineMode = isOnline;
+    }
+
+    // Method to check if the game is in online mode
+    public boolean isOnlineMode() {
+        return this.isOnlineMode;
     }
     
     //constructor should be private in Singleton
@@ -110,7 +123,14 @@ public class GameController {
     }
     
     public void forageForIngredient(int playerId) {
-    	game.forageForIngredient(playerId);
+        if (isOnlineMode) {
+            // Online mode: Send action to server via adapter
+            onlineGameAdapter.forageForIngredient(String.valueOf(playerId));
+        } else {
+            // Offline mode: Directly call game logic
+            game.forageForIngredient(playerId);
+        }
+    
     }
 
     public List<ArtifactCard> getAvailableArtifacts() {
@@ -123,7 +143,14 @@ public class GameController {
     
 
     public void buyArtifactCard(int playerId, int cardId) {
-        game.buyArtifactCard(playerId, cardId);
+        if (isOnlineMode) {
+            // Online mode: Send action to server via adapter
+            onlineGameAdapter.buyArtifactCard(String.valueOf(playerId), String.valueOf(cardId));
+        } else {
+            // Offline mode: Directly call game logic
+            game.buyArtifactCard(playerId, cardId);
+        }
+        
     }
     
     public ArtifactCard getArtifactCardByPath(String path) {
@@ -139,11 +166,25 @@ public class GameController {
     }
     
     public void transmuteIngredient(int playerId, int ingredientId) {
-    	game.transmuteIngredient(playerId, ingredientId);
+        if (isOnlineMode) {
+            // Online mode: Send action to server via adapter
+            onlineGameAdapter.transmuteIngredient(String.valueOf(playerId), String.valueOf(ingredientId));
+        } else {
+            // Offline mode: Directly call game logic
+            game.transmuteIngredient(playerId, ingredientId);
+        }
+    	
     }
-    
+
     public void updateState() {
-    	game.updateState();
+        if (isOnlineMode) {
+            // Online mode: Send action to server via adapter
+            onlineGameAdapter.updateState();
+        } else {
+            // Offline mode: Directly call game logic
+           game.updateState();
+        }
+    	
     }
 
     public boolean getActionPerformed() {
@@ -154,7 +195,9 @@ public class GameController {
         return game.getGameState().getCurrentPlayer().getArtifactCards();
     }
 
+    //DEĞİŞECEK
     public void UseArtifactCard(ArtifactCard artifactCard, Player currentPlayer) {
+        
         game.useArtifactCard(artifactCard, currentPlayer);
     }
 
@@ -169,11 +212,24 @@ public class GameController {
     }
     
     public void sellPotion(int playerId, int ingredientCardId1, int ingredientCardId2, String guarantee) {
-    	game.sellPotion(playerId, ingredientCardId1, ingredientCardId2, guarantee);
+        if (isOnlineMode) {
+            // Online mode: Send action to server via adapter
+            onlineGameAdapter.sellPotion(String.valueOf(playerId), String.valueOf(ingredientCardId1), String.valueOf(ingredientCardId2), guarantee);
+        } else {
+            // Offline mode: Directly call game logic
+           game.sellPotion(playerId, ingredientCardId1, ingredientCardId2, guarantee);
+        }
+    	
     }
     
-    public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId, boolean student ) {
-    	return game.makeExperiment(playerId, firstCardId, secondCardId, student);
+    public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId, boolean student) {
+        if (isOnlineMode) {
+            // Send action to server via adapter and wait for response
+            return onlineGameAdapter.makeExperiment(playerId, firstCardId, secondCardId, student);
+        } else {
+            // Offline mode: Directly call game logic
+            return game.makeExperiment(playerId, firstCardId, secondCardId, student);
+        }
     }
     
     public Map<String, String> createIngredientNameAndPathList(){
@@ -181,10 +237,24 @@ public class GameController {
     }
     
     public void publishTheory(int playerId, int ingredientId, int moleculeId) {
-    	game.publishTheory(playerId,ingredientId, moleculeId);
+        if (isOnlineMode) {
+            // Send action to server via adapter and wait for response
+           onlineGameAdapter.publishTheory(String.valueOf(playerId),String.valueOf(ingredientId), String.valueOf(moleculeId));
+        } else {
+            // Offline mode: Directly call game logic
+            game.publishTheory(playerId,ingredientId, moleculeId);
+        }
+    	
     }
 
     public void debunkTheory(int playerId, int publicationCardId, Component component){
-        game.debunkTheory(playerId, publicationCardId, component);
+        if (isOnlineMode) {
+            // Send action to server via adapter and wait for response
+           onlineGameAdapter.debunkTheory(String.valueOf(playerId),String.valueOf(publicationCardId), component);
+        } else {
+            // Offline mode: Directly call game logic
+           game.debunkTheory(playerId, publicationCardId, component);
+        }
+       
     }
 }

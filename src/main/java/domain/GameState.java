@@ -3,6 +3,7 @@ package domain;
 import java.util.List;
 
 import domain.gameobjects.Player;
+import domain.gameobjects.PotionCard;
 
 public class GameState {
 	
@@ -11,6 +12,7 @@ public class GameState {
     private Player currentPlayer;
     private boolean isPaused;
     private int currentTurn;
+     private PotionCard lastCreatedPotion;
 
     public GameState(List<Player> players, int initialRound, int firstTurn, Player initialPlayer, boolean isPaused) {
         this.players = players;
@@ -32,6 +34,7 @@ public class GameState {
 
     // Getters and setters
     
+
     public int getCurrentTurn() {
 		return currentTurn;
 	}
@@ -70,5 +73,14 @@ public class GameState {
 
     public void setPaused(boolean paused) {
         isPaused = paused;
+    }
+
+    public PotionCard getLastCreatedPotion() {
+        return lastCreatedPotion;
+    }
+
+    // Method to set the last created potion (used when updating the state)
+    public void setLastCreatedPotion(PotionCard potionCard) {
+        this.lastCreatedPotion = potionCard;
     }
 }

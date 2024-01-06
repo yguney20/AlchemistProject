@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import domain.Server;
+import domain.controllers.GameController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,7 @@ public class GameEntranceScreen extends JFrame{
     private JButton settingsButton = new JButton("Settings");
     private JButton helpButton = new JButton("Help");
     private JButton quitButton = new JButton("X");
+    private GameController gameController = GameController.getInstance();
 
     private int buttonWidth;
     private int buttonHeight;
@@ -76,6 +78,8 @@ public class GameEntranceScreen extends JFrame{
                 dispose();  // Close current frame
                 LoginScreen loginScreen = new LoginScreen();
                 loginScreen.display();
+                gameController.setOnlineMode(false);
+                
             }
         });
         this.add(playButton);
@@ -88,6 +92,7 @@ public class GameEntranceScreen extends JFrame{
             	startServer();
             	setVisible(false);
                 HostGameScreen hostScreen = new HostGameScreen(frame);
+                gameController.setOnlineMode(true);
                 hostScreen.display();
             }
         });
@@ -101,6 +106,7 @@ public class GameEntranceScreen extends JFrame{
             	setVisible(false);
                 ConnectGameScreen connectScreen = new ConnectGameScreen(frame);
                 connectScreen.display();
+                gameController.setOnlineMode(true);
             }
         });
         this.add(connectGame);

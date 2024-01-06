@@ -186,7 +186,19 @@ public class Game { //Singleton Pattern
             resetArtifactCards(player);
         }
         // Include any other end-of-round logic here
+    }  
+
+    public void updateGameState(GameState newGameState) {
+        // Update the game state with the new information
+        this.currentRound = newGameState.getCurrentRound();
+        this.currentTurn = newGameState.getCurrentTurn();
+        this.currentPlayer = newGameState.getCurrentPlayer();
+        this.isPaused = newGameState.isPaused();
+        // Additionally update other relevant state attributes if necessary
+        // For example, players, scores, etc., based on what GameState contains
     }
+
+
     
     //end game method
     private void endGame() {
@@ -527,6 +539,7 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     }
 
     PotionCard potionCard = makePotion(firstCard, secondCard);
+    gameState.setLastCreatedPotion(potionCard);
     processExperimentOutcome(player, potionCard, student);
     actionPerformed = true;
     return potionCard;
