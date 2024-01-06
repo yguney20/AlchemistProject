@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 
 public class OnlineGameAdapter implements GameCommunication {
@@ -29,6 +30,10 @@ public class OnlineGameAdapter implements GameCommunication {
         return client.connect(); // Attempt to connect using the Client class
     }
 
+	public void disconnect() {
+		client.disconnect(); // Disconnect using the Client class
+	}
+
 	@Override
 	public void startGame() {
 		Map<String, String> message = new HashMap<>();
@@ -45,27 +50,31 @@ public class OnlineGameAdapter implements GameCommunication {
 
 	@Override
 	public String receiveUpdate() {
-        try {
-            // Receive message from the server
-            String response = client.receiveMessage();
-            if (response != null && !response.isEmpty()) {
-                // Log the response for debugging
-                System.out.println("Response received: " + response);
+		try {
+				// Receive message from the server
+				String response = client.receiveMessage();
+				if (response != null && !response.isEmpty()) {
+					// Log the response for debugging
+					System.out.println("Response received: " + response);
+					
+					GameState updatedState;
+					try {
+						// Parse the response into a GameState object
+						updatedState = gson.fromJson(response, GameState.class);
+					} catch (JsonSyntaxException e) {
+						System.err.println("Error parsing GameState: " + e.getMessage());
 
-                // Parse the response into a GameState object
-                GameState updatedState = gson.fromJson(response, GameState.class);
-
-                // Update the game state
-                Game.getInstance().updateGameState(updatedState);
-
-                return response;
-            }
-        } catch (Exception e) {
-            System.err.println("Error receiving update: " + e.getMessage());
-            // Optionally, handle the exception more robustly
-        }
-        return null;
-    }
+						return null;
+					}
+					// Update the game state
+					Game.getInstance().updateGameState(updatedState);
+					return response;
+				}
+			} catch (Exception e) {
+				System.err.println("Error receiving update: " + e.getMessage());
+			}
+		return null;
+	}
 
 	@Override
 	public void endGame() {

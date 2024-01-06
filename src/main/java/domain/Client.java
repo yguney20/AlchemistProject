@@ -3,6 +3,8 @@ package domain;
 import java.io.*;
 import java.net.*;
 
+import domain.controllers.OnlineGameAdapter;
+
 public class Client {
     private String hostname; // The IP address or hostname of the server
     private int port; // The port number the server is listening on
@@ -35,8 +37,13 @@ public class Client {
 
     // Send a message to the server
     public void sendMessage(String message) {
-        writer.println(message);
+        if (writer != null) {
+            writer.println(message);
+        } else {
+            System.err.println("Error: Attempted to send a message with no active connection.");
+        }
     }
+    
 
     // Method to receive a message from the server
     public String receiveMessage() {
@@ -67,15 +74,22 @@ public class Client {
 
     // Main method for testing the client
     public static void main(String[] args) {
-        // Replace with the server's IP address and port
-        Client client = new Client("localhost", 6666);
-        if (client.connect()) {
+        OnlineGameAdapter adapter = new OnlineGameAdapter("localhost", 6666);
+        if (adapter.connect()) {
             System.out.println("Client successfully connected to server");
-            client.sendMessage("Hello from the client!"); // Send a test message
-            // More interactions or game logic here
+
+            // Create an instance of OnlineGameAdapter
+
+            // Example: Simulate a player foraging for an ingredient
+            adapter.forageForIngredient("1");  // Assuming '1' is a player ID
+
+            // Example: Simulate a player buying an artifact card
+            adapter.buyArtifactCard("1", "101");  // Assuming '1' is a player ID and '101' is a card ID
+
+            // Add more actions as needed...
 
             // Disconnect when done
-            client.disconnect();
+            adapter.disconnect();
         }
     }
 }
