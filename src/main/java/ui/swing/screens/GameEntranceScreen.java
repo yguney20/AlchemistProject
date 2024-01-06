@@ -2,6 +2,9 @@ package ui.swing.screens;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import domain.Server;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class GameEntranceScreen extends JFrame{
@@ -19,6 +21,8 @@ public class GameEntranceScreen extends JFrame{
 	private JFrame frame;
 	private JPanel backgroundPanel;
     private JButton playButton = new JButton("Play");
+    private JButton hostGame = new JButton("Host a game");
+    private JButton connectGame = new JButton("Connect a game");
     private JButton settingsButton = new JButton("Settings");
     private JButton helpButton = new JButton("Help");
     private JButton quitButton = new JButton("X");
@@ -65,7 +69,7 @@ public class GameEntranceScreen extends JFrame{
         backgroundPanel.add(titleLabel);
         
         // Play button
-        playButton.setBounds(getWidth() / 4, 225, buttonWidth, buttonHeight);
+        playButton.setBounds(getWidth() / 4, 175, buttonWidth, buttonHeight);
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,8 +80,34 @@ public class GameEntranceScreen extends JFrame{
         });
         this.add(playButton);
         
+     // Host button
+        hostGame.setBounds(getWidth() / 4, 275, buttonWidth, buttonHeight);
+        hostGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	startServer();
+            	setVisible(false);
+                HostGameScreen hostScreen = new HostGameScreen(frame);
+                hostScreen.display();
+            }
+        });
+        this.add(hostGame);
+        
+     // Connect button
+        connectGame.setBounds(getWidth() / 4, 375, buttonWidth, buttonHeight);
+        connectGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	setVisible(false);
+                ConnectGameScreen connectScreen = new ConnectGameScreen(frame);
+                connectScreen.display();
+            }
+        });
+        this.add(connectGame);
+        
+        
         // Settings button
-        settingsButton.setBounds(getWidth() / 4, 375, buttonWidth, buttonHeight);
+        settingsButton.setBounds(getWidth() / 4, 475, buttonWidth, buttonHeight);
         settingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,7 +119,7 @@ public class GameEntranceScreen extends JFrame{
         add(settingsButton);
 
         // Help button,
-        helpButton.setBounds(getWidth() / 4, 525, buttonWidth, buttonHeight);
+        helpButton.setBounds(getWidth() / 4, 575, buttonWidth, buttonHeight);
         helpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,6 +131,8 @@ public class GameEntranceScreen extends JFrame{
         add(helpButton);
         
         addButtonHoverEffect(playButton);
+        addButtonHoverEffect(hostGame);
+        addButtonHoverEffect(connectGame);
         addButtonHoverEffect(settingsButton);
         addButtonHoverEffect(helpButton);
 
@@ -172,6 +204,24 @@ public class GameEntranceScreen extends JFrame{
     
     public void display() {
         setVisible(true);
+    }
+    
+    
+    //when user passes to HostGameScreen, a server will be started
+    private void startServer() {
+        // Start the server in a new thread to prevent UI freezing
+        new Thread(() -> {
+            try {
+                Server server = new Server(6666); // Replace 6666 with your actual server port
+                server.execute();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "Failed to start the server: " + ex.getMessage(),
+                        "Server Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }).start();
     }
 
     
