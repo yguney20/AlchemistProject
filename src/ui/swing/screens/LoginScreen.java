@@ -76,7 +76,6 @@ public class LoginScreen extends JFrame{
     public void display() {
         SwingUtilities.invokeLater(() -> setVisible(true));
     }
-	 
 	
 	 /**
 	  * @wbp.nonvisual location=507,309
