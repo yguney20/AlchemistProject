@@ -5,11 +5,13 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,29 +20,19 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
 import com.formdev.flatlaf.util.UIScale;
 
 import domain.controllers.LoginController;
-import javafx.application.Application;
 import ui.swing.desingsystem.RoundedBorder;
 import ui.swing.desingsystem.RoundedCornerPanel;
 import ui.swing.model.CardModel;
 import ui.swing.screens.screencomponents.AvatarCardScreen;
-import ui.swing.screens.screencomponents.LoginBackground;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 
-public class LoginOverlay extends JWindow {
+public class LoginOverlay extends JFrame {
 	
-	private JFrame frame;	
 	
 	private Color transparentColor;
 	private JTextField nicknameTextField;
@@ -54,27 +46,41 @@ public class LoginOverlay extends JWindow {
 	private Map<ImageIcon, String> iconPathMap = new HashMap<>(); 
 
 	private int counter = 0;
-	private JFrame parentFrame; // Reference to LoginScreen JFrame
 	
-	private LoginBackground loginBackground; // Add this field
-
-	public LoginOverlay(JFrame frame, LoginBackground loginBackground) {
-	    super(frame);
-	    this.frame = frame;
-	    this.loginBackground = loginBackground; // Store the reference
-	    init();
+	public LoginOverlay() {
+	
+		init();
+		
 	}
 
-
-
 	private void init() {
+		
+		setSize(1365, 768);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
+
+        // Load the original gif as an image
+        Image originalImage = new ImageIcon(this.getClass().getResource("/ui/swing/resources/animations/loginBackground.gif")).getImage();
+        
+        // Resize it to fit the frame
+        Image resizedImage = originalImage.getScaledInstance(1365, 768, Image.SCALE_DEFAULT);
+        
+        // Convert it back to an ImageIcon for the label
+        Icon imgIcon = new ImageIcon(resizedImage);
+
+        // Create the label and set its bounds to fill the frame
+        JLabel label = new JLabel(imgIcon);
+        label.setBounds(0, 0, 1365, 768);
+        
+        // Add the label to the frame
+       
 		
 		transparentColor = new Color(0,0,0,50);
 		
 		RoundedBorder roundedBorder = new RoundedBorder(Color.BLACK, 15, 5, 4, new Color(0, 0, 0, 100));  //Custom Border Design.
 		
-		setBackground(transparentColor);
-		getContentPane().setLayout(null);
+		//setBackground(transparentColor);
+		
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBounds(0, 0, 1365, 768);
@@ -217,49 +223,42 @@ public class LoginOverlay extends JWindow {
         
         
 		
-		//panel.setOpaque(false);
-
-		setSize(UIScale.scale(new Dimension(1365, 768)));
+        getContentPane().add(label);
+		
+		setVisible(true);
 		
 	}
 	
 	
 	private void handleStartButtonClick() {
-		SwingUtilities.invokeLater(() -> {
-	        if (nicknameTextField.getText().isEmpty() || selectedCard == null) {
-	        	
-	        	  JOptionPane.showMessageDialog(this,
-	        	            "Please enter a nickname and select an avatar.",
-	        	            "Error",
-	        	            JOptionPane.ERROR_MESSAGE);
-	            return;
-	        }
-	
-	        String playerName = nicknameTextField.getText();
-	        ImageIcon selectedIcon = (ImageIcon) selectedCard.getData().getIcon(); 
-	        String playerAvatarPath = iconPathMap.get(selectedIcon);
-	
-	        loginController.createPlayer(playerName, playerAvatarPath);
-	        nicknameTextField.setText("");
-	        playerCreatedText.setText("Player " + playerName + " created.");
-	        playerCreatedText.setVisible(true);
-	        counter++;
-	        
-	        if (counter > 1) {
-	            loginController.initializeGame();
-	            this.dispose(); // Dispose the LoginOverlay
-	            loginBackground.closeLoginScreen(); // Close the LoginScreen
-	            displayBoardScreen(); // Transition to the BoardScreen
-	        }
-		});
-	}
-	
-	private void displayBoardScreen() {
-	    SwingUtilities.invokeLater(() -> {
-	        BoardScreen boardScreen = new BoardScreen();
-	        boardScreen.display(); // Assuming BoardScreen has a display method to make it visible
-	    });
-	}
+        if (nicknameTextField.getText().isEmpty() || selectedCard == null) {
+        	
+        	  JOptionPane.showMessageDialog(this,
+        	            "Please enter a nickname and select an avatar.",
+        	            "Error",
+        	            JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String playerName = nicknameTextField.getText();
+        ImageIcon selectedIcon = (ImageIcon) selectedCard.getData().getIcon(); 
+        String playerAvatarPath = iconPathMap.get(selectedIcon);
+
+        loginController.createPlayer(playerName, playerAvatarPath);
+        nicknameTextField.setText("");
+        playerCreatedText.setText("Player " + playerName + " created.");
+        playerCreatedText.setVisible(true);
+        counter++;
+        
+        if (counter > 1) {
+        	loginController.initializeGame();
+        	this.dispose();
+        	BoardScreen board = new BoardScreen();
+			board.display();
+        }
+
+        
+    }
 }
 
 /**

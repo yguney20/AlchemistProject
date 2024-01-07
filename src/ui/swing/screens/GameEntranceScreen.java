@@ -73,7 +73,8 @@ public class GameEntranceScreen extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();  // Close current frame
-                displayLoginScreen();
+                LoginOverlay loginScreen = new LoginOverlay();
+                
             }
         });
         this.add(playButton);
