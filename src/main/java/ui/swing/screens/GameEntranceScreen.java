@@ -76,8 +76,7 @@ public class GameEntranceScreen extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();  // Close current frame
-                LoginScreen loginScreen = new LoginScreen();
-                loginScreen.display();
+                LoginOverlay loginScreen = new LoginOverlay();
                 gameController.setOnlineMode(false);
                 
             }

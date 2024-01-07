@@ -5,11 +5,13 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,9 +31,8 @@ import ui.swing.desingsystem.RoundedCornerPanel;
 import ui.swing.model.CardModel;
 import ui.swing.screens.screencomponents.AvatarCardScreen;
 
-public class LoginOverlay extends JWindow {
+public class LoginOverlay extends JFrame {
 	
-	private JFrame frame;	
 	
 	private Color transparentColor;
 	private JTextField nicknameTextField;
@@ -46,21 +47,40 @@ public class LoginOverlay extends JWindow {
 
 	private int counter = 0;
 	
-	public LoginOverlay(JFrame frame) {
-		super(frame);
-		this.frame = frame;
+	public LoginOverlay() {
+	
 		init();
 		
 	}
 
 	private void init() {
 		
+		setSize(1365, 768);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
+
+        // Load the original gif as an image
+        Image originalImage = new ImageIcon(this.getClass().getResource("/ui/swing/resources/animations/loginBackground.gif")).getImage();
+        
+        // Resize it to fit the frame
+        Image resizedImage = originalImage.getScaledInstance(1365, 768, Image.SCALE_DEFAULT);
+        
+        // Convert it back to an ImageIcon for the label
+        Icon imgIcon = new ImageIcon(resizedImage);
+
+        // Create the label and set its bounds to fill the frame
+        JLabel label = new JLabel(imgIcon);
+        label.setBounds(0, 0, 1365, 768);
+        
+        // Add the label to the frame
+       
+		
 		transparentColor = new Color(0,0,0,50);
 		
 		RoundedBorder roundedBorder = new RoundedBorder(Color.BLACK, 15, 5, 4, new Color(0, 0, 0, 100));  //Custom Border Design.
 		
-		setBackground(transparentColor);
-		getContentPane().setLayout(null);
+		//setBackground(transparentColor);
+		
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBounds(0, 0, 1365, 768);
@@ -203,9 +223,9 @@ public class LoginOverlay extends JWindow {
         
         
 		
-		//panel.setOpaque(false);
-
-		setSize(UIScale.scale(new Dimension(1365, 768)));
+        getContentPane().add(label);
+		
+		setVisible(true);
 		
 	}
 	
@@ -232,7 +252,7 @@ public class LoginOverlay extends JWindow {
         
         if (counter > 1) {
         	loginController.initializeGame();
-        	frame.dispose();
+        	this.dispose();
         	BoardScreen board = new BoardScreen();
 			board.display();
         }
