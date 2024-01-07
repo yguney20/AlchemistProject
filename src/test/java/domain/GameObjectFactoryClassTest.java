@@ -9,7 +9,9 @@ import org.mockito.Mockito;
 import domain.gameobjects.*;
 import domain.gameobjects.Molecule.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Overview: GameObjectFactory is a singleton class responsible for creating various game objects,
@@ -51,7 +53,7 @@ public class GameObjectFactoryClassTest {
         List<Molecule> molecules = factory.createMoleculeList();
         assertNotNull(molecules, "Molecule list should not be null");
         assertFalse(molecules.isEmpty(), "Molecule list should not be empty");
-
+        assertEquals(8, molecules.size(), "Molecule list should have a specific number of elements");
     }
 
     @Test
@@ -59,6 +61,13 @@ public class GameObjectFactoryClassTest {
         List<IngredientCard> deck = factory.createIngredientDeck();
         assertNotNull(deck, "Ingredient deck should not be null");
         assertFalse(deck.isEmpty(), "Ingredient deck should not be empty");
+        assertEquals(24, deck.size(), "Ingredient deck should have a specific number of elements");
+        assertUniqueIngredientCards(deck);
+    }
+
+    private void assertUniqueIngredientCards(List<IngredientCard> deck) {
+        Set<IngredientCard> uniqueCards = new HashSet<>(deck);
+        assertEquals(deck.size(), uniqueCards.size(), "All Ingredient Cards should be unique");
     }
 
     @Test
@@ -68,22 +77,36 @@ public class GameObjectFactoryClassTest {
         assertFalse(deck.isEmpty(), "Artifact deck should not be empty");
     }
 
-   @Test
-    public void testPotionMaker() {
+    @Test
+    public void testPotionMakerWithValidIngredients() {
+        // Create mock ingredients with valid molecule combinations for potion making
         IngredientCard ingredient1 = Mockito.mock(IngredientCard.class);
         IngredientCard ingredient2 = Mockito.mock(IngredientCard.class);
 
-        // Stubbing the behavior of getMolecule() to return non-null Molecule objects
+        // Stub the behavior of getMolecule() to return specific Molecule objects
         Molecule molecule1 = new Molecule(Size.BIG, Sign.POSITIVE, Size.SMALL, Sign.POSITIVE, Size.SMALL, Sign.NEGATIVE);
-        Molecule molecule2 = new Molecule(Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE); // Create another Molecule object
+        Molecule molecule2 = new Molecule(Size.SMALL, Sign.POSITIVE, Size.BIG, Sign.NEGATIVE, Size.SMALL, Sign.NEGATIVE);
         when(ingredient1.getMolecule()).thenReturn(molecule1);
         when(ingredient2.getMolecule()).thenReturn(molecule2);
 
         PotionCard potion = factory.potionMaker(ingredient1, ingredient2);
-
         assertNotNull(potion, "Potion should not be null");
-
     }
 
+    @Test
+    public void testPotionMakerWithInvalidIngredients() {
+        // Create mock ingredients with invalid molecule combinations
+        IngredientCard ingredient1 = Mockito.mock(IngredientCard.class);
+        IngredientCard ingredient2 = Mockito.mock(IngredientCard.class);
+
+        // Stubbing behavior of getMolecule() to return specific Molecule objects
+        Molecule molecule1 = new Molecule(Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE);
+        Molecule molecule2 = new Molecule(Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE, Size.BIG, Sign.POSITIVE);
+        when(ingredient1.getMolecule()).thenReturn(molecule1);
+        when(ingredient2.getMolecule()).thenReturn(molecule2);
+
+        PotionCard potion = factory.potionMaker(ingredient1, ingredient2);
+        assertNull(potion, "Potion should be null for invalid ingredients");
+    }
 
 }
