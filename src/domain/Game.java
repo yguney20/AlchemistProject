@@ -20,7 +20,15 @@ public class Game { //Singleton Pattern
     private int currentTurn;
     private Player currentPlayer;
     private boolean isPaused;
-    private GameState gameState;
+    public int getCurrentRound() {
+		return currentRound;
+	}
+
+	public void setCurrentRound(int currentRound) {
+		this.currentRound = currentRound;
+	}
+
+	private GameState gameState;
     Player winner = null;
     private boolean actionPerformed;
     
@@ -149,7 +157,7 @@ public class Game { //Singleton Pattern
     }
     
     //end game method
-    private void endGame() {
+    public void endGame() {
     	double maxScore = Double.MIN_VALUE;
 
         for (Player player : players) {
@@ -412,6 +420,18 @@ public class Game { //Singleton Pattern
     		notifyPlayers("Action already performed or preconditions are not met");
     	}
     }
+
+	public void setActionPerformed(boolean actionPerformed) {
+		this.actionPerformed = actionPerformed;
+	}
+
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
 }
 
 
