@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
@@ -29,6 +30,13 @@ import ui.swing.desingsystem.RoundedBorder;
 import ui.swing.desingsystem.RoundedCornerPanel;
 import ui.swing.model.CardModel;
 import ui.swing.screens.screencomponents.AvatarCardScreen;
+import ui.swing.screens.screencomponents.LoginBackground;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 public class LoginOverlay extends JWindow {
 	
@@ -46,13 +54,18 @@ public class LoginOverlay extends JWindow {
 	private Map<ImageIcon, String> iconPathMap = new HashMap<>(); 
 
 	private int counter = 0;
+	private JFrame parentFrame; // Reference to LoginScreen JFrame
 	
-	public LoginOverlay(JFrame frame) {
-		super(frame);
-		this.frame = frame;
-		init();
-		
+	private LoginBackground loginBackground; // Add this field
+
+	public LoginOverlay(JFrame frame, LoginBackground loginBackground) {
+	    super(frame);
+	    this.frame = frame;
+	    this.loginBackground = loginBackground; // Store the reference
+	    init();
 	}
+
+
 
 	private void init() {
 		
@@ -212,35 +225,41 @@ public class LoginOverlay extends JWindow {
 	
 	
 	private void handleStartButtonClick() {
-        if (nicknameTextField.getText().isEmpty() || selectedCard == null) {
-        	
-        	  JOptionPane.showMessageDialog(this,
-        	            "Please enter a nickname and select an avatar.",
-        	            "Error",
-        	            JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String playerName = nicknameTextField.getText();
-        ImageIcon selectedIcon = (ImageIcon) selectedCard.getData().getIcon(); 
-        String playerAvatarPath = iconPathMap.get(selectedIcon);
-
-        loginController.createPlayer(playerName, playerAvatarPath);
-        nicknameTextField.setText("");
-        playerCreatedText.setText("Player " + playerName + " created.");
-        playerCreatedText.setVisible(true);
-        counter++;
-        
-        if (counter > 1) {
-        	loginController.initializeGame();
-        	frame.dispose();
-        	BoardScreen board = new BoardScreen();
-			//board.display();
-        	Application.launch(BoardScreen.class);
-        }
-
-        
-    }
+		SwingUtilities.invokeLater(() -> {
+	        if (nicknameTextField.getText().isEmpty() || selectedCard == null) {
+	        	
+	        	  JOptionPane.showMessageDialog(this,
+	        	            "Please enter a nickname and select an avatar.",
+	        	            "Error",
+	        	            JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	
+	        String playerName = nicknameTextField.getText();
+	        ImageIcon selectedIcon = (ImageIcon) selectedCard.getData().getIcon(); 
+	        String playerAvatarPath = iconPathMap.get(selectedIcon);
+	
+	        loginController.createPlayer(playerName, playerAvatarPath);
+	        nicknameTextField.setText("");
+	        playerCreatedText.setText("Player " + playerName + " created.");
+	        playerCreatedText.setVisible(true);
+	        counter++;
+	        
+	        if (counter > 1) {
+	            loginController.initializeGame();
+	            this.dispose(); // Dispose the LoginOverlay
+	            loginBackground.closeLoginScreen(); // Close the LoginScreen
+	            displayBoardScreen(); // Transition to the BoardScreen
+	        }
+		});
+	}
+	
+	private void displayBoardScreen() {
+	    SwingUtilities.invokeLater(() -> {
+	        BoardScreen boardScreen = new BoardScreen();
+	        boardScreen.display(); // Assuming BoardScreen has a display method to make it visible
+	    });
+	}
 }
 
 /**

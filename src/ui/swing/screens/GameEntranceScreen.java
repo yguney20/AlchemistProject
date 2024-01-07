@@ -2,6 +2,9 @@ package ui.swing.screens;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import javafx.application.Platform;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -70,8 +73,7 @@ public class GameEntranceScreen extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();  // Close current frame
-                LoginScreen loginScreen = new LoginScreen();
-                loginScreen.display();
+                displayLoginScreen();
             }
         });
         this.add(playButton);
@@ -168,6 +170,14 @@ public class GameEntranceScreen extends JFrame{
             }
         });
     }
+    
+    
+    private void displayLoginScreen() {
+	    SwingUtilities.invokeLater(() -> {
+	    	LoginScreen loginScreen = new LoginScreen();
+	        loginScreen.display(); // Assuming BoardScreen has a display method to make it visible
+	    });
+	}
 
     
     public void display() {

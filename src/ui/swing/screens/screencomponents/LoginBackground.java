@@ -26,6 +26,7 @@ public class LoginBackground extends JPanel {
 	private MediaPlayerFactory factory;
     private EmbeddedMediaPlayer mediaPlayer;
     private LoginOverlay loginOverlay;
+    
 	public LoginBackground() {
 		init();
 	}
@@ -59,13 +60,12 @@ public class LoginBackground extends JPanel {
 
 		
 	public void initOverlay(JFrame frame) {
-		
-		loginOverlay = new LoginOverlay(frame);
-		mediaPlayer.overlay().set(loginOverlay);
-		mediaPlayer.overlay().enable(true);
-		
-		
+	    this.loginOverlay = new LoginOverlay(frame, this); // Pass 'this' as a reference to LoginBackground
+	    mediaPlayer.overlay().set(loginOverlay);
+	    mediaPlayer.overlay().enable(true);
 	}
+
+
 
 	public void play() {
 		
@@ -83,7 +83,10 @@ public class LoginBackground extends JPanel {
 		mediaPlayer.controls().stop();
 		mediaPlayer.release();
 	}
-     
+	
+	public void closeLoginScreen() {
+	    SwingUtilities.windowForComponent(this).dispose(); // Dispose of the LoginScreen JFrame
+	}
 
 }
 
