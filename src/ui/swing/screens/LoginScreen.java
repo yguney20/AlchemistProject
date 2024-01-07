@@ -26,7 +26,6 @@ import javafx.stage.Stage;
 
 import domain.controllers.LoginController;
 import ui.swing.screens.screencomponents.LoginBackground;
-import ui.swing.screens.screencontrollers.LoginScreenController;
 
 
 public class LoginScreen extends JFrame{
@@ -44,44 +43,11 @@ public class LoginScreen extends JFrame{
     private JFXPanel fxPanel;
 	
 	
-	public LoginScreen() {
-        initializeFrame();
-        initializeJavaFXComponents();
-    }
-	
-	private void initializeFrame() {
-        setTitle("Ku Alchemist Login Screen");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(50, 50, 900, 505); // Adjust the size accordingly
-        setResizable(false);
-        fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
-        add(fxPanel);
-    }
-	
-	private void initializeJavaFXComponents() {
-        Platform.runLater(() -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/LoginScreen.fxml"));
-                Parent root = loader.load();
-                LoginScreenController controller = loader.getController();
-                controller.setLoginScreenFrame(this);
-                Scene scene = new Scene(root);
-                fxPanel.setScene(scene);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    public void display() {
-        SwingUtilities.invokeLater(() -> setVisible(true));
-    }
-	
 	 /**
 	  * @wbp.nonvisual location=507,309
 	  */
 	 
-	 /*
+	 
 	 private final JLabel label = new JLabel("New label");
 
 	    public LoginScreen() {
@@ -128,7 +94,7 @@ public class LoginScreen extends JFrame{
     public void closeWindow() {
         this.dispose();
     }
-    */
+    
 
    }
 
