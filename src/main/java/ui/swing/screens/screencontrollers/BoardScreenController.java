@@ -28,7 +28,12 @@ public class BoardScreenController {
         this.boardScreenFrame = frame;
     }
 
-    public void initialize() {
+    public Frame getBoardScreenFrame() {
+		return boardScreenFrame;
+	}
+
+
+	public void initialize() {
         updateLabels();
     }
 

@@ -1,0 +1,39 @@
+/* General button styling */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #8baad0 0%, #0C0CBC 100%); /* Deep blue for a modern look */
+    -fx-background-radius: 12;
+    -fx-text-fill: #dcdcdc; /* Soft grey for text to match the modern theme */
+    -fx-font-family: 'SF Pro';
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-padding: 12px 34px; /* Slightly more padding for a better 3D effect */
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.7), 6, 0.0, 0, 2), 
+                innershadow(gaussian, #1a1a1a, 4, 0.0, 0, 2); /* More defined shadows for depth */
+    -fx-cursor: hand; /* Changes cursor to hand when mouse moves over the button */
+}
+
+/* Button hover effect */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #9cb2d8 0%, #5a77ab 100%); /* Lighter gradient for hover */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.8), 8, 0.0, 0, 4), 
+                innershadow(gaussian, #2a2a2a, 5, 0.0, 0, 3); /* Increased shadow for raised effect */
+}
+
+/* Button pressed effect */
+.button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #5a77ab 0%, #3c50b0 100%); /* Adjusted gradient for a pressed effect */
+    -fx-background-insets: 1 1 1 1, 2 2 2 2, 3 3 3 3; /* Adjusting insets for a pressed look */
+    -fx-effect: innershadow(gaussian, #2a2a2a, 3, 0.0, 0, 1); /* Inner shadow for depth */
+}
+
+/* Button focused (when navigated via keyboard) */
+.button:focused, .button:default {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent; /* This removes the default focus ring */
+}
+
+/* Adding a subtle glow effect on focus */
+.button:focused:hover {
+    -fx-effect: innershadow(gaussian, #dedede, 10, 0.0, 0, 0); /* Soft glow for focus */
+}

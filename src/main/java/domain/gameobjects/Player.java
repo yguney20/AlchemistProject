@@ -6,7 +6,6 @@
 import java.util.Objects;
 import java.util.UUID;
 
-import uk.co.caprica.vlcj.binding.internal.vlm_media_event;
 
  public class Player {
      private int playerId;

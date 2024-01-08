@@ -66,8 +66,9 @@ public class GameEntranceScreen extends JFrame{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        backgroundPanel.setLayout(null);
         
-        titleLabel.setBounds(250, 300, 500, 300);
+        titleLabel.setBounds(310, 5, 380, 68);
         backgroundPanel.add(titleLabel);
         
         // Play button
@@ -81,7 +82,7 @@ public class GameEntranceScreen extends JFrame{
                 
             }
         });
-        this.add(playButton);
+        getContentPane().add(playButton);
         
      // Host button
         hostGame.setBounds(getWidth() / 4, 275, buttonWidth, buttonHeight);
@@ -95,7 +96,7 @@ public class GameEntranceScreen extends JFrame{
                 hostScreen.display();
             }
         });
-        this.add(hostGame);
+        getContentPane().add(hostGame);
         
      // Connect button
         connectGame.setBounds(getWidth() / 4, 375, buttonWidth, buttonHeight);
@@ -106,9 +107,12 @@ public class GameEntranceScreen extends JFrame{
                 ConnectGameScreen connectScreen = new ConnectGameScreen(frame);
                 connectScreen.display();
                 gameController.setOnlineMode(true);
+                
+                
+                
             }
         });
-        this.add(connectGame);
+        getContentPane().add(connectGame);
         
         
         // Settings button
@@ -121,7 +125,7 @@ public class GameEntranceScreen extends JFrame{
                 settingsScreen.display();
             }
         });
-        add(settingsButton);
+        getContentPane().add(settingsButton);
 
         // Help button,
         helpButton.setBounds(getWidth() / 4, 575, buttonWidth, buttonHeight);
@@ -133,7 +137,7 @@ public class GameEntranceScreen extends JFrame{
                 helpScreen.display();
             }
         });
-        add(helpButton);
+        getContentPane().add(helpButton);
         
         addButtonHoverEffect(playButton);
         addButtonHoverEffect(hostGame);
@@ -162,7 +166,7 @@ public class GameEntranceScreen extends JFrame{
             }
         });
 
-        add(quitButton);
+        getContentPane().add(quitButton);
 
         
         
@@ -190,6 +194,11 @@ public class GameEntranceScreen extends JFrame{
 
         // Add the backgroundPanel to the content pane
         getContentPane().add(backgroundPanel);
+        
+        JLabel wizardImage = new JLabel("New label");
+        wizardImage.setIcon(new ImageIcon("/Users/sarpvulas/Desktop/Büyücü.gif"));
+        wizardImage.setBounds(21, 204, 331, 304);
+        backgroundPanel.add(wizardImage);
     }
 
     private void addButtonHoverEffect(JButton button) {
@@ -228,6 +237,4 @@ public class GameEntranceScreen extends JFrame{
             }
         }).start();
     }
-
-    
 }
