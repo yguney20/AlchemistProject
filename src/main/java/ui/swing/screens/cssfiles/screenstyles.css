@@ -1,4 +1,13 @@
 /* General button styling */
+.anchor-pane {
+    -fx-background-color: grey;
+}
+.root {
+    -fx-background-image: url('/ui/swing/resources/images/entranceUI/backgroundImage.png');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
 .button {
     -fx-background-color: linear-gradient(to bottom, #8baad0 0%, #0C0CBC 100%); /* Deep blue for a modern look */
     -fx-background-radius: 12;

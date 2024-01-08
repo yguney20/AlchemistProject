@@ -1,5 +1,6 @@
 package ui.swing.screens;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.URL;
 
@@ -55,6 +56,10 @@ public class EntranceScreen extends JFrame{
                 controller.setEntranceScreenFrame(this);
                 Scene scene = new Scene(root);
                 fxPanel.setScene(scene);
+                
+                
+                scene.getStylesheets().add("/ui/swing/screens/cssfiles/screenstyles.css");
+                root.getStyleClass().add("root");
             } catch (Exception e) {
                 e.printStackTrace();
             }
