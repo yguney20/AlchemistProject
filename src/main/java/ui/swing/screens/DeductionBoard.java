@@ -19,7 +19,8 @@ public class DeductionBoard extends JFrame {
 
     private final ArrayList<SignPlacement> signPlacements = new ArrayList<>();
     private Sign selectedSign = Sign.BLUE_PLUS; // Default sign
-
+    private final ArrayList<Point> circleCenters = new ArrayList<>();
+    private final int circleRadius = 32; //(2r)
     // Enum to represent different signs
     public enum Sign {
         BLUE_PLUS, RED_PLUS, GREEN_PLUS, BLUE_MINUS, RED_MINUS, GREEN_MINUS, NEUTRAL, RED_CROSS
@@ -132,24 +133,30 @@ public class DeductionBoard extends JFrame {
         signSelectionComboBox.addActionListener(e -> selectedSign = (Sign) signSelectionComboBox.getSelectedItem());
         
         deductionBoardPanel.addMouseListener(new MouseAdapter() {
-        	@Override
+            @Override
             public void mouseClicked(MouseEvent e) {
-                // Add the new sign placement to the list
-        		int x = e.getX();
-                int y = e.getY();
-
-                GameController.getInstance().playerMadeDeduction(x, y, selectedSign.ordinal());
-                signPlacements.add(new SignPlacement(e.getPoint(), selectedSign));
-                // Repaint the panel to show the new sign
-                deductionBoardPanel.repaint();
+                Point clickPoint = e.getPoint();
+                // Check if the click is within the radius of any circle centers
+                for (Point center : circleCenters) {
+                    if (clickPoint.distance(center) <= circleRadius) {
+                        // Click is inside a circle, proceed with sign placement
+                        GameController.getInstance().playerMadeDeduction(clickPoint.x, clickPoint.y, selectedSign.ordinal());
+                        signPlacements.add(new SignPlacement(clickPoint, selectedSign));
+                        deductionBoardPanel.repaint();
+                        return; // Exit after placing the sign
+                    }
+                }
             }
-        });
-        backButton.addActionListener(e -> {
-            this.setVisible(false); // Hide the deduction board
-            boardScreen.setVisible(true); // Show the board screen
         });
     }
     
+    private void initializeCircleCenters() {
+        // Populate this list with the coordinates of the center of each white circle.
+        // The following are placeholder values, replace them with the actual coordinates.
+        circleCenters.add(new Point(272, 97)); // Replace with actual x and y coordinates
+        circleCenters.add(new Point(272-circleRadius, 50)); // Replace with actual x and y coordinates
+        // ... Add all circle centers ...
+    }
     public void display() {
         setVisible(true); // Show the board
     }

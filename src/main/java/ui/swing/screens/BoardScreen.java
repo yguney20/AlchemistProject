@@ -22,10 +22,17 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 import domain.controllers.GameController;
+import ui.swing.screens.screencontrollers.*;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 
 
 
@@ -36,9 +43,10 @@ public class BoardScreen extends JFrame{
     private JLabel currentTurnLabel;
     private JLabel currentRoundLabel;
     private GameController gameController = GameController.getInstance();
+    private JFXPanel fxPanel;
     private JFrame frame;
 
-
+    /*
     public BoardScreen() {
     	DeductionBoard deductionBoard = new DeductionBoard(this);
     	gameController.setBoardScreen(this);// Pass 'this' as the reference to the BoardScreen
@@ -237,7 +245,41 @@ public class BoardScreen extends JFrame{
                 }
             }
         });
+    }*/
+    
+    public BoardScreen() {
+        initializeFrame();
+        initializeJavaFXComponents();
     }
+    
+    private void initializeFrame() {
+        setTitle("Ku Alchemist Game Board");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(50, 50, 900, 505); // Adjust the size accordingly
+        setResizable(false);
+        fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
+        add(fxPanel);
+    }
+    
+    private void initializeJavaFXComponents() {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
+                Parent root = loader.load();
+                BoardScreenController controller = loader.getController();
+                controller.setBoardScreenFrame(this);
+                Scene scene = new Scene(root);
+                fxPanel.setScene(scene);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void display() {
+        SwingUtilities.invokeLater(() -> setVisible(true));
+    }
+
 	
 	private void playSound(String soundFilePath) {
         try {
@@ -253,8 +295,26 @@ public class BoardScreen extends JFrame{
             e.printStackTrace();
         }
     }
+	
+	/*
+	public void display() {
+	    JFrame frame = new JFrame("Board Screen"); // Create a new JFrame
+	    frame.setSize(900, 505); // Set the size of the frame
 
-    public void display() {
-        setVisible(true); // Show the board
-    }
+	    JFXPanel fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
+	    frame.add(fxPanel); // Add JFXPanel to JFrame
+
+	    Platform.runLater(() -> {
+	        try {
+	            Parent root = FXMLLoader.load(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
+	            Scene scene = new Scene(root);
+	            fxPanel.setScene(scene);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    });
+
+	    frame.setVisible(true); // Make the frame visible
+	}*/
+
 }
