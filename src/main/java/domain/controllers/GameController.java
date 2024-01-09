@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 import ui.swing.screens.BoardScreen;
 import ui.swing.screens.DeductionBoard;
+import ui.swing.screens.screencomponents.SettingsState;
 
 public class GameController {
 	
@@ -29,6 +30,7 @@ public class GameController {
 	private Map<Player, DeductionBoard> playerDeductionBoards = new HashMap<>();
     private boolean isOnlineMode = false;
     private OnlineGameAdapter onlineGameAdapter;
+    private static final SettingsState settingsState = new SettingsState();
 	
     public static GameController getInstance() {
         if (instance == null) {
@@ -39,6 +41,11 @@ public class GameController {
 	
     public static void destroyInstance() {
         instance = null;
+    }
+    
+    // Provide a way to access the settings state
+    public static SettingsState getSettingsState() {
+        return settingsState;
     }
 
     // Method to set the game mode

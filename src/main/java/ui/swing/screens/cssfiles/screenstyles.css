@@ -8,6 +8,17 @@
     -fx-background-repeat: no-repeat;
 }
 
+/* Styling for the Pane */
+.pane-background {
+    -fx-background-color: #FFFACD; /* Light to darker blue gradient */
+    -fx-border-color: #5a77ab; /* Matching the button hover color */
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 8);
+    -fx-padding: 10;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+}
+
 .button {
     -fx-background-color: linear-gradient(to bottom, #8baad0 0%, #0C0CBC 100%); /* Deep blue for a modern look */
     -fx-background-radius: 12;

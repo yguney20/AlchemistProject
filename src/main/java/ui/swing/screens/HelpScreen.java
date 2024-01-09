@@ -2,6 +2,9 @@ package ui.swing.screens;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import ui.swing.screens.screencontrollers.MenuScreenController;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +44,7 @@ public class HelpScreen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Direct user to GameEntranceScreen
-                frame.setVisible(true);
+                MenuScreen.getInstance(BoardScreen.getInstance()).display();
                 dispose();
             }
         });

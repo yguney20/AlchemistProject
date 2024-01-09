@@ -45,6 +45,14 @@ public class BoardScreen extends JFrame{
     private GameController gameController = GameController.getInstance();
     private JFXPanel fxPanel;
     private JFrame frame;
+    private static BoardScreen instance;
+    
+    public static synchronized BoardScreen getInstance() {
+        if (instance == null) {
+            instance = new BoardScreen();
+        }
+        return instance;
+    }
 
     /*
     public BoardScreen() {
