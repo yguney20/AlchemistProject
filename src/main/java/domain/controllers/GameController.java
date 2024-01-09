@@ -17,8 +17,8 @@ import domain.controllers.*;
 import java.awt.Point;
 import java.util.HashMap;
 
-import ui.swing.screens.BoardScreen;
 import ui.swing.screens.DeductionBoard;
+import ui.swing.screens.scenes.BoardScreen;
 import ui.swing.screens.screencomponents.SettingsState;
 
 public class GameController {

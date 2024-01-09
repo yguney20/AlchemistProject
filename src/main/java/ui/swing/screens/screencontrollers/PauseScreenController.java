@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import ui.swing.screens.PauseScreen;
+import ui.swing.screens.scenes.PauseScreen;
 
 import java.awt.Frame;
 import javax.swing.JFrame;

@@ -3,6 +3,8 @@ package ui.swing.screens;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import ui.swing.screens.scenes.BoardScreen;
+import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.screencontrollers.MenuScreenController;
 
 import java.awt.*;

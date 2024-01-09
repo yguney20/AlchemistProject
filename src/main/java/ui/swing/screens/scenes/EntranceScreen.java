@@ -1,4 +1,4 @@
-package ui.swing.screens;
+package ui.swing.screens.scenes;
 
 import java.awt.Color;
 import java.io.IOException;

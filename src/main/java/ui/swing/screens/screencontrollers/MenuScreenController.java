@@ -20,16 +20,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import ui.swing.screens.BoardScreen;
 import ui.swing.screens.ConnectGameScreen;
-import ui.swing.screens.EntranceScreen;
 import ui.swing.screens.GameEntranceScreen;
 import ui.swing.screens.HelpScreen;
 import ui.swing.screens.HostGameScreen;
 import ui.swing.screens.LoginOverlay;
-import ui.swing.screens.MenuScreen;
-import ui.swing.screens.PauseScreen;
-import ui.swing.screens.SettingsScreen;
+import ui.swing.screens.scenes.BoardScreen;
+import ui.swing.screens.scenes.EntranceScreen;
+import ui.swing.screens.scenes.MenuScreen;
+import ui.swing.screens.scenes.PauseScreen;
+import ui.swing.screens.scenes.SettingsScreen;
 
 public class MenuScreenController {
 	@FXML

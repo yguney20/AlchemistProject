@@ -11,7 +11,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import ui.swing.screens.SettingsScreen;
+import ui.swing.screens.scenes.SettingsScreen;
 import ui.swing.screens.screencomponents.SettingsState;
 
 public class SettingsScreenController {

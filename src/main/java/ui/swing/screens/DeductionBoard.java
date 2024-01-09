@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import domain.controllers.GameController;
+import ui.swing.screens.scenes.BoardScreen;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
