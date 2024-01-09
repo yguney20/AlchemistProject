@@ -560,6 +560,7 @@ public class Game { //Singleton Pattern
             return;
         }
 
+
         createAndPublishTheory(currentPlayer, ingredient, molecule);
     }
 
@@ -646,6 +647,10 @@ public class Game { //Singleton Pattern
         notifyPlayers("Theory debunked successfully.");
     }
 
+    public void setCurrentRound(int i) {
+        currentRound = i;
+
+    }
 }
 
 
