@@ -45,7 +45,6 @@ public class PlayerDashboard extends JFrame {
     private GameController gameController;
     private Point initialClick;
     
-    private String musicPath;
     private String buttonSoundPath;
 
     /**
@@ -53,10 +52,8 @@ public class PlayerDashboard extends JFrame {
      */
     public PlayerDashboard(GameController gameController) {
     	
-    	SoundPlayer musicPlayer = new SoundPlayer();
     	SoundPlayer soundPlayer = new SoundPlayer();
     	
-    	musicPath = "ui/swing/resources/sounds/medivalSoundtrack.wav";
     	buttonSoundPath = "ui/swing/resources/sounds/buttonSound.wav";
     	
     	setUndecorated(true);
@@ -188,7 +185,6 @@ public class PlayerDashboard extends JFrame {
         		int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
     			gameController.forageForIngredient(currentPlayerId);
     			PlayerDashboard.this.setVisible(false);
-    			musicPlayer.stopSound();
         	}
         });
         forageForIngredientButton.setIcon(null);
@@ -220,7 +216,6 @@ public class PlayerDashboard extends JFrame {
         		TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
     			transmuteIngredientScreen.display();
     			PlayerDashboard.this.setVisible(false);
-        		musicPlayer.stopSound();
         	}
         });
         transmuteIngredientButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -251,7 +246,6 @@ public class PlayerDashboard extends JFrame {
         		BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
     			buyArtifactScreen.display();
     			PlayerDashboard.this.setVisible(false);
-    			musicPlayer.stopSound();
         		
         	}
         });
@@ -284,7 +278,6 @@ public class PlayerDashboard extends JFrame {
         		SelectArtifactScreen selectArtifactScreen = new SelectArtifactScreen();
     			selectArtifactScreen.display();
     			PlayerDashboard.this.setVisible(false);
-    			musicPlayer.stopSound();
 
        		
         	}
@@ -317,7 +310,6 @@ public class PlayerDashboard extends JFrame {
             	MakeExperimentScreen makeExperimentScreen = new MakeExperimentScreen();
         		makeExperimentScreen.display();
         		PlayerDashboard.this.setVisible(false);
-       			musicPlayer.stopSound();
         			
         	}
         });
@@ -350,7 +342,6 @@ public class PlayerDashboard extends JFrame {
             		SellPotionScreen sellPotionScreen = new SellPotionScreen();
         			sellPotionScreen.display();
         			PlayerDashboard.this.setVisible(false);
-        			musicPlayer.stopSound();
             	}
         			
         	}
@@ -383,7 +374,6 @@ public class PlayerDashboard extends JFrame {
             		PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
         			publishTheoryScreen.display();
         			PlayerDashboard.this.setVisible(false);
-        			musicPlayer.stopSound();
             	}
         			
         	}
@@ -450,7 +440,6 @@ public class PlayerDashboard extends JFrame {
             	PlayerIngredientsScreen myIngredientsScreen = new PlayerIngredientsScreen();
             	myIngredientsScreen.display();         		
      			PlayerDashboard.this.setVisible(false);
-     			musicPlayer.stopSound();
 
          	}
         });
@@ -477,7 +466,6 @@ public class PlayerDashboard extends JFrame {
         	}
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		musicPlayer.stopSound();
         		JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(returnBackImage);
         		
         		frame.dispose();

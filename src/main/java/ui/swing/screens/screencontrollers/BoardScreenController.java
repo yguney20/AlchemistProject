@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 import domain.controllers.GameController;
 import ui.swing.screens.MenuScreen;
 import ui.swing.screens.PlayerDashboard;
+import ui.swing.screens.SettingsScreen;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
@@ -23,7 +24,7 @@ public class BoardScreenController {
     private GameController gameController = GameController.getInstance();
     
     private Frame boardScreenFrame;
-
+    private static BoardScreenController instance;
     public void setBoardScreenFrame(Frame frame) {
         this.boardScreenFrame = frame;
     }
@@ -42,6 +43,14 @@ public class BoardScreenController {
         currentTurnLabel.setText("Current Turn: " + gameController.getCurrentTurn());
         currentRoundLabel.setText("Current Round: " + gameController.getCurrentRound());
     }
+    
+    public static synchronized BoardScreenController getInstance() {
+        if (instance == null) {
+            instance = new BoardScreenController();
+        }
+        return instance;
+    }
+    
 
     @FXML
     protected void handleDashboardAction() {
@@ -61,8 +70,12 @@ public class BoardScreenController {
     @FXML
     protected void handleMenuActionPerformed() {
         SwingUtilities.invokeLater(() -> {
-            MenuScreen menuScreen = new MenuScreen(boardScreenFrame);
+        	MenuScreen menuScreen = MenuScreen.getInstance(boardScreenFrame);
+        	MenuScreenController controller = MenuScreenController.getInstance(); // Obtain the controller instance
+            controller.setPreviousFrame(boardScreenFrame); // Set the previous frame
             menuScreen.display();
+            
+
         });
     }
 

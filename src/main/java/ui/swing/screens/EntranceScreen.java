@@ -22,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ui.swing.helper.SoundPlayer;
 import ui.swing.screens.screencontrollers.EntranceScreenController;
 
 
@@ -31,6 +32,7 @@ public class EntranceScreen extends JFrame{
     private GameController gameController = GameController.getInstance();
     private JFXPanel fxPanel;
     private JFrame frame;
+    
     
     
     public EntranceScreen() {
@@ -45,19 +47,22 @@ public class EntranceScreen extends JFrame{
         setResizable(false);
         fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
         add(fxPanel);
+        
+    
     }
     
     private void initializeJavaFXComponents() {
         Platform.runLater(() -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/EntranceScreen.fxml"));
+                loader.setController(EntranceScreenController.getInstance());
                 Parent root = loader.load();
-                EntranceScreenController controller = loader.getController();
-                controller.setEntranceScreenFrame(this);
+
+                EntranceScreenController.getInstance().setEntranceScreenFrame(this);
+
                 Scene scene = new Scene(root);
                 fxPanel.setScene(scene);
-                
-                
+
                 scene.getStylesheets().add("/ui/swing/screens/cssfiles/screenstyles.css");
                 root.getStyleClass().add("root");
             } catch (Exception e) {
@@ -65,6 +70,9 @@ public class EntranceScreen extends JFrame{
             }
         });
     }
+
+
+
 
     public void display() {
         SwingUtilities.invokeLater(() -> setVisible(true));

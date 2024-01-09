@@ -121,8 +121,8 @@ public class GameEntranceScreen extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                SettingsScreen settingsScreen = new SettingsScreen(frame);
-                settingsScreen.display();
+                //SettingsScreen settingsScreen = new SettingsScreen(frame, );
+                //settingsScreen.display();
             }
         });
         getContentPane().add(settingsButton);

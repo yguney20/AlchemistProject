@@ -7,6 +7,13 @@ import domain.controllers.GameController;
 import domain.controllers.LoginController;
 import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Player;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import ui.swing.screens.screencontrollers.EntranceScreenController;
+import ui.swing.screens.screencontrollers.MenuScreenController;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,20 +25,67 @@ import java.util.ArrayList;
 public class MenuScreen extends JFrame {
 
     //private GameController gameController = GameController.getInstance();
-    private JButton quitButton = new JButton("X");
-    private JButton pauseButton = new JButton("Pause the Game");
-    private JButton helpButton = new JButton("Help");
-    private JButton quitGameButton = new JButton("Quit the Game");
-    private JButton backButton = new JButton("Back");
-    private JButton settingsButton = new JButton("Settings");
+    
     private Frame boardFrame; // Reference to the main game frame
-    private CustomPanel contentPane;
+    private JFXPanel fxPanel;
+    private static EntranceScreenController entranceScreenController = EntranceScreenController.getInstance();
+    private static MenuScreen instance;
 
-    public MenuScreen(Frame boardFrame) {
+    private MenuScreen(Frame boardFrame) {
         this.boardFrame = boardFrame;
-        initializeUI();
+        initializeFrame();
+        initializeJavaFXComponents();
+    }
+    
+    private void initializeFrame() {
+        setTitle("Ku Alchemist Menu Screen");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(50, 50, 900, 505); // Adjust the size accordingly
+        setResizable(false);
+        fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
+        add(fxPanel);
+        
+    
+    }
+    
+    private void initializeJavaFXComponents() {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/MenuScreen.fxml"));
+                loader.setController(MenuScreenController.getInstance());
+                Parent root = loader.load();
+
+                MenuScreenController.getInstance().setMenuScreenFrame(this);
+
+                Scene scene = new Scene(root);
+                fxPanel.setScene(scene);
+
+                scene.getStylesheets().add("/ui/swing/screens/cssfiles/screenstyles.css");
+                root.getStyleClass().add("root");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
+
+    public static synchronized MenuScreen getInstance(Frame frame) {
+        if (instance == null) {
+            instance = new MenuScreen(frame);
+        }
+        return instance;
+    }
+    
+    
+    public void display() {
+        SwingUtilities.invokeLater(() -> setVisible(true));
+    }
+    
+    
+    public void close() {
+        SwingUtilities.invokeLater(() -> setVisible(false));
+    }
+    /*
     private void initializeUI() {
         setTitle("Game Menu");
         setSize(1000, 800);
@@ -96,10 +150,11 @@ public class MenuScreen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                SettingsScreen settingsScreen = new SettingsScreen(MenuScreen.this);
+                SettingsScreen settingsScreen = new SettingsScreen(GameController.getSettingsState(), MenuScreen.this);
                 settingsScreen.display();
             }
         });
+
 
         quitGameButton.addActionListener(e -> {
             Game.destroyInstance();
@@ -136,10 +191,6 @@ public class MenuScreen extends JFrame {
         });
     }
 
-    public void display() {
-        setVisible(true);
-    }
-
     private class CustomPanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
@@ -147,5 +198,6 @@ public class MenuScreen extends JFrame {
             Image backgroundImage = new ImageIcon(getClass().getResource("/ui/swing/resources/images/helpUI/screenBackground.jpg")).getImage();
             g.drawImage(backgroundImage, 0, 0, this.getWidth(), this.getHeight(), this);
         }
-    }
+    }*/
+
 }

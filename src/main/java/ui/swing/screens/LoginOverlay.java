@@ -253,7 +253,7 @@ public class LoginOverlay extends JFrame {
         if (counter > 1) {
         	loginController.initializeGame();
         	this.dispose();
-        	BoardScreen board = new BoardScreen();
+        	BoardScreen board = BoardScreen.getInstance();
 			board.display();
         }
 
