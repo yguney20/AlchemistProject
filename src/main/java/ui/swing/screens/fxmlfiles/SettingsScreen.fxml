@@ -18,20 +18,20 @@
         </ImageView>
 
         <!-- Back Button -->
-        <Button fx:id="backButton" layoutX="10" layoutY="10" onMousePressed="#handleBackAction" prefHeight="61.0" prefWidth="133.0" text="Back" />
+        <Button fx:id="backButton" layoutX="10" layoutY="10" onMousePressed="#handleBackAction" onMouseEntered="#handleMouseEnter" prefHeight="61.0" prefWidth="133.0" text="Back" />
       <Pane layoutX="199.0" layoutY="183.0" prefHeight="271.0" prefWidth="641.0" styleClass="pane-background" >
          <children>
       
               <!-- Volume Label -->
               <Label layoutX="132.0" layoutY="63.0" text="Game Music Level" textFill="BLACK" />
       
-              <Slider fx:id="volumeSlider" layoutX="86.0" layoutY="97.0" max="100" min="0" onMouseReleased="#handleVolumeChange" prefWidth="200.0" value="50" />
+              <Slider fx:id="volumeSlider" layoutX="86.0" layoutY="97.0" max="100" min="0" onMouseReleased="#handleVolumeChange"  prefWidth="200.0" value="50" />
       
               <!-- Mute/Unmute Button -->
-              <Button fx:id="muteButton" layoutX="383.0" layoutY="71.0" onMousePressed="#handleMuteAction" prefHeight="48.0" prefWidth="191.0" text="Mute/Unmute" />
+              <Button fx:id="muteButton" layoutX="383.0" layoutY="71.0" onMousePressed="#handleMuteAction" onMouseEntered="#handleMouseEnter" prefHeight="48.0" prefWidth="191.0" text="Mute/Unmute" />
       
               <!-- Save Button -->
-              <Button fx:id="saveButton" layoutX="222.0" layoutY="163.0" onMousePressed="#handleSaveAction" prefHeight="65.0" prefWidth="221.0" text="Save Changes" />
+              <Button fx:id="saveButton" layoutX="222.0" layoutY="163.0" onMousePressed="#handleSaveAction" onMouseEntered="#handleMouseEnter" prefHeight="65.0" prefWidth="221.0" text="Save Changes" />
          </children>
       </Pane>
     </children>

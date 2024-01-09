@@ -107,7 +107,7 @@ public class MenuScreenController {
                             ((MenuScreen) menuScreenFrame).close(); // Close the entrance screen
                         }
                     	boardFrame.setVisible(false);
-                        PauseScreen pauseScreen = new PauseScreen(1000, 800, boardFrame, menuScreenFrame);
+                        PauseScreen pauseScreen = new PauseScreen(boardFrame, menuScreenFrame);
                         pauseScreen.display();
                         break;
                     case "helpButton":
