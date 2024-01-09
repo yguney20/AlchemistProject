@@ -6,9 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import domain.controllers.GameController;
-import ui.swing.screens.MenuScreen;
 import ui.swing.screens.PlayerDashboard;
-import ui.swing.screens.SettingsScreen;
+import ui.swing.screens.scenes.MenuScreen;
+import ui.swing.screens.scenes.SettingsScreen;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;

@@ -2,12 +2,16 @@ package ui.swing.screens.screencontrollers;
 
 import java.awt.Frame;
 
+import animatefx.animation.Pulse;
 import domain.controllers.GameController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
-import ui.swing.screens.SettingsScreen;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import ui.swing.screens.scenes.SettingsScreen;
 import ui.swing.screens.screencomponents.SettingsState;
 
 public class SettingsScreenController {
@@ -22,6 +26,9 @@ public class SettingsScreenController {
     private Frame previousFrame; // Reference to the previous frame
     private SettingsScreen settingsScreen;
     private static EntranceScreenController entranceScreenController = EntranceScreenController.getInstance();
+    
+    private MediaPlayer buttonSoundPlayer;
+    
 
     public void setSettingsState(SettingsState settingsState) {
         this.settingsState = settingsState;
@@ -31,6 +38,14 @@ public class SettingsScreenController {
         if (settingsState != null) {
             volumeSlider.setValue(settingsState.getVolume() * 100);
         }
+        initializeMediaPlayers();
+    }
+    
+    private void initializeMediaPlayers() {
+        
+        String buttonSoundFile = getClass().getResource("/ui/swing/resources/sounds/buttonSound.wav").toExternalForm();
+        Media buttonSound = new Media(buttonSoundFile);
+        buttonSoundPlayer = new MediaPlayer(buttonSound);
     }
     
     // Setter for the previous frame
@@ -41,6 +56,15 @@ public class SettingsScreenController {
     // Setter for the current settings screen
     public void setSettingsScreen(SettingsScreen screen) {
         this.settingsScreen = screen;
+    }
+    
+    @FXML
+    private void handleMouseEnter(MouseEvent event) {
+        new Pulse((Button) event.getSource()).play();
+        if (buttonSoundPlayer != null) {
+            buttonSoundPlayer.stop(); // Stop the sound to reset it if it was already playing
+            buttonSoundPlayer.play(); // Play the sound
+        }
     }
 
 

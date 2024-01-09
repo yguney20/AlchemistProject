@@ -1,16 +1,61 @@
-package ui.swing.screens;
+package ui.swing.screens.scenes;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import java.io.IOException;
+
+import ui.swing.screens.screencontrollers.EntranceScreenController;
+import ui.swing.screens.screencontrollers.PauseScreenController;
 
 public class PauseScreen extends JFrame {
     private JPanel contentPane;
     private JButton resumeButton;
     private Frame mainFrame;
     private JFrame menuScreen;
+    
 
+    public PauseScreen(Frame mainFrame, JFrame menuScreen) {
+        this.mainFrame = mainFrame;
+        this.menuScreen = menuScreen;
+
+        setTitle("Pause Screen");
+        setUndecorated(true);
+        setSize(900, 505); // Adjust the size as needed
+        setLocationRelativeTo(null);
+
+        JFXPanel fxPanel = new JFXPanel();
+        getContentPane().add(fxPanel);
+        initializeJavaFXComponents(fxPanel);
+    }
+
+    private void initializeJavaFXComponents(JFXPanel fxPanel) {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/PauseScreen.fxml"));
+                Parent root = loader.load();
+
+                PauseScreenController controller = loader.getController();
+                controller.setPauseScreen(this);
+                controller.setMainFrame(mainFrame);
+                controller.setMenuScreen(menuScreen);
+
+                Scene scene = new Scene(root);
+                fxPanel.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    
+/*
     public PauseScreen(int width, int height, Frame frame, JFrame menuScreen) {
         this.mainFrame = frame;
         this.menuScreen = menuScreen;
@@ -64,8 +109,12 @@ public class PauseScreen extends JFrame {
         resumeButton.setBounds(width / 2 - 50, height / 2 - 25, 100, 50); // Centered button
         backgroundLabel.add(resumeButton); // Add to the background label
     }
-
+*/
     public void display() {
         setVisible(true);
+    }
+    
+    public void close() {
+    	setVisible(false);
     }
 }

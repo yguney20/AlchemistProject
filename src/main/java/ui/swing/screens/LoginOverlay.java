@@ -29,6 +29,7 @@ import domain.controllers.LoginController;
 import ui.swing.desingsystem.RoundedBorder;
 import ui.swing.desingsystem.RoundedCornerPanel;
 import ui.swing.model.CardModel;
+import ui.swing.screens.scenes.BoardScreen;
 import ui.swing.screens.screencomponents.AvatarCardScreen;
 
 public class LoginOverlay extends JFrame {

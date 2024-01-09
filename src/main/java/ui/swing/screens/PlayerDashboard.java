@@ -30,6 +30,7 @@ import ui.swing.helper.SoundPlayer;
 import ui.swing.screens.BuyArtifactScreen;
 import ui.swing.screens.SelectArtifactScreen;
 import ui.swing.screens.TransmuteIngredientScreen;
+import ui.swing.screens.scenes.BoardScreen;
 import ui.swing.desingsystem.*;
 
 import java.awt.Cursor;
