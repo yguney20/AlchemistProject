@@ -33,7 +33,45 @@
 		</plugins>
 
 	</build>
-	<dependencies>
+		<dependencies>
+
+		<!-- JavaFX dependencies -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>18</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>18</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-graphics</artifactId>
+			<version>18</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-swing</artifactId>
+			<version>18</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-maven-archetypes</artifactId>
+			<version>0.0.6</version>
+			<type>pom</type>
+		</dependency>
+
+
+
+
+		<dependency>
+			<groupId>com.github.adedayo.intellij.sdk</groupId>
+			<artifactId>javaFX</artifactId>
+			<version>142.1</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

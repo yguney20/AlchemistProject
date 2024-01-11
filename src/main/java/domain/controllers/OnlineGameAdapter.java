@@ -187,4 +187,10 @@ public class OnlineGameAdapter implements GameCommunication {
 		client.sendMessage(gson.toJson(message));
 	}
 
+	public void sendReadySignal() {
+        Map<String, String> actionDetails = new HashMap<>();
+        actionDetails.put("action", "playerReady");
+        client.sendMessage(gson.toJson(actionDetails));
+    }
+
 }

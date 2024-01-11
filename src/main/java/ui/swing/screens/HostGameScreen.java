@@ -12,8 +12,10 @@ public class HostGameScreen extends JFrame {
     private JPanel contentPane;
     private JButton startGameButton;
     private JLabel ipLabel;
+    private JList<String> playerList;
 
     public HostGameScreen(Frame frame) {
+        playerList = new JList<>();
         int width = 1000;
         int height = 800;
         setTitle("Host Game");
@@ -79,6 +81,10 @@ public class HostGameScreen extends JFrame {
 
     public void display() {
         setVisible(true);
+    }
+
+    public void updatePlayerList(String[] players) {
+        playerList.setListData(players);
     }
 
     // Test Main Method

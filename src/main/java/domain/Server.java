@@ -1,4 +1,5 @@
 package domain;
+import com.google.gson.Gson;
 
 import java.io.*;
 import java.net.*;
@@ -52,6 +53,13 @@ public class Server {
         }
     }
 
+    // Overloaded broadcast method for sending to all clients
+    void broadcast(String message) {
+        for (ClientHandler aClient : clients) {
+            aClient.sendMessage(message);
+        }
+    }
+
     // Notify the host to start the game
     void notifyHostToStartGame() {
         for (ClientHandler aClient : clients) {
@@ -66,6 +74,20 @@ public class Server {
         clients.remove(client);
         System.out.println("Player left: " + client.getClientName());
     }
+    // A method to send current players and their statuses
+        void sendPlayerStatus() {
+            String playerStatusJson = createPlayerStatusJson();
+            broadcast(playerStatusJson);
+        }
+
+        String createPlayerStatusJson() {
+            Map<String, String> playerStatuses = new HashMap<>();
+            for (ClientHandler client : clients) {
+                playerStatuses.put(client.getClientName(), client.isReady() ? "Ready" : "Not Ready");
+            }
+            return new Gson().toJson(playerStatuses);
+        }
+
 
     // Main method to start the server
     public static void main(String[] args) {
@@ -78,7 +100,7 @@ public class Server {
             e.printStackTrace();
         }
     }
-
+     
     // Inner class: ClientHandler
     class ClientHandler extends Thread {
         private Socket socket;
@@ -87,6 +109,7 @@ public class Server {
         private BufferedReader reader;
         private String clientName;
         private boolean isHost;
+        private boolean isReady = false; 
 
         // Constructor for ClientHandler
         public ClientHandler(Socket socket, Server server) {
@@ -100,11 +123,29 @@ public class Server {
                 reader = new BufferedReader(new InputStreamReader(input));
                 OutputStream output = socket.getOutputStream();
                 writer = new PrintWriter(output, true);
+                
             } catch (IOException ex) {
                 System.out.println("Error in ClientHandler: " + ex.getMessage());
                 ex.printStackTrace();
             }
+
+            
+            
         }
+        
+        public boolean isReady() {
+            return isReady; // Return the actual state of isReady
+        }
+
+        private void processMessage(String message) {
+            Map<String, Object> messageMap = new Gson().fromJson(message, Map.class);
+            if ("playerReady".equals(messageMap.get("action"))) {
+                isReady = true;
+                server.sendPlayerStatus(); // Update all clients with the new status
+            }
+            // ... handle other actions ...
+        }
+
 
         // Main logic for handling communication with a client
         public void run() {
@@ -116,11 +157,12 @@ public class Server {
                 }
 
                 String serverMessage;
-
+            
                 // Continuously read messages from the client and broadcast them
                 while ((serverMessage = reader.readLine()) != null) {
                     System.out.println(clientName + ": " + serverMessage);
                     server.broadcast(clientName + ": " + serverMessage, this);
+                    processMessage(serverMessage);
                 }
             } catch (IOException ex) {
                 System.out.println("Error in ClientHandler: " + ex.getMessage());
@@ -136,7 +178,6 @@ public class Server {
             }
         }
 
-        // Method to send a message to the client
         void sendMessage(String message) {
             writer.println(message);
         }
@@ -149,5 +190,6 @@ public class Server {
         boolean isHost() {
             return isHost;
         }
+        
     }
 }

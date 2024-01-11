@@ -13,8 +13,10 @@ public class ConnectGameScreen extends JFrame {
     private JTextField ipTextField;
     private JButton connectButton;
     private JLabel statusLabel; // To display connection status
+    private JList<String> playerList;
 
     public ConnectGameScreen(Frame frame) {
+        playerList = new JList<>();
         int width = 1000;
         int height = 800;
         setTitle("Connect to Game");
@@ -36,6 +38,13 @@ public class ConnectGameScreen extends JFrame {
         infoLabel.setFont(new Font("Arial", Font.BOLD, 30));
         infoLabel.setBounds(0, 30, width, 80);
         backgroundLabel.add(infoLabel);
+
+        JButton readyButton = new JButton("Ready");
+        readyButton.setForeground(Color.WHITE);
+        readyButton.setFont(new Font("Arial", Font.BOLD, 20));
+        readyButton.setBounds(200, 350, 100, 40);
+        backgroundLabel.add(readyButton);
+
 
         // Back button logic
         backButton.addActionListener(new ActionListener() {
@@ -80,6 +89,8 @@ public class ConnectGameScreen extends JFrame {
         backgroundLabel.add(statusLabel);
     }
 
+    
+
     private void initiateConnection(String hostIp) {
         // Here you should interact with OnlineGameAdapter or Client
         // For example, using OnlineGameAdapter:
@@ -95,6 +106,10 @@ public class ConnectGameScreen extends JFrame {
         } else {
             statusLabel.setText("Failed to connect. Check the IP and try again.");
         }
+    }
+
+    public void updatePlayerList(String[] players) {
+        playerList.setListData(players);
     }
 
     public void display() {
