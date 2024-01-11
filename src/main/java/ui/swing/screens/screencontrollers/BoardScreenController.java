@@ -91,4 +91,31 @@ public class BoardScreenController {
         }
         updateLabels(); // Update UI labels to reflect the new state
     }
+    
+    @FXML
+    protected void handleMedievalBannerEnter() {
+    	
+    }
+    
+    @FXML
+    protected void handleWizardHatStandClick() {
+    	
+    }
+    
+    @FXML
+    protected void handleHourglassClick() {
+    	
+    }
+    
+    @FXML
+    protected void handleWizardBookClick() {
+    	
+    }
+    
+    @FXML
+    protected void handlePublicationBoardClick() {
+    	
+    }
+    
+    
 }

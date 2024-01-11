@@ -54,206 +54,6 @@ public class BoardScreen extends JFrame{
         return instance;
     }
 
-    /*
-    public BoardScreen() {
-    	DeductionBoard deductionBoard = new DeductionBoard(this);
-    	gameController.setBoardScreen(this);// Pass 'this' as the reference to the BoardScreen
-        setTitle("Ku Alchemist Game Board");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(50, 50, 900, 505); // Adjust the size accordingly
-        setResizable(false);
-        
-        contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setBackground(Color.WHITE);
-        contentPane.setLayout(null);
-        
-        JPanel publicationPanel = new JPanel();
-        publicationPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-        publicationPanel.setBackground(new Color(254, 255, 255));
-        publicationPanel.setBounds(6, 62, 275, 291);
-        contentPane.add(publicationPanel);
-        
-        JLabel publicationNameLabel = new JLabel("Publication Area");
-        publicationPanel.add(publicationNameLabel);
-        
-        JPanel potionBrewingPanel = new JPanel();
-        potionBrewingPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-        potionBrewingPanel.setBackground(Color.WHITE);
-        potionBrewingPanel.setBounds(6, 353, 444, 118);
-        contentPane.add(potionBrewingPanel);
-        potionBrewingPanel.setLayout(null);
-        
-        JPanel cauldronPanel = new JPanel();
-        cauldronPanel.setBackground(new Color(255, 255, 255));
-        cauldronPanel.setBounds(6, 6, 150, 105);
-        potionBrewingPanel.add(cauldronPanel);
-        
-        JLabel cauldronLabel = new JLabel("");
-        
-        ImageIcon preResizeCauldronImageIcon = new ImageIcon(BoardScreen.class.getResource("/ui/swing/resources/images/gameBoardUI/cauldronImage.png"));
-        Image preResizeCauldronImage = preResizeCauldronImageIcon.getImage();
-
-        // Resize the image
-        Image resizedCauldronImage = preResizeCauldronImage.getScaledInstance(cauldronPanel.getWidth(), cauldronPanel.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon postResizedCauldronImageIcon = new ImageIcon(resizedCauldronImage);
-        
-        cauldronLabel.setIcon(postResizedCauldronImageIcon);
-        cauldronPanel.add(cauldronLabel);
-        
-        JLabel potionBrewingNameLabel = new JLabel("Potion Brewing Area");
-        potionBrewingNameLabel.setBounds(234, 6, 137, 16);
-        potionBrewingPanel.add(potionBrewingNameLabel);
-        
-        JPanel playerIdNamePanel = new JPanel();
-        playerIdNamePanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-        playerIdNamePanel.setBackground(new Color(254, 255, 255));
-        playerIdNamePanel.setBounds(6, 6, 275, 58);
-        contentPane.add(playerIdNamePanel);
-        playerIdNamePanel.setLayout(new GridLayout(0, 1, 0, 0));
-        
-        //JLabel playerIdNameLabel = new JLabel("Player ID:");
-        //playerIdNamePanel.add(playerIdNameLabel);
-        currentPlayerLabel = new JLabel("Current Player: ");
-        currentPlayerLabel.setText("Current Player: " + gameController.getCurrentPlayer().getNickname());
-        playerIdNamePanel.add(currentPlayerLabel);
-
-        currentTurnLabel = new JLabel("Current Turn: ");
-        currentTurnLabel.setText("Current Turn: " + gameController.getCurrentTurn());
-        playerIdNamePanel.add(currentTurnLabel);
-
-        currentRoundLabel = new JLabel("Current Round: ");
-        currentRoundLabel.setText("Current Round: " + gameController.getCurrentRound());
-        playerIdNamePanel.add(currentRoundLabel);
-        
-        JPanel menuPanel = new JPanel();
-        menuPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-        menuPanel.setBackground(Color.WHITE);
-        menuPanel.setBounds(619, 6, 275, 58);
-        contentPane.add(menuPanel);
-        menuPanel.setLayout(new GridLayout(0, 2, 20, 0));
-        
-        JButton menuButton = new JButton("Menu");
-        menuButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        menuPanel.add(menuButton);
-        
-        menuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                MenuScreen menuScreen = new MenuScreen(BoardScreen.this); // Pass 'this' instead of 'frame'
-                menuScreen.display();
-            }
-        });
-
-        
-        JPanel titlePanel = new JPanel();
-        titlePanel.setBackground(new Color(254, 255, 255));
-        titlePanel.setBounds(280, 6, 340, 58);
-        contentPane.add(titlePanel);
-        titlePanel.setLayout(new GridLayout(0, 1, 0, 0));
-        
-        JLabel gameBoardImage = new JLabel("");
-        gameBoardImage.setBackground(new Color(255, 255, 255));
-        gameBoardImage.setHorizontalAlignment(SwingConstants.CENTER);
-        gameBoardImage.setIconTextGap(0);
-        gameBoardImage.setFocusable(false);
-        // Load the original image
-        ImageIcon preResizeMenuImageIcon = new ImageIcon(BoardScreen.class.getResource("/ui/swing/resources/images/gameBoardUI/kuAlchemistGameBoardTitleImage.png"));
-        Image preResizeMenuImage = preResizeMenuImageIcon.getImage();
-
-        // Resize the image
-        Image resizedMenuImage = preResizeMenuImage.getScaledInstance(menuPanel.getWidth(), menuPanel.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon postResizeMenuImageIcon = new ImageIcon(resizedMenuImage);
-
-        // Set the resized icon to the JLabel
-        gameBoardImage.setIcon(postResizeMenuImageIcon);
-        titlePanel.add(gameBoardImage);
-        
-        JButton dashboardPanel = new JButton();
-        dashboardPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-        dashboardPanel.setBackground(Color.WHITE);
-        dashboardPanel.setBounds(362, 70, 174, 58);
-        contentPane.add(dashboardPanel);
-        dashboardPanel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-        			PlayerDashboard playerDashboard = new PlayerDashboard(gameController);
-        			playerDashboard.display();			
-            }
-        });
-        
-        JLabel playerDashboardNameLabel = new JLabel("Player Dashboard");
-        dashboardPanel.add(playerDashboardNameLabel);
-        
-        JPanel ingredientCardPanel = new JPanel();
-        ingredientCardPanel.setBackground(Color.WHITE);
-        ingredientCardPanel.setBounds(363, 158, 170, 183);
-        contentPane.add(ingredientCardPanel);
-        ingredientCardPanel.setLayout(new GridLayout(0, 1, 0, 0));
-        
-        JLabel ingredientCardImage = new JLabel("");
-        
-        ImageIcon preResizeIngredientCardImageIcon = new ImageIcon(BoardScreen.class.getResource("/ui/swing/resources/images/gameBoardUI/gameBoardIngredientCardBacksideImage.png"));
-        Image preResizeIngredientCardImage = preResizeIngredientCardImageIcon.getImage();
-
-        // Resize the image
-        Image resizedIngredientCardImage = preResizeIngredientCardImage.getScaledInstance(ingredientCardPanel.getWidth(), ingredientCardPanel.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon postResizedIngredientCardImageIcon = new ImageIcon(resizedIngredientCardImage);
-
-        ingredientCardImage.setIcon(postResizedIngredientCardImageIcon);
-        ingredientCardPanel.add(ingredientCardImage);
-        
-        JPanel artifactCardPanel = new JPanel();
-        artifactCardPanel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-        artifactCardPanel.setBackground(Color.WHITE);
-        artifactCardPanel.setBounds(450, 353, 444, 118);
-        contentPane.add(artifactCardPanel);
-        
-        JLabel artifactCardsNameLabel = new JLabel("Artifact Cards");
-        artifactCardPanel.add(artifactCardsNameLabel);
-        
-
-        JPanel deductionBoardPanel = new JPanel();
-        deductionBoardPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
-        deductionBoardPanel.setBackground(Color.WHITE);
-        deductionBoardPanel.setBounds(619, 62, 275, 291);
-        contentPane.add(deductionBoardPanel);
-        
-        JLabel deductionBoardNameLabel = new JLabel("Deduction Board");
-        deductionBoardPanel.add(deductionBoardNameLabel);
-        
-        JButton deductionPageButton = new JButton("Click to go to the deduction board!");
-        deductionBoardPanel.add(deductionPageButton);
-        
-        deductionPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Create an instance of DeductionBoard and display it              
-                //deductionBoard.display();
-            	gameController.displayDeductionBoardForCurrentPlayer();
-            }
-        });
-        
-        //to update the game state when a player performs an action
-        JButton actionPerformedButton = new JButton("Action Performed");
-        actionPerformedButton.setBounds(362, 130, 174, 20);
-        contentPane.add(actionPerformedButton);
-        
-        actionPerformedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(gameController.getActionPerformed()) {
-                	gameController.updateState();
-                    currentPlayerLabel.setText("Current Player: " + gameController.getCurrentPlayer().getNickname());
-                    currentTurnLabel.setText("Current Turn: " + gameController.getCurrentTurn());
-                    currentRoundLabel.setText("Current Round: " + gameController.getCurrentRound());
-
-                }
-            }
-        });
-    }*/
     
     public BoardScreen() {
         initializeFrame();
@@ -263,7 +63,7 @@ public class BoardScreen extends JFrame{
     private void initializeFrame() {
         setTitle("Ku Alchemist Game Board");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(50, 50, 900, 505); // Adjust the size accordingly
+        setBounds(50, 50, 1300, 705); // Adjust the size accordingly
         setResizable(false);
         fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
         add(fxPanel);
@@ -286,6 +86,10 @@ public class BoardScreen extends JFrame{
 
     public void display() {
         SwingUtilities.invokeLater(() -> setVisible(true));
+    }
+    
+    public void close() {
+        SwingUtilities.invokeLater(() -> setVisible(false));
     }
 
 	
