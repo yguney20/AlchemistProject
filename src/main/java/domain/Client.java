@@ -13,9 +13,14 @@ import java.lang.reflect.Type;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import domain.controllers.GameController;
+import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
+import ui.swing.screens.BoardScreen;
 import ui.swing.screens.HostGameScreen;
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
+import ui.swing.screens.screencontrollers.BoardScreenController;
+import ui.swing.screens.screencontrollers.*;
 
 public class Client {
     private String hostname; // The IP address or hostname of the server
@@ -25,6 +30,11 @@ public class Client {
     private PrintWriter writer; // To send messages to the server
     private static PlayerListUpdateListener listener;
     private boolean listening = true;
+    private boolean isBoardScreenOpen = false;
+    private BoardScreen boardScreen;
+    private LoginController loginController = LoginController.getInstance();
+    private GameController gameController = GameController.getInstance();
+
 
     // Constructor to initialize the client with the server's host and port
     public Client(String hostname, int port, PlayerListUpdateListener listener) {
@@ -100,31 +110,53 @@ public class Client {
         sendMessage(jsonPlayerInfo);
     }
 
-    // Main method for testing the client
-    public static void main(String[] args) {
-        OnlineGameAdapter adapter = new OnlineGameAdapter("localhost", 6666, listener);
-        if (adapter.connect()) {
-            
-            System.out.println("Client successfully connected to server");
+    public void setPlayerReady() {
+        sendMessage("{\"action\":\"playerReady\"}");
+        System.out.println("Sent player ready message for " + hostname);
+    }
 
-            // Create an instance of OnlineGameAdapter
+    private void openBoardScreen(GameState gameState) {
+        boardScreen = new BoardScreen();
+        boardScreen.display();
+        BoardScreenController boardController = boardScreen.getController();
+    
+        if (boardController != null) {
+            boardController.updateGameState(gameState);
+        } else {
+            System.err.println("Error: BoardScreenController is null.");
+            // Additional error handling here
+        }
+    }
 
-            // Example: Simulate a player foraging for an ingredient
-            adapter.forageForIngredient("1");  // Assuming '1' is a player ID
-
-            // Example: Simulate a player buying an artifact card
-            adapter.buyArtifactCard("1", "101");  // Assuming '1' is a player ID and '101' is a card ID
-
-            // Add more actions as needed...
-
-            // Disconnect when done
-            adapter.disconnect();
+    private void updateBoardScreen(GameState gameState) {
+        if (boardScreen != null) {
+            BoardScreenController boardController = boardScreen.getController();
+            if (boardController != null) {
+                boardController.updateGameState(gameState);
+            } else {
+                System.err.println("Error: BoardScreenController is null.");
+                // Additional error handling here
+            }
         }
     }
 
     public void handleServerMessage(String message) {
         System.out.println("Client received message: " + message);
 
+        if (message.startsWith("GAME_STATE:")) {
+            String jsonState = message.substring("GAME_STATE:".length());
+            GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+           
+
+    
+            SwingUtilities.invokeLater(() -> {
+                if (boardScreen == null) {
+                    openBoardScreen(gameState);
+                } else {
+                    updateBoardScreen(gameState);
+                }
+            });
+        }
         if (message.equals("DUPLICATE")) {
             // Notify the listener that the chosen name or avatar is not unique
             if (listener != null) {
@@ -147,9 +179,6 @@ public class Client {
         }else if (message.startsWith("ALL_PLAYERS_READY:")) {
             boolean allPlayersReady = Boolean.parseBoolean(message.split(":")[1].trim());
             System.out.println("Client: All players ready status received: " + allPlayersReady); // Debug print
-            if (listener != null) {
-                listener.onAllPlayersReady(allPlayersReady);
-            }
         }
     }
 
@@ -190,7 +219,10 @@ public class Client {
             System.out.println("Simulated player sending info: Name - " + playerName + ", Avatar - " + avatarPath);
     
             // Send player info to the server
+
             simulatedPlayer.sendPlayerInfo(playerName, avatarPath);
+            simulatedPlayer.setPlayerReady();
+            loginController.createPlayer(playerName, avatarPath);
     
             // Additional actions for the simulated player can be added here if needed
         } else {

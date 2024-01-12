@@ -17,6 +17,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
     private JTextField ipTextField;
     private JButton connectButton;
     private JLabel statusLabel; // To display connection status
+    private JButton readyButton;
     private JList<String> playerList;
     private String playerName;
     private String avatarPath;
@@ -44,14 +45,13 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         infoLabel.setBounds(0, 30, width, 80);
         backgroundLabel.add(infoLabel);
 
-        JButton readyButton = new JButton("Ready");
-        readyButton.setForeground(Color.WHITE);
+        readyButton = new JButton("Ready");
         readyButton.setFont(new Font("Arial", Font.BOLD, 20));
-        readyButton.setBounds(200, 350, 100, 40);
+        readyButton.setBounds(450, 600, 100, 40);
         backgroundLabel.add(readyButton);
 
         playerList = new JList<>(new DefaultListModel<>());
-        playerList.setBounds(350, 250, 200, 300); // Set bounds as needed
+        playerList.setBounds(400, 275, 200, 250); // Set bounds as needed
         contentPane.add(playerList);
 
         
@@ -89,14 +89,14 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
                 initiateConnection(hostIp); // Initiate connection attempt
             }
         });
-        connectButton.setBounds(width / 2 - 100, height / 2, 200, 50);
+        connectButton.setBounds(width / 2 - 100, height / 2 - 200, 200, 50);
         backgroundLabel.add(connectButton);
 
         // Status label to show connection success or failure
         statusLabel = new JLabel("", SwingConstants.CENTER);
         statusLabel.setForeground(Color.RED);
         statusLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        statusLabel.setBounds(0, height / 2 + 60, width, 30);
+        statusLabel.setBounds(0, 550, width, 30);
         backgroundLabel.add(statusLabel);
     }
 

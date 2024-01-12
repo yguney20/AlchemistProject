@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import domain.Game;
+import domain.GameState;
 import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.IngredientCard;
@@ -256,5 +257,21 @@ public class GameController {
            game.debunkTheory(playerId, publicationCardId, component);
         }
        
+    }
+
+    public GameState getInitialState() {
+        // Use the existing players from the Game instance
+        List<Player> players = game.getPlayers(); // Assuming there is a getPlayers() method in Game
+        int initialRound = 1;
+        int firstTurn = 1;
+        Player initialPlayer = players.isEmpty() ? null : players.get(0); // Check if the list is empty
+        boolean isPaused = false;
+
+        return new GameState(players, initialRound, firstTurn, initialPlayer, isPaused);
+    }
+
+    public void initializeGameFromState(GameState gameState) {
+        // Update the game state
+        game.updateGameState(gameState);
     }
 }

@@ -145,6 +145,9 @@ public class Game { //Singleton Pattern
 
         gameState.setCurrentPlayer(currentPlayer);
         System.out.println(gameState);
+        System.out.println(players);
+
+        
     }
 
     
@@ -179,6 +182,8 @@ public class Game { //Singleton Pattern
             // set actionPerformed to false since we moved on to the next player
             actionPerformed = false;
             System.out.println(gameState);
+
+
     }
 
     public void endRound() {
@@ -196,6 +201,20 @@ public class Game { //Singleton Pattern
         this.isPaused = newGameState.isPaused();
         // Additionally update other relevant state attributes if necessary
         // For example, players, scores, etc., based on what GameState contains
+
+        // Debug print to check initialization
+        System.out.println("Game initialized from GameState:");
+        System.out.println("Current Round: " + currentRound);
+        System.out.println("Current Turn: " + currentTurn);
+        System.out.println("Current Player: " + (currentPlayer != null ? currentPlayer.getNickname() : "null"));
+
+        // Printing player details
+        if (players != null) {
+            for (Player player : players) {
+                System.out.println("Player: " + player.getNickname() + ", Golds: " + player.getGolds());
+                System.out.println("Ingredient Inventory: " + player.getIngredientInventory());
+            }
+        }
     }
 
 

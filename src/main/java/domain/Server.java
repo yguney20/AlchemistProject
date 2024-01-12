@@ -1,6 +1,9 @@
 package domain;
 import com.google.gson.Gson;
 
+import domain.controllers.GameController;
+import domain.controllers.LoginController;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -12,6 +15,8 @@ public class Server {
     private boolean gameStarted = false; // Flag to indicate if the game has started
     private Set<String> playerNames = new HashSet<>();
     private Set<String> avatarPaths = new HashSet<>();
+    private LoginController loginController = LoginController.getInstance();
+    private GameController gameController = GameController.getInstance();
 
     // Constructor to initialize server with a specific port
     public Server(int port) throws IOException {
@@ -70,7 +75,6 @@ public class Server {
                                         .collect(Collectors.toList());
         String playerListJson = new Gson().toJson(playerNames);
         broadcast("PLAYER_LIST:" + playerListJson);
-        System.out.println("Broadcasting player list: " + playerListJson); // Debug print
 
     }
 
@@ -111,6 +115,11 @@ public class Server {
                 .collect(Collectors.joining(", "));
             broadcast("PLAYER_STATUS_UPDATE:" + statusUpdate);
         }
+
+        public void broadcastInitialState() {
+            String initialStateJson = new Gson().toJson(gameController.getInitialState());
+            broadcast("GAME_STATE:" + initialStateJson);
+        }
         
         
         
@@ -130,7 +139,6 @@ public class Server {
         
         public boolean checkAllPlayersReady() {
             boolean allReady = clients.stream().allMatch(ClientHandler::isReady);
-            System.out.println("All players ready: " + allReady); // Debug print
             return allReady;
         }
 
@@ -202,14 +210,10 @@ public class Server {
                 }
 
                 String json = jsonBuilder.toString();
-                System.out.println("ClientHandler: Received JSON - " + json);
-
                 Map<String, String> playerInfo = new Gson().fromJson(json, Map.class);
                 clientName = playerInfo.get("playerName");
                 String avatarPath = playerInfo.get("avatarPath");
 
-                System.out.println("ClientHandler: Parsed playerName - " + clientName);
-                System.out.println("ClientHandler: Parsed avatarPath - " + avatarPath);
 
 
                 if (!server.isUniquePlayer(clientName, avatarPath)) {
@@ -217,9 +221,7 @@ public class Server {
                     closeConnection();
                     return;
                 }
-
                 server.broadcastPlayerList();
-                System.out.println("ClientHandler: Broadcasted player list");
 
                 if (clients.size() == 1) {
                     isHost = true;
@@ -261,14 +263,11 @@ public class Server {
                     case "playerReady":
                         isReady = true;
                         server.broadcastPlayerStatus();
-                        System.out.println("Client " + clientName + " is ready."); // Debug print
                         break;
         
                     case "areAllPlayersReady":
-                        System.out.println("Server: Checking if all players are ready."); // Debug print
                         boolean allReady = server.checkAllPlayersReady();
                         sendMessage("ALL_PLAYERS_READY:" + allReady);
-                        System.out.println("Server: Sending all players ready status: " + allReady); // Debug print
                         break;
 
                     case "playerName":
@@ -287,7 +286,12 @@ public class Server {
                         String playerListJson = new Gson().toJson(connectedPlayers);
                         sendMessage("PLAYER_LIST:" + playerListJson);
                         break;
-                        
+
+                    case "startGame":
+                        loginController.initializeGame(); // Initialize the game state
+                        // You might also want to send the initial game state to all clients
+                        broadcastInitialState();
+                        break;
                 }
             }
     

@@ -10,6 +10,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+
+import javax.swing.SwingUtilities;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -219,17 +222,19 @@ public class OnlineGameAdapter implements GameCommunication {
 	}
 
 	
-
-	public boolean areAllPlayersReady() {
-		System.out.println("Adapter: Checking if all players are ready."); // Debug print
-		client.sendMessage("{\"action\":\"areAllPlayersReady\"}");
-
-		String response = client.receiveMessage();
-		System.out.println("Adapter: Received response for all players ready: " + response); // Debug print
-		if (response != null && response.startsWith("ALL_PLAYERS_READY:")) {
-			return Boolean.parseBoolean(response.split(":")[1].trim());
-		}
-		return false;
+	public void areAllPlayersReady(Consumer<Boolean> callback) {
+		new Thread(() -> {
+			client.sendMessage("{\"action\":\"areAllPlayersReady\"}");
+			String response = client.receiveMessage();
+			if (response != null && response.startsWith("ALL_PLAYERS_READY:")) {
+				boolean allReady = Boolean.parseBoolean(response.split(":")[1].trim());
+				SwingUtilities.invokeLater(() -> {
+					callback.accept(allReady);
+				});
+			} else {
+				System.out.println("Debug: No valid response received for areAllPlayersReady");
+			}
+		}).start();
 	}
 	
 	
