@@ -3,6 +3,7 @@ package ui.swing.screens.screencontrollers;
 import java.awt.Frame;
 
 
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -26,24 +27,22 @@ public class BoardScreenController {
     private Label currentTurnLabel;
     @FXML
     private Label currentRoundLabel;
-    
     @FXML
     private ImageView medievalBanner;
-    
+    @FXML
+    private ImageView magicBall;
     @FXML
     private ImageView wizardHatStand;
-    
     @FXML
     private ImageView hourglass;
-    
     @FXML
     private ImageView wizardBook;
-    
     @FXML
     private ImageView publicationboard;
-    
     @FXML
     private ImageView deductionBoard;
+    @FXML
+    private ImageView cauldron;
 
     private GameController gameController = GameController.getInstance();
     
@@ -122,6 +121,32 @@ public class BoardScreenController {
     }
     
     @FXML
+    protected void handleMagicBallClick() {
+    	Image newBallImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Magic_Ball.gif"));
+    	magicBall.setImage(newBallImage);
+    	
+    	if(gameController.getActionPerformed()) {
+        	gameController.updateState();
+            currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
+            currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
+            currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
+
+        }
+        updateLabels(); // Update UI labels to reflect the new state
+        
+        
+        PauseTransition wait = new PauseTransition(Duration.seconds(2)); // Adjust the duration to match your GIF
+        wait.setOnFinished(e -> {
+            Image staticBallImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Magic_Ball.png"));
+            magicBall.setImage(staticBallImage);
+            
+    		
+        });
+        wait.play();
+    	
+    }
+    
+    @FXML
     protected void handleHourglassClick() {
     	Image newHourglassImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Hourglass.gif"));
         hourglass.setImage(newHourglassImage);
@@ -183,6 +208,20 @@ public class BoardScreenController {
             Image staticDeductImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Deduction_Board.png"));
             deductionBoard.setImage(staticDeductImage);
             gameController.displayDeductionBoardForCurrentPlayer();	
+        });
+        wait.play();
+    	
+    }
+    
+    @FXML
+    protected void handleCauldronClick() {
+    	Image newCauldronImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Cauldron.gif"));
+    	cauldron.setImage(newCauldronImage);
+        
+        PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
+        wait.setOnFinished(e -> {
+            Image staticCauldronImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Cauldron.png"));
+            cauldron.setImage(staticCauldronImage);	
         });
         wait.play();
     	

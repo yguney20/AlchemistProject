@@ -99,7 +99,10 @@ public class EntranceScreenController {
     private void handleMousePress(MouseEvent event) {
     	
         
-        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Wizard.gif"));
+        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Büyücü.gif"));
+        if (newWizardImage.isError()) {
+            System.out.println("Error loading image.");
+        }
         wizardImage.setImage(newWizardImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF

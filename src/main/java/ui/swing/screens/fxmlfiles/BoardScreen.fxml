@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,20 +11,17 @@
 
 <AnchorPane prefHeight="705.0" prefWidth="1300.0" stylesheets="@../cssfiles/gameBoardStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.swing.screens.screencontrollers.BoardScreenController">
     <children>
-      <ImageView fx:id="publicationboard" fitHeight="287.0" fitWidth="431.0" layoutX="715.0" layoutY="96.0" onMouseClicked="#handlePublicationBoardClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="publicationboard" fitHeight="340.0" fitWidth="512.0" layoutX="715.0" layoutY="42.0" onMouseClicked="#handlePublicationBoardClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../resources/images/gameBoardUI/Bulletin_Board.png" />
          </image>
          <viewport>
-            <Rectangle2D height="650.0" minX="530.0" minY="490.0" width="950.0" />
+            <Rectangle2D height="730.0" minX="530.0" minY="440.0" width="1100.0" />
          </viewport>
          <cursor>
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </ImageView>
-
-        <!-- Action Performed Button -->
-        <Button layoutX="29.0" layoutY="606.0" onAction="#handleActionPerformed" text="Action Performed" />
       <ImageView fx:id="medievalShelfOne" fitHeight="89.0" fitWidth="353.0" layoutX="363.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../resources/images/gameBoardUI/Medieval_Shelf.png" />
@@ -109,16 +105,40 @@
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
       </ImageView>
-      <ImageView fx:id="deductionBoard" fitHeight="299.0" fitWidth="369.0" layoutX="773.0" layoutY="356.0" onMouseClicked="#handleDeductionClick" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="deductionBoard" fitHeight="337.0" fitWidth="491.0" layoutX="753.0" layoutY="376.0" onMouseClicked="#handleDeductionClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../resources/images/gameBoardUI/Deduction_Board.png" />
          </image>
          <viewport>
-            <Rectangle2D height="740.0" minX="500.0" minY="680.0" width="900.0" />
+            <Rectangle2D height="800.0" minX="300.0" minY="680.0" width="1200.0" />
          </viewport>
          <cursor>
             <Cursor fx:constant="OPEN_HAND" />
          </cursor>
+      </ImageView>
+      <ImageView fx:id="table" fitHeight="259.0" fitWidth="294.0" layoutX="459.0" layoutY="438.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Table.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="360.0" minX="620.0" minY="1000.0" width="400.0" />
+         </viewport>
+      </ImageView>
+      <ImageView fx:id="magicBall" fitHeight="124.0" fitWidth="125.0" layoutX="542.0" layoutY="357.0" onMouseClicked="#handleMagicBallClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Magic_Ball.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="1000.0" minX="400.0" minY="400.0" width="1000.0" />
+         </viewport>
+      </ImageView>
+      <ImageView fx:id="cauldron" fitHeight="353.0" fitWidth="274.0" layoutX="85.0" layoutY="361.0" onMouseClicked="#handleCauldronClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Cauldron.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="900.0" minX="600.0" minY="600.0" width="700.0" />
+         </viewport>
       </ImageView>
     </children>
    <cursor>

@@ -1,6 +1,21 @@
 package ui.swing.screens;
 
 import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
+import javafx.embed.swing.JFXPanel;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import ui.swing.screens.screencontrollers.BuyArtifactScreenController;
+import ui.swing.screens.screencontrollers.EntranceScreenController;
+import domain.controllers.GameController;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -16,8 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import domain.controllers.GameController;
@@ -25,13 +38,9 @@ import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.Player;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 
 
-public class BuyArtifactScreen extends JFrame  implements ActionListener{
+public class BuyArtifactScreen extends JFrame {
 
 	private JPanel contentPane;
 	private JButton buyButton;
@@ -44,11 +53,17 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
     List<ArtifactCard> artifactCards;
     private JButton quitButton = new JButton("X");
     
+    private JFXPanel fxPanel; // The JavaFX panel to embed JavaFX content
 
 	/**
 	 * Create the frame.
 	 */
 	public BuyArtifactScreen() {
+		initializeFrame();
+        initializeJavaFXComponents();
+        
+        
+    /*    
 		setTitle("Buy Artifact");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 913, 293);
@@ -87,14 +102,15 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
 	            }
 	        });
 	        add(quitButton);
-	        
-	        //ImageIcon icon = new ImageIcon(getClass().getResource("UI/Swing/Images/logo.png"));
-	        //setIconImage(icon.getImage());
-	        
 	        addArtifacts();
 	        addJButtons();
 	        addJLabels();
 	        addActionEvent();
+	        
+	        //ImageIcon icon = new ImageIcon(getClass().getResource("UI/Swing/Images/logo.png"));
+	        //setIconImage(icon.getImage());
+	        
+	        
 		
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,14 +130,49 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
                 int y = getLocation().y + e.getY() - initialY;
                 setLocation(x, y);
             }
-        });
+        });*/
 		
 	}
 	
-	public void display() {
-		this.setVisible(true);
-	}
+	private void initializeFrame() {
+        setTitle("Ku Alchemist Buy Artifact Screen");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 913, 293);
+        setResizable(false);
+        fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
+        add(fxPanel);
+    }
 	
+	private void initializeJavaFXComponents() {
+	    Platform.runLater(() -> {
+	        try {
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/BuyArtifactScreen.fxml"));
+	            Parent root = loader.load();
+
+	            BuyArtifactScreenController controller = loader.getController();
+	            controller.setArtifactScreenFrame(this); // Pass the current JFrame to the controller
+
+	            Scene scene = new Scene(root);
+	            fxPanel.setScene(scene);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    });
+	}
+
+	
+	
+	
+	public void display() {
+        SwingUtilities.invokeLater(() -> setVisible(true));
+    }
+	
+	public void close() {
+        SwingUtilities.invokeLater(() -> setVisible(false));
+    }
+    
+
+	/*
 	public void addArtifacts() {
 		try {
 			
@@ -250,6 +301,8 @@ public class BuyArtifactScreen extends JFrame  implements ActionListener{
             selected.setBounds(button.getX(), button.getY() + button.getHeight(), button.getWidth() - 8, 20);
             selected.setVisible(true);
             contentPane.setComponentZOrder(selected, 0);
-        }
-    }
+		}
+	}*/
+	
+	
 }

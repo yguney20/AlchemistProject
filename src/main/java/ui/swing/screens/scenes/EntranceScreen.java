@@ -1,6 +1,7 @@
 package ui.swing.screens.scenes;
 
 import java.awt.Color;
+
 import java.io.IOException;
 import java.net.URL;
 
