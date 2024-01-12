@@ -21,7 +21,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import ui.swing.screens.ConnectGameScreen;
-import ui.swing.screens.GameEntranceScreen;
 import ui.swing.screens.HelpScreen;
 import ui.swing.screens.HostGameScreen;
 import ui.swing.screens.LoginOverlay;

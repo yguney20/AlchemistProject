@@ -45,7 +45,7 @@ public class DeductionBoard extends JFrame {
         setBounds(100, 100, 900, 505);
         setUndecorated(true);
         setResizable(false);
-
+        initializeCircleCenters();
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -149,15 +149,15 @@ public class DeductionBoard extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 Point clickPoint = e.getPoint();
                 // Check if the click is within the radius of any circle centers
-                for (Point center : circleCenters) {
-                    if (clickPoint.distance(center) <= circleRadius) {
+                //for (Point center : circleCenters) {
+                    //if (clickPoint.distance(center) <= circleRadius) {
                         // Click is inside a circle, proceed with sign placement
                         GameController.getInstance().playerMadeDeduction(clickPoint.x, clickPoint.y, selectedSign.ordinal());
                         signPlacements.add(new SignPlacement(clickPoint, selectedSign));
                         deductionBoardPanel.repaint();
                         return; // Exit after placing the sign
-                    }
-                }
+                   //}
+                //}
             }
         });
     }

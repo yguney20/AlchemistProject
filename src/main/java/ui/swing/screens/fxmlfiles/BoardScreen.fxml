@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="705.0" prefWidth="1300.0" stylesheets="@../cssfiles/screenstyles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.swing.screens.screencontrollers.BoardScreenController">
+<AnchorPane prefHeight="705.0" prefWidth="1300.0" stylesheets="@../cssfiles/gameBoardStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.swing.screens.screencontrollers.BoardScreenController">
     <children>
       <ImageView fx:id="publicationboard" fitHeight="287.0" fitWidth="431.0" layoutX="715.0" layoutY="96.0" onMouseClicked="#handlePublicationBoardClick" pickOnBounds="true" preserveRatio="true">
          <image>
