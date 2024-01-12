@@ -107,26 +107,5 @@ public class BoardScreen extends JFrame{
             e.printStackTrace();
         }
     }
-	
-	/*
-	public void display() {
-	    JFrame frame = new JFrame("Board Screen"); // Create a new JFrame
-	    frame.setSize(900, 505); // Set the size of the frame
-
-	    JFXPanel fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
-	    frame.add(fxPanel); // Add JFXPanel to JFrame
-
-	    Platform.runLater(() -> {
-	        try {
-	            Parent root = FXMLLoader.load(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
-	            Scene scene = new Scene(root);
-	            fxPanel.setScene(scene);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    });
-
-	    frame.setVisible(true); // Make the frame visible
-	}*/
 
 }

@@ -42,8 +42,8 @@ public class DeductionBoard extends JFrame {
     public DeductionBoard(BoardScreen boardScreen) {
     	this.boardScreen = boardScreen; 
         setTitle("Ku Alchemist Deduction Board");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 900, 505);
+        setUndecorated(true);
         setResizable(false);
 
         contentPane = new JPanel();
@@ -127,6 +127,17 @@ public class DeductionBoard extends JFrame {
         backButton.setBounds(10, 10, 108, 42); // Set the position and size of the back button
         contentPane.add(backButton);
         
+        backButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               
+            	dispose();
+                    
+                
+            }
+        });
+        
+     
         JComboBox<Sign> signSelectionComboBox = new JComboBox<>(Sign.values());
         signSelectionComboBox.setBounds(728, 98, 139, 33);
         contentPane.add(signSelectionComboBox);
@@ -174,17 +185,5 @@ public class DeductionBoard extends JFrame {
         repaint();
     }
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-            	BoardScreen boardScreen = new BoardScreen(); // You need to create this instance somewhere
-                DeductionBoard frame = new DeductionBoard(boardScreen);
-                frame.display();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        
-      
-    }
+    
 }
