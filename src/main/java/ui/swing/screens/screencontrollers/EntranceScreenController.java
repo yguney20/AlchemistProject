@@ -28,6 +28,8 @@ import ui.swing.screens.EntranceScreen;
 import ui.swing.screens.HelpScreen;
 import ui.swing.screens.HostGameScreen;
 import ui.swing.screens.LoginOverlay;
+import ui.swing.screens.LoginOverlayForHost;
+import ui.swing.screens.LoginOverlayForOnline;
 import ui.swing.screens.SettingsScreen;
 
 public class EntranceScreenController {
@@ -91,21 +93,20 @@ public class EntranceScreenController {
                         break;
                     case "hostGameButton":
                         // Code for host game button
-                    	startServer();
                     	if (entranceScreenFrame instanceof EntranceScreen) {
                             ((EntranceScreen) entranceScreenFrame).close(); // Close the entrance screen
                         }
-                        HostGameScreen hostScreen = new HostGameScreen(entranceScreenFrame);
+                        LoginOverlayForHost loginScreenForHost = new LoginOverlayForHost(entranceScreenFrame);
                         gameController.setOnlineMode(true);
-                        hostScreen.display();
+                        loginScreenForHost.display();
                         break;
                     case "connectGameButton":
                         // Code for connect to game button
                     	if (entranceScreenFrame instanceof EntranceScreen) {
                             ((EntranceScreen) entranceScreenFrame).close(); // Close the entrance screen
                         }
-                    	ConnectGameScreen connectScreen = new ConnectGameScreen(entranceScreenFrame);
-                        connectScreen.display();
+                        LoginOverlayForOnline loginScreenForOnline = new LoginOverlayForOnline(entranceScreenFrame);
+                        loginScreenForOnline.display();
                         gameController.setOnlineMode(true);
                         
                         break;

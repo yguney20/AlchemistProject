@@ -89,11 +89,11 @@ public class GameEntranceScreen extends JFrame{
         hostGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	startServer();
-            	setVisible(false);
-                HostGameScreen hostScreen = new HostGameScreen(frame);
+            	dispose();
+                LoginOverlayForHost loginScreenForHost = new LoginOverlayForHost(frame);
                 gameController.setOnlineMode(true);
-                hostScreen.display();
+            
+               
             }
         });
         getContentPane().add(hostGame);
@@ -103,9 +103,9 @@ public class GameEntranceScreen extends JFrame{
         connectGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	setVisible(false);
-                ConnectGameScreen connectScreen = new ConnectGameScreen(frame);
-                connectScreen.display();
+                dispose();
+                LoginOverlayForOnline loginScreenForOnline = new LoginOverlayForOnline(frame);
+
                 gameController.setOnlineMode(true);
                 
                 
@@ -221,20 +221,5 @@ public class GameEntranceScreen extends JFrame{
     }
     
     
-    //when user passes to HostGameScreen, a server will be started
-    private void startServer() {
-        // Start the server in a new thread to prevent UI freezing
-        new Thread(() -> {
-            try {
-                Server server = new Server(6666); // Replace 6666 with your actual server port
-                server.execute();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this,
-                        "Failed to start the server: " + ex.getMessage(),
-                        "Server Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }).start();
-    }
+   
 }

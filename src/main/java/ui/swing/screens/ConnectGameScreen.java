@@ -1,12 +1,16 @@
 package ui.swing.screens;
 
+import ui.swing.screens.LoginOverlay;
+import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import domain.controllers.OnlineGameAdapter;
+import java.util.List;
 
-public class ConnectGameScreen extends JFrame {
+public class ConnectGameScreen extends JFrame implements PlayerListUpdateListener {
     private JButton backButton = new JButton("Back");
     private JPanel contentPane;
     private JLabel ipTextInf;
@@ -14,9 +18,10 @@ public class ConnectGameScreen extends JFrame {
     private JButton connectButton;
     private JLabel statusLabel; // To display connection status
     private JList<String> playerList;
+    private String playerName;
+    private String avatarPath;
 
     public ConnectGameScreen(Frame frame) {
-        playerList = new JList<>();
         int width = 1000;
         int height = 800;
         setTitle("Connect to Game");
@@ -44,6 +49,12 @@ public class ConnectGameScreen extends JFrame {
         readyButton.setFont(new Font("Arial", Font.BOLD, 20));
         readyButton.setBounds(200, 350, 100, 40);
         backgroundLabel.add(readyButton);
+
+        playerList = new JList<>(new DefaultListModel<>());
+        playerList.setBounds(350, 250, 200, 300); // Set bounds as needed
+        contentPane.add(playerList);
+
+        
 
 
         // Back button logic
@@ -92,17 +103,23 @@ public class ConnectGameScreen extends JFrame {
     
 
     private void initiateConnection(String hostIp) {
-        // Here you should interact with OnlineGameAdapter or Client
-        // For example, using OnlineGameAdapter:
-        OnlineGameAdapter adapter = new OnlineGameAdapter(hostIp, 6666); // Replace 6666 with actual port
-        boolean isConnected = adapter.connect(); // Method in OnlineGameAdapter that tries to connect using Client
-
+        OnlineGameAdapter adapter = new OnlineGameAdapter(hostIp, 6666, this);
+        adapter.setPlayerListUpdateListener(this);
+        boolean isConnected = adapter.connect();
+    
         if (isConnected) {
-            statusLabel.setText("Connected successfully!");
-            statusLabel.setForeground(Color.GREEN);
-
-            // TODO: Send the user to the next screen (e.g., main game screen or waiting screen)
-            // new MainGameScreen().display(); // Replace with your actual next screen
+            adapter.sendPlayerInfo(playerName, avatarPath); // Send player info after connecting
+            String response = adapter.receiveMessage();
+            if ("DUPLICATE".equals(response)) {
+                JOptionPane.showMessageDialog(this,
+                        "Player name or avatar already in use. Please choose another.",
+                        "Duplicate Player",
+                        JOptionPane.ERROR_MESSAGE);
+                adapter.disconnect();
+            } else {
+                statusLabel.setText("Connected successfully!");
+                statusLabel.setForeground(Color.GREEN);
+            }
         } else {
             statusLabel.setText("Failed to connect. Check the IP and try again.");
         }
@@ -115,6 +132,31 @@ public class ConnectGameScreen extends JFrame {
     public void display() {
         setVisible(true);
     }
+
+    public void onPlayerListUpdate(List<String> playerNames) {
+        System.out.println("Received player list update: " + playerNames);
+        SwingUtilities.invokeLater(() -> {
+            DefaultListModel<String> model = (DefaultListModel<String>) playerList.getModel();
+            model.clear();
+            for (String playerName : playerNames) {
+                System.out.println("Updating player list in connect screen: " + playerName); // Debug print
+                model.addElement(playerName);
+            }
+        });
+    }
+    public void onAllPlayersReady(boolean allReady) {
+    }
+ 
+    public void onDuplicatePlayer() {
+        // Handle duplicate player scenario
+    }
+
+    public void setPlayerInfo(String playerName, String avatarPath) {
+        this.playerName = playerName;
+        this.avatarPath = avatarPath;
+    }
+
+  
 
     // Test Main Method
     public static void main(String[] args) {

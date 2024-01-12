@@ -4,11 +4,14 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Server {
     private ServerSocket serverSocket;
     private final List<ClientHandler> clients = new ArrayList<>();
     private boolean gameStarted = false; // Flag to indicate if the game has started
+    private Set<String> playerNames = new HashSet<>();
+    private Set<String> avatarPaths = new HashSet<>();
 
     // Constructor to initialize server with a specific port
     public Server(int port) throws IOException {
@@ -25,7 +28,7 @@ public class Server {
             try {
                 // Accept new client connections
                 Socket socket = serverSocket.accept();
-                System.out.println("New player connected");
+                System.out.println("New player connected: " + socket.getInetAddress().getHostAddress());
 
                 // Create and start a new ClientHandler thread for each connected client
                 ClientHandler newUser = new ClientHandler(socket, this);
@@ -60,6 +63,17 @@ public class Server {
         }
     }
 
+    void broadcastPlayerList() {
+        System.out.println("Broadcasting Start"); // Debug print
+        List<String> playerNames = clients.stream()
+                                        .map(ClientHandler::getClientName)
+                                        .collect(Collectors.toList());
+        String playerListJson = new Gson().toJson(playerNames);
+        broadcast("PLAYER_LIST:" + playerListJson);
+        System.out.println("Broadcasting player list: " + playerListJson); // Debug print
+
+    }
+
     // Notify the host to start the game
     void notifyHostToStartGame() {
         for (ClientHandler aClient : clients) {
@@ -72,6 +86,7 @@ public class Server {
     // Remove a client from the list and close its socket
     void removeClient(ClientHandler client) {
         clients.remove(client);
+        broadcastPlayerList();
         System.out.println("Player left: " + client.getClientName());
     }
     // A method to send current players and their statuses
@@ -86,6 +101,45 @@ public class Server {
                 playerStatuses.put(client.getClientName(), client.isReady() ? "Ready" : "Not Ready");
             }
             return new Gson().toJson(playerStatuses);
+        }
+
+        public void broadcastPlayerStatus() {
+            // Optionally, you can broadcast the status of all players
+            // This can be useful for updating UIs or for debugging
+            String statusUpdate = clients.stream()
+                .map(client -> client.getClientName() + ": " + (client.isReady() ? "Ready" : "Not Ready"))
+                .collect(Collectors.joining(", "));
+            broadcast("PLAYER_STATUS_UPDATE:" + statusUpdate);
+        }
+        
+        
+        
+        void sendPlayerList() {
+            // Extract just the player names into a list
+            List<String> playerNames = clients.stream()
+            .map(ClientHandler::getClientName)
+            .collect(Collectors.toList());
+
+            // Convert the list of player names to JSON
+            String playerListJson = new Gson().toJson(playerNames);
+            broadcast("PLAYER_LIST:" + playerListJson);
+
+            // For debugging
+            System.out.println("Server: Broadcasted player list - " + playerListJson);
+        }
+        
+        public boolean checkAllPlayersReady() {
+            boolean allReady = clients.stream().allMatch(ClientHandler::isReady);
+            System.out.println("All players ready: " + allReady); // Debug print
+            return allReady;
+        }
+
+        public synchronized boolean isUniquePlayer(String playerName, String avatarPath) {
+            return playerNames.add(playerName) && avatarPaths.add(avatarPath);
+        }
+
+        public List<ClientHandler> getClients() {
+            return clients;
         }
 
 
@@ -108,6 +162,7 @@ public class Server {
         private PrintWriter writer;
         private BufferedReader reader;
         private String clientName;
+        private String clientAvatar;
         private boolean isHost;
         private boolean isReady = false; 
 
@@ -115,7 +170,7 @@ public class Server {
         public ClientHandler(Socket socket, Server server) {
             this.socket = socket;
             this.server = server;
-            isHost = false;
+            isHost = server.getClients().isEmpty();
 
             try {
                 // Set up input and output streams for communication with the client
@@ -137,44 +192,114 @@ public class Server {
             return isReady; // Return the actual state of isReady
         }
 
-        private void processMessage(String message) {
-            Map<String, Object> messageMap = new Gson().fromJson(message, Map.class);
-            if ("playerReady".equals(messageMap.get("action"))) {
-                isReady = true;
-                server.sendPlayerStatus(); // Update all clients with the new status
-            }
-            // ... handle other actions ...
-        }
-
-
         // Main logic for handling communication with a client
         public void run() {
             try {
-                // Read the client's name as the first message
-                clientName = reader.readLine();  
-                if (clients.size() == 1) { // First connected client is the host
+                StringBuilder jsonBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null && !line.isEmpty()) {
+                    jsonBuilder.append(line);
+                }
+
+                String json = jsonBuilder.toString();
+                System.out.println("ClientHandler: Received JSON - " + json);
+
+                Map<String, String> playerInfo = new Gson().fromJson(json, Map.class);
+                clientName = playerInfo.get("playerName");
+                String avatarPath = playerInfo.get("avatarPath");
+
+                System.out.println("ClientHandler: Parsed playerName - " + clientName);
+                System.out.println("ClientHandler: Parsed avatarPath - " + avatarPath);
+
+
+                if (!server.isUniquePlayer(clientName, avatarPath)) {
+                    writer.println("DUPLICATE");
+                    closeConnection();
+                    return;
+                }
+
+                server.broadcastPlayerList();
+                System.out.println("ClientHandler: Broadcasted player list");
+
+                if (clients.size() == 1) {
                     isHost = true;
                 }
 
+                processClientMessages();
+            } catch (IOException ex) {
+                System.out.println("Error in ClientHandler: " + ex.getMessage());
+                ex.printStackTrace();
+            } finally {
+                closeConnection();
+            }
+        }
+
+        private void processClientMessages() {
+            try {
                 String serverMessage;
-            
-                // Continuously read messages from the client and broadcast them
                 while ((serverMessage = reader.readLine()) != null) {
-                    System.out.println(clientName + ": " + serverMessage);
-                    server.broadcast(clientName + ": " + serverMessage, this);
+                    System.out.println("Received message from client " + clientName + ": " + serverMessage); // Debug print
                     processMessage(serverMessage);
                 }
             } catch (IOException ex) {
                 System.out.println("Error in ClientHandler: " + ex.getMessage());
                 ex.printStackTrace();
-            } finally {
-                // Remove client from the list and close its socket when done
-                server.removeClient(this);
-                try {
-                    socket.close();
-                } catch (IOException ex) {
-                    System.out.println("Error while closing the socket: " + ex.getMessage());
+            }
+        }
+
+        private void processMessage(String message) {
+            if (message == null || message.trim().isEmpty()) {
+                return; // Ignore empty or null messages
+            }
+            Map<String, Object> messageMap = new Gson().fromJson(message, Map.class);
+            System.out.println("Processing message from client: " + clientName + " - " + message); // Debug print
+
+            if (messageMap.containsKey("action")) {
+                String action = (String) messageMap.get("action");
+        
+                switch (action) {
+                    case "playerReady":
+                        isReady = true;
+                        server.broadcastPlayerStatus();
+                        System.out.println("Client " + clientName + " is ready."); // Debug print
+                        break;
+        
+                    case "areAllPlayersReady":
+                        System.out.println("Server: Checking if all players are ready."); // Debug print
+                        boolean allReady = server.checkAllPlayersReady();
+                        sendMessage("ALL_PLAYERS_READY:" + allReady);
+                        System.out.println("Server: Sending all players ready status: " + allReady); // Debug print
+                        break;
+
+                    case "playerName":
+                        String playerName = (String) messageMap.get("playerName");
+                        String avatarPath = (String) messageMap.get("avatarPath");
+                        // Update this client's name and other info as needed
+                        this.clientAvatar = avatarPath;
+                        this.clientName = playerName;
+                        // Broadcast updated player list
+                        server.broadcastPlayerList(); 
+                        break;
+                    case "getConnectedPlayers":
+                        List<String> connectedPlayers = getClients().stream()
+                                .map(ClientHandler::getClientName)
+                                .collect(Collectors.toList());
+                        String playerListJson = new Gson().toJson(connectedPlayers);
+                        sendMessage("PLAYER_LIST:" + playerListJson);
+                        break;
+                        
                 }
+            }
+    
+            // ... handle other actions ...
+        }
+        
+        private void closeConnection() {
+            server.removeClient(this);
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                System.out.println("Error while closing the socket: " + ex.getMessage());
             }
         }
 
@@ -187,9 +312,9 @@ public class Server {
             return clientName;
         }
 
-        boolean isHost() {
+        public boolean isHost() {
             return isHost;
         }
-        
+
     }
 }

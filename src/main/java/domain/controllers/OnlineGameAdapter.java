@@ -4,13 +4,16 @@ import domain.Client;
 import domain.Game;
 import domain.GameState;
 import domain.gameobjects.PotionCard;
+import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 
-import java.awt.Component;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 
 public class OnlineGameAdapter implements GameCommunication {
@@ -18,10 +21,12 @@ public class OnlineGameAdapter implements GameCommunication {
 	private Client client;
 	private Gson gson;
 	private final Game game;
+	private PlayerListUpdateListener updateListener;
 
 
-    public OnlineGameAdapter(String host, int port) {
-        this.client = new Client(host, port);
+    public OnlineGameAdapter(String host, int port, PlayerListUpdateListener listener) {
+		this.updateListener = listener; // Set the listener
+        this.client = new Client(host, port, listener);
 		this.gson = new Gson();
 		game = Game.getInstance();
     }	
@@ -33,6 +38,19 @@ public class OnlineGameAdapter implements GameCommunication {
 	public void disconnect() {
 		client.disconnect(); // Disconnect using the Client class
 	}
+
+	public void sendMessage(String message) {
+		client.sendMessage(message);
+	}
+
+	public String receiveMessage() {
+        return client.receiveMessage();
+    }
+
+	public void setPlayerListUpdateListener(PlayerListUpdateListener listener) {
+        this.updateListener = listener;
+        this.client.setPlayerListUpdateListener(listener); // Make sure to pass the listener to the Client
+    }
 
 	@Override
 	public void startGame() {
@@ -192,5 +210,55 @@ public class OnlineGameAdapter implements GameCommunication {
         actionDetails.put("action", "playerReady");
         client.sendMessage(gson.toJson(actionDetails));
     }
+
+	public void sendPlayerInfo(String playerName, String avatarPath) {
+		Map<String, String> playerInfo = new HashMap<>();
+		playerInfo.put("playerName", playerName);
+		playerInfo.put("avatarPath", avatarPath);
+		client.sendMessage(gson.toJson(playerInfo));
+	}
+
+	
+
+	public boolean areAllPlayersReady() {
+		System.out.println("Adapter: Checking if all players are ready."); // Debug print
+		client.sendMessage("{\"action\":\"areAllPlayersReady\"}");
+
+		String response = client.receiveMessage();
+		System.out.println("Adapter: Received response for all players ready: " + response); // Debug print
+		if (response != null && response.startsWith("ALL_PLAYERS_READY:")) {
+			return Boolean.parseBoolean(response.split(":")[1].trim());
+		}
+		return false;
+	}
+	
+	
+
+	public List<String> getConnectedPlayers() {
+    // Send a request to the server
+		client.sendMessage("{\"action\":\"getConnectedPlayers\"}");
+
+		// Wait for and process the server's response
+		String response = client.receiveMessage();
+		if (response != null && response.startsWith("PLAYER_LIST:")) {
+			String jsonList = response.substring("PLAYER_LIST:".length());
+			return new Gson().fromJson(jsonList, new TypeToken<List<String>>(){}.getType());
+		}
+
+		return Collections.emptyList();
+	}	
+
+	public void setPlayerListUpdateListener(Object listener) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'setPlayerListUpdateListener'");
+	}
+
+	public void simulateAnotherPlayer() {
+		System.out.println("Adapter function");
+		client.simulateAnotherPlayer();
+	}
+
+
+	
 
 }
