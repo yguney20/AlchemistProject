@@ -188,13 +188,15 @@ public class Server {
         private String clientName;
         private String clientAvatar;
         private boolean isHost;
-        private boolean isReady = false; 
+        private boolean isReady = false;
+         private final Game game;
 
         // Constructor for ClientHandler
         public ClientHandler(Socket socket, Server server) {
             this.socket = socket;
             this.server = server;
             isHost = server.getClients().isEmpty();
+            game = Game.getInstance();
 
             try {
                 // Set up input and output streams for communication with the client
@@ -270,7 +272,7 @@ public class Server {
                 return; // Ignore empty or null messages
             }
             Map<String, Object> messageMap = new Gson().fromJson(message, Map.class);
-            System.out.println("Processing message from client: " + clientName + " - " + message); // Debug print
+
 
             if (messageMap.containsKey("action")) {
                 String action = (String) messageMap.get("action");
@@ -304,17 +306,21 @@ public class Server {
                         break;
 
                     case "startGame":
-                        System.out.println("Start Game");
                         loginController.initializeGame(); // Initialize the game state
                         // You might also want to send the initial game state to all clients
                         server.broadcastGameState();
                         break;
+                        
 
                     case "forageForIngredient":
                         int playerId = Integer.parseInt((String) messageMap.get("playerId"));
-                        System.out.println(" Forage for ingredient");
-                        gameController.forageForIngredient(playerId);
+                        System.out.println("Forage for ingredient");
+                        game.forageForIngredient(playerId);
+        
+                        // Only broadcast the state once after processing the action
+                        server.broadcastGameState();
                         break;
+                   
                 }
             }
     

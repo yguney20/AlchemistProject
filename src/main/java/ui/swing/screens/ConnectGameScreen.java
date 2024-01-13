@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import domain.Client;
 import domain.controllers.OnlineGameAdapter;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
     private JList<String> playerList;
     private String playerName;
     private String avatarPath;
+    private OnlineGameAdapter adapter;
 
     public ConnectGameScreen(Frame frame) {
         int width = 1000;
@@ -53,7 +56,6 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         playerList = new JList<>(new DefaultListModel<>());
         playerList.setBounds(400, 275, 200, 250); // Set bounds as needed
         contentPane.add(playerList);
-
         
 
 
@@ -103,7 +105,8 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
     
 
     private void initiateConnection(String hostIp) {
-        OnlineGameAdapter adapter = new OnlineGameAdapter(hostIp, 6666, this);
+        Client client = new Client(hostIp, 6666, this);
+        OnlineGameAdapter adapter = new OnlineGameAdapter(client);
         adapter.setPlayerListUpdateListener(this);
         boolean isConnected = adapter.connect();
     

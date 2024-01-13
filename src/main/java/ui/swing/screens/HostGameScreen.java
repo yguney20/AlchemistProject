@@ -5,6 +5,7 @@ import ui.swing.screens.LoginOverlay;
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 import ui.swing.screens.screencontrollers.BoardScreenController;
 import domain.Client;
+import domain.controllers.GameController;
 import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
 import javax.swing.*;
@@ -26,6 +27,7 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener {
     String selectedPlayerName = LoginOverlayForHost.selectedPlayerName; 
     String selectedAvatarPath =LoginOverlayForHost.selectedAvatarPath;
     private LoginController loginController = LoginController.getInstance();
+    private GameController gameController = GameController.getInstance();
     BoardScreenController boardController;
 
 
@@ -63,10 +65,14 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener {
         playerList.setBounds(400, 275, 200, 250); // Set bounds as needed
         contentPane.add(playerList);
 
-        OnlineGameAdapter adapter = new OnlineGameAdapter("localhost", 6666, this); // Replace with actual host and port
+        Client client = new Client("localhost", 6666, this); // 'this' should implement PlayerListUpdateListener
+        OnlineGameAdapter adapter = new OnlineGameAdapter(client);
+        gameController.setOnlineGameAdapter(adapter);
+
         adapter.setPlayerListUpdateListener(this);
         adapter.simulateAnotherPlayer();
         loginController.createPlayer(selectedPlayerName, selectedAvatarPath);
+        
         
         // Add ActionListener to the Back button
         backButton.addActionListener(new ActionListener() {
@@ -98,29 +104,29 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener {
         startGameButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                if (adapter.connect()) {
-                    adapter.sendPlayerInfo(selectedPlayerName, selectedAvatarPath);
-                    adapter.sendReadySignal();
-                    adapter.areAllPlayersReady(allReady -> {
-                        System.out.println("Checking if all players are ready: " + allReady);
-                        if (allReady) {
-                            System.out.println("Start Game"); 
-                            adapter.startGame();
-                            dispose();
-                        } else {
-                            statusLabel.setText("Not all players are ready");
-                        }
-                    });
-                } else {
-                    statusLabel.setText("Failed to connect to the server");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                statusLabel.setText("Error: " + ex.getMessage());
+        try {
+            if (adapter.connect()) {
+                adapter.sendPlayerInfo(selectedPlayerName, selectedAvatarPath);
+                adapter.sendReadySignal();
+                adapter.areAllPlayersReady(allReady -> {
+                    System.out.println("Checking if all players are ready: " + allReady);
+                    if (allReady) {
+                        System.out.println("Start Game"); 
+                        adapter.startGame();
+                        dispose();
+                    } else {
+                        statusLabel.setText("Not all players are ready");
+                    }
+                });
+            } else {
+                statusLabel.setText("Failed to connect to the server");
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            statusLabel.setText("Error: " + ex.getMessage());
         }
-    });
+    }
+});
         startGameButton.setBounds(width / 2 - 100, height / 2- 200, 200, 50);
         backgroundLabel.add(startGameButton);
     }

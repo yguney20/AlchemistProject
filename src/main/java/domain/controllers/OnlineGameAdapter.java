@@ -27,13 +27,12 @@ public class OnlineGameAdapter implements GameCommunication {
 	private PlayerListUpdateListener updateListener;
 
 
-    public OnlineGameAdapter(String host, int port, PlayerListUpdateListener listener) {
-		this.updateListener = listener; // Set the listener
-        this.client = new Client(host, port, listener);
+	public OnlineGameAdapter (Client client){
+		this.client = client;
 		this.gson = new Gson();
 		game = Game.getInstance();
-    }	
-	
+	}
+
     public boolean connect() {
         return client.connect(); // Attempt to connect using the Client class
     }
@@ -60,8 +59,6 @@ public class OnlineGameAdapter implements GameCommunication {
 		Map<String, String> message = new HashMap<>();
         message.put("action", "startGame");
         client.sendMessage(gson.toJson(message));
-
-		System.out.println("Start Game message sent to server.");
 		
 	}
 
@@ -112,6 +109,7 @@ public class OnlineGameAdapter implements GameCommunication {
 		Map<String, String> actionDetails = new HashMap<>();
 		actionDetails.put("playerId", playerId);
 		sendAction("forageForIngredient", actionDetails);
+
 	}
 
 	// Buy Artifact Card

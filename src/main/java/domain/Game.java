@@ -167,6 +167,7 @@ public class Game { //Singleton Pattern
     public void updateState() {
     	
     		int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
+            System.out.println("currentPlayer Index: " + currentPlayerIndex);
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             currentPlayer = players.get(currentPlayerIndex);
 

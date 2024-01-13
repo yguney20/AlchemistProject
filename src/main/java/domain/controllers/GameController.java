@@ -47,13 +47,14 @@ public class GameController {
         this.isOnlineMode = isOnline;
     }
 
+    
     // Method to check if the game is in online mode
     public boolean isOnlineMode() {
         return this.isOnlineMode;
     }
     
     //constructor should be private in Singleton
-    private GameController() {
+    public GameController() {
 		game = Game.getInstance();
 		gameObjectFactory = GameObjectFactory.getInstance();
 		//initializeDeductionBoards();
@@ -72,6 +73,7 @@ public class GameController {
     public DeductionBoard getDeductionBoardForPlayer(Player player) {
         return playerDeductionBoards.get(player);
     }
+
 
     // Call this method when it's a player's turn
     public void displayDeductionBoardForCurrentPlayer() {
@@ -124,6 +126,7 @@ public class GameController {
     }
     
     public void forageForIngredient(int playerId) {
+        System.out.println("ONLINE OR OFFLINE = " + isOnlineMode);
         if (isOnlineMode) {
             // Online mode: Send action to server via adapter
             onlineGameAdapter.forageForIngredient(String.valueOf(playerId));
@@ -281,5 +284,9 @@ public class GameController {
             System.err.println("GameState is null in GameController.");
         }
         return gameState;
+    }
+
+    public void setOnlineGameAdapter(OnlineGameAdapter adapter) {
+        this.onlineGameAdapter = adapter;
     }
 }
