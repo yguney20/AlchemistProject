@@ -6,8 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import ui.swing.screens.PlayerIngredientsScreen;
 import ui.swing.screens.scenes.HostGameScreen;
+import ui.swing.screens.scenes.PlayerIngredientsScreen;
 import domain.controllers.GameController;
 import domain.gameobjects.IngredientCard;
 
