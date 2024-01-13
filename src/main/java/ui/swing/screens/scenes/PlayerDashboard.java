@@ -1,4 +1,4 @@
-package ui.swing.screens;
+package ui.swing.screens.scenes;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -27,10 +27,7 @@ import javax.swing.border.EmptyBorder;
 import domain.controllers.GameController;
 import domain.gameobjects.Player;
 import ui.swing.helper.SoundPlayer;
-import ui.swing.screens.BuyArtifactScreen;
-import ui.swing.screens.SelectArtifactScreen;
-import ui.swing.screens.TransmuteIngredientScreen;
-import ui.swing.screens.scenes.BoardScreen;
+import ui.swing.screens.*;
 import ui.swing.desingsystem.*;
 
 import java.awt.Cursor;
@@ -278,6 +275,8 @@ public class PlayerDashboard extends JFrame {
         		
         		SelectArtifactScreen selectArtifactScreen = new SelectArtifactScreen();
     			selectArtifactScreen.display();
+//            	UseArtifactScreen useart = new UseArtifactScreen();
+//            	useart.display();
     			PlayerDashboard.this.setVisible(false);
 
        		

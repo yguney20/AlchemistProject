@@ -7,7 +7,7 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JLabel;
 
 import domain.gameobjects.IngredientCard;
-import ui.swing.screens.ElixirOfInsightArtifactScreen;
+import ui.swing.screens.scenes.ElixirOfInsightArtifactScreen;
 
 import java.awt.event.MouseEvent;
 

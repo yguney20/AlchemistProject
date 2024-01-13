@@ -57,3 +57,17 @@
 .button:focused:hover {
     -fx-effect: innershadow(gaussian, #dedede, 10, 0.0, 0, 0); /* Soft glow for focus */
 }
+
+.message-label {
+    font-size: 16px;
+    text-fill: #ffffff;
+    /* additional styling */
+}
+
+.done-button {
+    font-size: 14px;
+    background-color: #4CAF50;
+    text-fill: white;
+    /* additional styling */
+}
+

@@ -30,8 +30,8 @@ import javafx.scene.media.MediaPlayer;
 import ui.swing.screens.ConnectGameScreen;
 import ui.swing.screens.HelpScreen;
 import ui.swing.screens.HostGameScreen;
-import ui.swing.screens.LoginOverlay;
 import ui.swing.screens.scenes.EntranceScreen;
+import ui.swing.screens.scenes.LoginOverlay;
 import ui.swing.screens.scenes.SettingsScreen;
 import ui.swing.screens.screencomponents.SettingsState;
 
