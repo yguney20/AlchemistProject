@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="root" stylesheets="@../cssfiles/screenstyles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -18,20 +19,28 @@
         </ImageView>
 
         <!-- Back Button -->
-        <Button fx:id="backButton" layoutX="10" layoutY="10" onMousePressed="#handleBackAction" onMouseEntered="#handleMouseEnter" prefHeight="61.0" prefWidth="133.0" text="Back" />
-      <Pane layoutX="199.0" layoutY="183.0" prefHeight="271.0" prefWidth="641.0" styleClass="pane-background" >
+        <Button fx:id="backButton" layoutX="10" layoutY="10" onMouseEntered="#handleMouseEnter" onMousePressed="#handleBackAction" prefHeight="61.0" prefWidth="133.0" text="Back" />
+      <Pane layoutX="199.0" layoutY="183.0" prefHeight="271.0" prefWidth="641.0" styleClass="pane-background">
          <children>
-      
-              <!-- Volume Label -->
-              <Label layoutX="132.0" layoutY="63.0" text="Game Music Level" textFill="BLACK" />
-      
-              <Slider fx:id="volumeSlider" layoutX="86.0" layoutY="97.0" max="100" min="0" onMouseReleased="#handleVolumeChange"  prefWidth="200.0" value="50" />
+            <Pane layoutX="90.0" layoutY="43.0" prefHeight="89.0" prefWidth="248.0" styleClass="pane-background">
+               <children>
+            
+                    <!-- Volume Label -->
+                    <Label layoutX="43.0" layoutY="5.0" prefHeight="38.0" prefWidth="164.0" text="Game Music Level" textFill="BLACK">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+            
+                                <Slider fx:id="volumeSlider" layoutX="26.0" layoutY="50.0" max="100" min="0" onMouseReleased="#handleVolumeChange" prefWidth="200.0" value="50" />
+               </children>
+            </Pane>
       
               <!-- Mute/Unmute Button -->
-              <Button fx:id="muteButton" layoutX="383.0" layoutY="71.0" onMousePressed="#handleMuteAction" onMouseEntered="#handleMouseEnter" prefHeight="48.0" prefWidth="191.0" text="Mute/Unmute" />
+              <Button fx:id="muteButton" layoutX="383.0" layoutY="71.0" onMouseEntered="#handleMouseEnter" onMousePressed="#handleMuteAction" prefHeight="48.0" prefWidth="191.0" text="Mute/Unmute" />
       
               <!-- Save Button -->
-              <Button fx:id="saveButton" layoutX="222.0" layoutY="163.0" onMousePressed="#handleSaveAction" onMouseEntered="#handleMouseEnter" prefHeight="65.0" prefWidth="221.0" text="Save Changes" />
+              <Button fx:id="saveButton" layoutX="222.0" layoutY="163.0" onMouseEntered="#handleMouseEnter" onMousePressed="#handleSaveAction" prefHeight="65.0" prefWidth="221.0" text="Save Changes" />
          </children>
       </Pane>
     </children>

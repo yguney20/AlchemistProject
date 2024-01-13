@@ -1,103 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="505.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="ui.swing.screens.screencontrollers.BoardScreenController">
+<AnchorPane prefHeight="705.0" prefWidth="1300.0" stylesheets="@../cssfiles/gameBoardStyle.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.swing.screens.screencontrollers.BoardScreenController">
     <children>
-        <!-- Publication Panel -->
-        <VBox layoutX="6.0" layoutY="62.0" prefHeight="291.0" prefWidth="275.0" style="-fx-border-color: black; -fx-background-color: white;">
-            <children>
-                <Label text="Publication Area" />
-                <!-- Additional components for Publication Panel -->
-            </children>
-        </VBox>
-
-        <!-- Potion Brewing Panel -->
-        <AnchorPane layoutX="6.0" layoutY="353.0" prefHeight="118.0" prefWidth="444.0" style="-fx-border-color: black; -fx-background-color: white;">
-            <children>
-                <HBox layoutX="14.0" layoutY="6.0" prefHeight="105.0" prefWidth="150.0" style="-fx-background-color: white;">
-                    <children>
-                        <ImageView fitHeight="105.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-                    </children>
-                </HBox>
-                <Label layoutX="234.0" layoutY="6.0" text="Potion Brewing Area" />
-            </children>
-        </AnchorPane>
+      <ImageView fx:id="publicationboard" fitHeight="340.0" fitWidth="512.0" layoutX="715.0" layoutY="42.0" onMouseClicked="#handlePublicationBoardClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Bulletin_Board.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="730.0" minX="530.0" minY="440.0" width="1100.0" />
+         </viewport>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="medievalShelfOne" fitHeight="89.0" fitWidth="353.0" layoutX="363.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Medieval_Shelf.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="170.0" minX="550.0" minY="410.0" width="695.0" />
+         </viewport>
+      </ImageView>
+      <ImageView fx:id="medievalShelfTwo" fitHeight="89.0" fitWidth="353.0" layoutX="367.0" layoutY="244.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Medieval_Shelf.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="170.0" minX="550.0" minY="410.0" width="695.0" />
+         </viewport>
+      </ImageView>
+      <ImageView fx:id="wizardHatStand" fitHeight="143.0" fitWidth="139.0" layoutX="570.0" layoutY="31.0" onMouseClicked="#handleWizardHatStandClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Wizard_Hat_Stand.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="550.0" minX="750.0" minY="570.0" width="380.0" />
+         </viewport>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="medievalBanner" fitHeight="417.0" fitWidth="465.0" layoutX="27.0" layoutY="-25.0" onMouseEntered="#handleMedievalBannerEnter" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Medieval_Banner.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="600.0" minX="510.0" minY="50.0" width="600.0" />
+         </viewport>
+      </ImageView>
+      <ImageView fx:id="medievalCandle" fitHeight="229.0" fitWidth="167.0" layoutX="11.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/animations/Medieval_Candle.gif" />
+         </image>
+         <viewport>
+            <Rectangle2D height="900.0" minX="680.0" minY="100.0" width="500.0" />
+         </viewport>
+      </ImageView>
 
         <!-- Player ID/Name Panel -->
-        <VBox layoutX="6.0" layoutY="6.0" prefHeight="58.0" prefWidth="275.0" style="-fx-border-color: black; -fx-background-color: white;">
+        <VBox layoutX="206.0" layoutY="91.0" prefHeight="106.0" prefWidth="64.0" spacing="35.0">
             <children>
-                <Label fx:id="currentPlayerLabel" text="Current Player: " />
-                <Label fx:id="currentTurnLabel" text="Current Turn: " />
-                <Label fx:id="currentRoundLabel" text="Current Round: " />
+                <Label fx:id="currentPlayerLabel" alignment="CENTER" contentDisplay="CENTER" text="Player ">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font></Label>
+                <Label fx:id="currentTurnLabel" alignment="CENTER" contentDisplay="CENTER" text="Turn" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font></Label>
+                <Label fx:id="currentRoundLabel" alignment="CENTER" contentDisplay="CENTER" text="Round" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font></Label>
             </children>
         </VBox>
-
-        <!-- Menu Panel -->
-        <GridPane hgap="20.0" layoutX="619.0" layoutY="6.0" prefHeight="58.0" prefWidth="275.0" style="-fx-border-color: black; -fx-background-color: white;">
-            <children>
-                <Button onAction="#handleMenuActionPerformed" text="Menu" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                <!-- Additional components for Menu Panel -->
-            </children>
-         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
-            <ColumnConstraints />
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-         </rowConstraints>
-        </GridPane>
-
-        <!-- Title Panel -->
-        <AnchorPane layoutX="280.0" layoutY="6.0" prefHeight="58.0" prefWidth="340.0" style="-fx-background-color: white;">
-            <children>
-                <ImageView fitHeight="58.0" fitWidth="340.0" pickOnBounds="true" preserveRatio="true" />
-            </children>
-        </AnchorPane>
-
-        <!-- Player Dashboard Panel -->
-        <VBox layoutX="362.0" layoutY="70.0" prefHeight="58.0" prefWidth="174.0" style="-fx-border-color: black; -fx-background-color: white;">
-            <children>
-                <Label prefHeight="17.0" prefWidth="144.0" text="Player Dashboard" />
-                <Button onAction="#handleDashboardAction" prefHeight="26.0" prefWidth="105.0" text="Dashboard" />
-            </children>
-        </VBox>
-
-        <!-- Ingredient Card Panel -->
-        <AnchorPane layoutX="363.0" layoutY="158.0" prefHeight="183.0" prefWidth="170.0" style="-fx-background-color: white;">
-            <children>
-                <ImageView fitHeight="183.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true" />
-            </children>
-        </AnchorPane>
-
-        <!-- Artifact Cards Panel -->
-        <VBox layoutX="450.0" layoutY="353.0" prefHeight="118.0" prefWidth="444.0" style="-fx-border-color: black; -fx-background-color: white;">
-            <children>
-                <Label text="Artifact Cards" />
-                <!-- Additional components for Artifact Cards Panel -->
-            </children>
-        </VBox>
-
-        <!-- Deduction Board Panel -->
-        <VBox layoutX="619.0" layoutY="62.0" prefHeight="291.0" prefWidth="275.0" style="-fx-border-color: black; -fx-background-color: white;">
-            <children>
-                <Label text="Deduction Board" />
-                <Button onAction="#handleDeductionBoardAction" text="Click to go to the deduction board!" />
-            </children>
-        </VBox>
-
-        <!-- Action Performed Button -->
-        <Button layoutX="394.0" layoutY="128.0" onAction="#handleActionPerformed" text="Action Performed" />
+      <ImageView fx:id="hourglass" fitHeight="132.0" fitWidth="115.0" layoutX="427.0" layoutY="40.0" onMouseClicked="#handleHourglassClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Hourglass.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="530.0" minX="700.0" minY="920.0" width="450.0" />
+         </viewport>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="wizardBook" fitHeight="85.0" fitWidth="62.0" layoutX="595.0" layoutY="195.0" onMouseClicked="#handleWizardBookClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Wizard_Book.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="480.0" minX="800.0" minY="670.0" width="300.0" />
+         </viewport>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="deductionBoard" fitHeight="337.0" fitWidth="491.0" layoutX="753.0" layoutY="376.0" onMouseClicked="#handleDeductionClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Deduction_Board.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="800.0" minX="300.0" minY="680.0" width="1200.0" />
+         </viewport>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="table" fitHeight="259.0" fitWidth="294.0" layoutX="459.0" layoutY="438.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Table.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="360.0" minX="620.0" minY="1000.0" width="400.0" />
+         </viewport>
+      </ImageView>
+      <ImageView fx:id="magicBall" fitHeight="124.0" fitWidth="125.0" layoutX="542.0" layoutY="357.0" onMouseClicked="#handleMagicBallClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Magic_Ball.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="1000.0" minX="400.0" minY="400.0" width="1000.0" />
+         </viewport>
+      </ImageView>
+      <ImageView fx:id="cauldron" fitHeight="353.0" fitWidth="274.0" layoutX="85.0" layoutY="361.0" onMouseClicked="#handleCauldronClick" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/gameBoardUI/Cauldron.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="900.0" minX="600.0" minY="600.0" width="700.0" />
+         </viewport>
+      </ImageView>
     </children>
+   <cursor>
+      <Cursor fx:constant="OPEN_HAND" />
+   </cursor>
 </AnchorPane>

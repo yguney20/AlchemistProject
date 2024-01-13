@@ -57,3 +57,32 @@
 .button:focused:hover {
     -fx-effect: innershadow(gaussian, #dedede, 10, 0.0, 0, 0); /* Soft glow for focus */
 }
+
+.message-label {
+    font-size: 16px;
+    text-fill: #ffffff;
+    /* additional styling */
+}
+
+.done-button {
+    font-size: 14px;
+    background-color: #4CAF50;
+    text-fill: white;
+    /* additional styling */
+}
+
+
+.scroll-pane {
+    -fx-background-color: #FFFACD; /* Your desired background color */
+    -fx-background-radius: 12; /* Curve radius for background */
+    -fx-border-radius: 12; /* Curve radius for border */
+    -fx-border-color: #5a77ab; /* Matching the button hover color */
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 8);
+    -fx-padding: 10;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent; /* Makes the viewport transparent */
+}
+

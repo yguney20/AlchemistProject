@@ -3,6 +3,7 @@ package ui.swing.screens.screencontrollers;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
+import java.net.BindException;
 
 import javax.swing.JOptionPane;
 
@@ -27,11 +28,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import ui.swing.screens.ConnectGameScreen;
-import ui.swing.screens.HelpScreen;
-import ui.swing.screens.HostGameScreen;
-import ui.swing.screens.LoginOverlay;
+import ui.swing.screens.scenes.ConnectGameScreen;
 import ui.swing.screens.scenes.EntranceScreen;
+import ui.swing.screens.scenes.HelpScreen;
+import ui.swing.screens.scenes.HostGameScreen;
+import ui.swing.screens.scenes.LoginOverlay;
 import ui.swing.screens.scenes.SettingsScreen;
 import ui.swing.screens.screencomponents.SettingsState;
 
@@ -99,7 +100,10 @@ public class EntranceScreenController {
     private void handleMousePress(MouseEvent event) {
     	
         
-        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Wizard.gif"));
+        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Büyücü.gif"));
+        if (newWizardImage.isError()) {
+            System.out.println("Error loading image.");
+        }
         wizardImage.setImage(newWizardImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
@@ -122,19 +126,25 @@ public class EntranceScreenController {
                         break;
                     case "hostGameButton":
                         // Code for host game button
-                    	startServer();
-                    	if (entranceScreenFrame instanceof EntranceScreen) {
-                            ((EntranceScreen) entranceScreenFrame).close(); // Close the entrance screen
-                        }
+                    
+                    	try {
+                    	    startServer();
+                    	    // Additional server setup code...
+                    	} catch (Exception e1) {
+                    	    if (e1 instanceof BindException) {
+                    	        System.err.println("Cannot start the server: Port is already in use.");
+                    	    } else {
+                    	        System.err.println("An error occurred starting the server: " + e1.getMessage());
+                    	    }
+                    	}
+
                         HostGameScreen hostScreen = new HostGameScreen(entranceScreenFrame);
                         gameController.setOnlineMode(true);
                         hostScreen.display();
                         break;
                     case "connectGameButton":
                         // Code for connect to game button
-                    	if (entranceScreenFrame instanceof EntranceScreen) {
-                            ((EntranceScreen) entranceScreenFrame).close(); // Close the entrance screen
-                        }
+                    	
                     	ConnectGameScreen connectScreen = new ConnectGameScreen(entranceScreenFrame);
                         connectScreen.display();
                         gameController.setOnlineMode(true);
@@ -148,9 +158,7 @@ public class EntranceScreenController {
                         break;
                     case "helpButton":
                         // Code for help button
-                    	if (entranceScreenFrame instanceof EntranceScreen) {
-                            ((EntranceScreen) entranceScreenFrame).close(); // Close the entrance screen
-                        }
+                    	
                     	HelpScreen helpScreen = new HelpScreen(entranceScreenFrame);
                         helpScreen.display();
                         break;
