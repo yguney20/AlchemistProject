@@ -1,7 +1,9 @@
 package ui.swing.screens;
 
 import java.awt.Color;
+
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +20,17 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import domain.controllers.GameController;
 import domain.gameobjects.IngredientCard;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import ui.swing.screens.screencontrollers.PlayerIngredientsScreenController;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -39,11 +48,53 @@ public class PlayerIngredientsScreen extends JFrame{
     private GameController gameController = GameController.getInstance();
     List<IngredientCard> ingredientCards;
     private JButton quitButton = new JButton("X");
-    
+	private JFXPanel jfxPanel;
 
-	/**
-	 * Create the frame.
-	 */
+	public PlayerIngredientsScreen() {
+		initializeFrame();
+		initializeJavaFXComponents();
+	}
+
+	private void initializeFrame() {
+		setTitle("Help Screen");
+		setSize(900, 450); // Set to your preferred size
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null); // Center on screen
+
+		jfxPanel = new JFXPanel();
+		add(jfxPanel);
+	}
+
+	private void initializeJavaFXComponents() {
+		Platform.runLater(() -> {
+			try {
+				FXMLLoader loader = new FXMLLoader(
+						getClass().getResource("/ui/swing/screens/fxmlfiles/PlayerIngredientsScreen.fxml")); // Update
+																													
+				Parent root = loader.load();
+
+				PlayerIngredientsScreenController controller = loader.getController();
+				// Additional setup for the controller if needed
+				controller.setPlayerIngredientsScreenFrame(this);
+
+				Scene scene = new Scene(root);
+				jfxPanel.setScene(scene);
+			} catch (IOException e) {
+				e.printStackTrace(); // Handle exceptions appropriately
+			}
+		});
+	}
+
+	public void display() {
+		SwingUtilities.invokeLater(() -> setVisible(true));
+	}
+
+	public void close() {
+		SwingUtilities.invokeLater(() -> setVisible(false));
+	}
+/*
+
+	
 	public PlayerIngredientsScreen() {
 		setTitle("My Ingredients");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -174,7 +225,7 @@ public class PlayerIngredientsScreen extends JFrame{
         // Set the scaled image as the icon for the button
         label.setIcon(new ImageIcon(scaledImage));
         
-	}
+	}*/
 	
 }
 

@@ -123,10 +123,11 @@ public class BoardScreenController {
     
     @FXML
     protected void handleMagicBallClick() {
-    	Image newBallImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Magic_Ball.gif"));
-    	magicBall.setImage(newBallImage);
+    	
     	
     	if(gameController.getActionPerformed()) {
+    		Image newBallImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Magic_Ball.gif"));
+        	magicBall.setImage(newBallImage);
         	gameController.updateState();
             currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
             currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
