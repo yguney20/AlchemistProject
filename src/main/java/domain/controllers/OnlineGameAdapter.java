@@ -33,7 +33,7 @@ public class OnlineGameAdapter implements GameCommunication {
 		this.gson = new Gson();
 		game = Game.getInstance();
     }	
-
+	
     public boolean connect() {
         return client.connect(); // Attempt to connect using the Client class
     }
@@ -60,6 +60,8 @@ public class OnlineGameAdapter implements GameCommunication {
 		Map<String, String> message = new HashMap<>();
         message.put("action", "startGame");
         client.sendMessage(gson.toJson(message));
+
+		System.out.println("Start Game message sent to server.");
 		
 	}
 
@@ -110,18 +112,6 @@ public class OnlineGameAdapter implements GameCommunication {
 		Map<String, String> actionDetails = new HashMap<>();
 		actionDetails.put("playerId", playerId);
 		sendAction("forageForIngredient", actionDetails);
-
-		// Wait for the server's response
-		String response = receiveUpdate();
-
-		// Handle the response
-		if (response != null) {
-			GameState updatedState = gson.fromJson(response, GameState.class);
-			// Update the game state or UI based on `updatedState`
-		} else {
-			// Handle the case where no response is received
-			System.err.println("No response received for forageForIngredient action.");
-		}
 	}
 
 	// Buy Artifact Card

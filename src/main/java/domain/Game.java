@@ -21,6 +21,7 @@ public class Game { //Singleton Pattern
     private int currentRound;
     private int currentTurn;
     private Player currentPlayer;
+    private int currentPlayerID;
     private boolean isPaused;
     private GameState gameState;
     Player winner = null;
@@ -38,8 +39,10 @@ public class Game { //Singleton Pattern
         this.totalRounds = 3; // Set the total number of rounds
         this.currentRound = 1;
         this.currentTurn = 1;
-        this.gameState = new GameState(players, currentRound, currentTurn, currentPlayer, isPaused);
+        this.isPaused = false;
         this.actionPerformed = false;
+      
+        
         
     }
     
@@ -110,6 +113,14 @@ public class Game { //Singleton Pattern
         this.actionPerformed = actionPerformed;
     }
 
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public int getRound() {
+       return currentRound;
+    }
+
     //-----------------------Game Related Functions--------------------------------------
 
     public void initializeGame() {
@@ -141,12 +152,14 @@ public class Game { //Singleton Pattern
             p.getIngredientInventory().add(i2);
         }
 
+   
+
         currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
-
-        gameState.setCurrentPlayer(currentPlayer);
-        System.out.println(gameState);
+        this.currentPlayerID = currentPlayer.getPlayerId();
+        this.gameState = new GameState(players, currentRound, currentTurn, currentPlayerID, isPaused);
+        gameState.setCurrentPlayerID(currentPlayerID);
+        System.out.println("Game initialized: " + gameState);
         System.out.println(players);
-
         
     }
 
@@ -176,7 +189,7 @@ public class Game { //Singleton Pattern
             }
             
             // update the game state attributes
-            gameState.setCurrentPlayer(currentPlayer);
+            gameState.setCurrentPlayerID(currentPlayerID);
             gameState.setCurrentRound(currentRound);
             gameState.setCurrentTurn(currentTurn);
             // set actionPerformed to false since we moved on to the next player
@@ -197,7 +210,7 @@ public class Game { //Singleton Pattern
         // Update the game state with the new information
         this.currentRound = newGameState.getCurrentRound();
         this.currentTurn = newGameState.getCurrentTurn();
-        this.currentPlayer = newGameState.getCurrentPlayer();
+        this.currentPlayerID = newGameState.getCurrentPlayerID();
         this.isPaused = newGameState.isPaused();
         // Additionally update other relevant state attributes if necessary
         // For example, players, scores, etc., based on what GameState contains
@@ -820,6 +833,12 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
         }
         notifyPlayers("Theory debunked successfully.");
     }
+
+    public int getCurrentPlayerID() {
+       return currentPlayerID;
+    }
+
+
 
 }
 

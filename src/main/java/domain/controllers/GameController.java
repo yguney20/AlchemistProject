@@ -56,7 +56,7 @@ public class GameController {
     private GameController() {
 		game = Game.getInstance();
 		gameObjectFactory = GameObjectFactory.getInstance();
-		initializeDeductionBoards();
+		//initializeDeductionBoards();
     }
     
     public void setBoardScreen(BoardScreen boardScreen) {
@@ -191,8 +191,11 @@ public class GameController {
     public boolean getActionPerformed() {
     	return game.getActionPerformed();
     }
+
+   
     
     public List<ArtifactCard> getPlayerArtifactCards() {
+        
         return game.getGameState().getCurrentPlayer().getArtifactCards();
     }
 
@@ -262,16 +265,21 @@ public class GameController {
     public GameState getInitialState() {
         // Use the existing players from the Game instance
         List<Player> players = game.getPlayers(); // Assuming there is a getPlayers() method in Game
-        int initialRound = 1;
-        int firstTurn = 1;
-        Player initialPlayer = players.isEmpty() ? null : players.get(0); // Check if the list is empty
+        int currentRound = game.getRound();
+        int currentTurn = game.getCurrentTurn();
+        int currentPlayer = game.getCurrentPlayerID(); // Check if the list is empty
         boolean isPaused = false;
 
-        return new GameState(players, initialRound, firstTurn, initialPlayer, isPaused);
+        return new GameState(players, currentRound, currentTurn, currentPlayer, isPaused);
     }
 
-    public void initializeGameFromState(GameState gameState) {
-        // Update the game state
-        game.updateGameState(gameState);
+    public GameState getGameState(){
+        GameState gameState = game.getGameState();
+        if (gameState != null) {
+            System.out.println("Retrieving GameState: " + gameState);
+        } else {
+            System.err.println("GameState is null in GameController.");
+        }
+        return gameState;
     }
 }

@@ -7,4 +7,5 @@ public interface GameCommunication {
     void sendAction(String actionType, Map<String, String> actionDetails);
     String receiveUpdate();
     void endGame();
+    
 }

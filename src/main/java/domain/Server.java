@@ -63,6 +63,7 @@ public class Server {
 
     // Overloaded broadcast method for sending to all clients
     void broadcast(String message) {
+        System.out.println("Broadcasting message: " + message);
         for (ClientHandler aClient : clients) {
             aClient.sendMessage(message);
         }
@@ -116,10 +117,25 @@ public class Server {
             broadcast("PLAYER_STATUS_UPDATE:" + statusUpdate);
         }
 
+        public void broadcastGameState() {
+            GameState gameState = gameController.getGameState();
+            if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
+                String gameStateJson = new Gson().toJson(gameState);
+                broadcast("GAME_STATE:" + gameStateJson);
+            } else {
+                System.err.println("Error: GameState is not ready for broadcasting.");
+            }
+        }
+
         public void broadcastInitialState() {
             String initialStateJson = new Gson().toJson(gameController.getInitialState());
             broadcast("GAME_STATE:" + initialStateJson);
         }
+
+        // public void broadcastupdateGameState(GameState gameState) {
+        //     String gameStateJson = new Gson().toJson(gameState);
+        //     broadcast("GAME_STATE:" + gameStateJson);
+        // }
         
         
         
@@ -288,14 +304,20 @@ public class Server {
                         break;
 
                     case "startGame":
+                        System.out.println("Start Game");
                         loginController.initializeGame(); // Initialize the game state
                         // You might also want to send the initial game state to all clients
-                        broadcastInitialState();
+                        server.broadcastGameState();
+                        break;
+
+                    case "forageForIngredient":
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        System.out.println(" Forage for ingredient");
+                        gameController.forageForIngredient(playerId);
                         break;
                 }
             }
     
-            // ... handle other actions ...
         }
         
         private void closeConnection() {
