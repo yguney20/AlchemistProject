@@ -6,13 +6,15 @@ public class ValidatedAspect {
     private IngredientCard ingredient;
     private Molecule.Component validatedComponent;
     private Molecule.Sign validatedSign;
+    private Molecule.Size validatedSize;
     private static ArrayList<ValidatedAspect> validatedList = new ArrayList<ValidatedAspect>();
 
-    public ValidatedAspect(int validatedAspectId,IngredientCard ingredient, Molecule.Component validatedComponent, Molecule.Sign validatedSign) {
+    public ValidatedAspect(int validatedAspectId,IngredientCard ingredient, Molecule.Component validatedComponent, Molecule.Sign validatedSign, Molecule.Size validatedSize) {
         this.ingredient = ingredient;
         this.validatedComponent = validatedComponent;
         this.validatedSign = validatedSign;
         this.validatedAspectId =  validatedAspectId;
+        this.validatedSize = validatedSize;
         validatedList.add(this);
     }
 
@@ -41,7 +43,8 @@ public class ValidatedAspect {
     }
 
     @Override
-    public String toString() {
-        return "ValidatedAspect [ingredient=" + ingredient + ", validatedComponent=" + validatedComponent + ", validatedSign=" + validatedSign + "]";
-    }
+	public String toString() {
+		return "True Aspect: ingredient = " + ingredient.getName()
+				+ ", component = " + validatedComponent + ", sign = " + validatedSign + ", size = " + validatedSize;
+	}
 }
