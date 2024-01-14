@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import domain.controllers.GameController;
+import ui.swing.screens.scenes.BoardScreen;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -41,10 +42,10 @@ public class DeductionBoard extends JFrame {
     public DeductionBoard(BoardScreen boardScreen) {
     	this.boardScreen = boardScreen; 
         setTitle("Ku Alchemist Deduction Board");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 900, 505);
+        setUndecorated(true);
         setResizable(false);
-
+        initializeCircleCenters();
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -126,6 +127,17 @@ public class DeductionBoard extends JFrame {
         backButton.setBounds(10, 10, 108, 42); // Set the position and size of the back button
         contentPane.add(backButton);
         
+        backButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               
+            	dispose();
+                    
+                
+            }
+        });
+        
+     
         JComboBox<Sign> signSelectionComboBox = new JComboBox<>(Sign.values());
         signSelectionComboBox.setBounds(728, 98, 139, 33);
         contentPane.add(signSelectionComboBox);
@@ -137,15 +149,15 @@ public class DeductionBoard extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 Point clickPoint = e.getPoint();
                 // Check if the click is within the radius of any circle centers
-                for (Point center : circleCenters) {
-                    if (clickPoint.distance(center) <= circleRadius) {
+                //for (Point center : circleCenters) {
+                    //if (clickPoint.distance(center) <= circleRadius) {
                         // Click is inside a circle, proceed with sign placement
                         GameController.getInstance().playerMadeDeduction(clickPoint.x, clickPoint.y, selectedSign.ordinal());
                         signPlacements.add(new SignPlacement(clickPoint, selectedSign));
                         deductionBoardPanel.repaint();
                         return; // Exit after placing the sign
-                    }
-                }
+                   //}
+                //}
             }
         });
     }
@@ -173,17 +185,5 @@ public class DeductionBoard extends JFrame {
         repaint();
     }
 
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-            	BoardScreen boardScreen = new BoardScreen(); // You need to create this instance somewhere
-                DeductionBoard frame = new DeductionBoard(boardScreen);
-                frame.display();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        
-      
-    }
+    
 }

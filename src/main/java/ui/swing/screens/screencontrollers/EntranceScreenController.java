@@ -1,7 +1,9 @@
 package ui.swing.screens.screencontrollers;
 
 import java.awt.Frame;
+import java.io.File;
 import java.io.IOException;
+import java.net.BindException;
 
 import javax.swing.JOptionPane;
 
@@ -19,18 +21,20 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import ui.swing.screens.ConnectGameScreen;
-import ui.swing.screens.EntranceScreen;
-import ui.swing.screens.HelpScreen;
-import ui.swing.screens.HostGameScreen;
-import ui.swing.screens.LoginOverlay;
-import ui.swing.screens.LoginOverlayForHost;
-import ui.swing.screens.LoginOverlayForOnline;
-import ui.swing.screens.SettingsScreen;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import ui.swing.screens.scenes.ConnectGameScreen;
+import ui.swing.screens.scenes.EntranceScreen;
+import ui.swing.screens.scenes.HelpScreen;
+import ui.swing.screens.scenes.HostGameScreen;
+import ui.swing.screens.scenes.LoginOverlay;
+import ui.swing.screens.scenes.SettingsScreen;
+import ui.swing.screens.screencomponents.SettingsState;
 
 public class EntranceScreenController {
 
@@ -50,12 +54,33 @@ public class EntranceScreenController {
     private GameController gameController = GameController.getInstance();
     
     private Frame entranceScreenFrame;
+    private static EntranceScreenController instance;
+    private MediaPlayer backgroundMusicPlayer;
+    private MediaPlayer buttonSoundPlayer;
     
-    // Initialize method if needed
-    public void initialize() {
-        // You can apply an initial animation when the view is loaded, if desired
-        //new SlideInRight(playButton).play();
+    public EntranceScreenController() {
+        initializeMediaPlayers();
+        backgroundMusicPlayer.play(); // Start playing the background music
     }
+
+    public static synchronized EntranceScreenController getInstance() {
+        if (instance == null) {
+            instance = new EntranceScreenController();
+        }
+        return instance;
+    }
+    
+    private void initializeMediaPlayers() {
+        String musicFile = getClass().getResource("/ui/swing/resources/sounds/medivalSoundtrack.wav").toExternalForm();
+        Media backgroundMusic = new Media(musicFile);
+        backgroundMusicPlayer = new MediaPlayer(backgroundMusic);
+        backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop indefinitely
+        
+        String buttonSoundFile = getClass().getResource("/ui/swing/resources/sounds/buttonSound.wav").toExternalForm();
+        Media buttonSound = new Media(buttonSoundFile);
+        buttonSoundPlayer = new MediaPlayer(buttonSound);
+    }
+    
     
     public void setEntranceScreenFrame(Frame frame) {
         this.entranceScreenFrame = frame;
@@ -64,13 +89,21 @@ public class EntranceScreenController {
     @FXML
     private void handleMouseEnter(MouseEvent event) {
         new Pulse((Button) event.getSource()).play();
+        if (buttonSoundPlayer != null) {
+            buttonSoundPlayer.stop(); // Stop the sound to reset it if it was already playing
+            buttonSoundPlayer.play(); // Play the sound
+        }
     }
 
     // Method to animate a button on mouse pressed
     @FXML
     private void handleMousePress(MouseEvent event) {
+    	
         
-        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Wizard.gif"));
+        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Büyücü.gif"));
+        if (newWizardImage.isError()) {
+            System.out.println("Error loading image.");
+        }
         wizardImage.setImage(newWizardImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
@@ -93,37 +126,39 @@ public class EntranceScreenController {
                         break;
                     case "hostGameButton":
                         // Code for host game button
-                    	if (entranceScreenFrame instanceof EntranceScreen) {
-                            ((EntranceScreen) entranceScreenFrame).close(); // Close the entrance screen
-                        }
-                        LoginOverlayForHost loginScreenForHost = new LoginOverlayForHost(entranceScreenFrame);
+                    
+                    	try {
+                    	    startServer();
+                    	    // Additional server setup code...
+                    	} catch (Exception e1) {
+                    	    if (e1 instanceof BindException) {
+                    	        System.err.println("Cannot start the server: Port is already in use.");
+                    	    } else {
+                    	        System.err.println("An error occurred starting the server: " + e1.getMessage());
+                    	    }
+                    	}
+
+                        HostGameScreen hostScreen = new HostGameScreen(entranceScreenFrame);
                         gameController.setOnlineMode(true);
                         loginScreenForHost.display();
                         break;
                     case "connectGameButton":
                         // Code for connect to game button
-                    	if (entranceScreenFrame instanceof EntranceScreen) {
-                            ((EntranceScreen) entranceScreenFrame).close(); // Close the entrance screen
-                        }
-                        LoginOverlayForOnline loginScreenForOnline = new LoginOverlayForOnline(entranceScreenFrame);
-                        loginScreenForOnline.display();
+                    	
+                    	ConnectGameScreen connectScreen = new ConnectGameScreen(entranceScreenFrame);
+                        connectScreen.display();
                         gameController.setOnlineMode(true);
                         
                         break;
                         
                     case "settingsButton":
-                        // Code for settings button
-                    	if (entranceScreenFrame instanceof EntranceScreen) {
-                            ((EntranceScreen) entranceScreenFrame).close(); // Close the entrance screen
-                        }
-                    	SettingsScreen settingsScreen = new SettingsScreen(entranceScreenFrame);
+                    	EntranceScreenController entranceScreenController = EntranceScreenController.getInstance();
+                    	SettingsScreen settingsScreen = new SettingsScreen(GameController.getSettingsState(), entranceScreenFrame);
                         settingsScreen.display();
                         break;
                     case "helpButton":
                         // Code for help button
-                    	if (entranceScreenFrame instanceof EntranceScreen) {
-                            ((EntranceScreen) entranceScreenFrame).close(); // Close the entrance screen
-                        }
+                    	
                     	HelpScreen helpScreen = new HelpScreen(entranceScreenFrame);
                         helpScreen.display();
                         break;
@@ -139,6 +174,23 @@ public class EntranceScreenController {
         
     }
     
+    public void stopMusic() {
+        if (backgroundMusicPlayer != null) {
+            backgroundMusicPlayer.stop();
+        }
+    }
+    
+    public void setMusicVolume(double volume) {
+        try {
+            if (backgroundMusicPlayer != null) {
+                double clampedVolume = Math.min(Math.max(volume, 0.0), 1.0);
+                backgroundMusicPlayer.setVolume(clampedVolume);
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // or log the exception
+        }
+    }
+
    
     private void startServer() {
         new Thread(() -> {

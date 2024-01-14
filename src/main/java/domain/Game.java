@@ -572,11 +572,11 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
 
         if (potionCard.getPotionType().equals("NEGATIVE")) {
             if (student) {
-                currentPlayer.reduceGold(1);
+                player.reduceGold(1);
             } else {
-                currentPlayer.increaseSickness(1);
-                if (currentPlayer.getSicknessLevel() == 3) {
-                    currentPlayer.setGolds(0);
+                player.increaseSickness(1);
+                if (player.getSicknessLevel() == 3) {
+                    player.setGolds(0);
                 }
             }
         }
