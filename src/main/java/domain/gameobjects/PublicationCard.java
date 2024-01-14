@@ -38,6 +38,14 @@ public class PublicationCard {
     public void setPublicationId(int publicationId) {
         this.publicationCardId = publicationId;
     }
+    
+    public Molecule getAssociatedMolecule() {
+        return this.theory.getMolecule();
+    }
+
+    public IngredientCard getAssociatedIngredient() {
+        return this.theory.getIngredient();
+    }
 
     public static ArrayList<PublicationCard> getPublicationCardList() {
         return publicationCardList;

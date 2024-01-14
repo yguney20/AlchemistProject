@@ -11,6 +11,7 @@ import domain.gameobjects.Molecule;
 import domain.gameobjects.Molecule.Component;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
+import domain.gameobjects.ValidatedAspect;
 import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
 import domain.controllers.*;
 
@@ -263,5 +264,9 @@ public class GameController {
            game.debunkTheory(playerId, publicationCardId, component);
         }
        
+    }
+
+    public ValidatedAspect findValidatedAspectByIngredientComponent(IngredientCard ingredient, Component component) {
+    	return game.findValidatedAspectByIngredientComponent(ingredient, component);
     }
 }
