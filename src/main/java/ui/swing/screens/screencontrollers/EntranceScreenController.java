@@ -138,9 +138,9 @@ public class EntranceScreenController {
                     	    }
                     	}
 
-                        HostGameScreen hostScreen = new HostGameScreen(entranceScreenFrame);
-                        gameController.setOnlineMode(true);
-                        loginScreenForHost.display();
+                        // HostGameScreen hostScreen = new HostGameScreen(entranceScreenFrame);
+                        // gameController.setOnlineMode(true);
+                        // loginScreenForHost.display();
                         break;
                     case "connectGameButton":
                         // Code for connect to game button

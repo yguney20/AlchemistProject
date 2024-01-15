@@ -255,11 +255,8 @@ public class LoginOverlayForHost extends JFrame {
         playerCreatedText.setVisible(true);
 
         startServer();
-
-        HostGameScreen hostScreen = new HostGameScreen(frame);
         this.dispose();
-        hostScreen.display();
-        
+
 
         
     }

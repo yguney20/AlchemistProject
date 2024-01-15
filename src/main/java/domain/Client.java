@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import domain.controllers.OnlineGameAdapter;
-import ui.swing.screens.HostGameScreen;
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 
 public class Client {

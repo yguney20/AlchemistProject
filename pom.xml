@@ -35,10 +35,15 @@
 	</build>
 		<dependencies>
 
-		<!-- JavaFX dependencies -->
+		<!-- JavaFX  dependencies -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
+			<version>18</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-media</artifactId>
 			<version>18</version>
 		</dependency>
 		<dependency>

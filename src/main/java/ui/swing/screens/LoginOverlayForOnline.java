@@ -254,9 +254,6 @@ public class LoginOverlayForOnline extends JFrame {
         playerCreatedText.setText("Player " + selectedPlayerName + " created.");
         playerCreatedText.setVisible(true);
       
-        ConnectGameScreen connectScreen = new ConnectGameScreen(frame);
-        connectScreen.setPlayerInfo(selectedPlayerName, selectedAvatarPath);
-        connectScreen.display();
         this.dispose();
 
 
