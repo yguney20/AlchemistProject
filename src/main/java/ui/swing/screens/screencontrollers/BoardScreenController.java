@@ -12,6 +12,7 @@ import domain.controllers.GameController;
 import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
 import ui.swing.screens.scenes.SettingsScreen;
+import ui.swing.screens.ArtifactCardsScreen;
 import ui.swing.screens.PotionCardsScreen;
 import ui.swing.screens.PublicationCardsScreen;
 import ui.swing.screens.PublishTheoryScreen;
@@ -180,7 +181,8 @@ public class BoardScreenController {
         wait.setOnFinished(e -> {
             Image staticBookImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Wizard_Book.png"));
             wizardBook.setImage(staticBookImage);
-            
+            ArtifactCardsScreen acs = new ArtifactCardsScreen();
+            acs.display();
         });
         wait.play();
     	

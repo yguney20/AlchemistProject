@@ -18,6 +18,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -180,9 +181,17 @@ public class PlayerDashboard extends JFrame {
             }
         	@Override
         	public void mouseClicked(MouseEvent e) {
+        		if(gameController.getActionPerformed()) {
+                    JOptionPane.showMessageDialog(null, "Action already performed!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		}
+        		else if(gameController.getIngredientDeck().size() == 0) {
+                    JOptionPane.showMessageDialog(null, "Ingredient deck is empty!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		} 
+        		else {      		
         		int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
     			gameController.forageForIngredient(currentPlayerId);
     			PlayerDashboard.this.setVisible(false);
+        		}
         	}
         });
         forageForIngredientButton.setIcon(null);
@@ -210,10 +219,17 @@ public class PlayerDashboard extends JFrame {
             }
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		
+        		if(gameController.getActionPerformed()) {
+                    JOptionPane.showMessageDialog(null, "Action already performed!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		}
+        		else if(gameController.getCurrentPlayer().getIngredientInventory().size()==0) {
+                    JOptionPane.showMessageDialog(null, "You do not have any ingredient cards!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		}
+        		else {
         		TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
     			transmuteIngredientScreen.display();
     			PlayerDashboard.this.setVisible(false);
+        		}
         	}
         });
         transmuteIngredientButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -240,11 +256,17 @@ public class PlayerDashboard extends JFrame {
             }
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		
+        		if(gameController.getActionPerformed()) {
+                    JOptionPane.showMessageDialog(null, "Action already performed!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		}
+        		else if(gameController.getCurrentPlayer().getGolds()<3) {
+                    JOptionPane.showMessageDialog(null, "You do not have enough golds!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		}
+        		else {
         		BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
     			buyArtifactScreen.display();
     			PlayerDashboard.this.setVisible(false);
-        		
+        		}
         	}
         });
         buyArtifactButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -307,9 +329,17 @@ public class PlayerDashboard extends JFrame {
             }
             @Override
         	public void mouseClicked(MouseEvent e) {
+            	if(gameController.getActionPerformed()) {
+                    JOptionPane.showMessageDialog(null, "Action already performed!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		}
+            	else if(gameController.getCurrentPlayer().getIngredientInventory().size()<2) {
+                    JOptionPane.showMessageDialog(null, "You do not have enough ingredient cards!", "Warning", JOptionPane.WARNING_MESSAGE);
+            	}
+            	else {
             	MakeExperimentScreen makeExperimentScreen = new MakeExperimentScreen();
         		makeExperimentScreen.display();
         		PlayerDashboard.this.setVisible(false);
+            	}
         			
         	}
         });
@@ -338,7 +368,16 @@ public class PlayerDashboard extends JFrame {
             }
             @Override
         	public void mouseClicked(MouseEvent e) {
-            	if(gameController.getCurrentRound()>=2) {
+            	if(gameController.getActionPerformed()) {
+                    JOptionPane.showMessageDialog(null, "Action already performed!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		}
+            	else if(gameController.getCurrentRound()<2) {
+                    JOptionPane.showMessageDialog(null, "This action opens in round 2!", "Warning", JOptionPane.WARNING_MESSAGE);
+            	} 
+            	else if(gameController.getCurrentPlayer().getIngredientInventory().size()<2) {
+                    JOptionPane.showMessageDialog(null, "You do not have enough ingredient cards!", "Warning", JOptionPane.WARNING_MESSAGE);
+            	}
+            	else {
             		SellPotionScreen sellPotionScreen = new SellPotionScreen();
         			sellPotionScreen.display();
         			PlayerDashboard.this.setVisible(false);
@@ -370,7 +409,16 @@ public class PlayerDashboard extends JFrame {
             }
             @Override
         	public void mouseClicked(MouseEvent e) {
-            	if(gameController.getCurrentRound()>=2) {
+            	if(gameController.getActionPerformed()) {
+                    JOptionPane.showMessageDialog(null, "Action already performed!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		}
+            	else if(gameController.getCurrentRound()<2) {
+                    JOptionPane.showMessageDialog(null, "This action opens in round 2!", "Warning", JOptionPane.WARNING_MESSAGE);
+            	}
+            	else if(gameController.getCurrentPlayer().getGolds()<1) {
+                    JOptionPane.showMessageDialog(null, "You do not have enough golds!", "Warning", JOptionPane.WARNING_MESSAGE);
+            	}
+            	else {
             		PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
         			publishTheoryScreen.display();
         			PlayerDashboard.this.setVisible(false);
@@ -403,7 +451,13 @@ public class PlayerDashboard extends JFrame {
             
             @Override
         	public void mouseClicked(MouseEvent e) {
-            	if(gameController.getCurrentRound()>=3) {
+            	if(gameController.getActionPerformed()) {
+                    JOptionPane.showMessageDialog(null, "Action already performed!", "Warning", JOptionPane.WARNING_MESSAGE);
+        		}
+            	else if(gameController.getCurrentRound()<3) {
+                    JOptionPane.showMessageDialog(null, "This action opens in round 3!", "Warning", JOptionPane.WARNING_MESSAGE);
+            	}
+            	else {
             		DebunkTheoryScreen debunkTheoryScreen = new DebunkTheoryScreen();
         			debunkTheoryScreen.display();
         			PlayerDashboard.this.setVisible(false);

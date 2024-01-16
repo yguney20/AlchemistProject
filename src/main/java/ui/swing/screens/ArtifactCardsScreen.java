@@ -24,25 +24,25 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import domain.controllers.GameController;
+import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.Player;
-import domain.gameobjects.PotionCard;
+import domain.gameobjects.ArtifactCard;
 
-
-public class PotionCardsScreen extends JFrame{
+public class ArtifactCardsScreen extends JFrame{
 	
 	private JPanel contentPane;
     private int initialX;
     private int initialY;
     private GameController gameController = GameController.getInstance();
-    private JLabel potionLabel;
+    private JLabel artifactLabel;
     private JButton quitButton = new JButton("X");
     
 
 	/**
 	 * Create the frame.
 	 */
-	public PotionCardsScreen() {
-		setTitle("Potion Cards");
+	public ArtifactCardsScreen() {
+		setTitle("Artifact Cards");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(10, 10, 1500, 400);
 		setUndecorated(true);
@@ -82,7 +82,7 @@ public class PotionCardsScreen extends JFrame{
 	        add(quitButton);
 
 	        addJLabels();
-	        addPotions();
+	        addArtifacts();
 
 		
         } catch (IOException e) {
@@ -111,36 +111,42 @@ public class PotionCardsScreen extends JFrame{
 		this.setVisible(true);
 	}
 	
-	private void addPotions() {
+	private void addArtifacts() {
 	    int x = 20;
 	    int y = 40;
 	    int width = 140;
 	    int height = 200;
 	    int horizontalSpacing = 20;
 
-	    Map<Player, List<PotionCard>> potionMap = GameController.getPotionMap();
+	    Map<Player, List<ArtifactCard>> artifactMap = gameController.getPlayersArtifacts();
 
-	    for (Map.Entry<Player, List<PotionCard>> entry : potionMap.entrySet()) {
+	    for (Map.Entry<Player, List<ArtifactCard>> entry : artifactMap.entrySet()) {
 	        Player player = entry.getKey();
-	        List<PotionCard> potionCards = entry.getValue();
+	        List<ArtifactCard> artifactCards = entry.getValue();
 
-	        for (PotionCard potionCard : potionCards) {
-	            // Create the label for the potion card's image
-	            JLabel potionImageLabel = new JLabel();
-	            potionImageLabel.setBounds(x, y, width, height);
+	        for (ArtifactCard artifactCard : artifactCards) {
+	            // Create the label for the artifact card's image
+	            JLabel artifactImageLabel = new JLabel();
+	            artifactImageLabel.setBounds(x, y, width, height);
 	            try {
-	                setImage(potionCard.getImagePath(), potionImageLabel);
+	                setImage(artifactCard.getImagePath(), artifactImageLabel);
 	            } catch (IOException e) {
 	                e.printStackTrace();
 	            }
 
-	            JLabel playerNameLabel = new JLabel(player.getNickname());
-	            playerNameLabel.setBounds(x, y + height + 10, width, 30);
+	            JLabel playerNameLabel = new JLabel("Owner: " + player.getNickname());
+	            playerNameLabel.setBounds(x, y + height + 40, width, 30);
 	            playerNameLabel.setFont(new Font("Arial", Font.PLAIN, 15));
 	            playerNameLabel.setForeground(Color.WHITE);
+	            
+	            JLabel artifactNameLabel = new JLabel(artifactCard.getName());
+	            artifactNameLabel.setBounds(x, y + height + 10, width, 30);
+	            artifactNameLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+	            artifactNameLabel.setForeground(Color.WHITE);
 
-	            contentPane.add(potionImageLabel);
+	            contentPane.add(artifactImageLabel);
 	            contentPane.add(playerNameLabel);
+	            contentPane.add(artifactNameLabel);
 
 	            x += width + horizontalSpacing;
 	        }
@@ -150,11 +156,11 @@ public class PotionCardsScreen extends JFrame{
     
 	public void addJLabels() {
 		
-		potionLabel = new JLabel("Potion Cards");
-        potionLabel.setBounds(20,10,250,25);
-        potionLabel.setForeground(Color.WHITE); 
-        potionLabel.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15));
-        contentPane.add(potionLabel);
+		artifactLabel = new JLabel("Artifact Cards");
+        artifactLabel.setBounds(20,10,250,25);
+        artifactLabel.setForeground(Color.WHITE); 
+        artifactLabel.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 15));
+        contentPane.add(artifactLabel);
         
 		
 	}	
@@ -183,3 +189,4 @@ public class PotionCardsScreen extends JFrame{
 
 
 }
+
