@@ -1,5 +1,6 @@
 package domain.gameobjects;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PotionCard {
@@ -8,7 +9,7 @@ public class PotionCard {
 		    private String potionType;		    
 		    private String description;
 		    private String imagePath;
-		    private static Map<Player, PotionCard> potionMap = new HashMap<Player, PotionCard>();
+		    private static Map<Player, List<PotionCard>> potionMap = new HashMap<>();
 
 			public PotionCard(int potionId,String potionName, String potionType, String description, String imagePath) {
 		        this.potionName = potionName;
@@ -60,16 +61,15 @@ public class PotionCard {
 		        this.description = description;
 		    }
 		    
-		    
-		    public static Map<Player, PotionCard> getPotionMap() {
+		 	public static Map<Player, List<PotionCard>> getPotionMap() {
 				return potionMap;
 			}
 
-			public static void setPotionMap(Map<Player, PotionCard> potionList) {
-				PotionCard.potionMap = potionList;
+			public static void setPotionMap(Map<Player, List<PotionCard>> potionMap) {
+				PotionCard.potionMap = potionMap;
 			}
-		    
-		 	@Override
+
+			@Override
 		 	public String toString() {
 		 		return "PotionCard [potionName=" + potionName + ", potionType=" + potionType + ", description=" + description
 				+ "]";

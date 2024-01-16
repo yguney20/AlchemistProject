@@ -12,6 +12,7 @@ import domain.controllers.GameController;
 import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
 import ui.swing.screens.scenes.SettingsScreen;
+import ui.swing.screens.PotionCardsScreen;
 import ui.swing.screens.PublicationCardsScreen;
 import ui.swing.screens.PublishTheoryScreen;
 import javafx.animation.PauseTransition;
@@ -225,6 +226,8 @@ public class BoardScreenController {
         wait.setOnFinished(e -> {
             Image staticCauldronImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Cauldron.png"));
             cauldron.setImage(staticCauldronImage);	
+            PotionCardsScreen pcs = new PotionCardsScreen();
+            pcs.display();
         });
         wait.play();
     	

@@ -280,7 +280,7 @@ public class GameController {
     	return game.getPlayersArtifacts();
     }
     
-    public static Map<Player, PotionCard> getPotionMap() {
+ 	public static Map<Player, List<PotionCard>> getPotionMap() {
     	return PotionCard.getPotionMap();
     }
 }
