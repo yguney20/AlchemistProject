@@ -48,7 +48,7 @@ public class PublicationCardsScreen extends JFrame{
 	public PublicationCardsScreen() {
 		setTitle("Publication Cards");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(10, 10, 1500, 600);
+		setBounds(10, 10, 1500, 500);
 		setUndecorated(true);
 		
 		try {
