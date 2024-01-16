@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,10 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import domain.controllers.GameController;
-import domain.gameobjects.IngredientCard;
-import domain.gameobjects.Molecule;
 import domain.gameobjects.PublicationCard;
-import domain.gameobjects.ValidatedAspect;
 
 public class PublicationCardsScreen extends JFrame{
 	
