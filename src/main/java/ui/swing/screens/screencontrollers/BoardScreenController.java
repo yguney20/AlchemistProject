@@ -6,6 +6,7 @@ import java.awt.Frame;
 
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import domain.GameState;
@@ -137,6 +138,8 @@ public class BoardScreenController {
             currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
             currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
 
+        } else {
+            JOptionPane.showMessageDialog(null, "No action performed!", "Warning", JOptionPane.WARNING_MESSAGE);
         }
         updateLabels(); // Update UI labels to reflect the new state
         
