@@ -4,53 +4,39 @@ import domain.Client;
 import domain.Game;
 import domain.GameState;
 import domain.gameobjects.PotionCard;
+import domain.interfaces.EventListener;
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+
+import javax.swing.SwingUtilities;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 
-public class OnlineGameAdapter implements GameCommunication {
+public class OnlineGameAdapter implements GameActionHandler {
 	
 	private Client client;
 	private Gson gson;
-	private final Game game;
 	private PlayerListUpdateListener updateListener;
 
 
-    public OnlineGameAdapter(String host, int port, PlayerListUpdateListener listener) {
-		this.updateListener = listener; // Set the listener
-        this.client = new Client(host, port, listener);
+	public OnlineGameAdapter (Client client){
+		this.client = client;
 		this.gson = new Gson();
-		game = Game.getInstance();
-    }	
 
-    public boolean connect() {
-        return client.connect(); // Attempt to connect using the Client class
-    }
-
-	public void disconnect() {
-		client.disconnect(); // Disconnect using the Client class
 	}
 
 	public void sendMessage(String message) {
 		client.sendMessage(message);
 	}
 
-	public String receiveMessage() {
-        return client.receiveMessage();
-    }
-
-	public void setPlayerListUpdateListener(PlayerListUpdateListener listener) {
-        this.updateListener = listener;
-        this.client.setPlayerListUpdateListener(listener); // Make sure to pass the listener to the Client
-    }
 
 	@Override
 	public void startGame() {
@@ -67,34 +53,6 @@ public class OnlineGameAdapter implements GameCommunication {
     }
 
 	@Override
-	public String receiveUpdate() {
-		try {
-				// Receive message from the server
-				String response = client.receiveMessage();
-				if (response != null && !response.isEmpty()) {
-					// Log the response for debugging
-					System.out.println("Response received: " + response);
-					
-					GameState updatedState;
-					try {
-						// Parse the response into a GameState object
-						updatedState = gson.fromJson(response, GameState.class);
-					} catch (JsonSyntaxException e) {
-						System.err.println("Error parsing GameState: " + e.getMessage());
-
-						return null;
-					}
-					// Update the game state
-					Game.getInstance().updateGameState(updatedState);
-					return response;
-				}
-			} catch (Exception e) {
-				System.err.println("Error receiving update: " + e.getMessage());
-			}
-		return null;
-	}
-
-	@Override
 	public void endGame() {
 		Map<String, String> message = new HashMap<>();
         message.put("action", "endGame");
@@ -102,23 +60,13 @@ public class OnlineGameAdapter implements GameCommunication {
 		
 	}
 
+
 	// Forage for Ingredient
 	public void forageForIngredient(String playerId) {
 		Map<String, String> actionDetails = new HashMap<>();
 		actionDetails.put("playerId", playerId);
 		sendAction("forageForIngredient", actionDetails);
 
-		// Wait for the server's response
-		String response = receiveUpdate();
-
-		// Handle the response
-		if (response != null) {
-			GameState updatedState = gson.fromJson(response, GameState.class);
-			// Update the game state or UI based on `updatedState`
-		} else {
-			// Handle the case where no response is received
-			System.err.println("No response received for forageForIngredient action.");
-		}
 	}
 
 	// Buy Artifact Card
@@ -130,6 +78,14 @@ public class OnlineGameAdapter implements GameCommunication {
         sendAction("buyArtifactCard", actionDetails);
     }
 
+	public void useArtifactCard(String playerId, String cardId) {
+		Map<String, String> actionDetails = new HashMap<>();
+		actionDetails.put("playerId", playerId);
+		actionDetails.put("cardId", cardId);
+		actionDetails.put("action", "useArtifactCard");
+		sendAction("useArtifactCard", actionDetails);
+	}
+
 	 // Transmute Ingredient
 	 public void transmuteIngredient(String playerId, String ingredientId) {
         Map<String, String> actionDetails = new HashMap<>();
@@ -140,32 +96,19 @@ public class OnlineGameAdapter implements GameCommunication {
     }
 
 	// Make Experiment
-    public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId, boolean student) {
+    public void makeExperiment(int playerId, int firstCardId, int secondCardId, boolean student ,Consumer<PotionCard> callback) {
     // Create a request payload
-    Map<String, String> actionDetails = new HashMap<>();
-    actionDetails.put("playerId", String.valueOf(playerId));
-    actionDetails.put("firstCardId", String.valueOf(firstCardId));
-    actionDetails.put("secondCardId", String.valueOf(secondCardId));
-    actionDetails.put("student", String.valueOf(student));
-    actionDetails.put("action", "makeExperiment");
+		Map<String, String> actionDetails = new HashMap<>();
+		actionDetails.put("playerId", String.valueOf(playerId));
+		actionDetails.put("firstCardId", String.valueOf(firstCardId));
+		actionDetails.put("secondCardId", String.valueOf(secondCardId));
+		actionDetails.put("student", String.valueOf(student));
+		actionDetails.put("action", "makeExperiment");
 
-    // Send the request
-    sendAction("makeExperiment",actionDetails);
+		// Send the request
+		client.addCallback("makeExperiment", callback); 
+		sendAction("makeExperiment",actionDetails);
 
-    // Wait for and handle the response (asynchronously)
-		String response = receiveUpdate(); // This needs to be handled asynchronously
-		if (response != null) {
-			// Update the game state based on the response
-			GameState updatedState = gson.fromJson(response, GameState.class);
-			game.updateGameState(updatedState);
-
-			// Return the new potion card from the updated state
-			return updatedState.getLastCreatedPotion();
-		} else {
-			// Handle the case where no response is received
-			System.err.println("No response received for makeExperiment action.");
-			return null;
-		}
 	}
 
 	// Sell a Potion
@@ -219,17 +162,19 @@ public class OnlineGameAdapter implements GameCommunication {
 	}
 
 	
-
-	public boolean areAllPlayersReady() {
-		System.out.println("Adapter: Checking if all players are ready."); // Debug print
-		client.sendMessage("{\"action\":\"areAllPlayersReady\"}");
-
-		String response = client.receiveMessage();
-		System.out.println("Adapter: Received response for all players ready: " + response); // Debug print
-		if (response != null && response.startsWith("ALL_PLAYERS_READY:")) {
-			return Boolean.parseBoolean(response.split(":")[1].trim());
-		}
-		return false;
+	public void areAllPlayersReady(Consumer<Boolean> callback) {
+		new Thread(() -> {
+			client.sendMessage("{\"action\":\"areAllPlayersReady\"}");
+			String response = client.receiveMessage();
+			if (response != null && response.startsWith("ALL_PLAYERS_READY:")) {
+				boolean allReady = Boolean.parseBoolean(response.split(":")[1].trim());
+				SwingUtilities.invokeLater(() -> {
+					callback.accept(allReady);
+				});
+			} else {
+				System.out.println("Debug: No valid response received for areAllPlayersReady");
+			}
+		}).start();
 	}
 	
 	
@@ -248,15 +193,10 @@ public class OnlineGameAdapter implements GameCommunication {
 		return Collections.emptyList();
 	}	
 
-	public void setPlayerListUpdateListener(Object listener) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'setPlayerListUpdateListener'");
+	public void setPlayerListUpdateListener(PlayerListUpdateListener listener) {
+		this.updateListener = listener;
 	}
-
-	public void simulateAnotherPlayer() {
-		System.out.println("Adapter function");
-		client.simulateAnotherPlayer();
-	}
+	
 
 
 	

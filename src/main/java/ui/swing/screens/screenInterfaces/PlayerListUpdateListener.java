@@ -5,5 +5,4 @@ import java.util.List;
 public interface PlayerListUpdateListener {
     void onPlayerListUpdate(List<String> playerNames);
     void onDuplicatePlayer();
-    void onAllPlayersReady(boolean allReady);
 }
