@@ -302,8 +302,6 @@ public class GameController {
         }
        
     }
-
-<<<<<<< HEAD
     public ValidatedAspect findValidatedAspectByIngredientComponent(IngredientCard ingredient, Component component) {
     	return game.findValidatedAspectByIngredientComponent(ingredient, component);
     }
@@ -319,7 +317,7 @@ public class GameController {
  	public static Map<Player, List<PotionCard>> getPotionMap() {
     	return PotionCard.getPotionMap();
     }
-======
+
     public GameState getGameState(){
         GameState gameState = game.getGameState();
         if (gameState != null) {
@@ -332,6 +330,5 @@ public class GameController {
 
     public void setOnlineGameAdapter(OnlineGameAdapter adapter) {
         this.onlineGameAdapter = adapter;
->>>>>>> mert-networking
     }
 }
