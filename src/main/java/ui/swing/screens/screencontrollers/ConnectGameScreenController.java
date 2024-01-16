@@ -54,7 +54,7 @@ public class ConnectGameScreenController {
     }
 
     private void initiateConnection(String hostIp) {
-        //onlineGameAdapter = new OnlineGameAdapter(hostIp, 6666); // Using the specified port
+        onlineGameAdapter = new OnlineGameAdapter(hostIp, 6666); // Using the specified port
 
         boolean isConnected = onlineGameAdapter.connect();
         if (isConnected) {
