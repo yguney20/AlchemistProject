@@ -1,7 +1,10 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import domain.gameobjects.*;
@@ -272,15 +275,12 @@ public class Game { //Singleton Pattern
 
     private IngredientCard getIngredientById(int ingredientId) {
         
-        //  search in players' inventories if not found in the deck
-        for (Player player : players) {
-            for (IngredientCard ingredient : player.getIngredientInventory()) {
-                if (ingredient.getCardId() == ingredientId) {
-                    return ingredient;
-                }
+       for (IngredientCard ingredient : IngredientCard.getIngredientList()) {
+            if (ingredient.getCardId() == ingredientId) {
+                return ingredient;
             }
         }
-
+        
         return null; // or throw an exception if appropriate
     }
 
@@ -542,6 +542,8 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     gameState.setLastCreatedPotion(potionCard);
     processExperimentOutcome(player, potionCard, student);
     actionPerformed = true;
+    PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
+
     return potionCard;
 }
     private PotionCard makePotion(IngredientCard firstCard, IngredientCard secondCard) {
@@ -745,12 +747,31 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
             return;
         }
     
-        validateDebunkingPreconditions(publicationCard);
-    
+        if (actionPerformed) {
+            notifyPlayers("Action already performed.");
+        	  return;
+        }
+
+        if (currentRound < 3) {
+            notifyPlayers("Cannot debunk theory before round 3.");
+  	  	  return;
+        }
+
+        if (findTheorybyIngredient(publicationCard.getTheory().getIngredient()) == null) {
+            notifyPlayers("No published theories about this ingredient.");
+            return;
+        }
+        
+        if(findValidatedAspectByIngredientComponent(publicationCard.getTheory().getIngredient(), component) != null){
+            notifyPlayers("This aspect has already been debunked.");
+            return;
+        }    
+        
         IngredientCard ingredient = publicationCard.getTheory().getIngredient();
         Molecule theoryMolecule = publicationCard.getTheory().getMolecule();
         Molecule ingredientMolecule = ingredient.getMolecule();
         Molecule.Sign componentSign = ingredientMolecule.getComponentSign(component);
+        Molecule.Size componentSize = ingredientMolecule.getComponentSize(component);
     
         if (theoryMolecule.compareComponent(ingredientMolecule, component)) {
             handleCorrectTheory(publicationCard, player);
@@ -758,34 +779,13 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
             handleIncorrectTheory(publicationCard, player);
         }
     
-        ValidatedAspect validatedAspect = new ValidatedAspect(validatedAspectCounter++, ingredient, component, componentSign);
+        ValidatedAspect validatedAspect = new ValidatedAspect(validatedAspectCounter++, ingredient, component, componentSign, componentSize);
         actionPerformed = true;
-    }
-
-    /* Checks if publication card is null, if action is already performed, if round is appropriate,
-    * and if there are existing theories about the ingredient. */ 
-    private void validateDebunkingPreconditions(PublicationCard publicationCard) {
-        if (publicationCard == null) {
-            throw new IllegalArgumentException("publicationCard cannot be null.");
-        }
-
-        if (actionPerformed) {
-            notifyPlayers("Action already performed.");
-            throw new IllegalStateException("Cannot perform action again in this round.");
-        }
-
-        if (currentRound < 3) {
-            throw new IllegalStateException("Cannot debunk theory before round 3.");
-        }
-
-        if (findTheorybyIngredient(publicationCard.getTheory().getIngredient()) == null) {
-            throw new IllegalStateException("No published theories about this ingredient.");
-        }
     }
 
     private void handleCorrectTheory(PublicationCard publicationCard, Player player) {
         player.reduceReputation(1);
-        Theory.getTheoryList().remove(publicationCard.getTheory());
+        //Theory.getTheoryList().remove(publicationCard.getTheory());
         notifyPlayers("Theory validated and debunking failed.");
     }
 
@@ -801,6 +801,28 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
         }
         notifyPlayers("Theory debunked successfully.");
     }
+    
+    public ValidatedAspect findValidatedAspectByIngredientComponent(IngredientCard ingredient, Component component) {
+    	for(ValidatedAspect v : ValidatedAspect.getValidatedList()) {
+    		if(v.getIngredient().equals(ingredient) && v.getValidatedComponent().equals(component)) {
+    			return v;
+    		}
+    	}
+    	return null;
+    }
+    
+    //----------------------Function to get the players' artifact cards-------------------------------
+    public Map<Player, List<ArtifactCard>> getPlayersArtifacts() {
+        Map<Player, List<ArtifactCard>> playerArtifactMap = new HashMap<>();
+
+        for (Player player : players) {
+            List<ArtifactCard> playerArtifactCards = player.getArtifactCards();
+            playerArtifactMap.put(player, playerArtifactCards);
+        }
+
+        return playerArtifactMap;
+    }
+    
 
 }
 

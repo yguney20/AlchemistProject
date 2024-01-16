@@ -400,6 +400,16 @@ public class PlayerDashboard extends JFrame {
             public void mouseExited(MouseEvent e) {
             	debunkTheoryButton.setBackground(Color.WHITE);
             }
+            
+            @Override
+        	public void mouseClicked(MouseEvent e) {
+            	if(gameController.getCurrentRound()>=3) {
+            		DebunkTheoryScreen debunkTheoryScreen = new DebunkTheoryScreen();
+        			debunkTheoryScreen.display();
+        			PlayerDashboard.this.setVisible(false);
+            	}
+        			
+        	}
         });
         
         debunkTheoryButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

@@ -106,6 +106,19 @@ public class Molecule {
                 throw new IllegalArgumentException("Invalid component type");
         }
     }
+    
+    public Size getComponentSize(Component component) {
+        switch (component) {
+            case RED:
+                return this.getRedComponentSize();
+            case GREEN:
+                return this.getGreenComponentSize();
+            case BLUE:
+                return this.getBlueComponentSize();
+            default:
+                throw new IllegalArgumentException("Invalid component type");
+        }
+    }
 
 
     public boolean compareComponent(Molecule otherMolecule, Component component) {

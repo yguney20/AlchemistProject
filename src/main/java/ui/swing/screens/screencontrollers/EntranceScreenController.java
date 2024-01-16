@@ -100,7 +100,7 @@ public class EntranceScreenController {
     private void handleMousePress(MouseEvent event) {
     	
         
-        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Büyücü.gif"));
+        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Buyucu.gif"));
         if (newWizardImage.isError()) {
             System.out.println("Error loading image.");
         }

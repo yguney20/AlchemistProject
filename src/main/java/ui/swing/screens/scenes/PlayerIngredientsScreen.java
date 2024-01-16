@@ -56,7 +56,7 @@ public class PlayerIngredientsScreen extends JFrame{
 	}
 
 	private void initializeFrame() {
-		setTitle("Help Screen");
+		setTitle("My Ingredients");
 		setSize(900, 450); // Set to your preferred size
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null); // Center on screen
