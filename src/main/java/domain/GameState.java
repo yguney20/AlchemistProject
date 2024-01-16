@@ -9,15 +9,16 @@ public class GameState {
 	
     private List<Player> players;
     private int currentRound;
+    private int currentPlayerID;
     private Player currentPlayer;
     private boolean isPaused;
     private int currentTurn;
-     private PotionCard lastCreatedPotion;
+    private PotionCard lastCreatedPotion;
 
-    public GameState(List<Player> players, int initialRound, int firstTurn, Player initialPlayer, boolean isPaused) {
+    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused) {
         this.players = players;
         this.currentRound = initialRound;
-        this.currentPlayer = initialPlayer;
+        this.currentPlayerID = initialPlayer;
         this.isPaused = isPaused;
         this.currentTurn = firstTurn;
     }
@@ -27,7 +28,7 @@ public class GameState {
         return "GameState{" +
                 "\n\tcurrentRound=" + currentRound +
                 "\n\tcurrentTurn=" + currentTurn +
-                "\n\tcurrentPlayer=" + currentPlayer +
+                "\n\tcurrentPlayer=" + currentPlayerID +
                 "\n\tisPaused=" + isPaused +
                 "\n}";
     }
@@ -59,12 +60,13 @@ public class GameState {
         this.currentRound = currentRound;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
+    public int getCurrentPlayerID() {
+        System.out.println("Getting current player: " + currentPlayerID);
+        return currentPlayerID;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    public void setCurrentPlayerID(int currentPlayerID) {
+        this.currentPlayerID = currentPlayerID;
     }
 
     public boolean isPaused() {
@@ -82,5 +84,18 @@ public class GameState {
     // Method to set the last created potion (used when updating the state)
     public void setLastCreatedPotion(PotionCard potionCard) {
         this.lastCreatedPotion = potionCard;
+    }
+
+    public boolean isInitialized() {
+        return players != null && !players.isEmpty() && currentPlayerID != -1;
+    }
+
+    public Player getCurrentPlayer(){
+        for (Player player : players) {
+            if (player.getPlayerId() == getCurrentPlayerID()) {
+                return player;
+            }
+        }
+        return null;
     }
 }
