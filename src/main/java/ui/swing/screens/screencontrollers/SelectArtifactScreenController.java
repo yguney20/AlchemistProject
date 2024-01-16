@@ -86,7 +86,7 @@ public class SelectArtifactScreenController {
     private void handleSelectAction() {
         if (selectedArtifactCard != null) {
             // Perform actions using the selected artifact card
-            gameController.UseArtifactCard(selectedArtifactCard.getArtifactId(), gameController.getCurrentPlayer().getPlayerId());
+            gameController.UseArtifactCard(selectedArtifactCard, gameController.getCurrentPlayer());
             closeScreen();
             switch (selectedArtifactCard.getName()) {
             case "Elixir of Insight":
