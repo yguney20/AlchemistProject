@@ -109,6 +109,10 @@ public class Client {
         System.out.println("Sent player ready message for " + hostname);
     }
 
+    public void togglePlayerReady() {
+        sendMessage("{\"action\":\"toggleReady\"}");
+    }
+
     // Disconnect from the server
     public void disconnect() {
         try {
@@ -160,8 +164,7 @@ public class Client {
     
                 openBoardScreen(gameState);
             });
-        }
-        if (message.startsWith("EXPERIMENT_RESULT:")) {
+        } else if (message.startsWith("EXPERIMENT_RESULT:")) {
             String json = message.substring("EXPERIMENT_RESULT:".length());
             PotionCard potionCard = new Gson().fromJson(json, PotionCard.class);
 
@@ -174,12 +177,27 @@ public class Client {
             if (callback != null) {
                 callback.accept(potionCard);
             }
+        } else if (message.startsWith("PLAYER_STATUS_UPDATE:")) {
+            // New code to handle player status updates
+            String statusUpdate = message.substring("PLAYER_STATUS_UPDATE:".length());
+            SwingUtilities.invokeLater(() -> {
+                if (eventListener != null) {
+                    eventListener.onPlayerStatusUpdate(statusUpdate);
+                } else {
+                    System.out.println("EventListener is null");
+                }
+            });
+        } else if (message.startsWith("YOUR_STATUS:")) {
+            String yourStatus = message.substring("YOUR_STATUS:".length());
+            SwingUtilities.invokeLater(() -> {
+                if (eventListener != null) {
+                    eventListener.onPlayerStatusUpdate(yourStatus);
+                }
+            });
         }
     }
 
-    public void togglePlayerReady() {
-        sendMessage("{\"action\":\"toggleReady\"}");
-    }
+    
 
     
 
@@ -252,6 +270,11 @@ public class Client {
             // This can be as simple or complex as needed for your testing
             System.out.println("Simulated player received player list update: " + playerNames);
            
+        }
+        @Override
+        public void onPlayerStatusUpdate(String statusUpdate) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'onPlayerStatusUpdate'");
         }
     }
    

@@ -19,6 +19,7 @@ import domain.controllers.OnlineGameAdapter;
 import domain.interfaces.EventListener;
 
 import java.util.List;
+import java.util.Map;
 
 public class ConnectGameScreen extends JFrame implements PlayerListUpdateListener,EventListener {
     private JButton backButton = new JButton("Back");
@@ -33,7 +34,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
     private String playerName;
     private String avatarPath;
 
-    Client client;
+    private Client client;
 
     private LoginController loginController = LoginController.getInstance();
     private ConnectController connectController;
@@ -117,8 +118,8 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         statusLabel2 = new JLabel("", SwingConstants.CENTER);
         statusLabel2.setForeground(Color.RED);
         statusLabel2.setFont(new Font("Arial", Font.BOLD, 16));
-        statusLabel2.setBounds(0, 585, width, 30);
-        backgroundLabel.add(statusLabel);
+        statusLabel2.setBounds(0, 590, width, 30);
+        backgroundLabel.add(statusLabel2);
 
 
         // Ready button logic
@@ -127,10 +128,8 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
             public void actionPerformed(ActionEvent e) {
                 if (client != null && client.isConnected()) {
                     // If connected, send the ready status to the server
-                    client.sendMessage("{\"action\":\"playerReady\"}");
-                    // Update UI to reflect ready status
-                    statusLabel2.setText("You are Ready");
-                    statusLabel2.setForeground(Color.GREEN);
+                    client.togglePlayerReady();
+          
                 } else {
                     // If not connected, show a message to connect first
                     JOptionPane.showMessageDialog(ConnectGameScreen.this,
@@ -155,6 +154,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
             client.sendPlayerInfo(playerName, avatarPath); // Send player info to the server
             statusLabel.setText("Connected successfully!");
             statusLabel.setForeground(Color.GREEN);
+            client.setEventListener(this);
             // Additional logic for successful connection, if needed
         } else {
             statusLabel.setText("Failed to connect. Check the IP and try again.");
@@ -169,7 +169,11 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
 
     @Override
     public void onMessageReceived(String message) {
-        System.out.println("Message received: " + message);
+        System.out.println("AA Message received: " + message);
+        if (message.startsWith("YOUR_STATUS:")) {
+            String statusJson = message.substring("YOUR_STATUS:".length());
+            updatePlayerReadinessStatus(statusJson);
+        }
         if (message.equals("PLAYER_CONFIRMED")) {
             createPlayer();
         }
@@ -182,22 +186,32 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
             System.out.println("Updating player list with: " + playerNames);
             updatePlayerList(playerNames);
  
-        }else if (message.startsWith("PLAYER_STATUS_UPDATE:")) {
-            String statusJson = message.substring("PLAYER_STATUS_UPDATE:".length());
-            updatePlayerReadinessStatus(statusJson);
         }
 
     }
 
+    @Override
+    public void onPlayerStatusUpdate(String statusUpdate) {
+        System.out.println("Player status update received: " + statusUpdate);
+        updatePlayerReadinessStatus(statusUpdate);
+    }
+
     
-    private void updatePlayerReadinessStatus(String statusUpdate) {
-        if (statusUpdate.contains(playerName + ": Ready")) {
-            statusLabel2.setText("You are Ready");
-            statusLabel2.setForeground(Color.GREEN);
-        } else {
-            statusLabel2.setText("You are Not Ready");
-            statusLabel2.setForeground(Color.RED);
-        }
+    private void updatePlayerReadinessStatus(String statusJson) {
+       Map<String, String> statusMap = new Gson().fromJson(statusJson, new TypeToken<Map<String, String>>(){}.getType());
+    if (statusMap.containsKey(playerName)) {
+        String status = statusMap.get(playerName);
+        System.err.println("status");
+        SwingUtilities.invokeLater(() -> {
+            if ("Ready".equals(status)) {
+                statusLabel2.setText("You are Ready");
+                statusLabel2.setForeground(Color.GREEN);
+            } else {
+                statusLabel2.setText("You are Not Ready");
+                statusLabel2.setForeground(Color.RED);
+            }
+        });
+    }
     }
 
     private void createPlayer() {

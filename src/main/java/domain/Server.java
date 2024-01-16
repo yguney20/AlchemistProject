@@ -126,8 +126,6 @@ public class Server {
         }
 
         public void broadcastPlayerStatus() {
-            // Optionally, you can broadcast the status of all players
-            // This can be useful for updating UIs or for debugging
             String statusUpdate = clients.stream()
                 .map(client -> client.getClientName() + ": " + (client.isReady() ? "Ready" : "Not Ready"))
                 .collect(Collectors.joining(", "));
@@ -225,7 +223,7 @@ public class Server {
         private String clientName;
         private String clientAvatar;
         private boolean isHost;
-        private boolean isReady = false;
+        private boolean isReady = true;
          private final Game game;
 
         // Constructor for ClientHandler
@@ -350,7 +348,8 @@ public class Server {
                         sendMessage("PLAYER_LIST:" + playerListJson);
                         break;
                     case "toggleReady":
-                        isReady = !isReady; // Toggle the ready status
+                        isReady = !isReady; // Toggle the ready status  
+                        
                         server.broadcastPlayerStatus(); // Update all clients with the new status
                         break;
 
