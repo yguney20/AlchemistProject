@@ -24,7 +24,6 @@ public class Game { //Singleton Pattern
     private int currentRound;
     private int currentTurn;
     private Player currentPlayer;
-    private int currentPlayerID;
     private boolean isPaused;
     private GameState gameState;
     Player winner = null;
@@ -42,10 +41,8 @@ public class Game { //Singleton Pattern
         this.totalRounds = 3; // Set the total number of rounds
         this.currentRound = 1;
         this.currentTurn = 1;
-        this.isPaused = false;
+        this.gameState = new GameState(players, currentRound, currentTurn, currentPlayer, isPaused);
         this.actionPerformed = false;
-      
-        
         
     }
     
@@ -116,14 +113,6 @@ public class Game { //Singleton Pattern
         this.actionPerformed = actionPerformed;
     }
 
-    public int getCurrentTurn() {
-        return currentTurn;
-    }
-
-    public int getRound() {
-       return currentRound;
-    }
-
     //-----------------------Game Related Functions--------------------------------------
 
     public void initializeGame() {
@@ -146,36 +135,25 @@ public class Game { //Singleton Pattern
         // Shuffle the players
         Collections.shuffle(players);
 
-        System.out.println(players);
-
         for (Player p : players) {
-            
             p.setGolds(10); // give 10 golds to each player
             // give 2 ingredient cards to each player
             IngredientCard i1 = drawIngredientCard();
             IngredientCard i2 = drawIngredientCard();
             p.getIngredientInventory().add(i1);
             p.getIngredientInventory().add(i2);
-
-            System.out.println("Player: " + p.getNickname() +" gets ingredients: "+ i1.getName() + ", " + i2.getName());
         }
 
-   
-
         currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
-        this.currentPlayerID = currentPlayer.getPlayerId();
-        this.gameState = new GameState(players, currentRound, currentTurn, currentPlayerID, isPaused);
-        gameState.setCurrentPlayerID(currentPlayerID);
-        System.out.println("Game initialized: " + gameState);
-        System.out.println(players);
-        
+
+        gameState.setCurrentPlayer(currentPlayer);
+        System.out.println(gameState);
     }
 
     
     public void updateState() {
     	
     		int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
-            System.out.println("currentPlayer Index: " + currentPlayerIndex);
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             currentPlayer = players.get(currentPlayerIndex);
 
@@ -198,14 +176,12 @@ public class Game { //Singleton Pattern
             }
             
             // update the game state attributes
-            gameState.setCurrentPlayerID(currentPlayerID);
+            gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentRound(currentRound);
             gameState.setCurrentTurn(currentTurn);
             // set actionPerformed to false since we moved on to the next player
             actionPerformed = false;
             System.out.println(gameState);
-
-
     }
 
     public void endRound() {
@@ -219,24 +195,10 @@ public class Game { //Singleton Pattern
         // Update the game state with the new information
         this.currentRound = newGameState.getCurrentRound();
         this.currentTurn = newGameState.getCurrentTurn();
-        this.currentPlayerID = newGameState.getCurrentPlayerID();
+        this.currentPlayer = newGameState.getCurrentPlayer();
         this.isPaused = newGameState.isPaused();
         // Additionally update other relevant state attributes if necessary
         // For example, players, scores, etc., based on what GameState contains
-
-        // Debug print to check initialization
-        System.out.println("Game initialized from GameState:");
-        System.out.println("Current Round: " + currentRound);
-        System.out.println("Current Turn: " + currentTurn);
-        System.out.println("Current Player: " + (currentPlayer != null ? currentPlayer.getNickname() : "null"));
-
-        // Printing player details
-        if (players != null) {
-            for (Player player : players) {
-                System.out.println("Player: " + player.getNickname() + ", Golds: " + player.getGolds());
-                System.out.println("Ingredient Inventory: " + player.getIngredientInventory());
-            }
-        }
     }
 
 
@@ -304,7 +266,7 @@ public class Game { //Singleton Pattern
         return null; // or throw an exception if a player is not found
     }
 
-    public ArtifactCard getArtifactCardById(int cardId) {
+    private ArtifactCard getArtifactCardById(int cardId) {
         return artifactDeck.stream()
                .filter(card -> card.getArtifactId() == cardId)
                .findFirst()
@@ -861,12 +823,6 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
         return playerArtifactMap;
     }
     
-
-    public int getCurrentPlayerID() {
-       return currentPlayerID;
-    }
-
-
 
 }
 
