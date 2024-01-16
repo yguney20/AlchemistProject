@@ -174,10 +174,12 @@ public class Game { //Singleton Pattern
     
     public void updateState() {
     	
-    		int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
+			int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
             System.out.println("currentPlayer Index: " + currentPlayerIndex);
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             currentPlayer = players.get(currentPlayerIndex);
+            currentPlayerID = currentPlayer.getPlayerId();
+            gameState.setCurrentPlayerID(currentPlayerID);
 
             // Check if all players have completed their turns
             if (currentPlayerIndex == 0) {
