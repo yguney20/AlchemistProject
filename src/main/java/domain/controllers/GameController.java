@@ -11,11 +11,13 @@ import domain.gameobjects.Molecule;
 import domain.gameobjects.Molecule.Component;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
+import domain.gameobjects.PublicationCard;
 import domain.gameobjects.ValidatedAspect;
 import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
 import domain.controllers.*;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import ui.swing.screens.DeductionBoard;
@@ -268,5 +270,17 @@ public class GameController {
 
     public ValidatedAspect findValidatedAspectByIngredientComponent(IngredientCard ingredient, Component component) {
     	return game.findValidatedAspectByIngredientComponent(ingredient, component);
+    }
+    
+    public static ArrayList<PublicationCard> getPublicationCardList() {
+    	return PublicationCard.getPublicationCardList();
+    }
+    
+    public Map<Player, List<ArtifactCard>> getPlayersArtifacts() {
+    	return game.getPlayersArtifacts();
+    }
+    
+    public static Map<Player, PotionCard> getPotionMap() {
+    	return PotionCard.getPotionMap();
     }
 }
