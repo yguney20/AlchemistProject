@@ -143,13 +143,18 @@ public class Game { //Singleton Pattern
         // Shuffle the players
         Collections.shuffle(players);
 
+        System.out.println(players);
+
         for (Player p : players) {
+            
             p.setGolds(10); // give 10 golds to each player
             // give 2 ingredient cards to each player
             IngredientCard i1 = drawIngredientCard();
             IngredientCard i2 = drawIngredientCard();
             p.getIngredientInventory().add(i1);
             p.getIngredientInventory().add(i2);
+
+            System.out.println("Player: " + p.getNickname() +" gets ingredients: "+ i1.getName() + ", " + i2.getName());
         }
 
    
@@ -296,7 +301,7 @@ public class Game { //Singleton Pattern
         return null; // or throw an exception if a player is not found
     }
 
-    private ArtifactCard getArtifactCardById(int cardId) {
+    public ArtifactCard getArtifactCardById(int cardId) {
         return artifactDeck.stream()
                .filter(card -> card.getArtifactId() == cardId)
                .findFirst()

@@ -254,44 +254,35 @@ public class MakeExperimentScreen extends JFrame implements ActionListener{
 
 				// Disable the button and show loading indicator (if you have one)
 				makeExperimentButton.setEnabled(false);
-				// showLoadingIndicator(); // If you have a loading indicator
 
-				// Asynchronously make the experiment
-				new Thread(() -> {
-					try {
-						PotionCard potionCard = gameController.makeExperiment(currentPlayerId, firstIngredientCardId, secondIngredientcardId, tester);
-
-						// Update UI on the Swing event thread
-						SwingUtilities.invokeLater(() -> {
-							if (potionCard != null) {
-								JButton potion = new JButton();
-								potion.setBounds(370, 10, 200, 230);
-								potion.setContentAreaFilled(false);
-								potion.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));
-								try {
-									setImage(potionCard.getImagePath(), potion);
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-								contentPane.add(potion);
-								contentPane.setComponentZOrder(potion, 0);
-								contentPane.repaint();
-							} else {
-								// Handle null potion card (experiment failed or no response)
+				gameController.makeExperiment(currentPlayerId, firstIngredientCardId, secondIngredientcardId, tester, potionCard -> {
+					// This block is executed when the response is received
+					SwingUtilities.invokeLater(() -> {
+						if (potionCard != null) {
+							JButton potion = new JButton();
+							potion.setBounds(370, 10, 200, 230);
+							potion.setContentAreaFilled(false);
+							potion.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));
+							try {
+								setImage(potionCard.getImagePath(), potion);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
-							makeExperimentButton.setEnabled(true); // Re-enable the button
-							// hideLoadingIndicator(); // Hide loading indicator
-						});
-
-					} catch (Exception e) {
-						// Handle exceptions
-						e.printStackTrace();
-					}
-				}).start();
+							contentPane.add(potion);
+							contentPane.setComponentZOrder(potion, 0);
+							contentPane.repaint();
+						} else {
+							// Handle null potion card (experiment failed or no response)
+						}
+						makeExperimentButton.setEnabled(true); // Re-enable the button
+						// hideLoadingIndicator(); // Hide loading indicator
+					});
+				});
 			} else {
 				message.setVisible(true);
 			}
+				
 		}
 		
 

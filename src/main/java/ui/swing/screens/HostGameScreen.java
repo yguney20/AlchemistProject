@@ -5,31 +5,47 @@ import ui.swing.screens.LoginOverlay;
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 import ui.swing.screens.screencontrollers.BoardScreenController;
 import domain.Client;
+import domain.GameState;
+import domain.Server;
 import domain.controllers.GameController;
+import domain.controllers.HostController;
 import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
+import domain.interfaces.EventListener;
+
 import javax.swing.*;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.List;
 
 
-public class HostGameScreen extends JFrame implements PlayerListUpdateListener {
+public class HostGameScreen extends JFrame implements PlayerListUpdateListener, EventListener {
 	private JButton backButton = new JButton("Back");
     private JPanel contentPane;
     private JButton startGameButton;
     private JLabel statusLabel; 
     private JLabel ipLabel;
     private JList<String> playerList;
-    String selectedPlayerName = LoginOverlayForHost.selectedPlayerName; 
-    String selectedAvatarPath =LoginOverlayForHost.selectedAvatarPath;
+
     private LoginController loginController = LoginController.getInstance();
     private GameController gameController = GameController.getInstance();
-    BoardScreenController boardController;
+    private HostController hostController;
+    private BoardScreenController boardController;
 
+    private String selectedPlayerName = LoginOverlayForHost.selectedPlayerName; 
+    private String selectedAvatarPath =LoginOverlayForHost.selectedAvatarPath;
+    private Client client;
+
+   
 
     public HostGameScreen(Frame frame) {
         int width = 1000;
@@ -59,20 +75,17 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener {
         statusLabel.setFont(new Font("Arial", Font.BOLD, 16));
         statusLabel.setBounds(0,550, width, 30);
         backgroundLabel.add(statusLabel);
-
+        
         playerList = new JList<>(new DefaultListModel<>());
-        DefaultListModel<String> model = (DefaultListModel<String>) playerList.getModel();
+        DefaultListModel<String> model = new DefaultListModel<>();
+        playerList.setModel(model);
         playerList.setBounds(400, 275, 200, 250); // Set bounds as needed
         contentPane.add(playerList);
 
-        Client client = new Client("localhost", 6666, this); // 'this' should implement PlayerListUpdateListener
-        OnlineGameAdapter adapter = new OnlineGameAdapter(client);
-        gameController.setOnlineGameAdapter(adapter);
-
-        adapter.setPlayerListUpdateListener(this);
-        adapter.simulateAnotherPlayer();
-        loginController.createPlayer(selectedPlayerName, selectedAvatarPath);
         
+        hostController = new HostController(gameController);
+        loginController.createPlayer(selectedPlayerName, selectedAvatarPath);
+        setupClient();
         
         // Add ActionListener to the Back button
         backButton.addActionListener(new ActionListener() {
@@ -99,36 +112,30 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener {
             e.printStackTrace();
         }
 
+
         startGameButton = new JButton("Start Game");
         startGameButton.setEnabled(false); // Disabled initially
-        startGameButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+        startGameButton.addActionListener(e -> initiateStartGame());
+        startGameButton.setBounds(width / 2 - 100, height / 2 - 200, 200, 50);
+        backgroundLabel.add(startGameButton);
+
+        
+    }
+
+    private void initiateStartGame() {
         try {
-            if (adapter.connect()) {
-                adapter.sendPlayerInfo(selectedPlayerName, selectedAvatarPath);
-                adapter.sendReadySignal();
-                adapter.areAllPlayersReady(allReady -> {
-                    System.out.println("Checking if all players are ready: " + allReady);
-                    if (allReady) {
-                        System.out.println("Start Game"); 
-                        adapter.startGame();
-                        dispose();
-                    } else {
-                        statusLabel.setText("Not all players are ready");
-                    }
-                });
+            if (hostController.areAllPlayersReady()) {
+                System.out.println("All players are ready. Starting the game...");
+                hostController.startGame();
+                client.sendMessage("{\"action\":\"startGame\"}");
+                dispose(); // Close the host game screen
             } else {
-                statusLabel.setText("Failed to connect to the server");
+                statusLabel.setText("Not all players are ready");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
             statusLabel.setText("Error: " + ex.getMessage());
         }
-    }
-});
-        startGameButton.setBounds(width / 2 - 100, height / 2- 200, 200, 50);
-        backgroundLabel.add(startGameButton);
     }
 
     public void enableStartButton() {
@@ -139,11 +146,51 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener {
         setVisible(true);
     }
 
+    private void setupClient() {
+        String serverIp = "localhost"; // Replace with actual server IP
+        int serverPort = 6666;        // Replace with actual server port
+        client = new Client(serverIp, serverPort, this);
+        client.simulateAnotherPlayer();
+        if (client.connect()) {
+            OnlineGameAdapter onlineGameAdapter = new OnlineGameAdapter(client);
+            GameController.getInstance().setOnlineGameAdapter(onlineGameAdapter);
+            GameController.getInstance().setOnlineMode(true);
 
-
-    public void onDuplicatePlayer() {
-        // Handle duplicate player scenario
+            client.sendPlayerInfo(selectedPlayerName, selectedAvatarPath);
+            client.setPlayerReady();
+            client.startListening();
+            // You can also send an initial message to the server her(e if needed
+        } else {
+            // Handle connection failure
+        }
     }
+
+
+    @Override
+    public void onPlayerListUpdate(List<String> playerNames) {
+        updatePlayerList(playerNames);
+    }
+
+    private void updatePlayerList(List<String> playerNames) {
+        SwingUtilities.invokeLater(() -> {
+            System.out.println("Host Game UI: Updating player list UI: " + playerNames);
+            DefaultListModel<String> model = (DefaultListModel<String>) playerList.getModel();
+            model.clear();
+            if (!model.contains(selectedPlayerName)) {
+                model.addElement(selectedPlayerName);
+            }
+    
+            // Update the list with the new players
+            for (String playerName : playerNames) {
+                if (!model.contains(playerName)) {
+                    model.addElement(playerName);
+                }
+            }
+            startGameButton.setEnabled(model.size() > 1);
+        });
+    
+    }
+
 
     // Test Main Method
     public static void main(String[] args) {
@@ -159,24 +206,21 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener {
 
 
     @Override
-    public void onPlayerListUpdate(List<String> playerNames) {
-        SwingUtilities.invokeLater(() -> {
-            System.out.println("Host Game UI: Received player list update, updating UI: " + playerNames);
-            DefaultListModel<String> model = (DefaultListModel<String>) playerList.getModel();
-            model.clear();
-            // Check if the host player is already in the model
-            if (!model.contains(selectedPlayerName)) {
-                model.addElement(selectedPlayerName);
-            }
-    
-            // Update the list with the new players
-            for (String playerName : playerNames) {
-                if (!model.contains(playerName)) {
-                    model.addElement(playerName);
-                }
-            }
-            startGameButton.setEnabled(model.size() > 1);
-        });
+    public void onDuplicatePlayer() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'onDuplicatePlayer'");
+    }
+
+    @Override
+    public void onMessageReceived(String message) {
+        System.out.println("Message received: " + message);
+        if (message.startsWith("PLAYER_LIST:")) {
+            String json = message.substring("PLAYER_LIST:".length());
+            List<String> playerNames = new Gson().fromJson(json, new TypeToken<List<String>>(){}.getType());
+            System.out.println("Updating player list with: " + playerNames);
+            updatePlayerList(playerNames);
+ 
+        }
     }
 
 }

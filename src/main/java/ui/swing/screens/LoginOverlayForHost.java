@@ -273,7 +273,7 @@ public class LoginOverlayForHost extends JFrame {
         // Start the server in a new thread to prevent UI freezing
         new Thread(() -> {
             try {
-                Server server = new Server(6666); // Replace 6666 with your actual server port
+                Server server = Server.getInstance(6666); // Replace 6666 with your actual server port
                 server.execute();
             } catch (IOException ex) {
                 ex.printStackTrace();

@@ -202,7 +202,8 @@ public class SelectArtifactScreen extends JFrame  implements ActionListener{
                 contentPane.setComponentZOrder(message, 0);
 			} else  { // This part is problemactic
 				Player currentPlayer = gameController.getCurrentPlayer();
-				gameController.UseArtifactCard(artifactCard, currentPlayer);
+
+				gameController.UseArtifactCard(artifactCard.getArtifactId(), currentPlayer.getPlayerId());
                 openArtifactSpecificUI(artifactCard);
 				this.setVisible(false);
                 

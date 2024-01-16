@@ -4,26 +4,39 @@ import ui.swing.screens.LoginOverlay;
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 
 import javax.swing.*;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import domain.Client;
+import domain.controllers.ConnectController;
+import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
+import domain.interfaces.EventListener;
+
 import java.util.List;
 
-public class ConnectGameScreen extends JFrame implements PlayerListUpdateListener {
+public class ConnectGameScreen extends JFrame implements PlayerListUpdateListener,EventListener {
     private JButton backButton = new JButton("Back");
     private JPanel contentPane;
     private JLabel ipTextInf;
     private JTextField ipTextField;
     private JButton connectButton;
     private JLabel statusLabel; // To display connection status
+    private JLabel statusLabel2;
     private JButton readyButton;
     private JList<String> playerList;
     private String playerName;
     private String avatarPath;
-    private OnlineGameAdapter adapter;
+
+    Client client;
+
+    private LoginController loginController = LoginController.getInstance();
+    private ConnectController connectController;
 
     public ConnectGameScreen(Frame frame) {
         int width = 1000;
@@ -100,43 +113,106 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         statusLabel.setFont(new Font("Arial", Font.BOLD, 16));
         statusLabel.setBounds(0, 550, width, 30);
         backgroundLabel.add(statusLabel);
-    }
 
-    
+        statusLabel2 = new JLabel("", SwingConstants.CENTER);
+        statusLabel2.setForeground(Color.RED);
+        statusLabel2.setFont(new Font("Arial", Font.BOLD, 16));
+        statusLabel2.setBounds(0, 585, width, 30);
+        backgroundLabel.add(statusLabel);
 
-    private void initiateConnection(String hostIp) {
-        Client client = new Client(hostIp, 6666, this);
-        OnlineGameAdapter adapter = new OnlineGameAdapter(client);
-        adapter.setPlayerListUpdateListener(this);
-        boolean isConnected = adapter.connect();
-    
-        if (isConnected) {
-            adapter.sendPlayerInfo(playerName, avatarPath); // Send player info after connecting
-            String response = adapter.receiveMessage();
-            if ("DUPLICATE".equals(response)) {
-                JOptionPane.showMessageDialog(this,
-                        "Player name or avatar already in use. Please choose another.",
-                        "Duplicate Player",
-                        JOptionPane.ERROR_MESSAGE);
-                adapter.disconnect();
-            } else {
-                statusLabel.setText("Connected successfully!");
-                statusLabel.setForeground(Color.GREEN);
+
+        // Ready button logic
+        readyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (client != null && client.isConnected()) {
+                    // If connected, send the ready status to the server
+                    client.sendMessage("{\"action\":\"playerReady\"}");
+                    // Update UI to reflect ready status
+                    statusLabel2.setText("You are Ready");
+                    statusLabel2.setForeground(Color.GREEN);
+                } else {
+                    // If not connected, show a message to connect first
+                    JOptionPane.showMessageDialog(ConnectGameScreen.this,
+                        "You need to connect to a game first.",
+                        "Not Connected",
+                        JOptionPane.WARNING_MESSAGE);
+                }
+            
             }
-        } else {
-            statusLabel.setText("Failed to connect. Check the IP and try again.");
-        }
-    }
-
-    public void updatePlayerList(String[] players) {
-        playerList.setListData(players);
+        });
     }
 
     public void display() {
         setVisible(true);
     }
+    
+    
 
+    private void initiateConnection(String hostIp) {
+        client = new Client(hostIp, 6666, this);
+        if (client.connect()) {
+            client.sendPlayerInfo(playerName, avatarPath); // Send player info to the server
+            statusLabel.setText("Connected successfully!");
+            statusLabel.setForeground(Color.GREEN);
+            // Additional logic for successful connection, if needed
+        } else {
+            statusLabel.setText("Failed to connect. Check the IP and try again.");
+        }
+    }
+
+    public void setPlayerInfo(String playerName, String avatarPath) {
+        this.playerName = playerName;
+        this.avatarPath = avatarPath;
+    }
+    
+
+    @Override
+    public void onMessageReceived(String message) {
+        System.out.println("Message received: " + message);
+        if (message.equals("PLAYER_CONFIRMED")) {
+            createPlayer();
+        }
+        if (message.equals("DUPLICATE")) {
+            handleDuplicatePlayer();
+        
+        }else if (message.startsWith("PLAYER_LIST:")) {
+            String json = message.substring("PLAYER_LIST:".length());
+            List<String> playerNames = new Gson().fromJson(json, new TypeToken<List<String>>(){}.getType());
+            System.out.println("Updating player list with: " + playerNames);
+            updatePlayerList(playerNames);
+ 
+        }else if (message.startsWith("PLAYER_STATUS_UPDATE:")) {
+            String statusJson = message.substring("PLAYER_STATUS_UPDATE:".length());
+            updatePlayerReadinessStatus(statusJson);
+        }
+
+    }
+
+    
+    private void updatePlayerReadinessStatus(String statusUpdate) {
+        if (statusUpdate.contains(playerName + ": Ready")) {
+            statusLabel2.setText("You are Ready");
+            statusLabel2.setForeground(Color.GREEN);
+        } else {
+            statusLabel2.setText("You are Not Ready");
+            statusLabel2.setForeground(Color.RED);
+        }
+    }
+
+    private void createPlayer() {
+        SwingUtilities.invokeLater(() -> {
+            // Now that the server has confirmed the uniqueness, create the player locally
+            loginController.createPlayer(playerName, avatarPath);
+            // Additional logic for successful player creation
+        });
+    }
+
+    @Override
     public void onPlayerListUpdate(List<String> playerNames) {
+        updatePlayerList(playerNames);
+    }
+    public void updatePlayerList(List<String> playerNames) {
         System.out.println("Received player list update: " + playerNames);
         SwingUtilities.invokeLater(() -> {
             DefaultListModel<String> model = (DefaultListModel<String>) playerList.getModel();
@@ -147,19 +223,13 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
             }
         });
     }
-    public void onAllPlayersReady(boolean allReady) {
-    }
- 
+
+    @Override
     public void onDuplicatePlayer() {
-        // Handle duplicate player scenario
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'onDuplicatePlayer'");
     }
 
-    public void setPlayerInfo(String playerName, String avatarPath) {
-        this.playerName = playerName;
-        this.avatarPath = avatarPath;
-    }
-
-  
 
     // Test Main Method
     public static void main(String[] args) {
@@ -172,4 +242,16 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
             }
         });
     }
+
+
+    private void handleDuplicatePlayer() {
+        SwingUtilities.invokeLater(() -> {
+            JOptionPane.showMessageDialog(this, 
+                "Duplicate player name or avatar detected. Please choose another.", 
+                "Duplicate Player", 
+                JOptionPane.ERROR_MESSAGE);
+            // Additional logic for handling duplicate player
+        });
+    }
+   
 }
