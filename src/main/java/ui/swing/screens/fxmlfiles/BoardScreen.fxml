@@ -71,15 +71,15 @@
             <children>
                 <Label fx:id="currentPlayerLabel" alignment="CENTER" contentDisplay="CENTER" text="Player ">
                <font>
-                  <Font name="System Bold" size="17.0" />
+                  <Font name="System Bold" size="11.0" />
                </font></Label>
                 <Label fx:id="currentTurnLabel" alignment="CENTER" contentDisplay="CENTER" text="Turn" textAlignment="CENTER">
                <font>
-                  <Font name="System Bold" size="17.0" />
+                  <Font name="System Bold" size="11.0" />
                </font></Label>
                 <Label fx:id="currentRoundLabel" alignment="CENTER" contentDisplay="CENTER" text="Round" textAlignment="CENTER">
                <font>
-                  <Font name="System Bold" size="17.0" />
+                  <Font name="System Bold" size="11.0" />
                </font></Label>
             </children>
         </VBox>

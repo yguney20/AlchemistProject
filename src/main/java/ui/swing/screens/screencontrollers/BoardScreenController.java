@@ -12,6 +12,7 @@ import domain.controllers.GameController;
 import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
 import ui.swing.screens.scenes.SettingsScreen;
+import ui.swing.screens.PublicationCardsScreen;
 import ui.swing.screens.PublishTheoryScreen;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -193,7 +194,7 @@ public class BoardScreenController {
         wait.setOnFinished(e -> {
             Image staticPublicationImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Bulletin_Board.png"));
             publicationboard.setImage(staticPublicationImage);
-            PublishTheoryScreen pb = new PublishTheoryScreen();
+            PublicationCardsScreen pb = new PublicationCardsScreen();
     		pb.display();
         });
         wait.play();

@@ -1,7 +1,9 @@
 package domain;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import domain.gameobjects.*;
@@ -539,6 +541,7 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     gameState.setLastCreatedPotion(potionCard);
     processExperimentOutcome(player, potionCard, student);
     actionPerformed = true;
+    PotionCard.getPotionMap().put(player, potionCard);
     return potionCard;
 }
     private PotionCard makePotion(IngredientCard firstCard, IngredientCard secondCard) {
@@ -805,6 +808,19 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     	}
     	return null;
     }
+    
+    //----------------------Function to get the players' artifact cards-------------------------------
+    public Map<Player, List<ArtifactCard>> getPlayersArtifacts() {
+        Map<Player, List<ArtifactCard>> playerArtifactMap = new HashMap<>();
+
+        for (Player player : players) {
+            List<ArtifactCard> playerArtifactCards = player.getArtifactCards();
+            playerArtifactMap.put(player, playerArtifactCards);
+        }
+
+        return playerArtifactMap;
+    }
+    
 
 }
 
