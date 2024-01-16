@@ -8,6 +8,7 @@ import java.awt.Frame;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import domain.GameState;
 import domain.controllers.GameController;
 import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
@@ -233,6 +234,17 @@ public class BoardScreenController {
         });
         wait.play();
     	
+    }
+
+    public void updateGameState(GameState gameState) {
+        // Update the UI elements with information from gameState
+        SwingUtilities.invokeLater(() -> {
+            currentPlayerLabel.setText("Current Player: " + gameState.getCurrentPlayer().getNickname());
+            currentTurnLabel.setText("Current Turn: " + gameState.getCurrentTurn());
+            currentRoundLabel.setText("Current Round: " + gameState.getCurrentRound());
+            // You might also need to update other parts of the UI
+            // such as player positions, scores, etc.
+        });
     }
     
     

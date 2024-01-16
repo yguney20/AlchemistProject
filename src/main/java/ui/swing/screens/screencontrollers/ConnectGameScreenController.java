@@ -10,6 +10,7 @@ import ui.swing.screens.scenes.ElixirOfInsightArtifactScreen;
 
 import javax.swing.JFrame;
 
+import domain.Client;
 import domain.controllers.OnlineGameAdapter;
 
 public class ConnectGameScreenController {
@@ -25,6 +26,7 @@ public class ConnectGameScreenController {
 
     private OnlineGameAdapter onlineGameAdapter;
     private JFrame connectGameScreen;
+    private Client client;
 
     public ConnectGameScreenController() {
         // Constructor logic if needed
@@ -54,18 +56,7 @@ public class ConnectGameScreenController {
     }
 
     private void initiateConnection(String hostIp) {
-        onlineGameAdapter = new OnlineGameAdapter(hostIp, 6666); // Using the specified port
-
-        boolean isConnected = onlineGameAdapter.connect();
-        if (isConnected) {
-            statusLabel.setText("Connected successfully!");
-            statusLabel.setTextFill(Color.GREEN);
-
-            // TODO: Navigate to the next screen in your JavaFX application
-        } else {
-            statusLabel.setText("Failed to connect. Check the IP and try again.");
-            statusLabel.setTextFill(Color.RED);
-        }
+        
     }
 
 }

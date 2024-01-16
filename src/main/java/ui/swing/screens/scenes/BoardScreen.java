@@ -46,6 +46,7 @@ public class BoardScreen extends JFrame{
     private JFXPanel fxPanel;
     private JFrame frame;
     private static BoardScreen instance;
+    BoardScreenController controller;
     
     public static synchronized BoardScreen getInstance() {
         if (instance == null) {
@@ -74,7 +75,7 @@ public class BoardScreen extends JFrame{
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
                 Parent root = loader.load();
-                BoardScreenController controller = loader.getController();
+                controller = loader.getController();
                 controller.setBoardScreenFrame(this);
                 Scene scene = new Scene(root);
                 fxPanel.setScene(scene);
@@ -107,5 +108,12 @@ public class BoardScreen extends JFrame{
             e.printStackTrace();
         }
     }
+
+
+    public BoardScreenController getController() {
+        return controller;
+    }
+
+    
 
 }
