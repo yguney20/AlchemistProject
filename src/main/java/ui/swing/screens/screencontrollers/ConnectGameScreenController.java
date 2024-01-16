@@ -56,16 +56,16 @@ public class ConnectGameScreenController {
     private void initiateConnection(String hostIp) {
         //onlineGameAdapter = new OnlineGameAdapter(hostIp, 6666); // Using the specified port
 
-        //boolean isConnected = onlineGameAdapter.connect();
-        // if (isConnected) {
-        //     statusLabel.setText("Connected successfully!");
-        //     statusLabel.setTextFill(Color.GREEN);
+        boolean isConnected = onlineGameAdapter.connect();
+        if (isConnected) {
+            statusLabel.setText("Connected successfully!");
+            statusLabel.setTextFill(Color.GREEN);
 
-        //     // TODO: Navigate to the next screen in your JavaFX application
-        // } else {
-        //     statusLabel.setText("Failed to connect. Check the IP and try again.");
-        //     statusLabel.setTextFill(Color.RED);
-        // }
+            // TODO: Navigate to the next screen in your JavaFX application
+        } else {
+            statusLabel.setText("Failed to connect. Check the IP and try again.");
+            statusLabel.setTextFill(Color.RED);
+        }
     }
 
 }
