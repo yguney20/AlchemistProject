@@ -109,8 +109,9 @@ public class Client {
         System.out.println("Sent player ready message for " + hostname);
     }
 
-    public void togglePlayerReady() {
-        sendMessage("{\"action\":\"toggleReady\"}");
+    public void sendPlayerReadiness(boolean isReady) {
+        String readinessMessage = "{\"action\":\"playerReady\", \"isReady\":" + isReady + "}";
+        sendMessage(readinessMessage);
     }
 
     // Disconnect from the server
@@ -177,23 +178,6 @@ public class Client {
             if (callback != null) {
                 callback.accept(potionCard);
             }
-        } else if (message.startsWith("PLAYER_STATUS_UPDATE:")) {
-            // New code to handle player status updates
-            String statusUpdate = message.substring("PLAYER_STATUS_UPDATE:".length());
-            SwingUtilities.invokeLater(() -> {
-                if (eventListener != null) {
-                    eventListener.onPlayerStatusUpdate(statusUpdate);
-                } else {
-                    System.out.println("EventListener is null");
-                }
-            });
-        } else if (message.startsWith("YOUR_STATUS:")) {
-            String yourStatus = message.substring("YOUR_STATUS:".length());
-            SwingUtilities.invokeLater(() -> {
-                if (eventListener != null) {
-                    eventListener.onPlayerStatusUpdate(yourStatus);
-                }
-            });
         }
     }
 
@@ -250,7 +234,7 @@ public class Client {
 
             // You can add additional automated actions for the simulated player here
 
-            simulatedPlayer.setPlayerReady();
+            //simulatedPlayer.setPlayerReady();
         } else {
             System.err.println("Failed to connect the simulated player.");
         }
@@ -270,11 +254,6 @@ public class Client {
             // This can be as simple or complex as needed for your testing
             System.out.println("Simulated player received player list update: " + playerNames);
            
-        }
-        @Override
-        public void onPlayerStatusUpdate(String statusUpdate) {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'onPlayerStatusUpdate'");
         }
     }
    

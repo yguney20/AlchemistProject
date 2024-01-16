@@ -223,7 +223,7 @@ public class Server {
         private String clientName;
         private String clientAvatar;
         private boolean isHost;
-        private boolean isReady = true;
+        private boolean isReady = false;
          private final Game game;
 
         // Constructor for ClientHandler
@@ -322,8 +322,8 @@ public class Server {
         
                 switch (action) {
                     case "playerReady":
-                        isReady = true;
-                        server.broadcastPlayerStatus();
+                        boolean isReady = (Boolean) messageMap.get("isReady");
+                        this.isReady = isReady;
                         break;
         
                     case "areAllPlayersReady":
@@ -346,11 +346,6 @@ public class Server {
                                 .collect(Collectors.toList());
                         String playerListJson = new Gson().toJson(connectedPlayers);
                         sendMessage("PLAYER_LIST:" + playerListJson);
-                        break;
-                    case "toggleReady":
-                        isReady = !isReady; // Toggle the ready status  
-                        
-                        server.broadcastPlayerStatus(); // Update all clients with the new status
                         break;
 
                     case "startGame":

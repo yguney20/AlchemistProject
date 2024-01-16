@@ -223,9 +223,4 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
         }
     }
 
-    @Override
-    public void onPlayerStatusUpdate(String statusUpdate) {
-        System.out.println("Received player status update: " + statusUpdate);
-    }
-
 }
