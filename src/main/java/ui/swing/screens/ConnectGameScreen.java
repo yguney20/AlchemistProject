@@ -1,6 +1,6 @@
 package ui.swing.screens;
 
-import ui.swing.screens.LoginOverlay;
+import ui.swing.screens.LoginOverlayForOnline;
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 
 import javax.swing.*;
