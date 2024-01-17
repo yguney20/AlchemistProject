@@ -2,6 +2,7 @@ package ui.swing.screens;
 
 
 import ui.swing.screens.LoginOverlayForHost;
+
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 import ui.swing.screens.screencontrollers.BoardScreenController;
 import domain.Client;
@@ -150,7 +151,7 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
         String serverIp = "localhost"; // Replace with actual server IP
         int serverPort = 6666;        // Replace with actual server port
         client = new Client(serverIp, serverPort, this);
-        //client.simulateAnotherPlayer();
+        client.simulateAnotherPlayer();
         if (client.connect()) {
             OnlineGameAdapter onlineGameAdapter = new OnlineGameAdapter(client);
             GameController.getInstance().setOnlineGameAdapter(onlineGameAdapter);
@@ -221,11 +222,6 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
             updatePlayerList(playerNames);
  
         }
-    }
-
-    @Override
-    public void onPlayerStatusUpdate(String statusUpdate) {
-        System.out.println("Received player status update: " + statusUpdate);
     }
 
 }

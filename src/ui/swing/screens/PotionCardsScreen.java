@@ -24,11 +24,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import domain.controllers.GameController;
-import domain.gameobjects.IngredientCard;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
-import domain.gameobjects.PublicationCard;
-import javafx.scene.control.Label;
+
 
 public class PotionCardsScreen extends JFrame{
 	

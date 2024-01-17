@@ -1,6 +1,8 @@
 package ui.swing.screens;
 
 import java.awt.Color;
+
+
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -382,4 +384,3 @@ public class MakeExperimentScreen extends JFrame implements ActionListener{
 	    }
 	
 }
-

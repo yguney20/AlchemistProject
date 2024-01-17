@@ -28,10 +28,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import ui.swing.screens.scenes.ConnectGameScreen;
+import ui.swing.screens.scenes.ConnectGameScreen; // Burayı değiştirdim /scene alırsak updated UI
 import ui.swing.screens.scenes.EntranceScreen;
 import ui.swing.screens.scenes.HelpScreen;
-import ui.swing.screens.scenes.HostGameScreen;
+import ui.swing.screens.HostGameScreen; // Burayı değiştirdim /scene alırsak updated UI
+import ui.swing.screens.LoginOverlayForHost;
+import ui.swing.screens.LoginOverlayForOnline;
 import ui.swing.screens.scenes.LoginOverlay;
 import ui.swing.screens.scenes.SettingsScreen;
 import ui.swing.screens.screencomponents.SettingsState;
@@ -128,7 +130,7 @@ public class EntranceScreenController {
                         // Code for host game button
                     
                     	try {
-                    	    startServer();
+                    	    //startServer();
                     	    // Additional server setup code...
                     	} catch (Exception e1) {
                     	    if (e1 instanceof BindException) {
@@ -140,13 +142,24 @@ public class EntranceScreenController {
 
                         // HostGameScreen hostScreen = new HostGameScreen(entranceScreenFrame);
                         // gameController.setOnlineMode(true);
-                        // loginScreenForHost.display();
+                        // hostScreen.display();
+
+                        // TEST İÇİN KENDİ YAPTIĞIM KISIMA ALDIM ONLINE TEST. ÜST KISIM 
+                        LoginOverlayForHost loginScreenForHost = new LoginOverlayForHost(entranceScreenFrame);
+                        gameController.setOnlineMode(true);
+                        loginScreenForHost.display();
                         break;
+                        
                     case "connectGameButton":
                         // Code for connect to game button
                     	
-                    	ConnectGameScreen connectScreen = new ConnectGameScreen(entranceScreenFrame);
-                        connectScreen.display();
+                    	// ConnectGameScreen connectScreen = new ConnectGameScreen(entranceScreenFrame);
+                        // connectScreen.display();
+                        // gameController.setOnlineMode(true);
+
+                        // TEST İÇİN KENDİ YAPTIĞIM KISIMA ALDIM ONLINE TEST. ÜST KISIM 
+                        LoginOverlayForOnline loginScreenForOnline = new LoginOverlayForOnline(entranceScreenFrame);
+                        loginScreenForOnline.display();
                         gameController.setOnlineMode(true);
                         
                         break;

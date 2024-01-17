@@ -1,6 +1,8 @@
 package ui.swing.screens;
 
 import java.awt.Color;
+
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -23,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 import domain.controllers.GameController;
 import domain.gameobjects.IngredientCard;
 import domain.gameobjects.Player;
+import ui.swing.screens.scenes.ElixirOfInsightArtifactScreen;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;

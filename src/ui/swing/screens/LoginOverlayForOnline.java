@@ -1,6 +1,7 @@
 package ui.swing.screens;
 
 import java.awt.Color;
+
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,7 +10,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,17 +25,15 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
-import com.formdev.flatlaf.util.UIScale;
+//import com.formdev.flatlaf.util.UIScale;
 
-import domain.Client;
-import domain.Server;
 import domain.controllers.LoginController;
 import ui.swing.desingsystem.RoundedBorder;
 import ui.swing.desingsystem.RoundedCornerPanel;
 import ui.swing.model.CardModel;
 import ui.swing.screens.screencomponents.AvatarCardScreen;
 
-public class LoginOverlayForHost extends JFrame {
+public class LoginOverlayForOnline extends JFrame {
 	private JFrame frame;
     public static String selectedPlayerName;
     public static String selectedAvatarPath;    
@@ -51,15 +49,16 @@ public class LoginOverlayForHost extends JFrame {
 	 
 	private Map<ImageIcon, String> iconPathMap = new HashMap<>(); 
 
+	private int counter = 0;
 	
-	public LoginOverlayForHost(Frame frame) {
+	public LoginOverlayForOnline(Frame frame) {
 	
 		init();
 		
 	}
 
 	private void init() {
-        this.frame = this;
+		this.frame = this;
 		setSize(1365, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -233,8 +232,10 @@ public class LoginOverlayForHost extends JFrame {
 		setVisible(true);
 		
 	}
-
-
+    public void display() {
+        setVisible(true);
+    }
+    
 	
 	
 	private void handleStartButtonClick() {
@@ -254,34 +255,15 @@ public class LoginOverlayForHost extends JFrame {
         playerCreatedText.setText("Player " + selectedPlayerName + " created.");
         playerCreatedText.setVisible(true);
 
-        startServer();
+        ConnectGameScreen connectScreen = new ConnectGameScreen(frame);
+        connectScreen.setPlayerInfo(selectedPlayerName, selectedAvatarPath);
+        connectScreen.display();
+      
         this.dispose();
 
 
         
     }
-    public void display() {
-        setVisible(true);
-    }
-    
-
-     //when user passes to HostGameScreen, a server will be started
-    private void startServer() {
-        // Start the server in a new thread to prevent UI freezing
-        new Thread(() -> {
-            try {
-                Server server = Server.getInstance(6666); // Replace 6666 with your actual server port
-                server.execute();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this,
-                        "Failed to start the server: " + ex.getMessage(),
-                        "Server Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }).start();
-    }
-
 }
 
 
