@@ -67,7 +67,7 @@ public class MakeExperimentScreen extends JFrame implements ActionListener{
 		setUndecorated(true);
 		
 		try {
-	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/loginbackground.jpg"));
+	        BufferedImage backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/entranceUI/loginbackground.jpg"));
 	        contentPane = new JPanel() {
 	            @Override
 	            protected void paintComponent(Graphics g) {

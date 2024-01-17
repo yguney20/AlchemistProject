@@ -20,22 +20,22 @@ public class GameObjectFactory { // Singleton Patterns
     private int artifactCounter = 1;
     private int potionCounter = 1;
 	
-	private static String redPositivePath = "/ui/swing/resources/images/potions/red+.png";
-	private static String redNegativePath = "/ui/swing/resources/images/potions/red-.png";
-	private static String bluePositivePath = "/ui/swing/resources/images/potions/blue+.png";
-	private static String blueNegativePath = "/ui/swing/resources/images/potions/blue-.png";
-	private static String greenPositivePath = "/ui/swing/resources/images/potions/green+.png";
-	private static String greenNegativePath = "/ui/swing/resources/images/potions/green-.png";
-	private static String neutralPath = "/ui/swing/resources/images/potions/neutral.png";
+	private static String redPositivePath = "/images/potions/red+.png";
+	private static String redNegativePath = "/images/potions/red-.png";
+	private static String bluePositivePath = "/images/potions/blue+.png";
+	private static String blueNegativePath = "/images/potions/blue-.png";
+	private static String greenPositivePath = "/images/potions/green+.png";
+	private static String greenNegativePath = "/images/potions/green-.png";
+	private static String neutralPath = "/images/potions/neutral.png";
 	
-	private static String molecule1image = "/ui/swing/resources/images/molecules/molecule1.png";
-	private static String molecule2image = "/ui/swing/resources/images/molecules/molecule2.png";
-	private static String molecule3image = "/ui/swing/resources/images/molecules/molecule3.png";
-	private static String molecule4image = "/ui/swing/resources/images/molecules/molecule4.png";
-	private static String molecule5image = "/ui/swing/resources/images/molecules/molecule5.png";
-	private static String molecule6image = "/ui/swing/resources/images/molecules/molecule6.png";
-	private static String molecule7image = "/ui/swing/resources/images/molecules/molecule7.png";
-	private static String molecule8image = "/ui/swing/resources/images/molecules/molecule8.png";
+	private static String molecule1image = "/images/molecules/molecule1.png";
+	private static String molecule2image = "/images/molecules/molecule2.png";
+	private static String molecule3image = "/images/molecules/molecule3.png";
+	private static String molecule4image = "/images/molecules/molecule4.png";
+	private static String molecule5image = "/images/molecules/molecule5.png";
+	private static String molecule6image = "/images/molecules/molecule6.png";
+	private static String molecule7image = "/images/molecules/molecule7.png";
+	private static String molecule8image = "/images/molecules/molecule8.png";
 
 
 		
@@ -81,14 +81,14 @@ public class GameObjectFactory { // Singleton Patterns
     	
         Map<String, String> ingredientImages = new HashMap<>();
 
-        ingredientImages.put("Moon Blossom", "/ui/swing/resources/images/ingredientCards/Moon Blossom.png");
-        ingredientImages.put("Crystalite", "/ui/swing/resources/images/ingredientCards/Crystalite.png");
-        ingredientImages.put("Shimmer Fungus", "/ui/swing/resources/images/ingredientCards/Shimmer Fungus.png");
-        ingredientImages.put("Golden Mold", "/ui/swing/resources/images/ingredientCards/Golden Mald.png");
-        ingredientImages.put("Starling Nectar", "/ui/swing/resources/images/ingredientCards/Starlight Nectar.png");
-        ingredientImages.put("Verdant Fern", "/ui/swing/resources/images/ingredientCards/Verdant Fern.png");
-        ingredientImages.put("Dandelion Root", "/ui/swing/resources/images/ingredientCards/Dandelion Root.png");
-        ingredientImages.put("Dragon Powder", "/ui/swing/resources/images/ingredientCards/Dragon Powder.png");
+        ingredientImages.put("Moon Blossom", "/images/ingredientCards/Moon Blossom.png");
+        ingredientImages.put("Crystalite", "/images/ingredientCards/Crystalite.png");
+        ingredientImages.put("Shimmer Fungus", "/images/ingredientCards/Shimmer Fungus.png");
+        ingredientImages.put("Golden Mold", "/images/ingredientCards/Golden Mald.png");
+        ingredientImages.put("Starling Nectar", "/images/ingredientCards/Starlight Nectar.png");
+        ingredientImages.put("Verdant Fern", "/images/ingredientCards/Verdant Fern.png");
+        ingredientImages.put("Dandelion Root", "/images/ingredientCards/Dandelion Root.png");
+        ingredientImages.put("Dragon Powder", "/images/ingredientCards/Dragon Powder.png");
         
         return ingredientImages;
     }
@@ -126,10 +126,10 @@ public class GameObjectFactory { // Singleton Patterns
     public List<ArtifactCard> createArtifactDeck() {
         List<ArtifactCard> artifactDeck = new ArrayList<>();
 
-        artifactDeck.add(new ArtifactCard(artifactCounter++, "Elixir of Insight", 3, new ElixirOfInsightEffect(), true, false,"/ui/swing/resources/images/artifactCards/Elixir Of Insight.png" ));
-        artifactDeck.add(new ArtifactCard(artifactCounter++, "Magic Mortar", 3, new MagicMortarEffect(), true, false,"/ui/swing/resources/images/artifactCards/Magic Mortar.png" ));
-        artifactDeck.add((new ArtifactCard(artifactCounter++, "Printing Press", 3, new PrintingPressEffect(), false, false,"/ui/swing/resources/images/artifactCards/Printing Press.png" )));
-        artifactDeck.add((new ArtifactCard(artifactCounter++, "Wisdom Idol", 3, new WisdomIdolEffect(), true, false,"/ui/swing/resources/images/artifactCards/Wisdom Idol.png" )));
+        artifactDeck.add(new ArtifactCard(artifactCounter++, "Elixir of Insight", 3, new ElixirOfInsightEffect(), true, false,"/images/artifactCards/Elixir Of Insight.png" ));
+        artifactDeck.add(new ArtifactCard(artifactCounter++, "Magic Mortar", 3, new MagicMortarEffect(), true, false,"/images/artifactCards/Magic Mortar.png" ));
+        artifactDeck.add((new ArtifactCard(artifactCounter++, "Printing Press", 3, new PrintingPressEffect(), false, false,"/images/artifactCards/Printing Press.png" )));
+        artifactDeck.add((new ArtifactCard(artifactCounter++, "Wisdom Idol", 3, new WisdomIdolEffect(), true, false,"/images/artifactCards/Wisdom Idol.png" )));
         // Add other artifacts here
 
         return artifactDeck;
