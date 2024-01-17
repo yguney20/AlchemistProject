@@ -27,6 +27,8 @@ import javax.swing.border.EmptyBorder;
 
 import domain.controllers.GameController;
 import domain.gameobjects.Player;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import ui.swing.helper.SoundPlayer;
 import ui.swing.screens.*;
 import ui.swing.desingsystem.*;
@@ -45,6 +47,7 @@ public class PlayerDashboard extends JFrame {
     private Point initialClick;
     
     private String buttonSoundPath;
+    private MediaPlayer buttonSoundPlayer;
 
     /**
      * Create the frame.
@@ -53,7 +56,7 @@ public class PlayerDashboard extends JFrame {
     	
     	SoundPlayer soundPlayer = new SoundPlayer();
     	
-    	buttonSoundPath = "ui/swing/resources/sounds/buttonSound.wav";
+    	buttonSoundPath = "sounds/buttonSound.wav";
     	
     	setUndecorated(true);
 
@@ -123,7 +126,7 @@ public class PlayerDashboard extends JFrame {
         playerDashboardImage.setFocusable(false);
         
         
-        ImageIcon preResizePlayerDashboardIcon = new ImageIcon(BoardScreen.class.getResource("/ui/swing/resources/Images/playerDashboardUI/playerDashboardImage.png"));
+        ImageIcon preResizePlayerDashboardIcon = new ImageIcon(BoardScreen.class.getResource("/images/playerDashboardUI/playerDashboardImage.png"));
         Image preResizePlayerDashboardImage = preResizePlayerDashboardIcon.getImage();
 
         // Resize the image
@@ -148,7 +151,7 @@ public class PlayerDashboard extends JFrame {
         chooseActionImagePanel.add(chooseActionImage);
         
         
-        ImageIcon preResizeChooseActionIcon = new ImageIcon(BoardScreen.class.getResource("/ui/swing/resources/Images/playerDashboardUI/chooseActionImage.png"));
+        ImageIcon preResizeChooseActionIcon = new ImageIcon(BoardScreen.class.getResource("/images/playerDashboardUI/chooseActionImage.png"));
         Image preResizeChooseActionImage = preResizeChooseActionIcon.getImage();
 
         // Resize the image
@@ -545,7 +548,7 @@ public class PlayerDashboard extends JFrame {
         returnBackImage.setBackground(Color.WHITE);
         
         
-        ImageIcon preResizeReturnBackIcon = new ImageIcon(BoardScreen.class.getResource("/ui/swing/resources/images/playerDashboardUI/backImage.png"));
+        ImageIcon preResizeReturnBackIcon = new ImageIcon(BoardScreen.class.getResource("/images/playerDashboardUI/backImage.png"));
         Image preResizeReturnBackImage = preResizeReturnBackIcon.getImage();
 
         // Resize the image
@@ -571,7 +574,7 @@ public class PlayerDashboard extends JFrame {
         playerInfoImagePanel.add(playerInfoImage);
         
         
-        ImageIcon preResizePlayerInfoIcon = new ImageIcon(BoardScreen.class.getResource("/ui/swing/resources/images/playerDashboardUI/playerInfoImage.png"));
+        ImageIcon preResizePlayerInfoIcon = new ImageIcon(BoardScreen.class.getResource("/images/playerDashboardUI/playerInfoImage.png"));
         Image preResizePlayerInfoImage = preResizePlayerInfoIcon.getImage();
 
         // Resize the image
@@ -608,7 +611,7 @@ public class PlayerDashboard extends JFrame {
         nicknameImageJLabel.setBounds(3, 1, 122, 38);
         nicknameImageSmallPanel.add(nicknameImageJLabel);
          
-        ImageIcon resizedNicknameIcon = ImageResizer.getResizedIcon(nicknameImageSmallPanel, "/ui/swing/resources/images/playerDashboardUI/nicknameImage.png");
+        ImageIcon resizedNicknameIcon = ImageResizer.getResizedIcon(nicknameImageSmallPanel, "/images/playerDashboardUI/nicknameImage.png");
         nicknameImageJLabel.setIcon(resizedNicknameIcon);
              
         JLabel nicknameLabel = new JLabel(gameController.getCurrentPlayer().getNickname());
@@ -634,7 +637,7 @@ public class PlayerDashboard extends JFrame {
         goldImageJLabel.setBounds(3, 1, 116, 40);
         goldImageSmallPanel.add(goldImageJLabel);
         
-        ImageIcon resizedGoldIcon = ImageResizer.getResizedIcon(goldImageSmallPanel, "/ui/swing/resources/images/playerDashboardUI/goldImage.png");
+        ImageIcon resizedGoldIcon = ImageResizer.getResizedIcon(goldImageSmallPanel, "/images/playerDashboardUI/goldImage.png");
         
         goldImageJLabel.setIcon(resizedGoldIcon);
    
@@ -666,7 +669,7 @@ public class PlayerDashboard extends JFrame {
         JLabel sicknessImageJLabel = new JLabel("");
         sicknessImageJLabel.setBounds(3, 1, 122, 38);
         
-        ImageIcon resizedSicknessIcon = ImageResizer.getResizedIcon(goldImageSmallPanel, "/ui/swing/resources/images/playerDashboardUI/sicknessImage.png");
+        ImageIcon resizedSicknessIcon = ImageResizer.getResizedIcon(goldImageSmallPanel, "/images/playerDashboardUI/sicknessImage.png");
         
         sicknessImageJLabel.setIcon(resizedSicknessIcon);
         
@@ -697,7 +700,7 @@ public class PlayerDashboard extends JFrame {
         reputationImageJLabel.setBounds(3, 1, 122, 38);
         reputationImageSmallPanel.add(reputationImageJLabel);
         
-        ImageIcon resizedReputationIcon = ImageResizer.getResizedIcon(goldImageSmallPanel, "/ui/swing/resources/images/playerDashboardUI/reputationImage.png");
+        ImageIcon resizedReputationIcon = ImageResizer.getResizedIcon(goldImageSmallPanel, "/images/playerDashboardUI/reputationImage.png");
         
         reputationImageJLabel.setIcon(resizedReputationIcon);
         

@@ -53,7 +53,7 @@ public class DeductionBoard extends JFrame {
         contentPane.setLayout(null);
 
         // Load and scale the deduction board image
-        ImageIcon icon = new ImageIcon(getClass().getResource("/ui/swing/resources/images/deductionBoardUI/deductionBoard.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/deductionBoardUI/deductionBoard.png"));
         deductionBoardImage = icon.getImage().getScaledInstance(463, 465, Image.SCALE_SMOOTH);
 
         // Create a panel that will display the deduction board image and crosses

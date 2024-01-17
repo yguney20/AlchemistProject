@@ -96,12 +96,12 @@ public class BoardScreenController {
     
     @FXML
     protected void handleMedievalBannerEnter() {
-    	Image newBannerImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Medieval_Banner.gif"));
+    	Image newBannerImage = new Image(getClass().getResourceAsStream("/animations/Medieval_Banner.gif"));
         medievalBanner.setImage(newBannerImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticBannerImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Medieval_Banner.png"));
+            Image staticBannerImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Medieval_Banner.png"));
             medievalBanner.setImage(staticBannerImage);
         });
         wait.play();
@@ -110,12 +110,12 @@ public class BoardScreenController {
     
     @FXML
     protected void handleWizardHatStandClick() {
-    	Image newHatImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Wizard_Hat_Stand.gif"));
+    	Image newHatImage = new Image(getClass().getResourceAsStream("/animations/Wizard_Hat_Stand.gif"));
     	wizardHatStand.setImage(newHatImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticHatImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Wizard_Hat_Stand.png"));
+            Image staticHatImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Wizard_Hat_Stand.png"));
             wizardHatStand.setImage(staticHatImage);
             
             PlayerDashboard playerDashboard = new PlayerDashboard(gameController);
@@ -131,7 +131,7 @@ public class BoardScreenController {
     	
     	
     	if(gameController.getActionPerformed()) {
-    		Image newBallImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Magic_Ball.gif"));
+    		Image newBallImage = new Image(getClass().getResourceAsStream("/animations/Magic_Ball.gif"));
         	magicBall.setImage(newBallImage);
         	gameController.updateState();
             currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
@@ -146,7 +146,7 @@ public class BoardScreenController {
         
         PauseTransition wait = new PauseTransition(Duration.seconds(2)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticBallImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Magic_Ball.png"));
+            Image staticBallImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Magic_Ball.png"));
             magicBall.setImage(staticBallImage);
             
     		
@@ -157,12 +157,12 @@ public class BoardScreenController {
     
     @FXML
     protected void handleHourglassClick() {
-    	Image newHourglassImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Hourglass.gif"));
+    	Image newHourglassImage = new Image(getClass().getResourceAsStream("/animations/Hourglass.gif"));
         hourglass.setImage(newHourglassImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticHourglassImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Hourglass.png"));
+            Image staticHourglassImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Hourglass.png"));
             hourglass.setImage(staticHourglassImage);
             SwingUtilities.invokeLater(() -> {
             	MenuScreen menuScreen = MenuScreen.getInstance(boardScreenFrame);
@@ -178,12 +178,12 @@ public class BoardScreenController {
     
     @FXML
     protected void handleWizardBookClick() {
-    	Image newBookImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Wizard_Book.gif"));
+    	Image newBookImage = new Image(getClass().getResourceAsStream("/animations/Wizard_Book.gif"));
         wizardBook.setImage(newBookImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticBookImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Wizard_Book.png"));
+            Image staticBookImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Wizard_Book.png"));
             wizardBook.setImage(staticBookImage);
             ArtifactCardsScreen acs = new ArtifactCardsScreen();
             acs.display();
@@ -194,12 +194,12 @@ public class BoardScreenController {
     
     @FXML
     protected void handlePublicationBoardClick() {
-    	Image newPublicationImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Bulletin_Board.gif"));
+    	Image newPublicationImage = new Image(getClass().getResourceAsStream("/animations/Bulletin_Board.gif"));
     	publicationboard.setImage(newPublicationImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticPublicationImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Bulletin_Board.png"));
+            Image staticPublicationImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Bulletin_Board.png"));
             publicationboard.setImage(staticPublicationImage);
             PublicationCardsScreen pb = new PublicationCardsScreen();
     		pb.display();
@@ -210,12 +210,12 @@ public class BoardScreenController {
     
     @FXML
     protected void handleDeductionClick() {
-    	Image newDeductImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Deduction_Board.gif"));
+    	Image newDeductImage = new Image(getClass().getResourceAsStream("/animations/Deduction_Board.gif"));
     	deductionBoard.setImage(newDeductImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticDeductImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Deduction_Board.png"));
+            Image staticDeductImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Deduction_Board.png"));
             deductionBoard.setImage(staticDeductImage);
             gameController.displayDeductionBoardForCurrentPlayer();	
         });
@@ -225,12 +225,12 @@ public class BoardScreenController {
     
     @FXML
     protected void handleCauldronClick() {
-    	Image newCauldronImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Cauldron.gif"));
+    	Image newCauldronImage = new Image(getClass().getResourceAsStream("/animations/Cauldron.gif"));
     	cauldron.setImage(newCauldronImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticCauldronImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/gameBoardUI/Cauldron.png"));
+            Image staticCauldronImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Cauldron.png"));
             cauldron.setImage(staticCauldronImage);	
             PotionCardsScreen pcs = new PotionCardsScreen();
             pcs.display();

@@ -1,6 +1,7 @@
 package ui.swing.screens.screencontrollers;
 
 import java.awt.Frame;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.BindException;
@@ -73,12 +74,12 @@ public class EntranceScreenController {
     }
     
     private void initializeMediaPlayers() {
-        String musicFile = getClass().getResource("/ui/swing/resources/sounds/medivalSoundtrack.wav").toExternalForm();
+        String musicFile = getClass().getResource("/sounds/medievalSoundtrack.mp3").toExternalForm();
         Media backgroundMusic = new Media(musicFile);
         backgroundMusicPlayer = new MediaPlayer(backgroundMusic);
         backgroundMusicPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop indefinitely
         
-        String buttonSoundFile = getClass().getResource("/ui/swing/resources/sounds/buttonSound.wav").toExternalForm();
+        String buttonSoundFile = getClass().getResource("/sounds/buttonSound.wav").toExternalForm();
         Media buttonSound = new Media(buttonSoundFile);
         buttonSoundPlayer = new MediaPlayer(buttonSound);
     }
@@ -102,7 +103,7 @@ public class EntranceScreenController {
     private void handleMousePress(MouseEvent event) {
     	
         
-        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Buyucu.gif"));
+        Image newWizardImage = new Image(getClass().getResourceAsStream("/animations/Buyucu.gif"));
         if (newWizardImage.isError()) {
             System.out.println("Error loading image.");
         }
@@ -110,7 +111,7 @@ public class EntranceScreenController {
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/WizardStatic.png"));
+            Image staticWizardImage = new Image(getClass().getResourceAsStream("/images/entranceUI/WizardStatic.png"));
             wizardImage.setImage(staticWizardImage);
 
             Object source = event.getSource();

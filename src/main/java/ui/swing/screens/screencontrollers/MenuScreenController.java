@@ -64,7 +64,7 @@ public class MenuScreenController {
     
     private void initializeMediaPlayers() {
         
-        String buttonSoundFile = getClass().getResource("/ui/swing/resources/sounds/buttonSound.wav").toExternalForm();
+        String buttonSoundFile = getClass().getResource("/sounds/buttonSound.wav").toExternalForm();
         Media buttonSound = new Media(buttonSoundFile);
         buttonSoundPlayer = new MediaPlayer(buttonSound);
     }
@@ -87,12 +87,12 @@ public class MenuScreenController {
     private void handleMousePress(MouseEvent event) {
     	
         
-        Image newWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Wizard.gif"));
+        Image newWizardImage = new Image(getClass().getResourceAsStream("/animations/Wizard.gif"));
         wizardImage.setImage(newWizardImage);
         
         PauseTransition wait = new PauseTransition(Duration.seconds(0.85)); // Adjust the duration to match your GIF
         wait.setOnFinished(e -> {
-            Image staticWizardImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/images/entranceUI/WizardStatic.png"));
+            Image staticWizardImage = new Image(getClass().getResourceAsStream("/images/entranceUI/WizardStatic.png"));
             wizardImage.setImage(staticWizardImage);
 
             Object source = event.getSource();

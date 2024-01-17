@@ -43,7 +43,7 @@ public class SettingsScreenController {
     
     private void initializeMediaPlayers() {
         
-        String buttonSoundFile = getClass().getResource("/ui/swing/resources/sounds/buttonSound.wav").toExternalForm();
+        String buttonSoundFile = getClass().getResource("/sounds/buttonSound.wav").toExternalForm();
         Media buttonSound = new Media(buttonSoundFile);
         buttonSoundPlayer = new MediaPlayer(buttonSound);
     }

@@ -60,7 +60,7 @@ public class LoginOverlay extends JFrame {
         getContentPane().setLayout(null);
 
         // Load the original gif as an image
-        Image originalImage = new ImageIcon(this.getClass().getResource("/ui/swing/resources/animations/loginBackground.gif")).getImage();
+        Image originalImage = new ImageIcon(this.getClass().getResource("/animations/loginBackground.gif")).getImage();
         
         // Resize it to fit the frame
         Image resizedImage = originalImage.getScaledInstance(1365, 768, Image.SCALE_DEFAULT);
@@ -96,8 +96,8 @@ public class LoginOverlay extends JFrame {
 		cardPanel.setBorder(roundedBorder);
 		
 		
-		ImageIcon avatarIcon1 = new ImageIcon(getClass().getResource("/ui/swing/resources/images/avatar/a1.jpg"));	
-		iconPathMap.put(avatarIcon1, "/ui/swing/resources/images/avatar/a1.jpg");
+		ImageIcon avatarIcon1 = new ImageIcon(getClass().getResource("/images/avatar/a1.jpg"));	
+		iconPathMap.put(avatarIcon1, "/images/avatar/a1.jpg");
 		
 		AvatarCardScreen avatarCardScreen = new AvatarCardScreen(new CardModel(avatarIcon1, 
         		"Avatar 1", 
@@ -107,8 +107,8 @@ public class LoginOverlay extends JFrame {
         avatarCardScreen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         cardPanel.add(avatarCardScreen);
         
-        ImageIcon avatarIcon2 = new ImageIcon(getClass().getResource("/ui/swing/resources/images/avatar/a2.jpg"));
-        iconPathMap.put(avatarIcon2, "/ui/swing/resources/images/avatar/a2.jpg");
+        ImageIcon avatarIcon2 = new ImageIcon(getClass().getResource("/images/avatar/a2.jpg"));
+        iconPathMap.put(avatarIcon2, "/images/avatar/a2.jpg");
                
         AvatarCardScreen avatarCardScreen2 = new AvatarCardScreen(new CardModel(avatarIcon2, 
         		"Avatar 1", 
@@ -118,8 +118,8 @@ public class LoginOverlay extends JFrame {
         avatarCardScreen2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         cardPanel.add(avatarCardScreen2);
         
-        ImageIcon avatarIcon3 = new ImageIcon(getClass().getResource("/ui/swing/resources/images/avatar/a3.jpg"));
-        iconPathMap.put(avatarIcon3, "/ui/swing/resources/images/avatar/a3.jpg");
+        ImageIcon avatarIcon3 = new ImageIcon(getClass().getResource("/images/avatar/a3.jpg"));
+        iconPathMap.put(avatarIcon3, "/images/avatar/a3.jpg");
         
         AvatarCardScreen avatarCardScreen3 = new AvatarCardScreen(new CardModel(avatarIcon3, 
         		"Avatar 1", 
@@ -129,8 +129,8 @@ public class LoginOverlay extends JFrame {
     
         avatarCardScreen3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 
-        ImageIcon avatarIcon4 = new ImageIcon(getClass().getResource("/ui/swing/resources/images/avatar/a4.jpg"));
-        iconPathMap.put(avatarIcon4, "/ui/swing/resources/images/avatar/a4.jpg");
+        ImageIcon avatarIcon4 = new ImageIcon(getClass().getResource("/images/avatar/a4.jpg"));
+        iconPathMap.put(avatarIcon4, "/images/avatar/a4.jpg");
                 
         AvatarCardScreen avatarCardScreen4 = new AvatarCardScreen(new CardModel(avatarIcon4, 
         		"Avatar 1", 
@@ -141,8 +141,8 @@ public class LoginOverlay extends JFrame {
         avatarCardScreen4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         
         
-        ImageIcon avatarIcon5 = new ImageIcon(getClass().getResource("/ui/swing/resources/images/avatar/a5.jpg"));
-        iconPathMap.put(avatarIcon5, "/ui/swing/resources/images/avatar/a5.jpg");
+        ImageIcon avatarIcon5 = new ImageIcon(getClass().getResource("/images/avatar/a5.jpg"));
+        iconPathMap.put(avatarIcon5, "/images/avatar/a5.jpg");
         
         AvatarCardScreen avatarCardScreen5 = new AvatarCardScreen(new CardModel(avatarIcon5, 
         		"Avatar 1", 

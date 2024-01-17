@@ -59,6 +59,8 @@ public class BuyArtifactScreenController {
         }
     }
     private void loadArtifacts() {
+    	
+    	try {
         for (ArtifactCard card : gameController.getAvailableArtifacts()) {
             ImageView artifactImageView = new ImageView();
             Image artifactImage = new Image(getClass().getResourceAsStream(card.getImagePath()));
@@ -66,6 +68,8 @@ public class BuyArtifactScreenController {
             artifactImageView.setFitHeight(100); // Set the height
             artifactImageView.setFitWidth(100); // Set the width
             artifactImageView.setPreserveRatio(true);
+            
+            
 
             Button artifactButton = new Button();
             artifactButton.setGraphic(artifactImageView);
@@ -73,6 +77,9 @@ public class BuyArtifactScreenController {
 
             artifactButtonContainer.getChildren().add(artifactButton);
         }
+        
+    } catch (Exception e) {
+        e.printStackTrace();}
     }
 
     private void handleArtifactSelection(ArtifactCard artifact) {

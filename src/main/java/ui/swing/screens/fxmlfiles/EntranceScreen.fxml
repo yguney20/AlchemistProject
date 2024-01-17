@@ -11,7 +11,7 @@
 	<children>
 		<ImageView fx:id="wizardImage" fitHeight="529.0" fitWidth="629.0" layoutX="-189.0" layoutY="-33.0" pickOnBounds="true" preserveRatio="true">
 			<image>
-				<Image url="@../../../../ui/swing/resources/images/entranceUI/WizardStatic.png" />
+				<Image url="@../../../../images/entranceUI/WizardStatic.png" />
 			</image>
 		</ImageView>
       <Pane layoutX="424.0" layoutY="50.0" prefHeight="385.0" prefWidth="340.0" styleClass="pane-background">

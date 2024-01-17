@@ -53,7 +53,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         setContentPane(contentPane);
 
         JLabel backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(new ImageIcon(getClass().getResource("/ui/swing/resources/images/helpUI/screenBackground.jpg")));
+        backgroundLabel.setIcon(new ImageIcon(getClass().getResource("/images/helpUI/screenBackground.jpg")));
         backgroundLabel.setBounds(0, 0, width, height);
         contentPane.add(backgroundLabel);
 

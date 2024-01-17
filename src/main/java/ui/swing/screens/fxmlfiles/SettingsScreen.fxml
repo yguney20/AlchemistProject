@@ -14,7 +14,7 @@
         <!-- Background Image -->
         <ImageView fitHeight="800.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="false">
             <image>
-                <Image url="@../../../../ui/swing/resources/images/entranceUI/backgroundImage.jpg" />
+                <Image url="@../../../../images/entranceUI/backgroundImage.jpg" />
             </image>
         </ImageView>
 

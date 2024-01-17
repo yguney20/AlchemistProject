@@ -13,7 +13,7 @@
     <children>
       <ImageView fx:id="publicationboard" fitHeight="340.0" fitWidth="512.0" layoutX="715.0" layoutY="42.0" onMouseClicked="#handlePublicationBoardClick" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Bulletin_Board.png" />
+            <Image url="@../../../../images/gameBoardUI/Bulletin_Board.png" />
          </image>
          <viewport>
             <Rectangle2D height="730.0" minX="530.0" minY="440.0" width="1100.0" />
@@ -24,7 +24,7 @@
       </ImageView>
       <ImageView fx:id="medievalShelfOne" fitHeight="89.0" fitWidth="353.0" layoutX="363.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Medieval_Shelf.png" />
+            <Image url="@../../../../images/gameBoardUI/Medieval_Shelf.png" />
          </image>
          <viewport>
             <Rectangle2D height="170.0" minX="550.0" minY="410.0" width="695.0" />
@@ -32,7 +32,7 @@
       </ImageView>
       <ImageView fx:id="medievalShelfTwo" fitHeight="89.0" fitWidth="353.0" layoutX="367.0" layoutY="244.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Medieval_Shelf.png" />
+            <Image url="@../../../../images/gameBoardUI/Medieval_Shelf.png" />
          </image>
          <viewport>
             <Rectangle2D height="170.0" minX="550.0" minY="410.0" width="695.0" />
@@ -40,7 +40,7 @@
       </ImageView>
       <ImageView fx:id="wizardHatStand" fitHeight="143.0" fitWidth="139.0" layoutX="570.0" layoutY="31.0" onMouseClicked="#handleWizardHatStandClick" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Wizard_Hat_Stand.png" />
+            <Image url="@../../../..//images/gameBoardUI/Wizard_Hat_Stand.png" />
          </image>
          <viewport>
             <Rectangle2D height="550.0" minX="750.0" minY="570.0" width="380.0" />
@@ -51,7 +51,7 @@
       </ImageView>
       <ImageView fx:id="medievalBanner" fitHeight="417.0" fitWidth="465.0" layoutX="27.0" layoutY="-25.0" onMouseEntered="#handleMedievalBannerEnter" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Medieval_Banner.png" />
+            <Image url="@../../../../images/gameBoardUI/Medieval_Banner.png" />
          </image>
          <viewport>
             <Rectangle2D height="600.0" minX="510.0" minY="50.0" width="600.0" />
@@ -59,7 +59,7 @@
       </ImageView>
       <ImageView fx:id="medievalCandle" fitHeight="229.0" fitWidth="167.0" layoutX="11.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/animations/Medieval_Candle.gif" />
+            <Image url="@../../../../animations/Medieval_Candle.gif" />
          </image>
          <viewport>
             <Rectangle2D height="900.0" minX="680.0" minY="100.0" width="500.0" />
@@ -85,7 +85,7 @@
         </VBox>
       <ImageView fx:id="hourglass" fitHeight="132.0" fitWidth="115.0" layoutX="427.0" layoutY="40.0" onMouseClicked="#handleHourglassClick" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Hourglass.png" />
+            <Image url="@../../../../images/gameBoardUI/Hourglass.png" />
          </image>
          <viewport>
             <Rectangle2D height="530.0" minX="700.0" minY="920.0" width="450.0" />
@@ -96,7 +96,7 @@
       </ImageView>
       <ImageView fx:id="wizardBook" fitHeight="85.0" fitWidth="62.0" layoutX="595.0" layoutY="195.0" onMouseClicked="#handleWizardBookClick" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Wizard_Book.png" />
+            <Image url="@../../../../images/gameBoardUI/Wizard_Book.png" />
          </image>
          <viewport>
             <Rectangle2D height="480.0" minX="800.0" minY="670.0" width="300.0" />
@@ -107,7 +107,7 @@
       </ImageView>
       <ImageView fx:id="deductionBoard" fitHeight="337.0" fitWidth="491.0" layoutX="753.0" layoutY="376.0" onMouseClicked="#handleDeductionClick" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Deduction_Board.png" />
+            <Image url="@../../../../images/gameBoardUI/Deduction_Board.png" />
          </image>
          <viewport>
             <Rectangle2D height="800.0" minX="300.0" minY="680.0" width="1200.0" />
@@ -118,7 +118,7 @@
       </ImageView>
       <ImageView fx:id="table" fitHeight="259.0" fitWidth="294.0" layoutX="459.0" layoutY="438.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Table.png" />
+            <Image url="@../../../../images/gameBoardUI/Table.png" />
          </image>
          <viewport>
             <Rectangle2D height="360.0" minX="620.0" minY="1000.0" width="400.0" />
@@ -126,7 +126,7 @@
       </ImageView>
       <ImageView fx:id="magicBall" fitHeight="124.0" fitWidth="125.0" layoutX="542.0" layoutY="357.0" onMouseClicked="#handleMagicBallClick" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Magic_Ball.png" />
+            <Image url="@../../../../images/gameBoardUI/Magic_Ball.png" />
          </image>
          <viewport>
             <Rectangle2D height="1000.0" minX="400.0" minY="400.0" width="1000.0" />
@@ -134,7 +134,7 @@
       </ImageView>
       <ImageView fx:id="cauldron" fitHeight="353.0" fitWidth="274.0" layoutX="85.0" layoutY="361.0" onMouseClicked="#handleCauldronClick" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../resources/images/gameBoardUI/Cauldron.png" />
+            <Image url="@../../../../images/gameBoardUI/Cauldron.png" />
          </image>
          <viewport>
             <Rectangle2D height="900.0" minX="600.0" minY="600.0" width="700.0" />
