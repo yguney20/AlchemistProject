@@ -1,4 +1,7 @@
+package main.java;
+
 import javax.swing.SwingUtilities;
+
 
 import ui.swing.screens.*;
 import ui.swing.screens.scenes.EntranceScreen;
