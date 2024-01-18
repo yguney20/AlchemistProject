@@ -41,8 +41,8 @@ public class Game { //Singleton Pattern
         this.ingredientDeck = GameObjectFactory.getInstance().createIngredientDeck();
         this.artifactDeck = GameObjectFactory.getInstance().createArtifactDeck();
         this.totalRounds = 3; // Set the total number of rounds
-        this.currentRound = 3;
-        this.currentTurn = 2;
+        this.currentRound = 1;
+        this.currentTurn = 1;
         this.isPaused = false;
         this.actionPerformed = false;
       
