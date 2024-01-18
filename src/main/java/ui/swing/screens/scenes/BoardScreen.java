@@ -55,6 +55,9 @@ public class BoardScreen extends JFrame{
         return instance;
     }
 
+    public static synchronized void destroyInstance() {
+        instance = null;
+    }
     
     public BoardScreen() {
         initializeFrame();

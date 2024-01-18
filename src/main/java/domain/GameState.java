@@ -7,6 +7,9 @@ import domain.gameobjects.PotionCard;
 
 public class GameState {
 	
+	
+    private static GameState instance;
+
     private List<Player> players;
     private int currentRound;
     private int currentPlayerID;
@@ -15,12 +18,30 @@ public class GameState {
     private int currentTurn;
     private PotionCard lastCreatedPotion;
 
-    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused) {
+    private GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused) {
         this.players = players;
         this.currentRound = initialRound;
         this.currentPlayerID = initialPlayer;
         this.isPaused = isPaused;
         this.currentTurn = firstTurn;
+    }
+
+    public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused) {
+        if (instance == null) {
+            instance = new GameState(players, initialRound, firstTurn, initialPlayer, isPaused);
+        }
+        return instance;
+    }
+
+    public static synchronized GameState getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("GameState is not initialized. Call getInstance with initial parameters first.");
+        }
+        return instance;
+    }
+    
+    public static synchronized void destroyInstance() {
+        instance = null;
     }
     
     @Override

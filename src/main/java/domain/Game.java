@@ -26,9 +26,10 @@ public class Game { //Singleton Pattern
     private Player currentPlayer;
     private int currentPlayerID;
     private boolean isPaused;
-    private GameState gameState;
-    Player winner = null;
-    private boolean actionPerformed;
+    private GameState gameState = null;
+    private Player winner = null;
+
+	private boolean actionPerformed;
     private int publicationCounter = 1;
     private int theoryCounter = 1;
     private int validatedAspectCounter = 1;
@@ -40,8 +41,8 @@ public class Game { //Singleton Pattern
         this.ingredientDeck = GameObjectFactory.getInstance().createIngredientDeck();
         this.artifactDeck = GameObjectFactory.getInstance().createArtifactDeck();
         this.totalRounds = 3; // Set the total number of rounds
-        this.currentRound = 1;
-        this.currentTurn = 1;
+        this.currentRound = 3;
+        this.currentTurn = 2;
         this.isPaused = false;
         this.actionPerformed = false;
       
@@ -127,6 +128,9 @@ public class Game { //Singleton Pattern
     //-----------------------Game Related Functions--------------------------------------
 
     public void initializeGame() {
+    	
+        GameState.destroyInstance();
+
         // Null check for players
         if (players == null || players.isEmpty()) {
             throw new IllegalStateException("Player list is null or empty.");
@@ -164,7 +168,7 @@ public class Game { //Singleton Pattern
 
         currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
         this.currentPlayerID = currentPlayer.getPlayerId();
-        this.gameState = new GameState(players, currentRound, currentTurn, currentPlayerID, isPaused);
+        this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused);
         gameState.setCurrentPlayerID(currentPlayerID);
        
         System.out.println("Debug: GameState initialized - " + gameState);
@@ -243,7 +247,7 @@ public class Game { //Singleton Pattern
 
     
     //end game method
-    private void endGame() {
+    public double endGame() {
     	double maxScore = Double.MIN_VALUE;
 
         for (Player player : players) {
@@ -255,8 +259,10 @@ public class Game { //Singleton Pattern
                 winner = player;
             }
         }
-
+        
         System.out.println("Game Over! Winner: " + winner.getNickname() + " with a score of " + maxScore);
+
+        return maxScore;
     }
 
 	//Takes a player and calculates the score 
@@ -290,7 +296,7 @@ public class Game { //Singleton Pattern
         System.out.println(message);
     }
     
-    private boolean isGameOver() {
+    public boolean isGameOver() {
         return currentRound > totalRounds; 
     }
 

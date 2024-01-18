@@ -36,6 +36,9 @@ public class Molecule {
 		return moleculeList;
 	}
 
+    public static void resetMoleculeList() {
+        moleculeList.clear();
+    }
 
 	public static void setMoleculeList(ArrayList<Molecule> moleculeList) {
 		Molecule.moleculeList = moleculeList;
