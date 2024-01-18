@@ -42,6 +42,7 @@ public class Client {
     private List<Player> playerList = Player.getPlayerList(); 
 
     private LoginController loginController = LoginController.getInstance();
+    private GameController gameController = GameController.getInstance();
 
 
     // Constructor to initialize the client with the server's host and port
@@ -175,6 +176,7 @@ public class Client {
             String jsonState = message.substring("START_GAME:".length());
             System.out.println("Debug: Received GameState JSON - " + jsonState);
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+            gameController.setGameState(gameState);
            
             SwingUtilities.invokeLater(() -> {
     
