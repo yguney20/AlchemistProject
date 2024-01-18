@@ -868,6 +868,10 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
        return currentPlayerID;
     }
 
+    public void setGameState(GameState gameState2) {
+       this.gameState = gameState;
+    }
+
 
 
 }

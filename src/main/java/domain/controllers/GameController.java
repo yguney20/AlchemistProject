@@ -333,7 +333,12 @@ public class GameController {
     public void setOnlineGameAdapter(OnlineGameAdapter adapter) {
         this.onlineGameAdapter = adapter;
     }
-    public void setGameState(GameState gameState) {
+    public void updateGameState(GameState gameState) {
        game.updateGameState(gameState);
+    }
+
+    public void setGameState(GameState gameState) {
+        game.setGameState(gameState);
+        System.out.println("Debug: GameState set in GameController: " + gameState);
     }
 }

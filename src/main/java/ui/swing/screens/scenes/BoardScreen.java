@@ -73,7 +73,15 @@ public class BoardScreen extends JFrame{
     private void initializeJavaFXComponents() {
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
+                // FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
+                // Parent root = loader.load();
+                // URL url = getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml");
+                // System.out.println("FXML URL: " + url);
+                // FXMLLoader loader = new FXMLLoader(url);
+                // Parent root = loader.load();
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
+                loader.setClassLoader(getClass().getClassLoader());
                 Parent root = loader.load();
                 controller = loader.getController();
                 if (controller == null) {

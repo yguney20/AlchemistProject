@@ -68,18 +68,25 @@ public class BoardScreenController {
         if (gameController == null) {
             System.err.println("Debug: GameController instance is null in BoardScreenController.initialize");
         }
-        updateLabels();
+    }
+
+    public void manualUIUpdate() {
+        if (gameController.getGameState() != null) {
+            updateLabels();
+        } else {
+            System.err.println("Debug: GameState is null in BoardScreenController.manualUIUpdate");
+        }
     }
 
     private void updateLabels() {
-       Player currentPlayer = gameController.getCurrentPlayer();
-        if (currentPlayer != null) {
-            currentPlayerLabel.setText("Player: " + currentPlayer.getNickname());
-            currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
-            currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
+        GameState gameState = gameController.getGameState();
+        if (gameState != null && gameState.getCurrentPlayer() != null) {
+            currentPlayerLabel.setText("Player: " + gameState.getCurrentPlayer().getNickname());
+            currentTurnLabel.setText("Turn: " + gameState.getCurrentTurn());
+            currentRoundLabel.setText("Round: " + gameState.getCurrentRound());
         } else {
-            System.err.println("Current player is null.");
-            // Handle the null case appropriately
+            // Handle null cases or show default values
+            System.err.println("Debug: GameState or CurrentPlayer is null in updateLabels");
         }
     }
     
