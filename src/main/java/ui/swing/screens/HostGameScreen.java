@@ -151,14 +151,14 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
         String serverIp = "localhost"; // Replace with actual server IP
         int serverPort = 6666;        // Replace with actual server port
         client = new Client(serverIp, serverPort, this);
-        client.simulateAnotherPlayer();
+        //client.simulateAnotherPlayer();
         if (client.connect()) {
             OnlineGameAdapter onlineGameAdapter = new OnlineGameAdapter(client);
             GameController.getInstance().setOnlineGameAdapter(onlineGameAdapter);
             GameController.getInstance().setOnlineMode(true);
 
             client.sendPlayerInfo(selectedPlayerName, selectedAvatarPath);
-            client.setPlayerReady();
+            //client.setPlayerReady();
             client.startListening();
             // You can also send an initial message to the server her(e if needed
         } else {
@@ -187,7 +187,8 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
                     model.addElement(playerName);
                 }
             }
-            startGameButton.setEnabled(model.size() > 1);
+            //startGameButton.setEnabled(model.size() > 1);
+            startGameButton.setEnabled(true);
         });
     
     }

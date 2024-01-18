@@ -4,7 +4,7 @@ import ui.swing.screens.*;
 import ui.swing.screens.scenes.EntranceScreen;
 
 public class Main {
-    public static void main(String[] args) {
+        public static void main(String[] args) {
         
         
         SwingUtilities.invokeLater(() -> {

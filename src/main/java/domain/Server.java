@@ -147,6 +147,7 @@ public class Server {
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
                 broadcast("START_GAME:" + gameStateJson);
+                System.out.println("Debug: Broadcasting START_GAME withGameState");
             } else {
                 System.err.println("Error: Start game is not ready for broadcasting.");
             }
@@ -231,7 +232,13 @@ public class Server {
             this.socket = socket;
             this.server = server;
             isHost = server.getClients().isEmpty();
+
             game = Game.getInstance();
+
+            if(isHost){
+                isReady = true;
+
+            }
 
             try {
                 // Set up input and output streams for communication with the client
@@ -322,8 +329,15 @@ public class Server {
         
                 switch (action) {
                     case "playerReady":
-                        boolean isReady = (Boolean) messageMap.get("isReady");
-                        this.isReady = isReady;
+
+                        //boolean isReady = (Boolean) messageMap.get("isReady");
+                        //this.isReady = isReady;
+                        if (messageMap.containsKey("isReady")) {
+                            Boolean isReady = (Boolean) messageMap.get("isReady");
+                            if (isReady != null) {
+                                this.isReady = isReady;
+                            }
+                        }
                         break;
         
                     case "areAllPlayersReady":
@@ -349,11 +363,15 @@ public class Server {
                         break;
 
                     case "startGame":
-                        if (!server.isGameStarted()) {
+                            System.out.println("Starting the game");
                             server.setGameStarted(true); // Set the game as started
                             game.initializeGame(); // Initialize the game
                             server.broadcastStartGame(); // Broadcast the start of the game
-                        }
+
+                        break;
+                    case "updateState":
+                        game.updateState();
+                        server.broadcastGameState();
                         break;
 
                     case "forageForIngredient":
@@ -462,9 +480,5 @@ public class Server {
 
     }
 
-    
 
-    
-
-   
 }

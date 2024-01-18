@@ -323,7 +323,7 @@ public class GameController {
         if (gameState != null) {
             System.out.println("Retrieving GameState: " + gameState);
         } else {
-            System.err.println("GameState is null in GameController.");
+            System.err.println("Debug: GameState is null in GameController.getGameState()");
         }
         return gameState;
     }
