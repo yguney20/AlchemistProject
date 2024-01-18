@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import domain.controllers.GameController;
 import domain.controllers.LoginController;
 import domain.gameobjects.ArtifactCard;
+import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Molecule;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
+
 
 import java.io.*;
 import java.net.*;
@@ -21,6 +23,7 @@ public class Server {
     private Set<String> avatarPaths = new HashSet<>();
     private LoginController loginController = LoginController.getInstance();
     private GameController gameController = GameController.getInstance();
+    private GameObjectFactory gameObjectFactory = GameObjectFactory.getInstance();
 
     private static Server instance;
 
@@ -297,6 +300,10 @@ public class Server {
                 clientName = playerName;
                 this.clientAvatar = avatarPath;
                 System.out.println("Player registered: " + playerName);
+                
+                // Create player on server side
+                server.createPlayer(playerName, avatarPath);  // You need to implement this method in Server
+        
                 server.broadcastPlayerList();
                 if (server.checkAllPlayersReady()) {
                     server.notifyHostToStartGame();
@@ -478,6 +485,10 @@ public class Server {
         }
 
 
+    }
+
+    public void createPlayer(String playerName, String avatarPath) {
+       gameObjectFactory.createPlayer(playerName, avatarPath);
     }
 
 

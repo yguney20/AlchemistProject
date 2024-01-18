@@ -128,7 +128,6 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
             if (hostController.areAllPlayersReady()) {
                 System.out.println("All players are ready. Starting the game...");
                 hostController.startGame();
-                client.sendMessage("{\"action\":\"startGame\"}");
                 dispose(); // Close the host game screen
             } else {
                 statusLabel.setText("Not all players are ready");
@@ -158,8 +157,8 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
             GameController.getInstance().setOnlineMode(true);
 
             client.sendPlayerInfo(selectedPlayerName, selectedAvatarPath);
-            //client.setPlayerReady();
             client.startListening();
+            
             // You can also send an initial message to the server her(e if needed
         } else {
             // Handle connection failure

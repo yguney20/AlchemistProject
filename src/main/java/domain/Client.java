@@ -149,6 +149,8 @@ public class Client {
             List<String> playerNames = new Gson().fromJson(json, new TypeToken<List<String>>(){}.getType());
             System.out.println("Updating player list with: " + playerNames);
             
+            updateLocalPlayerList(playerNames);
+
             SwingUtilities.invokeLater(() -> {
                 if (eventListener != null) {
                     eventListener.onPlayerListUpdate(playerNames);
@@ -184,6 +186,11 @@ public class Client {
     
 
     
+
+    private void updateLocalPlayerList(List<String> playerNames) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateLocalPlayerList'");
+    }
 
     public void startListening() {
         new Thread(() -> {

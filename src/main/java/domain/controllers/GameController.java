@@ -319,7 +319,9 @@ public class GameController {
     }
 
     public GameState getGameState(){
+        System.out.println("Buraya geliyo mu123");
         GameState gameState = game.getGameState();
+        System.out.println("Burda kaldıııııııı");
         if (gameState != null) {
             System.out.println("Retrieving GameState: " + gameState);
         } else {
