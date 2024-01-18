@@ -72,15 +72,15 @@ public class BoardScreenController {
     }
 
     private void updateLabels() {
-       Player currentPlayer = gameController.getCurrentPlayer();
-    if (currentPlayer != null) {
-        currentPlayerLabel.setText("Player: " + currentPlayer.getNickname());
-        currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
-        currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
-    } else {
-        System.err.println("Current player is null.");
-        // Handle the null case appropriately
-    }
+        Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
+        if (playerToShow != null) {
+            currentPlayerLabel.setText("Player: " + playerToShow.getNickname());
+            currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
+            currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
+        } else {
+            System.err.println("Player is null.");
+            // Handle the null case appropriately
+        }
     }
     
     public static synchronized BoardScreenController getInstance() {

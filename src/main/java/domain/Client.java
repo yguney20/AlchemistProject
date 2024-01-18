@@ -206,6 +206,7 @@ public class Client {
      Set<String> existingPlayerNames = new HashSet<>();
         for (Player player : playerList) {
             existingPlayerNames.add(player.getNickname());
+            System.out.println("Existing Player Names" + player.getNickname());
         }
 
         // Iterate through the received player information
@@ -215,6 +216,7 @@ public class Client {
 
             // If the player is not in the existing player names, add them to the list
             if (!existingPlayerNames.contains(playerName)) {
+                System.out.println("Existing Player Names" + playerName);
                 playerList.add(new Player(playerName, avatarPath));
             }
             // If player exists, update the avatar path if necessary

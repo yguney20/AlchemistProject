@@ -98,4 +98,13 @@ public class GameState {
         }
         return null;
     }
+
+    public Player getPlayerById(String playerID){
+        for (Player player : players) {
+            if (player.getPlayerId() == Integer.parseInt(playerID)) {
+                return player;
+            }
+        }
+        return null;
+    }
 }
