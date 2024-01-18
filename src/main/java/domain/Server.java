@@ -156,6 +156,7 @@ public class Server {
 
         public void broadcastStartGame() {
             GameState gameState = gameController.getGameState();
+            System.out.println("Debug: GameState before broadcasting - " + gameState);
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
                 broadcast("START_GAME:" + gameStateJson);

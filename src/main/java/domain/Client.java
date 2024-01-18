@@ -173,6 +173,7 @@ public class Client {
         } else if (message.startsWith("START_GAME:")) {
             System.out.println("Game is started");
             String jsonState = message.substring("START_GAME:".length());
+            System.out.println("Debug: Received GameState JSON - " + jsonState);
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
            
             SwingUtilities.invokeLater(() -> {
@@ -201,30 +202,30 @@ public class Client {
 
    private void updateLocalPlayerList(List<Map<String, String>> playerInfoList) {
      Set<String> existingPlayerNames = new HashSet<>();
-    for (Player player : playerList) {
-        existingPlayerNames.add(player.getNickname());
-    }
-
-    // Iterate through the received player information
-    for (Map<String, String> playerInfo : playerInfoList) {
-        String playerName = playerInfo.get("playerName");
-        String avatarPath = playerInfo.get("avatarPath");
-
-        // If the player is not in the existing player names, add them to the list
-        if (!existingPlayerNames.contains(playerName)) {
-            playerList.add(new Player(playerName, avatarPath));
+        for (Player player : playerList) {
+            existingPlayerNames.add(player.getNickname());
         }
-        // If player exists, update the avatar path if necessary
-        else {
-            for (Player player : playerList) {
-                if (player.getNickname().equals(playerName) && !player.getAvatar().equals(avatarPath)) {
-                    player.setAvatar(avatarPath); // Update the avatar path
-                    break;
+
+        // Iterate through the received player information
+        for (Map<String, String> playerInfo : playerInfoList) {
+            String playerName = playerInfo.get("playerName");
+            String avatarPath = playerInfo.get("avatarPath");
+
+            // If the player is not in the existing player names, add them to the list
+            if (!existingPlayerNames.contains(playerName)) {
+                playerList.add(new Player(playerName, avatarPath));
+            }
+            // If player exists, update the avatar path if necessary
+            else {
+                for (Player player : playerList) {
+                    if (player.getNickname().equals(playerName) && !player.getAvatar().equals(avatarPath)) {
+                        player.setAvatar(avatarPath); // Update the avatar path
+                        break;
+                    }
                 }
             }
         }
     }
-}
 
     public void startListening() {
         new Thread(() -> {

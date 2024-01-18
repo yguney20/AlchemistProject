@@ -64,6 +64,9 @@ public class BoardScreenController {
 
 
 	public void initialize() {
+        if (gameController == null) {
+            System.err.println("Debug: GameController instance is null in BoardScreenController.initialize");
+        }
         updateLabels();
     }
 

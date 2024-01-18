@@ -166,11 +166,8 @@ public class Game { //Singleton Pattern
         this.currentPlayerID = currentPlayer.getPlayerId();
         this.gameState = new GameState(players, currentRound, currentTurn, currentPlayerID, isPaused);
         gameState.setCurrentPlayerID(currentPlayerID);
-        if (gameState != null) {
-            System.out.println("Debug: GameState initialized successfully");
-        } else {
-            System.out.println("Debug: GameState is null after initialization");
-        }
+       
+        System.out.println("Debug: GameState initialized - " + gameState);
     }
 
     

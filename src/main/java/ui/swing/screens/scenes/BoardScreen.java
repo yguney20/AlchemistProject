@@ -76,6 +76,9 @@ public class BoardScreen extends JFrame{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
                 Parent root = loader.load();
                 controller = loader.getController();
+                if (controller == null) {
+                    System.err.println("Debug: BoardScreenController is null after FXMLLoader");
+                }
                 controller.setBoardScreenFrame(this);
                 Scene scene = new Scene(root);
                 fxPanel.setScene(scene);
