@@ -72,6 +72,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         playerList.setBounds(400, 275, 200, 250); // Set bounds as needed
         contentPane.add(playerList);
         
+        loginController.createPlayer(playerName, avatarPath);
 
 
         // Back button logic
@@ -204,7 +205,6 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
     private void createPlayer() {
         SwingUtilities.invokeLater(() -> {
             // Now that the server has confirmed the uniqueness, create the player locally
-            loginController.createPlayer(playerName, avatarPath);
             // Additional logic for successful player creation
         });
     }

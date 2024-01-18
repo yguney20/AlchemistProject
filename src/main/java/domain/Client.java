@@ -155,23 +155,25 @@ public class Client {
         Type type = new TypeToken<List<Map<String, String>>>() {}.getType();
         List<Map<String, String>> playerInfoList = new Gson().fromJson(json, type);
         
-        // Extract player names for the UI update
+        // Extract player names for the UI update and rebuild local player list
         List<String> playerNames = new ArrayList<>();
+        playerList.clear(); // Clear the existing list to avoid duplicates
         for (Map<String, String> playerInfo : playerInfoList) {
-            playerNames.add(playerInfo.get("playerName"));
+            String playerName = playerInfo.get("playerName");
+            String avatarPath = playerInfo.get("avatarPath");
+            playerList.add(new Player(playerName, avatarPath));
+            playerNames.add(playerName);
         }
-
-        updateLocalPlayerList(playerInfoList);
-        
-        // Update UI using SwingUtilities.invokeLater
-            SwingUtilities.invokeLater(() -> {
-                if (eventListener != null) {
-                    eventListener.onPlayerListUpdate(playerNames);
-                } else {
-                    System.out.println("EventListener is null");
-                }
-            });
-        } else if (message.startsWith("START_GAME:")) {
+    
+        // Update UI with the new player list
+        SwingUtilities.invokeLater(() -> {
+            if (eventListener != null) {
+                eventListener.onPlayerListUpdate(playerNames);
+            } else {
+                System.out.println("EventListener is null");
+            }
+        });
+    } else if (message.startsWith("START_GAME:")) {
             System.out.println("Game is started");
             String jsonState = message.substring("START_GAME:".length());
             System.out.println("Debug: Received GameState JSON - " + jsonState);

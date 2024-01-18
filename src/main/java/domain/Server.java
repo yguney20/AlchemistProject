@@ -23,6 +23,7 @@ public class Server {
     private Set<String> avatarPaths = new HashSet<>();
     private LoginController loginController = LoginController.getInstance();
     private GameController gameController = GameController.getInstance();
+    private List<Player> serverPlayerList = new ArrayList<>(); 
     
 
     private static Server instance;
@@ -215,6 +216,21 @@ public class Server {
             this.gameStarted = gameStarted;
         }
 
+        private synchronized void addPlayerToList(String playerName, String avatarPath) {
+            // Check if player is already in the list
+            boolean playerExists = serverPlayerList.stream()
+                .anyMatch(player -> player.getNickname().equals(playerName) && player.getAvatar().equals(avatarPath));
+        
+            if (!playerExists) {
+                // If player is unique, add to the list
+                Player newPlayer = new Player(playerName, avatarPath);
+                serverPlayerList.add(newPlayer);
+                System.out.println("Added new player: " + playerName);
+            } else {
+                System.out.println("Player already exists: " + playerName);
+            }
+        }
+
 
     // Main method to start the server
     public static void main(String[] args) {
@@ -301,6 +317,7 @@ public class Server {
             Map<String, String> playerInfo = new Gson().fromJson(json, Map.class);
             String playerName = playerInfo.get("playerName");
             String avatarPath = playerInfo.get("avatarPath");
+            server.addPlayerToList(playerName, avatarPath);
         
             if (!server.isUniquePlayer(playerName, avatarPath)) {
                 writer.println("DUPLICATE");
@@ -495,6 +512,8 @@ public class Server {
         public void setReady(boolean readyStatus) {
             this.isReady = readyStatus;
         }
+
+        
 
 
     }
