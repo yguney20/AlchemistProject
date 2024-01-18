@@ -221,6 +221,7 @@ public class Game { //Singleton Pattern
         this.currentRound = newGameState.getCurrentRound();
         this.currentTurn = newGameState.getCurrentTurn();
         this.currentPlayerID = newGameState.getCurrentPlayerID();
+        this.currentPlayer = getPlayerById(newGameState.getCurrentPlayerID());
         this.isPaused = newGameState.isPaused();
         // Additionally update other relevant state attributes if necessary
         // For example, players, scores, etc., based on what GameState contains

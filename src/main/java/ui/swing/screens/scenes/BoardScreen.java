@@ -77,13 +77,14 @@ public class BoardScreen extends JFrame{
                 Parent root = loader.load();
                 controller = loader.getController();
                 if (controller == null) {
-                    System.err.println("Debug: BoardScreenController is null after FXMLLoader");
+                    throw new IllegalStateException("BoardScreenController is null after FXMLLoader");
                 }
                 controller.setBoardScreenFrame(this);
                 Scene scene = new Scene(root);
                 fxPanel.setScene(scene);
             } catch (Exception e) {
                 e.printStackTrace();
+                // Consider exiting the application or handling the error more gracefully
             }
         });
     }

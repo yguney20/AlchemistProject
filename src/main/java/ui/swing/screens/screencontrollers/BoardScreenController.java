@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import domain.GameState;
 import domain.controllers.GameController;
+import domain.gameobjects.Player;
 import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
 import ui.swing.screens.scenes.SettingsScreen;
@@ -71,9 +72,15 @@ public class BoardScreenController {
     }
 
     private void updateLabels() {
-        currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
-        currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
-        currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
+       Player currentPlayer = gameController.getCurrentPlayer();
+        if (currentPlayer != null) {
+            currentPlayerLabel.setText("Player: " + currentPlayer.getNickname());
+            currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
+            currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
+        } else {
+            System.err.println("Current player is null.");
+            // Handle the null case appropriately
+        }
     }
     
     public static synchronized BoardScreenController getInstance() {
