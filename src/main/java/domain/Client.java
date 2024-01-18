@@ -247,15 +247,12 @@ public class Client {
     }
 
     private void openBoardScreen(GameState gameState) {
-        boardScreen = BoardScreen.getInstance(); // Use getInstance if BoardScreen is a singleton
+        boardScreen = new BoardScreen();
         boardScreen.display();
         BoardScreenController boardController = boardScreen.getController();
     
         if (boardController != null) {
-            // Set the GameState in GameController and then manually update the UI
-            GameController gameController = GameController.getInstance();
-            gameController.setGameState(gameState);
-            boardController.manualUIUpdate(); // This replaces the direct call to updateGameState
+            boardController.updateGameState(gameState);
         } else {
             System.err.println("Error: BoardScreenController is null.");
             // Additional error handling here
