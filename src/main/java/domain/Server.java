@@ -23,7 +23,7 @@ public class Server {
     private Set<String> avatarPaths = new HashSet<>();
     private LoginController loginController = LoginController.getInstance();
     private GameController gameController = GameController.getInstance();
-    private GameObjectFactory gameObjectFactory = GameObjectFactory.getInstance();
+    
 
     private static Server instance;
 
@@ -89,15 +89,24 @@ public class Server {
         }
     }
 
-    void broadcastPlayerList() {
-        System.out.println("Broadcasting Start"); // Debug print
-        List<String> playerNames = clients.stream()
-                                        .map(ClientHandler::getClientName)
-                                        .collect(Collectors.toList());
-        String playerListJson = new Gson().toJson(playerNames);
-        broadcast("PLAYER_LIST:" + playerListJson);
 
+    void broadcastPlayerList() {
+        System.out.println("Broadcasting player list");
+    
+        // Create a list of player info maps
+        List<Map<String, String>> playerInfoList = new ArrayList<>();
+        for (ClientHandler client : clients) {
+            Map<String, String> playerInfo = new HashMap<>();
+            playerInfo.put("playerName", client.getClientName());
+            playerInfo.put("avatarPath", client.getClientAvatar());
+            playerInfoList.add(playerInfo);
+        }
+    
+        // Convert the list to JSON and broadcast it
+        String playerListJson = new Gson().toJson(playerInfoList);
+        broadcast("PLAYER_LIST:" + playerListJson);
     }
+
 
     // Notify the host to start the game
     void notifyHostToStartGame() {
@@ -300,9 +309,7 @@ public class Server {
                 clientName = playerName;
                 this.clientAvatar = avatarPath;
                 System.out.println("Player registered: " + playerName);
-                
-                // Create player on server side
-                server.createPlayer(playerName, avatarPath);  // You need to implement this method in Server
+            
         
                 server.broadcastPlayerList();
                 if (server.checkAllPlayersReady()) {
@@ -472,6 +479,10 @@ public class Server {
             return clientName;
         }
 
+        String getClientAvatar() {
+            return clientAvatar;
+        }
+
         public boolean isHost() {
             return isHost;
         }
@@ -485,10 +496,6 @@ public class Server {
         }
 
 
-    }
-
-    public void createPlayer(String playerName, String avatarPath) {
-       gameObjectFactory.createPlayer(playerName, avatarPath);
     }
 
 

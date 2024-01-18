@@ -3,9 +3,12 @@ package domain;
 import java.io.*;
 import java.net.*;
 import java.net.http.WebSocket.Listener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import javax.swing.DefaultListModel;
@@ -17,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import domain.controllers.GameController;
 import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
+import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
 import domain.interfaces.EventListener;
 import ui.swing.screens.scenes.BoardScreen;
@@ -35,6 +39,7 @@ public class Client {
     private boolean listening = true;
     private BoardScreen boardScreen;
     private boolean isConnected = false;
+    private List<Player> playerList = Player.getPlayerList(); 
 
     private LoginController loginController = LoginController.getInstance();
 
@@ -143,14 +148,21 @@ public class Client {
 
     public void handleServerMessage(String message) {
         System.out.println("Client received message: " + message);
-    
-        if (message.startsWith("PLAYER_LIST:")) {
-            String json = message.substring("PLAYER_LIST:".length());
-            List<String> playerNames = new Gson().fromJson(json, new TypeToken<List<String>>(){}.getType());
-            System.out.println("Updating player list with: " + playerNames);
-            
-            updateLocalPlayerList(playerNames);
 
+    if (message.startsWith("PLAYER_LIST:")) {
+        String json = message.substring("PLAYER_LIST:".length());
+        Type type = new TypeToken<List<Map<String, String>>>() {}.getType();
+        List<Map<String, String>> playerInfoList = new Gson().fromJson(json, type);
+        
+        // Extract player names for the UI update
+        List<String> playerNames = new ArrayList<>();
+        for (Map<String, String> playerInfo : playerInfoList) {
+            playerNames.add(playerInfo.get("playerName"));
+        }
+
+        updateLocalPlayerList(playerInfoList);
+        
+        // Update UI using SwingUtilities.invokeLater
             SwingUtilities.invokeLater(() -> {
                 if (eventListener != null) {
                     eventListener.onPlayerListUpdate(playerNames);
@@ -187,10 +199,32 @@ public class Client {
 
     
 
-    private void updateLocalPlayerList(List<String> playerNames) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateLocalPlayerList'");
+   private void updateLocalPlayerList(List<Map<String, String>> playerInfoList) {
+     Set<String> existingPlayerNames = new HashSet<>();
+    for (Player player : playerList) {
+        existingPlayerNames.add(player.getNickname());
     }
+
+    // Iterate through the received player information
+    for (Map<String, String> playerInfo : playerInfoList) {
+        String playerName = playerInfo.get("playerName");
+        String avatarPath = playerInfo.get("avatarPath");
+
+        // If the player is not in the existing player names, add them to the list
+        if (!existingPlayerNames.contains(playerName)) {
+            playerList.add(new Player(playerName, avatarPath));
+        }
+        // If player exists, update the avatar path if necessary
+        else {
+            for (Player player : playerList) {
+                if (player.getNickname().equals(playerName) && !player.getAvatar().equals(avatarPath)) {
+                    player.setAvatar(avatarPath); // Update the avatar path
+                    break;
+                }
+            }
+        }
+    }
+}
 
     public void startListening() {
         new Thread(() -> {
