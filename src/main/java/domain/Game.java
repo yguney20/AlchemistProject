@@ -317,6 +317,14 @@ public class Game { //Singleton Pattern
                .findFirst()
                .orElse(null); // Return null if no card is found
     }
+    
+    public ArtifactCard getPlayerArtifactCardById(int cardId, int playerId) {
+    	Player player = getPlayerById(playerId);
+        return player.getArtifactCards().stream()
+               .filter(card -> card.getArtifactId() == cardId)
+               .findFirst()
+               .orElse(null); // Return null if no card is found
+    }
 
     private IngredientCard getIngredientById(int ingredientId) {
         
@@ -470,7 +478,7 @@ public class Game { //Singleton Pattern
 
     public void useArtifactCardById(int cardId, int playerId) {
         Player player = getPlayerById(playerId);
-        ArtifactCard card = getArtifactCardById(cardId);
+        ArtifactCard card = getPlayerArtifactCardById(cardId, playerId);
     
         // Check if both player and card are not null
         if (card == null || player == null) {

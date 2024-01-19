@@ -2,6 +2,7 @@ package ui.swing.screens.screencontrollers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
@@ -20,6 +21,9 @@ public class SelectArtifactScreenController {
 
 	@FXML
 	private HBox artifactContainer;
+	
+    @FXML
+    private Label messageLabel;
 
 	private SelectArtifactScreen selectArtifactScreen;
 	private GameController gameController;
@@ -59,6 +63,8 @@ public class SelectArtifactScreenController {
 
 	private void handleArtifactSelection(ArtifactCard card) {
 		this.selectedArtifactCard = card;
+        messageLabel.setText("Selected: " + card.getName());
+
 		// UI updates or further actions can be implemented here
 
 		// Add cases for other artifacts
@@ -84,8 +90,12 @@ public class SelectArtifactScreenController {
 
 	@FXML
     private void handleSelectAction() {
+        
         if (selectedArtifactCard != null) {
             // Perform actions using the selected artifact card
+        	System.out.println("card id: " + selectedArtifactCard.getArtifactId());
+        	System.out.println("player id: " + gameController.getCurrentPlayer().getPlayerId());
+
             gameController.UseArtifactCard(selectedArtifactCard.getArtifactId(), gameController.getCurrentPlayer().getPlayerId());
             closeScreen();
             switch (selectedArtifactCard.getName()) {
@@ -94,8 +104,8 @@ public class SelectArtifactScreenController {
                 break;
             }
         } else {
-            // Handle no selection case
-        }
+        	messageLabel.setText("Please select an artifact first.");
+            return;        }
     }
 
 	@FXML
