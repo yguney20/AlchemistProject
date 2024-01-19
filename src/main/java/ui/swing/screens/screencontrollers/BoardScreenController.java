@@ -72,15 +72,11 @@ public class BoardScreenController {
     }
 
     private void updateLabels() {
-        Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
-        if (playerToShow != null) {
-            currentPlayerLabel.setText("Player: " + playerToShow.getNickname());
-            currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
-            currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
-        } else {
-            System.err.println("Player is null.");
-            // Handle the null case appropriately
-        }
+        //Online kısmında client ile vermemiz gerekebilir
+        //Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
+        currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
+        currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
+        currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
     }
     
     public static synchronized BoardScreenController getInstance() {
@@ -251,13 +247,17 @@ public class BoardScreenController {
 
     public void updateGameState(GameState gameState) {
         // Update the UI elements with information from gameState
-        SwingUtilities.invokeLater(() -> {
-            currentPlayerLabel.setText("Current Player: " + gameState.getCurrentPlayer().getNickname());
-            currentTurnLabel.setText("Current Turn: " + gameState.getCurrentTurn());
-            currentRoundLabel.setText("Current Round: " + gameState.getCurrentRound());
-            // You might also need to update other parts of the UI
-            // such as player positions, scores, etc.
-        });
+
+        System.out.println("E buraya geliyo ama dimi");
+        System.out.println("Current Player: " + gameController.getCurrentPlayer().getNickname());
+        updateLabels();
+        // SwingUtilities.invokeLater(() -> {
+        //     currentPlayerLabel.setText("Current Player: " + gameController.getCurrentPlayer().getNickname());
+        //     currentTurnLabel.setText("Current Turn: " + gameController.getCurrentTurn());
+        //     currentRoundLabel.setText("Current Round: " + gameController.getCurrentRound());
+        //     // You might also need to update other parts of the UI
+        //     // such as player positions, scores, etc.
+        // });
     }
     
     

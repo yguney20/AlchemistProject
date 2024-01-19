@@ -127,6 +127,7 @@ public class Game { //Singleton Pattern
     //-----------------------Game Related Functions--------------------------------------
 
     public void initializeGame() {
+        System.out.println("Players Size: "+ players.size());
         // Null check for players
         if (players == null || players.isEmpty()) {
             throw new IllegalStateException("Player list is null or empty.");
@@ -166,7 +167,8 @@ public class Game { //Singleton Pattern
         this.currentPlayerID = currentPlayer.getPlayerId();
         this.gameState = new GameState(players, currentRound, currentTurn, currentPlayerID, isPaused);
         gameState.setCurrentPlayerID(currentPlayerID);
-       
+
+       System.out.println("Player List: " + players);
         System.out.println("Debug: GameState initialized - " + gameState);
     }
 
@@ -174,12 +176,12 @@ public class Game { //Singleton Pattern
     public void updateState() {
     	
 			int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
-            System.out.println("currentPlayer Index: " + currentPlayerIndex);
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             currentPlayer = players.get(currentPlayerIndex);
             currentPlayerID = currentPlayer.getPlayerId();
+            gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentPlayerID(currentPlayerID);
-
+            System.out.println("currentPlayer name in method game updateState: " + currentPlayer.getNickname());
             // Check if all players have completed their turns
             if (currentPlayerIndex == 0) {
                 currentTurn++;

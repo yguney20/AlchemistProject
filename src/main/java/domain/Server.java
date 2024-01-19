@@ -45,6 +45,8 @@ public class Server {
         return clients.stream().map(ClientHandler::getClientName).collect(Collectors.toList());
     }
 
+    
+
     // Main logic to execute the server
     public void execute() {
         System.out.println("Waiting for players...");
@@ -206,6 +208,7 @@ public class Server {
 
         public boolean areAllPlayersReady() {
             return clients.stream().allMatch(ClientHandler::isReady);
+
         }
 
         public boolean isGameStarted() {
@@ -217,12 +220,12 @@ public class Server {
         }
 
         private synchronized void addPlayerToList(String playerName, String avatarPath) {
-            // Check if player is already in the list
             boolean playerExists = serverPlayerList.stream()
-                .anyMatch(player -> player.getNickname().equals(playerName) && player.getAvatar().equals(avatarPath));
+                .anyMatch(player -> player.getNickname().equals(playerName));
+            
+            System.out.println("Attempting to add player: " + playerName + " Exists: " + playerExists);
         
             if (!playerExists) {
-                // If player is unique, add to the list
                 Player newPlayer = new Player(playerName, avatarPath);
                 serverPlayerList.add(newPlayer);
                 System.out.println("Added new player: " + playerName);
@@ -254,19 +257,21 @@ public class Server {
         private String clientAvatar;
         private boolean isHost;
         private boolean isReady = false;
-         private final Game game;
+        private final Game game;
+        private int clientId;
+        private int clientCounter = 0;
 
         // Constructor for ClientHandler
         public ClientHandler(Socket socket, Server server) {
             this.socket = socket;
             this.server = server;
             isHost = server.getClients().isEmpty();
+            clientId  = clientCounter++;
 
             game = Game.getInstance();
 
             if(isHost){
                 isReady = true;
-
             }
 
             try {
@@ -317,18 +322,16 @@ public class Server {
             Map<String, String> playerInfo = new Gson().fromJson(json, Map.class);
             String playerName = playerInfo.get("playerName");
             String avatarPath = playerInfo.get("avatarPath");
-            server.addPlayerToList(playerName, avatarPath);
         
             if (!server.isUniquePlayer(playerName, avatarPath)) {
                 writer.println("DUPLICATE");
                 System.out.println("Duplicate player detected: " + playerName);
             } else {
-                writer.println("PLAYER_CONFIRMED");
                 clientName = playerName;
                 this.clientAvatar = avatarPath;
                 System.out.println("Player registered: " + playerName);
-            
         
+                server.addPlayerToList(playerName, avatarPath); // Add player here after uniqueness check
                 server.broadcastPlayerList();
                 if (server.checkAllPlayersReady()) {
                     server.notifyHostToStartGame();
@@ -354,16 +357,12 @@ public class Server {
                 return; // Ignore empty or null messages
             }
             Map<String, Object> messageMap = new Gson().fromJson(message, Map.class);
-
-
             if (messageMap.containsKey("action")) {
                 String action = (String) messageMap.get("action");
         
                 switch (action) {
                     case "playerReady":
-
-                        //boolean isReady = (Boolean) messageMap.get("isReady");
-                        //this.isReady = isReady;
+                        
                         if (messageMap.containsKey("isReady")) {
                             Boolean isReady = (Boolean) messageMap.get("isReady");
                             if (isReady != null) {
@@ -395,11 +394,11 @@ public class Server {
                         break;
 
                     case "startGame":
-                            System.out.println("Starting the game");
+                        if (!server.isGameStarted()) {
                             server.setGameStarted(true); // Set the game as started
                             game.initializeGame(); // Initialize the game
                             server.broadcastStartGame(); // Broadcast the start of the game
-
+                        }
                         break;
                     case "updateState":
                         game.updateState();
@@ -407,15 +406,19 @@ public class Server {
                         break;
 
                     case "forageForIngredient":
-                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
-                        System.out.println("Forage for ingredient");
-                        game.forageForIngredient(playerId);
-        
-                        // Only broadcast the state once after processing the action
-                        server.broadcastGameState();
+                         String currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
+                            int playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                            System.out.println("Forage for ingredient");
+                            game.forageForIngredient(playerId);
+            
+                            // Only broadcast the state once after processing the action
+                            server.broadcastGameState();
+                        }
+                        
                         break;
                      case "buyArtifactCard":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int cardId = Integer.parseInt((String) messageMap.get("cardId"));
                         game.buyArtifactCard(playerId, cardId);
                         server.broadcastGameState(); // Update all clients with the new game state
@@ -513,7 +516,9 @@ public class Server {
             this.isReady = readyStatus;
         }
 
-        
+        int getClientId() {
+            return clientId;
+        }
 
 
     }

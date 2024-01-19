@@ -85,7 +85,7 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
 
         
         hostController = new HostController(gameController);
-        loginController.createPlayer(selectedPlayerName, selectedAvatarPath);
+        //loginController.createPlayer(selectedPlayerName, selectedAvatarPath);
         setupClient();
         
         // Add ActionListener to the Back button

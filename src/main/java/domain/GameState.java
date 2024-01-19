@@ -28,7 +28,7 @@ public class GameState {
         return "GameState{" +
                 "\n\tcurrentRound=" + currentRound +
                 "\n\tcurrentTurn=" + currentTurn +
-                "\n\tcurrentPlayer=" + currentPlayerID +
+                "\n\tcurrentPlayerID=" + currentPlayerID +
                 "\n\tisPaused=" + isPaused +
                 "\n}";
     }
@@ -61,12 +61,16 @@ public class GameState {
     }
 
     public int getCurrentPlayerID() {
-        System.out.println("Getting current player: " + currentPlayerID);
+        System.out.println("Getting current playerID: " + currentPlayerID);
         return currentPlayerID;
     }
 
     public void setCurrentPlayerID(int currentPlayerID) {
         this.currentPlayerID = currentPlayerID;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public boolean isPaused() {
