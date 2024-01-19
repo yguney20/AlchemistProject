@@ -214,8 +214,8 @@ public class Client {
                 if (boardController != null) {
                     System.out.println("Game state call sonrası: ");
                     System.out.println(gameState.getCurrentPlayer().getNickname()); 
-                    boardController.updateLabels();
-                    //boardScreen.updateLabels();
+                    //boardController.updateLabels();
+                    boardScreen.initializeJavaFXComponents();
                 } else {
                     System.err.println("Error: BoardScreenController is null.");
                     // Additional error handling here
