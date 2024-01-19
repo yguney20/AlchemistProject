@@ -47,6 +47,7 @@ public class PauseScreenController {
         updateResumeButtonVisibility();
     }
     
+    
     private void initializeMediaPlayers() {
         
         String buttonSoundFile = getClass().getResource("/ui/swing/resources/sounds/buttonSound.wav").toExternalForm();

@@ -49,6 +49,7 @@ public class Client {
     private GameObjectFactory gameObjectFactory = GameObjectFactory.getInstance();
 
 
+    
     // Constructor to initialize the client with the server's host and port
     public Client(String hostname, int port, EventListener listener) {
         this.hostname = hostname;

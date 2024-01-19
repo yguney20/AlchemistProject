@@ -52,6 +52,7 @@ public class PauseScreen extends JFrame {
         initializeJavaFXComponents(fxPanel);
     }
 
+    
     private void initializeJavaFXComponents(JFXPanel fxPanel) {
         Platform.runLater(() -> {
             try {

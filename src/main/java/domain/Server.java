@@ -243,7 +243,6 @@ public class Server {
             broadcast("GAME_RESUMED");
         }
 
-
     // Main method to start the server
     public static void main(String[] args) {
         int port = 6666; // Set your port here
