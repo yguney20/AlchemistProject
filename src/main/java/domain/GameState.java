@@ -14,13 +14,17 @@ public class GameState {
     private boolean isPaused;
     private int currentTurn;
     private PotionCard lastCreatedPotion;
+    private boolean actionPerformed;
 
-    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused) {
+
+    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed) {
         this.players = players;
         this.currentRound = initialRound;
         this.currentPlayerID = initialPlayer;
         this.isPaused = isPaused;
         this.currentTurn = firstTurn;
+        this.actionPerformed = actionPerformed;
+        
     }
     
     @Override
@@ -30,6 +34,7 @@ public class GameState {
                 "\n\tcurrentTurn=" + currentTurn +
                 "\n\tcurrentPlayerID=" + currentPlayerID +
                 "\n\tisPaused=" + isPaused +
+                "\n\tisActionPerformed=" + actionPerformed +
                 "\n}";
     }
 
@@ -46,6 +51,14 @@ public class GameState {
 
 	public List<Player> getPlayers() {
         return players;
+    }
+
+    public boolean getActionPerformed() {
+        return actionPerformed;
+    }
+
+    public void setActionPerformed(boolean actionPerformed) {
+        this.actionPerformed = actionPerformed;
     }
 
     public void setPlayers(List<Player> players) {
