@@ -54,19 +54,24 @@ public class SelectArtifactScreenController {
 			artifactCards = gameController.getPlayerArtifactCards();
 		}
 		for (ArtifactCard card : artifactCards) {
-			Button artifactButton = new Button();
-			artifactButton.setOnAction(event -> handleArtifactSelection(card));
+			if(card.isOneTimeUse()&&card.isUsed()) {
+				//do not add the card
+			} else {
+				Button artifactButton = new Button();
+				artifactButton.setOnAction(event -> handleArtifactSelection(card));
 
-			try (InputStream is = getClass().getResourceAsStream(card.getImagePath())) {
-				ImageView imageView = new ImageView(new Image(is));
-				imageView.setFitHeight(100);
-				imageView.setFitWidth(100);
-				artifactButton.setGraphic(imageView);
-			} catch (IOException e) {
-				e.printStackTrace();
+				try (InputStream is = getClass().getResourceAsStream(card.getImagePath())) {
+					ImageView imageView = new ImageView(new Image(is));
+					imageView.setFitHeight(100);
+					imageView.setFitWidth(100);
+					artifactButton.setGraphic(imageView);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				artifactContainer.getChildren().add(artifactButton);
 			}
 
-			artifactContainer.getChildren().add(artifactButton);
 		}
 	}
 
