@@ -412,9 +412,6 @@ public class Server {
                             int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                             System.out.println("Forage for ingredient");
                             game.forageForIngredient(playerId);
-            
-                            // Only broadcast the state once after processing the action
-                            server.broadcastGameState();
                         }
                         
                         break;
@@ -422,14 +419,12 @@ public class Server {
                         int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int cardId = Integer.parseInt((String) messageMap.get("cardId"));
                         game.buyArtifactCard(playerId, cardId);
-                        server.broadcastGameState(); // Update all clients with the new game state
                         break;
 
                     case "transmuteIngredient":
                         playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int ingredientId = Integer.parseInt((String) messageMap.get("ingredientId"));
                         game.transmuteIngredient(playerId, ingredientId);
-                        server.broadcastGameState();
                         break;
 
                     case "sellPotion":
@@ -438,7 +433,6 @@ public class Server {
                         int cardId2 = Integer.parseInt((String) messageMap.get("cardId2"));
                         String guarantee = (String) messageMap.get("guarantee");
                         game.sellPotion(playerId, cardId1, cardId2, guarantee);
-                        server.broadcastGameState();
                         break;
 
                     case "publishTheory":
@@ -446,7 +440,6 @@ public class Server {
                         int ingredientIdPub = Integer.parseInt((String) messageMap.get("ingredientId"));
                         int moleculeId = Integer.parseInt((String) messageMap.get("moleculeId"));
                         game.publishTheory(playerId, ingredientIdPub, moleculeId);
-                        server.broadcastGameState();
                         break;
 
                     case "debunkTheory":
@@ -454,17 +447,15 @@ public class Server {
                         int publicationCardId = Integer.parseInt((String) messageMap.get("publicationCardId"));
                         Molecule.Component component = Molecule.Component.valueOf((String) messageMap.get("componentId"));
                         game.debunkTheory(playerId, publicationCardId, component);
-                        server.broadcastGameState();
                         break;
 
                     case "useArtifactCard":
                         playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         cardId = Integer.parseInt((String) messageMap.get("cardId"));
                         game.useArtifactCardById(cardId, playerId);
-                        server.broadcastGameState();
                         break;
 
-                     case "makeExperiment":
+                    case "makeExperiment":
                         // Extract details from messageMap
                         playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int firstCardId = Integer.parseInt((String) messageMap.get("firstCardId"));
@@ -478,7 +469,8 @@ public class Server {
                         String potionCardJson = new Gson().toJson(potionCard);
                         sendMessage("EXPERIMENT_RESULT:" + potionCardJson);
                         break;
-                        }
+                    }
+                    
             }
     
         }
