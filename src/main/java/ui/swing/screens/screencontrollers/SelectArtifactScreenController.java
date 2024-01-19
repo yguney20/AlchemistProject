@@ -24,6 +24,7 @@ public class SelectArtifactScreenController {
 	private SelectArtifactScreen selectArtifactScreen;
 	private GameController gameController;
 	private ArtifactCard selectedArtifactCard;
+	private String clientName = gameController.getClientPlayer().getNickname();
 
 	public SelectArtifactScreenController() {
 		gameController = GameController.getInstance();
@@ -39,7 +40,12 @@ public class SelectArtifactScreenController {
 	}
 
 	private void loadArtifacts() {
-		List<ArtifactCard> artifactCards = gameController.getPlayerArtifactCards();
+		List<ArtifactCard> artifactCards;
+		if (gameController.isOnlineMode()){
+			artifactCards = gameController.getPlayerByClientName(clientName).getArtifactCards();
+		}else{
+			artifactCards = gameController.getPlayerArtifactCards();
+		}
 		for (ArtifactCard card : artifactCards) {
 			Button artifactButton = new Button();
 			artifactButton.setOnAction(event -> handleArtifactSelection(card));
