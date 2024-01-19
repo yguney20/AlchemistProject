@@ -131,6 +131,8 @@ public class Game { //Singleton Pattern
     	
         GameState.destroyInstance();
 
+        System.out.println("Players Size: "+ players.size());
+
         // Null check for players
         if (players == null || players.isEmpty()) {
             throw new IllegalStateException("Player list is null or empty.");
@@ -168,9 +170,10 @@ public class Game { //Singleton Pattern
 
         currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
         this.currentPlayerID = currentPlayer.getPlayerId();
-        this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused);
+        this.gameState = new GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed);
         gameState.setCurrentPlayerID(currentPlayerID);
-       
+
+       System.out.println("Player List: " + players);
         System.out.println("Debug: GameState initialized - " + gameState);
     }
 
@@ -178,12 +181,12 @@ public class Game { //Singleton Pattern
     public void updateState() {
     	
 			int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
-            System.out.println("currentPlayer Index: " + currentPlayerIndex);
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
             currentPlayer = players.get(currentPlayerIndex);
             currentPlayerID = currentPlayer.getPlayerId();
+            gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentPlayerID(currentPlayerID);
-
+            System.out.println("currentPlayer name in method game updateState: " + currentPlayer.getNickname());
             // Check if all players have completed their turns
             if (currentPlayerIndex == 0) {
                 currentTurn++;
@@ -207,7 +210,9 @@ public class Game { //Singleton Pattern
             gameState.setCurrentRound(currentRound);
             gameState.setCurrentTurn(currentTurn);
             // set actionPerformed to false since we moved on to the next player
+            
             actionPerformed = false;
+            gameState.setActionPerformed(actionPerformed);
             System.out.println(gameState);
 
 
@@ -225,6 +230,7 @@ public class Game { //Singleton Pattern
         this.currentRound = newGameState.getCurrentRound();
         this.currentTurn = newGameState.getCurrentTurn();
         this.currentPlayerID = newGameState.getCurrentPlayerID();
+        this.currentPlayer = getPlayerById(newGameState.getCurrentPlayerID());
         this.isPaused = newGameState.isPaused();
         // Additionally update other relevant state attributes if necessary
         // For example, players, scores, etc., based on what GameState contains
@@ -392,6 +398,7 @@ public class Game { //Singleton Pattern
     
                 // Print the player's updated inventory (for testing or logging)
                 System.out.println(player.getIngredientInventory());
+                updateGameStateWithLatestPlayerInfo(playerId);
     
             } else {
                 // Notify all players if the ingredient deck is empty
@@ -402,9 +409,27 @@ public class Game { //Singleton Pattern
             notifyPlayers("Action already performed.");
         }
     }
+    private void updateGameStateWithLatestPlayerInfo(int playerId) {
+        Player updatedPlayer = getPlayerById(playerId);
+        if (updatedPlayer != null) {
+            // Find the corresponding player in the GameState and update their state
+            for (Player gameStatePlayer : gameState.getPlayers()) {
+                if (gameStatePlayer.getPlayerId() == playerId) {
+                    gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
+                    gameStatePlayer.setGolds(updatedPlayer.getGolds());
+                    // Add any other player properties that need to be updated
+                    break;
+                }
+            }
+        }
+        gameState.setActionPerformed(actionPerformed);
+    }
 
+    
     //-----------------------Artifact Related Functions ------------------------------------
     
+   
+
     /**
      * Attempts to purchase an artifact card for the player.
      * If the player has enough golds and the action hasn't been performed,
@@ -454,7 +479,10 @@ public class Game { //Singleton Pattern
         artifactDeck.remove(card);
         player.addArtifactCard(card);
         player.reduceGold(card.getGoldValue());
+       
         actionPerformed = true;
+        gameState.setActionPerformed(actionPerformed);
+        updateGameStateWithLatestPlayerInfo(player.getPlayerId());
     }
 
     /**
@@ -555,6 +583,8 @@ public class Game { //Singleton Pattern
         player.increaseGold(1);
         // Mark the action as performed
         actionPerformed = true;
+        gameState.setActionPerformed(actionPerformed);
+        updateGameStateWithLatestPlayerInfo(playerId);
     }
 
     
@@ -595,7 +625,10 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     gameState.setLastCreatedPotion(potionCard);
     processExperimentOutcome(player, potionCard, student);
     actionPerformed = true;
+    gameState.setActionPerformed(actionPerformed);
+
     PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
+    updateGameStateWithLatestPlayerInfo(playerId);
 
     return potionCard;
 }
@@ -709,6 +742,8 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
             }
     
             actionPerformed = true;
+            gameState.setActionPerformed(actionPerformed);
+            updateGameStateWithLatestPlayerInfo(playerId);
             System.out.println(potion);
         } else {
             notifyPlayers("Action already performed or preconditions are not met");
@@ -776,6 +811,8 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
         }
 
         actionPerformed = true;
+        gameState.setActionPerformed(actionPerformed);
+        updateGameStateWithLatestPlayerInfo(player.getPlayerId());
     }
 
 
@@ -834,6 +871,8 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     
         ValidatedAspect validatedAspect = new ValidatedAspect(validatedAspectCounter++, ingredient, component, componentSign, componentSize);
         actionPerformed = true;
+        gameState.setActionPerformed(actionPerformed);
+        updateGameStateWithLatestPlayerInfo(playerId);
     }
 
     private void handleCorrectTheory(PublicationCard publicationCard, Player player) {
@@ -879,6 +918,10 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
 
     public int getCurrentPlayerID() {
        return currentPlayerID;
+    }
+
+    public synchronized void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
 

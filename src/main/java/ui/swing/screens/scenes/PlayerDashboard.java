@@ -189,8 +189,18 @@ public class PlayerDashboard extends JFrame {
         		} 
         		else {      		
         		int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
-    			gameController.forageForIngredient(currentPlayerId);
-    			PlayerDashboard.this.setVisible(false);
+                if(gameController.isOnlineMode()){
+                    if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                        gameController.forageForIngredient(currentPlayerId);
+                        PlayerDashboard.this.setVisible(false);
+                    } else {
+                        // Not the client player's turn
+                        JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else{
+                    gameController.forageForIngredient(currentPlayerId);
+                    PlayerDashboard.this.setVisible(false);
+                    }
         		}
         	}
         });
@@ -226,9 +236,22 @@ public class PlayerDashboard extends JFrame {
                     JOptionPane.showMessageDialog(null, "You do not have any ingredient cards!", "Warning", JOptionPane.WARNING_MESSAGE);
         		}
         		else {
-        		TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
-    			transmuteIngredientScreen.display();
-    			PlayerDashboard.this.setVisible(false);
+                    if(gameController.isOnlineMode()){
+                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                            TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
+                            transmuteIngredientScreen.display();
+                            PlayerDashboard.this.setVisible(false);
+                        } else {
+                            // Not the client player's turn
+                            JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    else{
+                        TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
+                        transmuteIngredientScreen.display();
+                        PlayerDashboard.this.setVisible(false);
+                    }  
+        		
         		}
         	}
         });
@@ -263,9 +286,22 @@ public class PlayerDashboard extends JFrame {
                     JOptionPane.showMessageDialog(null, "You do not have enough golds!", "Warning", JOptionPane.WARNING_MESSAGE);
         		}
         		else {
-        		BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
-    			buyArtifactScreen.display();
-    			PlayerDashboard.this.setVisible(false);
+                    if(gameController.isOnlineMode()){
+                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                            BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
+                            buyArtifactScreen.display();
+                            PlayerDashboard.this.setVisible(false);
+                        } else {
+                            // Not the client player's turn
+                            JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    else{
+                        BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
+                        buyArtifactScreen.display();
+                        PlayerDashboard.this.setVisible(false);
+                    }  
+
         		}
         	}
         });
@@ -336,9 +372,7 @@ public class PlayerDashboard extends JFrame {
                     JOptionPane.showMessageDialog(null, "You do not have enough ingredient cards!", "Warning", JOptionPane.WARNING_MESSAGE);
             	}
             	else {
-            	MakeExperimentScreen makeExperimentScreen = new MakeExperimentScreen();
-        		makeExperimentScreen.display();
-        		PlayerDashboard.this.setVisible(false);
+                    
             	}
         			
         	}
@@ -378,9 +412,21 @@ public class PlayerDashboard extends JFrame {
                     JOptionPane.showMessageDialog(null, "You do not have enough ingredient cards!", "Warning", JOptionPane.WARNING_MESSAGE);
             	}
             	else {
-            		SellPotionScreen sellPotionScreen = new SellPotionScreen();
-        			sellPotionScreen.display();
-        			PlayerDashboard.this.setVisible(false);
+                    if(gameController.isOnlineMode()){
+                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                            SellPotionScreen sellPotionScreen = new SellPotionScreen();
+                            sellPotionScreen.display();
+                            PlayerDashboard.this.setVisible(false);
+                        } else {
+                            // Not the client player's turn
+                            JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    else{
+                        SellPotionScreen sellPotionScreen = new SellPotionScreen();
+                        sellPotionScreen.display();
+                        PlayerDashboard.this.setVisible(false);
+                    }
             	}
         			
         	}
@@ -419,9 +465,22 @@ public class PlayerDashboard extends JFrame {
                     JOptionPane.showMessageDialog(null, "You do not have enough golds!", "Warning", JOptionPane.WARNING_MESSAGE);
             	}
             	else {
-            		PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
-        			publishTheoryScreen.display();
-        			PlayerDashboard.this.setVisible(false);
+                    if(gameController.isOnlineMode()){
+                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                            PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
+                        publishTheoryScreen.display();
+                        PlayerDashboard.this.setVisible(false);
+                        } else {
+                            // Not the client player's turn
+                            JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    else{
+                        PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
+                        publishTheoryScreen.display();
+                        PlayerDashboard.this.setVisible(false);
+                    }
+                    
             	}
         			
         	}
@@ -458,9 +517,22 @@ public class PlayerDashboard extends JFrame {
                     JOptionPane.showMessageDialog(null, "This action opens in round 3!", "Warning", JOptionPane.WARNING_MESSAGE);
             	}
             	else {
-            		DebunkTheoryScreen debunkTheoryScreen = new DebunkTheoryScreen();
-        			debunkTheoryScreen.display();
-        			PlayerDashboard.this.setVisible(false);
+                    if(gameController.isOnlineMode()){
+                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                            DebunkTheoryScreen debunkTheoryScreen = new DebunkTheoryScreen();
+                            debunkTheoryScreen.display();
+                            PlayerDashboard.this.setVisible(false);
+                        } else {
+                            // Not the client player's turn
+                            JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    else{
+                        DebunkTheoryScreen debunkTheoryScreen = new DebunkTheoryScreen();
+                        debunkTheoryScreen.display();
+                        PlayerDashboard.this.setVisible(false);
+                    }
+            		
             	}
         			
         	}
@@ -610,8 +682,15 @@ public class PlayerDashboard extends JFrame {
          
         ImageIcon resizedNicknameIcon = ImageResizer.getResizedIcon(nicknameImageSmallPanel, "/ui/swing/resources/images/playerDashboardUI/nicknameImage.png");
         nicknameImageJLabel.setIcon(resizedNicknameIcon);
+
+        JLabel nicknameLabel;
+        if(gameController.isOnlineMode()){
+            nicknameLabel  = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getNickname()));
+        }else {
+            nicknameLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getNickname()));
+        }
              
-        JLabel nicknameLabel = new JLabel(gameController.getCurrentPlayer().getNickname());
+        
         nicknameLabel.setBounds(141, 0, 133, 57);
         nicknamePanel.add(nicknameLabel);
         nicknameLabel.setFont(playerInfoFont);
@@ -637,8 +716,13 @@ public class PlayerDashboard extends JFrame {
         ImageIcon resizedGoldIcon = ImageResizer.getResizedIcon(goldImageSmallPanel, "/ui/swing/resources/images/playerDashboardUI/goldImage.png");
         
         goldImageJLabel.setIcon(resizedGoldIcon);
-   
-        JLabel goldLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getGolds()));
+        JLabel goldLabel;
+        if(gameController.isOnlineMode()){
+            goldLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getGolds()));
+        }else {
+            goldLabel= new JLabel(String.valueOf(gameController.getCurrentPlayer().getGolds()));
+        }
+       
         goldLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         goldLabel.setBounds(141, 0, 133, 57);
         goldPanel.add(goldLabel);
@@ -649,8 +733,14 @@ public class PlayerDashboard extends JFrame {
         sicknessPanel.setBackground(new Color(255, 255, 255));
         playerInfoPanel.add(sicknessPanel);
         sicknessPanel.setLayout(null);
+        JLabel sicknessLabel;
+        if(gameController.isOnlineMode()){
+            sicknessLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getSicknessLevel()));
+        }else {
+            sicknessLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getSicknessLevel()));
+        }
         
-        JLabel sicknessLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getSicknessLevel()));
+       
         sicknessLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         sicknessLabel.setBounds(141, 0, 133, 57);
         sicknessPanel.add(sicknessLabel);
@@ -827,6 +917,7 @@ public class PlayerDashboard extends JFrame {
         setVisible(true); // Show the board
        
     }
+
 
 	
 }

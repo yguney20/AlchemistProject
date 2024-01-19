@@ -36,10 +36,16 @@ public class GameController {
     private boolean isOnlineMode = false;
     private OnlineGameAdapter onlineGameAdapter;
     private static final SettingsState settingsState = new SettingsState();
+    private Player clientPlayer;
+
 	
     public static GameController getInstance() {
         if (instance == null) {
-            instance = new GameController();
+            synchronized (GameController.class) {
+                if (instance == null) {
+                    instance = new GameController();
+                }
+            }
         }
         return instance;
     }
@@ -209,6 +215,7 @@ public class GameController {
         System.out.println("ONLINE OR OFFLINE = " + isOnlineMode);
         if (isOnlineMode) {
             // Online mode: Send action to server via adapter
+            System.out.println("A");
             onlineGameAdapter.forageForIngredient(String.valueOf(playerId));
         } else {
             // Offline mode: Directly call game logic
@@ -323,9 +330,7 @@ public class GameController {
     }
 
     public GameState getGameState(){
-        System.out.println("Buraya geliyo mu123");
         GameState gameState = game.getGameState();
-        System.out.println("Burda kaldıııııııı");
         if (gameState != null) {
             System.out.println("Retrieving GameState: " + gameState);
         } else {
@@ -337,6 +342,7 @@ public class GameController {
     public void setOnlineGameAdapter(OnlineGameAdapter adapter) {
         this.onlineGameAdapter = adapter;
     }
+
     
     public Player getWinner() {
     	return game.getWinner();   	
@@ -348,5 +354,32 @@ public class GameController {
     
     public boolean isGameOver() {
         return game.isGameOver(); 
+
+    public void updateGameState(GameState gameState) {
+       game.updateGameState(gameState);
+    }
+
+    public void setGameState(GameState gameState) {
+        game.setGameState(gameState);
+        System.out.println("Debug: GameState set in GameController: " + gameState);
+    }
+
+    public void setClientPlayer(Player player) {
+        this.clientPlayer = player;
+    }
+
+    // Method to get the client player
+    public Player getClientPlayer() {
+        return clientPlayer;
+    }
+
+    public Player getPlayerByClientName(String name){
+       for (Player player : game.getPlayers()){
+         if(player.getNickname().equals(name)){
+            return player;
+         }
+       }
+       return null;
+
     }
 }

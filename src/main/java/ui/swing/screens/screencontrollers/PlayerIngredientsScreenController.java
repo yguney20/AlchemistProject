@@ -10,6 +10,7 @@ import ui.swing.screens.scenes.HostGameScreen;
 import ui.swing.screens.scenes.PlayerIngredientsScreen;
 import domain.controllers.GameController;
 import domain.gameobjects.IngredientCard;
+import domain.gameobjects.Player;
 
 import java.io.InputStream;
 import java.util.List;
@@ -28,15 +29,28 @@ public class PlayerIngredientsScreenController {
 
     public void initialize() {
         gameController = GameController.getInstance();
-        addIngredients();
+        updateIngredients();
     }
 
-    private void addIngredients() {
-        List<IngredientCard> ingredientCards = gameController.getCurrentPlayer().getIngredientInventory();
-        for (IngredientCard card : ingredientCards) {
-            Label ingredientLabel = new Label(card.getName());
-            setImage(card.getImagePath(), ingredientLabel);
-            ingredientsContainer.getChildren().add(ingredientLabel);
+     private void updateIngredients() {
+        // Player playerToShow;
+        // if (gameController.isOnlineMode()){
+        //     playerToShow = gameController.getPlayerByClientName(clientName);
+        // } else{
+        //     playerToShow = gameController.getCurrentPlayer();
+        // }
+        Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
+        if (playerToShow != null) {
+            ingredientsContainer.getChildren().clear(); // Clear previous items
+            List<IngredientCard> ingredientCards = playerToShow.getIngredientInventory();
+            for (IngredientCard card : ingredientCards) {
+                Label ingredientLabel = new Label(card.getName());
+                setImage(card.getImagePath(), ingredientLabel);
+                ingredientsContainer.getChildren().add(ingredientLabel);
+            }
+        } else {
+            System.err.println("Player is null.");
+            // Handle the null case appropriately
         }
     }
     

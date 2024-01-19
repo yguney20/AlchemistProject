@@ -12,6 +12,7 @@ import domain.controllers.GameController;
 import domain.controllers.HostController;
 import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
+import domain.gameobjects.Player;
 import domain.interfaces.EventListener;
 
 import javax.swing.*;
@@ -85,7 +86,7 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
 
         
         hostController = new HostController(gameController);
-        loginController.createPlayer(selectedPlayerName, selectedAvatarPath);
+        //loginController.createPlayer(selectedPlayerName, selectedAvatarPath);
         setupClient();
         
         // Add ActionListener to the Back button
@@ -155,7 +156,7 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
             OnlineGameAdapter onlineGameAdapter = new OnlineGameAdapter(client);
             GameController.getInstance().setOnlineGameAdapter(onlineGameAdapter);
             GameController.getInstance().setOnlineMode(true);
-
+             gameController.setClientPlayer(new Player(selectedPlayerName, selectedAvatarPath));
             client.sendPlayerInfo(selectedPlayerName, selectedAvatarPath);
             client.startListening();
             

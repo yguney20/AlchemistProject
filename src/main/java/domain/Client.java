@@ -20,10 +20,11 @@ import com.google.gson.reflect.TypeToken;
 import domain.controllers.GameController;
 import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
+import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
 import domain.interfaces.EventListener;
-import ui.swing.screens.scenes.BoardScreen;
+import ui.swing.screens.scenes.*;
 import ui.swing.screens.HostGameScreen;
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 import ui.swing.screens.screencontrollers.BoardScreenController;
@@ -38,12 +39,17 @@ public class Client {
     private EventListener eventListener;
     private boolean listening = true;
     private BoardScreen boardScreen;
+    private MenuScreen menuScreen;
+    private PauseScreen pauseScreen;
     private boolean isConnected = false;
     private List<Player> playerList = Player.getPlayerList(); 
 
     private LoginController loginController = LoginController.getInstance();
+    private GameController gameController = GameController.getInstance();
+    private GameObjectFactory gameObjectFactory = GameObjectFactory.getInstance();
 
 
+    
     // Constructor to initialize the client with the server's host and port
     public Client(String hostname, int port, EventListener listener) {
         this.hostname = hostname;
@@ -149,32 +155,34 @@ public class Client {
     public void handleServerMessage(String message) {
         System.out.println("Client received message: " + message);
 
-    if (message.startsWith("PLAYER_LIST:")) {
-        String json = message.substring("PLAYER_LIST:".length());
-        Type type = new TypeToken<List<Map<String, String>>>() {}.getType();
-        List<Map<String, String>> playerInfoList = new Gson().fromJson(json, type);
-        
-        // Extract player names for the UI update
-        List<String> playerNames = new ArrayList<>();
-        for (Map<String, String> playerInfo : playerInfoList) {
-            playerNames.add(playerInfo.get("playerName"));
-        }
-
-        updateLocalPlayerList(playerInfoList);
-        
-        // Update UI using SwingUtilities.invokeLater
-            SwingUtilities.invokeLater(() -> {
-                if (eventListener != null) {
-                    eventListener.onPlayerListUpdate(playerNames);
-                } else {
-                    System.out.println("EventListener is null");
-                }
-            });
-        } else if (message.startsWith("START_GAME:")) {
+        if (message.startsWith("PLAYER_LIST:")) {
+            String json = message.substring("PLAYER_LIST:".length());
+            Type type = new TypeToken<List<Map<String, String>>>() {}.getType();
+            List<Map<String, String>> playerInfoList = new Gson().fromJson(json, type);
+            
+            // Extract player names for the UI update
+            List<String> playerNames = new ArrayList<>();
+            for (Map<String, String> playerInfo : playerInfoList) {
+                playerNames.add(playerInfo.get("playerName"));
+            }
+    
+            updateLocalPlayerList(playerInfoList);
+            
+            // Update UI using SwingUtilities.invokeLater
+                SwingUtilities.invokeLater(() -> {
+                    if (eventListener != null) {
+                        eventListener.onPlayerListUpdate(playerNames);
+                    } else {
+                        System.out.println("EventListener is null");
+                    }
+                });
+    
+    } else if (message.startsWith("START_GAME:")) {
             System.out.println("Game is started");
             String jsonState = message.substring("START_GAME:".length());
             System.out.println("Debug: Received GameState JSON - " + jsonState);
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+            gameController.setGameState(gameState);
            
             SwingUtilities.invokeLater(() -> {
     
@@ -193,6 +201,30 @@ public class Client {
             if (callback != null) {
                 callback.accept(potionCard);
             }
+        } else if (message.startsWith("GAME_STATE:")) {
+            String jsonState = message.substring("GAME_STATE:".length());
+            GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+            gameController.setGameState(gameState);
+            //after setting the game state we should apply it
+            // Update the UI here or through a method call
+
+            SwingUtilities.invokeLater(() -> {
+                BoardScreenController boardController = BoardScreenController.getInstance();
+            if (boardController != null) {
+                System.out.println("if  içi: "+ gameState);
+                boardController.updateGameState(gameState);
+                //boardScreen.updateLabels();
+            } else {
+                System.err.println("Error: BoardScreenController is null.");
+                // Additional error handling here
+            }
+            });
+            
+        } else if (message.startsWith("GAME_PAUSED:")) {
+        	 String pausingPlayerName = message.substring("GAME_PAUSED:".length());
+             openPauseScreen(pausingPlayerName);
+        } else if (message.equals("GAME_RESUMED")) {
+        	closePauseScreen();
         }
     }
 
@@ -200,30 +232,14 @@ public class Client {
 
     
 
-   private void updateLocalPlayerList(List<Map<String, String>> playerInfoList) {
-     Set<String> existingPlayerNames = new HashSet<>();
-        for (Player player : playerList) {
-            existingPlayerNames.add(player.getNickname());
-        }
+    private void updateLocalPlayerList(List<Map<String, String>> playerInfoList) {
 
-        // Iterate through the received player information
+        playerList.clear(); // Clear the existing list first
+    
         for (Map<String, String> playerInfo : playerInfoList) {
             String playerName = playerInfo.get("playerName");
             String avatarPath = playerInfo.get("avatarPath");
-
-            // If the player is not in the existing player names, add them to the list
-            if (!existingPlayerNames.contains(playerName)) {
-                playerList.add(new Player(playerName, avatarPath));
-            }
-            // If player exists, update the avatar path if necessary
-            else {
-                for (Player player : playerList) {
-                    if (player.getNickname().equals(playerName) && !player.getAvatar().equals(avatarPath)) {
-                        player.setAvatar(avatarPath); // Update the avatar path
-                        break;
-                    }
-                }
-            }
+            gameObjectFactory.createPlayer(playerName, avatarPath);
         }
     }
 
@@ -245,16 +261,38 @@ public class Client {
     }
 
     private void openBoardScreen(GameState gameState) {
+        System.out.println("Open Board screnn func içi: "+ gameState);
         boardScreen = new BoardScreen();
         boardScreen.display();
-        BoardScreenController boardController = boardScreen.getController();
+        BoardScreenController boardController = BoardScreenController.getInstance();
     
         if (boardController != null) {
+            System.out.println("if  içi: "+ gameState);
             boardController.updateGameState(gameState);
         } else {
             System.err.println("Error: BoardScreenController is null.");
             // Additional error handling here
         }
+    }
+    
+    
+ // Method to display the pause screen
+    private void openPauseScreen(String pausingPlayerName) {
+        SwingUtilities.invokeLater(() -> {
+            pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen));
+            pauseScreen.display();
+            // Further customization based on pausingPlayerName
+        });
+    }
+
+    // Method to close the pause screen
+    private void closePauseScreen() {
+        SwingUtilities.invokeLater(() -> {
+            // Logic to close the pause screen
+        	if (pauseScreen != null) {
+                pauseScreen.close();
+            }
+        });
     }
 
     public void simulateAnotherPlayer() {
@@ -272,11 +310,10 @@ public class Client {
     
             System.out.println("Simulated player sending info: Name - " + playerName + ", Avatar - " + avatarPath);
             simulatedPlayer.sendPlayerInfo(playerName, avatarPath);
-            loginController.createPlayer(playerName, avatarPath);
+            //loginController.createPlayer(playerName, avatarPath);
+            simulatedPlayer.setPlayerReady();
 
             // You can add additional automated actions for the simulated player here
-
-            //simulatedPlayer.setPlayerReady();
         } else {
             System.err.println("Failed to connect the simulated player.");
         }

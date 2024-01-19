@@ -21,8 +21,10 @@ public class Server {
     private boolean gameStarted = false; // Flag to indicate if the game has started
     private Set<String> playerNames = new HashSet<>();
     private Set<String> avatarPaths = new HashSet<>();
-    private LoginController loginController = LoginController.getInstance();
-    private GameController gameController = GameController.getInstance();
+    //private GameController gameController = GameController.getInstance();
+    private List<Player> serverPlayerList = new ArrayList<>(); 
+    private Game game = Game.getInstance();
+
     
 
     private static Server instance;
@@ -43,6 +45,8 @@ public class Server {
     public List<String> getConnectedPlayerNames() {
         return clients.stream().map(ClientHandler::getClientName).collect(Collectors.toList());
     }
+
+    
 
     // Main logic to execute the server
     public void execute() {
@@ -145,7 +149,7 @@ public class Server {
         }
 
         public void broadcastGameState() {
-            GameState gameState = gameController.getGameState();
+            GameState gameState = game.getGameState();
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
                 broadcast("GAME_STATE:" + gameStateJson);
@@ -155,7 +159,7 @@ public class Server {
         }
 
         public void broadcastStartGame() {
-            GameState gameState = gameController.getGameState();
+            GameState gameState = game.getGameState();
             System.out.println("Debug: GameState before broadcasting - " + gameState);
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
@@ -205,6 +209,7 @@ public class Server {
 
         public boolean areAllPlayersReady() {
             return clients.stream().allMatch(ClientHandler::isReady);
+
         }
 
         public boolean isGameStarted() {
@@ -215,6 +220,28 @@ public class Server {
             this.gameStarted = gameStarted;
         }
 
+        private synchronized void addPlayerToList(String playerName, String avatarPath) {
+            boolean playerExists = serverPlayerList.stream()
+                .anyMatch(player -> player.getNickname().equals(playerName));
+            
+            System.out.println("Attempting to add player: " + playerName + " Exists: " + playerExists);
+        
+            if (!playerExists) {
+                Player newPlayer = new Player(playerName, avatarPath);
+                serverPlayerList.add(newPlayer);
+                System.out.println("Added new player: " + playerName);
+            } else {
+                System.out.println("Player already exists: " + playerName);
+            }
+        }
+        
+        public void pauseGame(String pausingPlayerName) {
+            broadcast("GAME_PAUSED:" + pausingPlayerName);
+        }
+
+        public void resumeGame() {
+            broadcast("GAME_RESUMED");
+        }
 
     // Main method to start the server
     public static void main(String[] args) {
@@ -238,19 +265,21 @@ public class Server {
         private String clientAvatar;
         private boolean isHost;
         private boolean isReady = false;
-         private final Game game;
+        private final Game game;
+        private int clientId;
+        private int clientCounter = 0;
 
         // Constructor for ClientHandler
         public ClientHandler(Socket socket, Server server) {
             this.socket = socket;
             this.server = server;
             isHost = server.getClients().isEmpty();
+            clientId  = clientCounter++;
 
             game = Game.getInstance();
 
             if(isHost){
                 isReady = true;
-
             }
 
             try {
@@ -306,12 +335,11 @@ public class Server {
                 writer.println("DUPLICATE");
                 System.out.println("Duplicate player detected: " + playerName);
             } else {
-                writer.println("PLAYER_CONFIRMED");
                 clientName = playerName;
                 this.clientAvatar = avatarPath;
                 System.out.println("Player registered: " + playerName);
-            
         
+                server.addPlayerToList(playerName, avatarPath); // Add player here after uniqueness check
                 server.broadcastPlayerList();
                 if (server.checkAllPlayersReady()) {
                     server.notifyHostToStartGame();
@@ -337,16 +365,11 @@ public class Server {
                 return; // Ignore empty or null messages
             }
             Map<String, Object> messageMap = new Gson().fromJson(message, Map.class);
-
-
             if (messageMap.containsKey("action")) {
                 String action = (String) messageMap.get("action");
         
                 switch (action) {
                     case "playerReady":
-
-                        //boolean isReady = (Boolean) messageMap.get("isReady");
-                        //this.isReady = isReady;
                         if (messageMap.containsKey("isReady")) {
                             Boolean isReady = (Boolean) messageMap.get("isReady");
                             if (isReady != null) {
@@ -378,11 +401,11 @@ public class Server {
                         break;
 
                     case "startGame":
-                            System.out.println("Starting the game");
+                        if (!server.isGameStarted()) {
                             server.setGameStarted(true); // Set the game as started
                             game.initializeGame(); // Initialize the game
                             server.broadcastStartGame(); // Broadcast the start of the game
-
+                        }
                         break;
                     case "updateState":
                         game.updateState();
@@ -390,60 +413,93 @@ public class Server {
                         break;
 
                     case "forageForIngredient":
-                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
-                        System.out.println("Forage for ingredient");
-                        game.forageForIngredient(playerId);
-        
-                        // Only broadcast the state once after processing the action
-                        server.broadcastGameState();
+                        System.out.println("C");
+                        String currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
+                            int playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                            System.out.println("Forage for ingredient");
+                            System.out.println("D");
+                            game.forageForIngredient(playerId);
+                            broadcastGameState();
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
+                        
                         break;
                      case "buyArtifactCard":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int cardId = Integer.parseInt((String) messageMap.get("cardId"));
                         game.buyArtifactCard(playerId, cardId);
-                        server.broadcastGameState(); // Update all clients with the new game state
+                        broadcastGameState();
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "transmuteIngredient":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                    currentPlayerName = game.getCurrentPlayer().getNickname();
+                    if(clientName.equals(currentPlayerName)){
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int ingredientId = Integer.parseInt((String) messageMap.get("ingredientId"));
                         game.transmuteIngredient(playerId, ingredientId);
-                        server.broadcastGameState();
+                        broadcastGameState();
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "sellPotion":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int cardId1 = Integer.parseInt((String) messageMap.get("cardId1"));
                         int cardId2 = Integer.parseInt((String) messageMap.get("cardId2"));
                         String guarantee = (String) messageMap.get("guarantee");
                         game.sellPotion(playerId, cardId1, cardId2, guarantee);
-                        server.broadcastGameState();
+                        broadcastGameState();
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "publishTheory":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int ingredientIdPub = Integer.parseInt((String) messageMap.get("ingredientId"));
                         int moleculeId = Integer.parseInt((String) messageMap.get("moleculeId"));
                         game.publishTheory(playerId, ingredientIdPub, moleculeId);
-                        server.broadcastGameState();
+                        broadcastGameState();
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "debunkTheory":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int publicationCardId = Integer.parseInt((String) messageMap.get("publicationCardId"));
                         Molecule.Component component = Molecule.Component.valueOf((String) messageMap.get("componentId"));
                         game.debunkTheory(playerId, publicationCardId, component);
-                        server.broadcastGameState();
+                        broadcastGameState();
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "useArtifactCard":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
-                        cardId = Integer.parseInt((String) messageMap.get("cardId"));
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        int cardId = Integer.parseInt((String) messageMap.get("cardId"));
                         game.useArtifactCardById(cardId, playerId);
-                        server.broadcastGameState();
+                        broadcastGameState();
                         break;
 
-                     case "makeExperiment":
+                    case "makeExperiment":
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
                         // Extract details from messageMap
                         playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int firstCardId = Integer.parseInt((String) messageMap.get("firstCardId"));
@@ -456,8 +512,13 @@ public class Server {
                         // Send the result back to the client
                         String potionCardJson = new Gson().toJson(potionCard);
                         sendMessage("EXPERIMENT_RESULT:" + potionCardJson);
-                        break;
+                        broadcastGameState();
+                        }else {
+                            sendMessage("ERROR: Not your turn");
                         }
+                        break;
+                    }
+                    
             }
     
         }
@@ -494,6 +555,10 @@ public class Server {
 
         public void setReady(boolean readyStatus) {
             this.isReady = readyStatus;
+        }
+
+        int getClientId() {
+            return clientId;
         }
 
 

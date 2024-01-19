@@ -9,7 +9,7 @@ public class GameState {
 	
 	
     private static GameState instance;
-
+  
     private List<Player> players;
     private int currentRound;
     private int currentPlayerID;
@@ -17,13 +17,17 @@ public class GameState {
     private boolean isPaused;
     private int currentTurn;
     private PotionCard lastCreatedPotion;
+    private boolean actionPerformed;
 
-    private GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused) {
+
+    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed) {
         this.players = players;
         this.currentRound = initialRound;
         this.currentPlayerID = initialPlayer;
         this.isPaused = isPaused;
         this.currentTurn = firstTurn;
+        this.actionPerformed = actionPerformed;
+        
     }
 
     public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused) {
@@ -49,8 +53,9 @@ public class GameState {
         return "GameState{" +
                 "\n\tcurrentRound=" + currentRound +
                 "\n\tcurrentTurn=" + currentTurn +
-                "\n\tcurrentPlayer=" + currentPlayerID +
+                "\n\tcurrentPlayerID=" + currentPlayerID +
                 "\n\tisPaused=" + isPaused +
+                "\n\tisActionPerformed=" + actionPerformed +
                 "\n}";
     }
 
@@ -69,6 +74,14 @@ public class GameState {
         return players;
     }
 
+    public boolean getActionPerformed() {
+        return actionPerformed;
+    }
+
+    public void setActionPerformed(boolean actionPerformed) {
+        this.actionPerformed = actionPerformed;
+    }
+
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
@@ -82,12 +95,15 @@ public class GameState {
     }
 
     public int getCurrentPlayerID() {
-        System.out.println("Getting current player: " + currentPlayerID);
         return currentPlayerID;
     }
 
     public void setCurrentPlayerID(int currentPlayerID) {
         this.currentPlayerID = currentPlayerID;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public boolean isPaused() {
@@ -114,6 +130,15 @@ public class GameState {
     public Player getCurrentPlayer(){
         for (Player player : players) {
             if (player.getPlayerId() == getCurrentPlayerID()) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    public Player getPlayerById(String playerID){
+        for (Player player : players) {
+            if (player.getPlayerId() == Integer.parseInt(playerID)) {
                 return player;
             }
         }
