@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 
 import domain.Client;
 import domain.controllers.ConnectController;
+import domain.controllers.GameController;
 import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
 import domain.interfaces.EventListener;
@@ -157,6 +158,10 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
             statusLabel.setText("Connected successfully!");
             statusLabel.setForeground(Color.GREEN);
             client.setEventListener(this);
+
+            OnlineGameAdapter onlineGameAdapter = new OnlineGameAdapter(client);
+            GameController.getInstance().setOnlineGameAdapter(onlineGameAdapter);
+            GameController.getInstance().setOnlineMode(true);
             // Additional logic for successful connection, if needed
         } else {
             statusLabel.setText("Failed to connect. Check the IP and try again.");

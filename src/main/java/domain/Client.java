@@ -198,6 +198,11 @@ public class Client {
             if (callback != null) {
                 callback.accept(potionCard);
             }
+        } else if (message.startsWith("GAME_STATE:")) {
+            String jsonState = message.substring("GAME_STATE:".length());
+            GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+            gameController.setGameState(gameState);
+            // Update the UI here or through a method call
         }
     }
 
@@ -234,12 +239,13 @@ public class Client {
     }
 
     private void openBoardScreen(GameState gameState) {
+        System.out.println("Open Board screnn func içi: "+ gameState);
         boardScreen = new BoardScreen();
         boardScreen.display();
         BoardScreenController boardController = BoardScreenController.getInstance();
     
         if (boardController != null) {
-
+            System.out.println("if  içi: "+ gameState);
             boardController.updateGameState(gameState);
         } else {
             System.err.println("Error: BoardScreenController is null.");

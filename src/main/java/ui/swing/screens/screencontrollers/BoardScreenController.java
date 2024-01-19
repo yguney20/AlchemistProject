@@ -20,6 +20,7 @@ import ui.swing.screens.PotionCardsScreen;
 import ui.swing.screens.PublicationCardsScreen;
 import ui.swing.screens.PublishTheoryScreen;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -63,8 +64,14 @@ public class BoardScreenController {
 		return boardScreenFrame;
 	}
 
-
-	public void initialize() {
+    
+    public static synchronized BoardScreenController getInstance() {
+        if (instance == null) {
+            instance = new BoardScreenController();
+        }
+        return instance;
+    }
+    public void initialize() {
         if (gameController == null) {
             System.err.println("Debug: GameController instance is null in BoardScreenController.initialize");
         }
@@ -79,14 +86,6 @@ public class BoardScreenController {
         currentTurnLabel.setText("Turn: " + gameController.getGameState().getCurrentTurn());
         currentRoundLabel.setText("Round: " + gameController.getGameState().getCurrentRound());
     }
-    
-    public static synchronized BoardScreenController getInstance() {
-        if (instance == null) {
-            instance = new BoardScreenController();
-        }
-        return instance;
-    }
-    
 
     @FXML
     protected void handleActionPerformed() {
@@ -247,16 +246,18 @@ public class BoardScreenController {
     }
 
     public void updateGameState(GameState gameState) {
+        
         // Update the UI elements with information from gameState
 
-        System.out.println("E buraya geliyo ama dimi");
-        SwingUtilities.invokeLater(() -> {
-            currentPlayerLabel.setText("Current Player: " + gameState.getCurrentPlayer().getNickname());
-            currentTurnLabel.setText("Current Turn: " + gameState.getCurrentTurn());
-            currentRoundLabel.setText("Current Round: " + gameState.getCurrentRound());
-            // You might also need to update other parts of the UI
-            // such as player positions, scores, etc.
-        });
+        System.out.println("Update GameState func içi" + gameState);
+        updateLabels();
+        // Platform.runLater(() -> {
+        //     currentPlayerLabel.setText("Current Player: " + gameState.getCurrentPlayer().getNickname());
+        //     currentTurnLabel.setText("Current Turn: " + gameState.getCurrentTurn());
+        //     currentRoundLabel.setText("Current Round: " + gameState.getCurrentRound());
+        //     // You might also need to update other parts of the UI
+        //     // such as player positions, scores, etc.
+        // });
     }
     
     

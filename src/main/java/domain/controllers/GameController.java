@@ -40,7 +40,11 @@ public class GameController {
 	
     public static GameController getInstance() {
         if (instance == null) {
-            instance = new GameController();
+            synchronized (GameController.class) {
+                if (instance == null) {
+                    instance = new GameController();
+                }
+            }
         }
         return instance;
     }
