@@ -234,6 +234,14 @@ public class Server {
                 System.out.println("Player already exists: " + playerName);
             }
         }
+        
+        public void pauseGame(String pausingPlayerName) {
+            broadcast("GAME_PAUSED:" + pausingPlayerName);
+        }
+
+        public void resumeGame() {
+            broadcast("GAME_RESUMED");
+        }
 
 
     // Main method to start the server
