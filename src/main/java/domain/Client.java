@@ -24,7 +24,7 @@ import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
 import domain.interfaces.EventListener;
-import ui.swing.screens.scenes.BoardScreen;
+import ui.swing.screens.scenes.*;
 import ui.swing.screens.HostGameScreen;
 import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 import ui.swing.screens.screencontrollers.BoardScreenController;
@@ -39,6 +39,8 @@ public class Client {
     private EventListener eventListener;
     private boolean listening = true;
     private BoardScreen boardScreen;
+    private MenuScreen menuScreen;
+    private PauseScreen pauseScreen;
     private boolean isConnected = false;
     private List<Player> playerList = Player.getPlayerList(); 
 
@@ -47,6 +49,7 @@ public class Client {
     private GameObjectFactory gameObjectFactory = GameObjectFactory.getInstance();
 
 
+    
     // Constructor to initialize the client with the server's host and port
     public Client(String hostname, int port, EventListener listener) {
         this.hostname = hostname;
@@ -217,6 +220,11 @@ public class Client {
             }
             });
             
+        } else if (message.startsWith("GAME_PAUSED:")) {
+        	 String pausingPlayerName = message.substring("GAME_PAUSED:".length());
+             openPauseScreen(pausingPlayerName);
+        } else if (message.equals("GAME_RESUMED")) {
+        	closePauseScreen();
         }
     }
 
@@ -265,6 +273,26 @@ public class Client {
             System.err.println("Error: BoardScreenController is null.");
             // Additional error handling here
         }
+    }
+    
+    
+ // Method to display the pause screen
+    private void openPauseScreen(String pausingPlayerName) {
+        SwingUtilities.invokeLater(() -> {
+            pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen));
+            pauseScreen.display();
+            // Further customization based on pausingPlayerName
+        });
+    }
+
+    // Method to close the pause screen
+    private void closePauseScreen() {
+        SwingUtilities.invokeLater(() -> {
+            // Logic to close the pause screen
+        	if (pauseScreen != null) {
+                pauseScreen.close();
+            }
+        });
     }
 
     public void simulateAnotherPlayer() {
