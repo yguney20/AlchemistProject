@@ -101,17 +101,14 @@ public class BoardScreenController {
         
         if(gameController.getActionPerformed()) {
         	gameController.updateState();
-            currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
-            currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
-            currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
-
+            if(gameController.isOnlineMode()){
+                BoardScreen.getInstance().initializeJavaFXComponents();
+    
+            }else{
+                updateLabels(); // Update UI labels to reflect the new state
+            }
         }
-        if(gameController.isOnlineMode()){
-            BoardScreen.getInstance().initializeJavaFXComponents();
-
-        }else{
-            updateLabels(); // Update UI labels to reflect the new state
-        }
+        
     }
     
     @FXML
@@ -148,34 +145,47 @@ public class BoardScreenController {
     
     @FXML
     protected void handleMagicBallClick() {
-    	
-    	if(gameController.getActionPerformed()) {
-    		Image newBallImage = new Image(getClass().getResourceAsStream("/animations/Magic_Ball.gif"));
-        	magicBall.setImage(newBallImage);
-        	gameController.updateState();
-        	if(gameController.isGameOver()) {
-                boardScreenFrame.dispose();
-        		GameOverScreen gos = new GameOverScreen();
-        		gos.display();
-        	}
-            currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
-            currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
-            currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
-
-        } else {
-            JOptionPane.showMessageDialog(null, "No action performed!", "Warning", JOptionPane.WARNING_MESSAGE);
-        }
-        updateLabels(); // Update UI labels to reflect the new state
+        if(gameController.isOnlineMode()){
+            if(!gameController.getActionPerformed()) {
+                Image newBallImage = new Image(getClass().getResourceAsStream("/animations/Magic_Ball.gif"));
+                magicBall.setImage(newBallImage);
+                gameController.updateState();
+                if(gameController.isGameOver()) {
+                    boardScreenFrame.dispose();
+                    GameOverScreen gos = new GameOverScreen();
+                    gos.display();
+                }
+                BoardScreen.getInstance().initializeJavaFXComponents();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "No action performed!", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+        }else{
+                if(gameController.getActionPerformed()) {
+                    Image newBallImage = new Image(getClass().getResourceAsStream("/animations/Magic_Ball.gif"));
+                    magicBall.setImage(newBallImage);
+                    gameController.updateState();
+                    if(gameController.isGameOver()) {
+                        boardScreenFrame.dispose();
+                        GameOverScreen gos = new GameOverScreen();
+                        gos.display();
+                    }
+                    
+                        updateLabels(); // Update UI labels to reflect the new state
+                }else {
+                    JOptionPane.showMessageDialog(null, "No action performed!", "Warning", JOptionPane.WARNING_MESSAGE);
+                }
+            }
         
         
-        PauseTransition wait = new PauseTransition(Duration.seconds(2)); // Adjust the duration to match your GIF
-        wait.setOnFinished(e -> {
-            Image staticBallImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Magic_Ball.png"));
-            magicBall.setImage(staticBallImage);
-            
-    		
-        });
-        wait.play();
+            PauseTransition wait = new PauseTransition(Duration.seconds(2)); // Adjust the duration to match your GIF
+            wait.setOnFinished(e -> {
+                Image staticBallImage = new Image(getClass().getResourceAsStream("/images/gameBoardUI/Magic_Ball.png"));
+                magicBall.setImage(staticBallImage);
+                
+                
+            });
+            wait.play();
     	
     }
     
