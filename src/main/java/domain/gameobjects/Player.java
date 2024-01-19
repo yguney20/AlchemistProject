@@ -274,7 +274,6 @@ import java.util.UUID;
         score += goldsForScore/3;
         return score;
     }
-
     
  }
 

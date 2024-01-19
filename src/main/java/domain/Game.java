@@ -416,6 +416,7 @@ public class Game { //Singleton Pattern
             for (Player gameStatePlayer : gameState.getPlayers()) {
                 if (gameStatePlayer.getPlayerId() == playerId) {
                     gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
+                    gameStatePlayer.setPublicationCards(updatedPlayer.getPublicationCards());
                     gameStatePlayer.setGolds(updatedPlayer.getGolds());
                     // Add any other player properties that need to be updated
                     break;
@@ -437,6 +438,7 @@ public class Game { //Singleton Pattern
                 for (Player gameStatePlayer : gameState.getPlayers()) {
                     if (gameStatePlayer.getPlayerId() == playerId) {
                         gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
+                        gameStatePlayer.setPublicationCards(updatedPlayer.getPublicationCards());
                         gameStatePlayer.setGolds(updatedPlayer.getGolds());
                         // Add any other player properties that need to be updated
                         break;

@@ -146,10 +146,12 @@ public class BoardScreenController {
     @FXML
     protected void handleMagicBallClick() {
         if(gameController.isOnlineMode()){
+            System.out.println("Action Performend 1:" + gameController.getActionPerformed( ));
             if(!gameController.getActionPerformed()) {
                 Image newBallImage = new Image(getClass().getResourceAsStream("/animations/Magic_Ball.gif"));
                 magicBall.setImage(newBallImage);
                 gameController.updateState();
+                System.out.println("Action Performend 2:" + gameController.getActionPerformed( ));
                 if(gameController.isGameOver()) {
                     boardScreenFrame.dispose();
                     GameOverScreen gos = new GameOverScreen();
