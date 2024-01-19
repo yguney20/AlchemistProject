@@ -333,14 +333,25 @@ public class PlayerDashboard extends JFrame {
 
             @Override
         	public void mouseClicked(MouseEvent e) {
+            	if(gameController.isOnlineMode()){
+                    if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                		//SelectArtifactScreen selectArtifactScreen = new SelectArtifactScreen();
+            			//selectArtifactScreen.display();
+            			UseArtifactScreen useart = new UseArtifactScreen();
+            			useart.display();
+            			PlayerDashboard.this.setVisible(false);
+                    } else {
+                        // Not the client player's turn
+                        JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else {
         		
         		SelectArtifactScreen selectArtifactScreen = new SelectArtifactScreen();
     			selectArtifactScreen.display();
-//            	UseArtifactScreen useart = new UseArtifactScreen();
-//            	useart.display();
+    			//UseArtifactScreen useart = new UseArtifactScreen();
+    			//useart.display();
     			PlayerDashboard.this.setVisible(false);
-
-       		
+                }     		
         	}
         });
         
