@@ -25,6 +25,10 @@ public class ValidatedAspect {
     public void setValidatedAspectId(int validatedAspectId){
         this.validatedAspectId = validatedAspectId;
     }
+    
+    public static void resetValidatedList() {
+        validatedList.clear();
+    }
 
     public IngredientCard getIngredient() {
         return ingredient;

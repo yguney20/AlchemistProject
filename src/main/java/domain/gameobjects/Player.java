@@ -104,6 +104,10 @@ import java.util.UUID;
 	public static void setPlayerList(ArrayList<Player> playerList) {
 		Player.playerList = playerList;
 	}
+	
+	public static void resetPlayerList() {
+        playerList.clear();
+    }
 
     public void setPlayerId(int id){
         this.playerId = id;
@@ -261,6 +265,14 @@ import java.util.UUID;
                 break;
             }
         }
+    }
+    
+    public double calculateScore() {
+        int goldsForScore = this.getGolds();
+        goldsForScore += this.getArtifactCards().size() * 2;
+        int score = this.getReputationPoints() * 10;
+        score += goldsForScore/3;
+        return score;
     }
 
     

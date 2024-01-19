@@ -11,14 +11,17 @@ import javax.swing.SwingUtilities;
 
 import domain.GameState;
 import domain.controllers.GameController;
+import domain.gameobjects.Player;
 import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
 import ui.swing.screens.scenes.SettingsScreen;
 import ui.swing.screens.ArtifactCardsScreen;
+import ui.swing.screens.GameOverScreen;
 import ui.swing.screens.PotionCardsScreen;
 import ui.swing.screens.PublicationCardsScreen;
 import ui.swing.screens.PublishTheoryScreen;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -64,13 +67,21 @@ public class BoardScreenController {
 
 
 	public void initialize() {
+        if (gameController == null) {
+            System.err.println("Debug: GameController instance is null in BoardScreenController.initialize");
+        }
         updateLabels();
     }
 
-    private void updateLabels() {
-        currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
-        currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
-        currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
+    public void updateLabels() {
+        Platform.runLater(() -> {
+            System.out.println("Update labels içi :"+ gameController.getGameState().getCurrentPlayer().getNickname());
+            //Online kısmında client ile vermemiz gerekebilir
+            //Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
+            currentPlayerLabel.setText("Player: " + gameController.getGameState().getCurrentPlayer().getNickname());
+            currentTurnLabel.setText("Turn: " + gameController.getGameState().getCurrentTurn());
+            currentRoundLabel.setText("Round: " + gameController.getGameState().getCurrentRound());
+        });
     }
     
     public static synchronized BoardScreenController getInstance() {
@@ -80,6 +91,9 @@ public class BoardScreenController {
         return instance;
     }
     
+    public static synchronized void destroyInstance() {
+        instance = null;
+    }
 
     @FXML
     protected void handleActionPerformed() {
@@ -129,11 +143,15 @@ public class BoardScreenController {
     @FXML
     protected void handleMagicBallClick() {
     	
-    	
     	if(gameController.getActionPerformed()) {
     		Image newBallImage = new Image(getClass().getResourceAsStream("/animations/Magic_Ball.gif"));
         	magicBall.setImage(newBallImage);
         	gameController.updateState();
+        	if(gameController.isGameOver()) {
+                boardScreenFrame.dispose();
+        		GameOverScreen gos = new GameOverScreen();
+        		gos.display();
+        	}
             currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
             currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
             currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
@@ -241,12 +259,12 @@ public class BoardScreenController {
 
     public void updateGameState(GameState gameState) {
         // Update the UI elements with information from gameState
-        SwingUtilities.invokeLater(() -> {
+
+        System.out.println("E buraya geliyo ama dimi");
+         Platform.runLater(() -> {
             currentPlayerLabel.setText("Current Player: " + gameState.getCurrentPlayer().getNickname());
             currentTurnLabel.setText("Current Turn: " + gameState.getCurrentTurn());
             currentRoundLabel.setText("Current Round: " + gameState.getCurrentRound());
-            // You might also need to update other parts of the UI
-            // such as player positions, scores, etc.
         });
     }
     

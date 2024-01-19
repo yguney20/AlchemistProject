@@ -55,6 +55,7 @@ public class SelectArtifactScreen extends JFrame {
     List<ArtifactCard> artifactCards;
     private JButton quitButton = new JButton("X");
     private JFXPanel fxPanel;
+       private String clientName = gameController.getClientPlayer().getNickname();
 
     public SelectArtifactScreen() {
         initializeFrame();

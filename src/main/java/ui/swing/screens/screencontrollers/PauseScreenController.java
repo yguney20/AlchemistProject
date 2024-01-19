@@ -11,6 +11,7 @@ import java.awt.Frame;
 import javax.swing.JFrame;
 
 import animatefx.animation.Pulse;
+import domain.Game;
 
 public class PauseScreenController {
 	
@@ -20,6 +21,8 @@ public class PauseScreenController {
     private Frame mainFrame;
     private JFrame menuScreen;
     private PauseScreen pauseScreen;
+    private String pausingPlayerName;
+    private Game game = Game.getInstance();
 
     private MediaPlayer buttonSoundPlayer;
     
@@ -39,12 +42,25 @@ public class PauseScreenController {
         this.pauseScreen = pauseScreen;
     }
     
+    public void setPausingPlayerName(String pausingPlayerName) {
+        this.pausingPlayerName = pausingPlayerName;
+        updateResumeButtonVisibility();
+    }
+    
+    
     private void initializeMediaPlayers() {
         
         String buttonSoundFile = getClass().getResource("/sounds/buttonSound.wav").toExternalForm();
         Media buttonSound = new Media(buttonSoundFile);
         buttonSoundPlayer = new MediaPlayer(buttonSound);
     }
+    
+    //-------------
+    private void updateResumeButtonVisibility() {
+        // Only show the resume button if the current player is the one who paused the game
+        resumeGameButton.setVisible(pausingPlayerName.equals(game.getCurrentPlayer().getNickname()));
+    }
+
 
     @FXML
     private void handleMousePress() {

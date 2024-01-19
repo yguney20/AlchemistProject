@@ -14,6 +14,10 @@ public class PublicationCard {
         this.theory = theory;
         publicationCardList.add(this);
     }
+    
+    public static void resetPublicationList() {
+        publicationCardList.clear();
+    }
 
     public Player getOwner() {
         return owner;

@@ -29,7 +29,6 @@ public class HostController {
 
     public void startGame() {
         gameController.initializeGame();
-        server.broadcastGameState(gameController.getGameState());
     }
 
     public List<String> getConnectedPlayers() {

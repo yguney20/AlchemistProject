@@ -55,6 +55,9 @@ public class BoardScreen extends JFrame{
         return instance;
     }
 
+    public static synchronized void destroyInstance() {
+        instance = null;
+    }
     
     public BoardScreen() {
         initializeFrame();
@@ -73,14 +76,20 @@ public class BoardScreen extends JFrame{
     private void initializeJavaFXComponents() {
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/ui/swing/screens/fxmlfiles/BoardScreen.fxml"));
+                loader.setClassLoader(getClass().getClassLoader());
                 Parent root = loader.load();
                 controller = loader.getController();
+                if (controller == null) {
+                    throw new IllegalStateException("BoardScreenController is null after FXMLLoader");
+                }
                 controller.setBoardScreenFrame(this);
                 Scene scene = new Scene(root);
                 fxPanel.setScene(scene);
             } catch (Exception e) {
                 e.printStackTrace();
+                // Consider exiting the application or handling the error more gracefully
             }
         });
     }
@@ -114,6 +123,15 @@ public class BoardScreen extends JFrame{
         return controller;
     }
 
-    
+    public void updateLabels() {
+        Platform.runLater(() -> {
+            System.out.println("Update labels içi :"+ gameController.getGameState());
+            //Online kısmında client ile vermemiz gerekebilir
+            //Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
+            currentPlayerLabel.setText("Player: " + gameController.getGameState().getCurrentPlayer().getNickname());
+            currentTurnLabel.setText("Turn: " + gameController.getGameState().getCurrentTurn());
+            currentRoundLabel.setText("Round: " + gameController.getGameState().getCurrentRound());
+        });
+    }
 
 }

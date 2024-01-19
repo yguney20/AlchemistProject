@@ -25,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 import domain.controllers.GameController;
 import domain.gameobjects.IngredientCard;
 import domain.gameobjects.Player;
+import ui.swing.screens.scenes.ElixirOfInsightArtifactScreen;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;

@@ -14,8 +14,10 @@ import java.awt.event.ActionListener;
 
 import domain.Client;
 import domain.controllers.ConnectController;
+import domain.controllers.GameController;
 import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
+import domain.gameobjects.Player;
 import domain.interfaces.EventListener;
 
 import java.util.List;
@@ -38,6 +40,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
     private Client client;
 
     private LoginController loginController = LoginController.getInstance();
+    private GameController gameController = GameController.getInstance();
     private ConnectController connectController;
 
     public ConnectGameScreen(Frame frame) {
@@ -72,6 +75,9 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         playerList.setBounds(400, 275, 200, 250); // Set bounds as needed
         contentPane.add(playerList);
         
+        loginController.createPlayer(playerName, avatarPath);
+
+
 
 
         // Back button logic
@@ -153,9 +159,14 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         client = new Client(hostIp, 6666, this);
         if (client.connect()) {
             client.sendPlayerInfo(playerName, avatarPath); // Send player info to the server
+            gameController.setClientPlayer(new Player(playerName, avatarPath));
             statusLabel.setText("Connected successfully!");
             statusLabel.setForeground(Color.GREEN);
             client.setEventListener(this);
+
+            OnlineGameAdapter onlineGameAdapter = new OnlineGameAdapter(client);
+            GameController.getInstance().setOnlineGameAdapter(onlineGameAdapter);
+            GameController.getInstance().setOnlineMode(true);
             // Additional logic for successful connection, if needed
         } else {
             statusLabel.setText("Failed to connect. Check the IP and try again.");
@@ -204,7 +215,6 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
     private void createPlayer() {
         SwingUtilities.invokeLater(() -> {
             // Now that the server has confirmed the uniqueness, create the player locally
-            loginController.createPlayer(playerName, avatarPath);
             // Additional logic for successful player creation
         });
     }
