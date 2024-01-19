@@ -383,4 +383,7 @@ public class GameController {
        return null;
 
     }
+    public void updateGameStateWithAllPlayersInfo(){
+        game.updateGameStateWithAllPlayersInfo();
+    }
 }

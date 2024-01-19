@@ -73,9 +73,9 @@ public class BoardScreenController {
         updateLabels();
     }
 
-    private void updateLabels() {
+    public void updateLabels() {
         Platform.runLater(() -> {
-            System.out.println("Update labels içi :"+ gameController.getGameState());
+            System.out.println("Update labels içi :"+ gameController.getGameState().getCurrentPlayer().getNickname());
             //Online kısmında client ile vermemiz gerekebilir
             //Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
             currentPlayerLabel.setText("Player: " + gameController.getGameState().getCurrentPlayer().getNickname());

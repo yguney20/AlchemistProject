@@ -372,7 +372,22 @@ public class PlayerDashboard extends JFrame {
                     JOptionPane.showMessageDialog(null, "You do not have enough ingredient cards!", "Warning", JOptionPane.WARNING_MESSAGE);
             	}
             	else {
-                    
+
+                    if(gameController.isOnlineMode()){
+                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                            MakeExperimentScreen makeExperimentScreen = new MakeExperimentScreen();
+                            makeExperimentScreen.display();
+                            PlayerDashboard.this.setVisible(false);
+                        } else {
+                            // Not the client player's turn
+                            JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        }
+                    }
+                    else{
+                        MakeExperimentScreen makeExperimentScreen = new MakeExperimentScreen();
+                        makeExperimentScreen.display();
+                        PlayerDashboard.this.setVisible(false);
+                    }
             	}
         			
         	}

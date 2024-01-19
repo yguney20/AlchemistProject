@@ -207,17 +207,19 @@ public class Client {
             gameController.setGameState(gameState);
             //after setting the game state we should apply it
             // Update the UI here or through a method call
+            gameController.updateGameStateWithAllPlayersInfo();
 
             SwingUtilities.invokeLater(() -> {
                 BoardScreenController boardController = BoardScreenController.getInstance();
-            if (boardController != null) {
-                System.out.println("if  içi: "+ gameState);
-                boardController.updateGameState(gameState);
-                //boardScreen.updateLabels();
-            } else {
-                System.err.println("Error: BoardScreenController is null.");
-                // Additional error handling here
-            }
+                if (boardController != null) {
+                    System.out.println("Game state call sonrası: ");
+                    System.out.println(gameState.getCurrentPlayer().getNickname()); 
+                    boardController.updateLabels();
+                    //boardScreen.updateLabels();
+                } else {
+                    System.err.println("Error: BoardScreenController is null.");
+                    // Additional error handling here
+                }
             });
             
         } else if (message.startsWith("GAME_PAUSED:")) {
