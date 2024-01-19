@@ -63,6 +63,7 @@ public class OnlineGameAdapter implements GameActionHandler {
 
 	// Forage for Ingredient
 	public void forageForIngredient(String playerId) {
+		System.out.println("B");
 		Map<String, String> actionDetails = new HashMap<>();
 		actionDetails.put("playerId", playerId);
 		sendAction("forageForIngredient", actionDetails);

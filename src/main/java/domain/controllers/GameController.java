@@ -211,6 +211,7 @@ public class GameController {
         System.out.println("ONLINE OR OFFLINE = " + isOnlineMode);
         if (isOnlineMode) {
             // Online mode: Send action to server via adapter
+            System.out.println("A");
             onlineGameAdapter.forageForIngredient(String.valueOf(playerId));
         } else {
             // Offline mode: Directly call game logic

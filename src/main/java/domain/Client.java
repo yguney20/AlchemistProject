@@ -203,14 +203,19 @@ public class Client {
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
             gameController.setGameState(gameState);
             // Update the UI here or through a method call
-            BoardScreenController boardController = BoardScreenController.getInstance();
+
+            SwingUtilities.invokeLater(() -> {
+                BoardScreenController boardController = BoardScreenController.getInstance();
             if (boardController != null) {
                 System.out.println("if  içi: "+ gameState);
-                boardScreen.updateLabels();
+                boardController.updateGameState(gameState);
+                //boardScreen.updateLabels();
             } else {
                 System.err.println("Error: BoardScreenController is null.");
                 // Additional error handling here
             }
+            });
+            
         }
     }
 

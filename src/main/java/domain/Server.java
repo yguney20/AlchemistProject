@@ -406,11 +406,16 @@ public class Server {
                         break;
 
                     case "forageForIngredient":
+                        System.out.println("C");
                         String currentPlayerName = game.getCurrentPlayer().getNickname();
                         if(clientName.equals(currentPlayerName)){
                             int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                             System.out.println("Forage for ingredient");
+                            System.out.println("D");
                             game.forageForIngredient(playerId);
+
+                            String gameStateJson = new Gson().toJson(game.getGameState());
+                            sendMessage("GAME_STATE:" + gameStateJson);
                         }else {
                             sendMessage("ERROR: Not your turn");
                         }
