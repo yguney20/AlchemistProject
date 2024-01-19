@@ -103,9 +103,9 @@ public class LoginOverlayForOnline extends JFrame {
 		ImageIcon avatarIcon1 = new ImageIcon(getClass().getResource("/images/avatar/a1.jpg"));	
 		iconPathMap.put(avatarIcon1, "/images/avatar/a1.jpg");
 		
-		AvatarCardScreen avatarCardScreen = new AvatarCardScreen(new CardModel(avatarIcon1, 
-        		"Avatar 1", 
-        		"A wise and enigmatic wizard, known for his mastery over elemental magic and an uncanny ability to foresee events before they unfold."));
+		AvatarCardScreen avatarCardScreen = new AvatarCardScreen(new CardModel(avatarIcon1,
+                "Cauldronist ",
+                " Expert in ancient potion recipes."));
         avatarCardScreen.setBounds(10, 15, 180, 240);
         
         avatarCardScreen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -114,9 +114,9 @@ public class LoginOverlayForOnline extends JFrame {
         ImageIcon avatarIcon2 = new ImageIcon(getClass().getResource("/images/avatar/a2.jpg"));
         iconPathMap.put(avatarIcon2, "/images/avatar/a2.jpg");
                
-        AvatarCardScreen avatarCardScreen2 = new AvatarCardScreen(new CardModel(avatarIcon2, 
-        		"Avatar 1", 
-        		"A wise and enigmatic wizard, known for his mastery over elemental magic and an uncanny ability to foresee events before they unfold."));
+        AvatarCardScreen avatarCardScreen2 = new AvatarCardScreen(new CardModel(avatarIcon2,
+                "Elixirist",
+                "Creator of wisdom-enhancing elixirs."));
         avatarCardScreen2.setBounds(200, 15, 180, 240);
         
         avatarCardScreen2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -125,9 +125,9 @@ public class LoginOverlayForOnline extends JFrame {
         ImageIcon avatarIcon3 = new ImageIcon(getClass().getResource("/images/avatar/a3.jpg"));
         iconPathMap.put(avatarIcon3, "/images/avatar/a3.jpg");
         
-        AvatarCardScreen avatarCardScreen3 = new AvatarCardScreen(new CardModel(avatarIcon3, 
-        		"Avatar 1", 
-        		"A wise and enigmatic wizard, known for his mastery over elemental magic and an uncanny ability to foresee events before they unfold."));
+        AvatarCardScreen avatarCardScreen3 = new AvatarCardScreen(new CardModel(avatarIcon3,
+                "ArcBrewer ",
+                " Maker of unpredictable potions."));
         avatarCardScreen3.setBounds(390, 15, 180, 240);
         cardPanel.add(avatarCardScreen3);
     
@@ -136,9 +136,9 @@ public class LoginOverlayForOnline extends JFrame {
         ImageIcon avatarIcon4 = new ImageIcon(getClass().getResource("/images/avatar/a4.jpg"));
         iconPathMap.put(avatarIcon4, "/images/avatar/a4.jpg");
                 
-        AvatarCardScreen avatarCardScreen4 = new AvatarCardScreen(new CardModel(avatarIcon4, 
-        		"Avatar 1", 
-        		"A wise and enigmatic wizard, known for his mastery over elemental magic and an uncanny ability to foresee events before they unfold."));
+        AvatarCardScreen avatarCardScreen4 = new AvatarCardScreen(new CardModel(avatarIcon4,
+                "HerbEnchanter",
+                "Specialist in healing herbal potions."));
         avatarCardScreen4.setBounds(580, 15, 180, 240);
         cardPanel.add(avatarCardScreen4);
         
@@ -148,9 +148,9 @@ public class LoginOverlayForOnline extends JFrame {
         ImageIcon avatarIcon5 = new ImageIcon(getClass().getResource("/images/avatar/a5.jpg"));
         iconPathMap.put(avatarIcon5, "/images/avatar/a5.jpg");
         
-        AvatarCardScreen avatarCardScreen5 = new AvatarCardScreen(new CardModel(avatarIcon5, 
-        		"Avatar 1", 
-        		"A wise and enigmatic wizard, known for his mastery over elemental magic and an uncanny ability to foresee events before they unfold."));
+        AvatarCardScreen avatarCardScreen5 = new AvatarCardScreen(new CardModel(avatarIcon5,
+                "EssenceDistiller ",
+                "Focused on potent, concentrated potions."));
         avatarCardScreen5.setBounds(770, 15, 180, 240);
         cardPanel.add(avatarCardScreen5);
        
