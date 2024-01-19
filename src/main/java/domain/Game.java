@@ -381,6 +381,7 @@ public class Game { //Singleton Pattern
     
                 // Print the player's updated inventory (for testing or logging)
                 System.out.println(player.getIngredientInventory());
+                updateGameStateWithLatestPlayerInfo(playerId);
     
             } else {
                 // Notify all players if the ingredient deck is empty
@@ -391,9 +392,18 @@ public class Game { //Singleton Pattern
             notifyPlayers("Action already performed.");
         }
     }
-
+    private void updateGameStateWithLatestPlayerInfo(int playerId) {
+        Player updatedPlayer = getPlayerById(playerId);
+        if (updatedPlayer != null) {
+            List<Player> updatedPlayers = new ArrayList<>(gameState.getPlayers());
+            updatedPlayers.set(updatedPlayers.indexOf(updatedPlayer), updatedPlayer);
+            gameState.setPlayers(updatedPlayers);
+        }
+    }
     //-----------------------Artifact Related Functions ------------------------------------
     
+   
+
     /**
      * Attempts to purchase an artifact card for the player.
      * If the player has enough golds and the action hasn't been performed,

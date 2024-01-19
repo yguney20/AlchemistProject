@@ -413,9 +413,7 @@ public class Server {
                             System.out.println("Forage for ingredient");
                             System.out.println("D");
                             game.forageForIngredient(playerId);
-
-                            String gameStateJson = new Gson().toJson(game.getGameState());
-                            sendMessage("GAME_STATE:" + gameStateJson);
+                            broadcastGameState();
                         }else {
                             sendMessage("ERROR: Not your turn");
                         }
