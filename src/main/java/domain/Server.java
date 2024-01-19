@@ -517,6 +517,20 @@ public class Server {
                             sendMessage("ERROR: Not your turn");
                         }
                         break;
+
+                        case "pauseGame":
+                        
+                        String pausingPlayerName = (String) messageMap.get("pausingPlayerName");
+                        if (pausingPlayerName != null) {
+                            game.pauseGame();
+                        }
+                        break;
+
+                    case "resumeGame":
+                        // Handling resume game request
+                        server.resumeGame();
+                        break;
+                    
                     }
                     
             }

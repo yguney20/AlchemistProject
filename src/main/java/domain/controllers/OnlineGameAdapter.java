@@ -197,6 +197,19 @@ public class OnlineGameAdapter implements GameActionHandler {
 	public void setPlayerListUpdateListener(PlayerListUpdateListener listener) {
 		this.updateListener = listener;
 	}
+
+	public void sendPauseGameRequest() {
+        Map<String, String> actionDetails = new HashMap<>();
+        actionDetails.put("action", "pauseGame");
+        sendMessage(gson.toJson(actionDetails));
+    }
+
+    public void sendResumeGameRequest() {
+        Map<String, String> actionDetails = new HashMap<>();
+        actionDetails.put("action", "resumeGame");
+        sendMessage(gson.toJson(actionDetails));
+    }
+	
 	
 
 

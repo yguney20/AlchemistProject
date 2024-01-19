@@ -139,11 +139,19 @@ public class GameController {
 
 
     public void pauseGame() {
-        game.pauseGame();
+        if (isOnlineMode) {
+            onlineGameAdapter.sendPauseGameRequest();
+        } else {
+            game.pauseGame();
+        }
     }
 
     public void resumeGame() {
-        game.resumeGame();
+        if (isOnlineMode) {
+            onlineGameAdapter.sendResumeGameRequest();
+        } else {
+            game.resumeGame();
+        }
     }
 
     // Method to set the game mode
