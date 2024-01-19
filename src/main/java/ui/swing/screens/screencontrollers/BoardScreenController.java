@@ -72,11 +72,12 @@ public class BoardScreenController {
     }
 
     private void updateLabels() {
+        System.out.println("Update labels içi :"+ gameController.getGameState());
         //Online kısmında client ile vermemiz gerekebilir
         //Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
-        currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
-        currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
-        currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
+        currentPlayerLabel.setText("Player: " + gameController.getGameState().getCurrentPlayer().getNickname());
+        currentTurnLabel.setText("Turn: " + gameController.getGameState().getCurrentTurn());
+        currentRoundLabel.setText("Round: " + gameController.getGameState().getCurrentRound());
     }
     
     public static synchronized BoardScreenController getInstance() {
@@ -249,15 +250,13 @@ public class BoardScreenController {
         // Update the UI elements with information from gameState
 
         System.out.println("E buraya geliyo ama dimi");
-        System.out.println("Current Player: " + gameController.getCurrentPlayer().getNickname());
-        updateLabels();
-        // SwingUtilities.invokeLater(() -> {
-        //     currentPlayerLabel.setText("Current Player: " + gameController.getCurrentPlayer().getNickname());
-        //     currentTurnLabel.setText("Current Turn: " + gameController.getCurrentTurn());
-        //     currentRoundLabel.setText("Current Round: " + gameController.getCurrentRound());
-        //     // You might also need to update other parts of the UI
-        //     // such as player positions, scores, etc.
-        // });
+        SwingUtilities.invokeLater(() -> {
+            currentPlayerLabel.setText("Current Player: " + gameState.getCurrentPlayer().getNickname());
+            currentTurnLabel.setText("Current Turn: " + gameState.getCurrentTurn());
+            currentRoundLabel.setText("Current Round: " + gameState.getCurrentRound());
+            // You might also need to update other parts of the UI
+            // such as player positions, scores, etc.
+        });
     }
     
     

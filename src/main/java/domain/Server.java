@@ -21,9 +21,10 @@ public class Server {
     private boolean gameStarted = false; // Flag to indicate if the game has started
     private Set<String> playerNames = new HashSet<>();
     private Set<String> avatarPaths = new HashSet<>();
-    private LoginController loginController = LoginController.getInstance();
-    private GameController gameController = GameController.getInstance();
+    //private GameController gameController = GameController.getInstance();
     private List<Player> serverPlayerList = new ArrayList<>(); 
+    private Game game = Game.getInstance();
+
     
 
     private static Server instance;
@@ -148,7 +149,7 @@ public class Server {
         }
 
         public void broadcastGameState() {
-            GameState gameState = gameController.getGameState();
+            GameState gameState = game.getGameState();
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
                 broadcast("GAME_STATE:" + gameStateJson);
@@ -158,7 +159,7 @@ public class Server {
         }
 
         public void broadcastStartGame() {
-            GameState gameState = gameController.getGameState();
+            GameState gameState = game.getGameState();
             System.out.println("Debug: GameState before broadcasting - " + gameState);
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
