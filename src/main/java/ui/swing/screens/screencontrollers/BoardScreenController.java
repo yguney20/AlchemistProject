@@ -12,7 +12,6 @@ import javax.swing.SwingUtilities;
 import domain.GameState;
 import domain.controllers.GameController;
 import domain.gameobjects.Player;
-import ui.swing.screens.scenes.BoardScreen;
 import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
 import ui.swing.screens.scenes.SettingsScreen;
@@ -91,17 +90,14 @@ public class BoardScreenController {
     @FXML
     protected void handleActionPerformed() {
         
-        // if(gameController.getActionPerformed()) {
-        // 	gameController.updateState();
-        //     currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
-        //     currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
-        //     currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
+        if(gameController.getActionPerformed()) {
+        	gameController.updateState();
+            currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
+            currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
+            currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
 
-        // }
-        // updateLabels(); // Update UI labels to reflect the new state
-
-
-        BoardScreen.getInstance();
+        }
+        updateLabels(); // Update UI labels to reflect the new state
     }
     
     @FXML

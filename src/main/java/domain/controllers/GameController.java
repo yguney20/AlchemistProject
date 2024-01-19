@@ -354,4 +354,14 @@ public class GameController {
     public Player getClientPlayer() {
         return clientPlayer;
     }
+
+    public Player getPlayerByClientName(String name){
+       for (Player player : game.getPlayers()){
+         if(player.getNickname().equals(name)){
+            return player;
+         }
+       }
+       return null;
+
+    }
 }
