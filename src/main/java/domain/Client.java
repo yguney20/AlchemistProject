@@ -202,6 +202,7 @@ public class Client {
             String jsonState = message.substring("GAME_STATE:".length());
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
             gameController.setGameState(gameState);
+            //after setting the game state we should apply it
             // Update the UI here or through a method call
 
             SwingUtilities.invokeLater(() -> {

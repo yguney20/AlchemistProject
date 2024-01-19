@@ -408,6 +408,8 @@ public class Game { //Singleton Pattern
             }
         }
     }
+
+    
     //-----------------------Artifact Related Functions ------------------------------------
     
    
