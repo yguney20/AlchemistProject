@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import domain.GameState;
 import domain.controllers.GameController;
 import domain.gameobjects.Player;
+import ui.swing.screens.scenes.BoardScreen;
 import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
 import ui.swing.screens.scenes.SettingsScreen;
@@ -105,7 +106,12 @@ public class BoardScreenController {
             currentRoundLabel.setText("Round: " + gameController.getCurrentRound());
 
         }
-        updateLabels(); // Update UI labels to reflect the new state
+        if(gameController.isOnlineMode()){
+            BoardScreen.getInstance().initializeJavaFXComponents();
+
+        }else{
+            updateLabels(); // Update UI labels to reflect the new state
+        }
     }
     
     @FXML
