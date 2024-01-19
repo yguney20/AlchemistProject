@@ -178,6 +178,7 @@ public class OnlineGameAdapter implements GameActionHandler {
 		}).start();
 	}
 	
+	
 
 	public List<String> getConnectedPlayers() {
     // Send a request to the server

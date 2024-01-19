@@ -20,6 +20,7 @@ import ui.swing.screens.PotionCardsScreen;
 import ui.swing.screens.PublicationCardsScreen;
 import ui.swing.screens.PublishTheoryScreen;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -72,12 +73,14 @@ public class BoardScreenController {
     }
 
     private void updateLabels() {
-        System.out.println("Update labels içi :"+ gameController.getGameState());
-        //Online kısmında client ile vermemiz gerekebilir
-        //Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
-        currentPlayerLabel.setText("Player: " + gameController.getGameState().getCurrentPlayer().getNickname());
-        currentTurnLabel.setText("Turn: " + gameController.getGameState().getCurrentTurn());
-        currentRoundLabel.setText("Round: " + gameController.getGameState().getCurrentRound());
+        Platform.runLater(() -> {
+            System.out.println("Update labels içi :"+ gameController.getGameState());
+            //Online kısmında client ile vermemiz gerekebilir
+            //Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
+            currentPlayerLabel.setText("Player: " + gameController.getGameState().getCurrentPlayer().getNickname());
+            currentTurnLabel.setText("Turn: " + gameController.getGameState().getCurrentTurn());
+            currentRoundLabel.setText("Round: " + gameController.getGameState().getCurrentRound());
+        });
     }
     
     public static synchronized BoardScreenController getInstance() {
@@ -250,7 +253,7 @@ public class BoardScreenController {
         // Update the UI elements with information from gameState
 
         System.out.println("E buraya geliyo ama dimi");
-        SwingUtilities.invokeLater(() -> {
+         Platform.runLater(() -> {
             currentPlayerLabel.setText("Current Player: " + gameState.getCurrentPlayer().getNickname());
             currentTurnLabel.setText("Current Turn: " + gameState.getCurrentTurn());
             currentRoundLabel.setText("Current Round: " + gameState.getCurrentRound());

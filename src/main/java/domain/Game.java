@@ -208,7 +208,6 @@ public class Game { //Singleton Pattern
             
             actionPerformed = false;
             gameState.setActionPerformed(actionPerformed);
-            updateGameStateWithLatestPlayerInfo(currentPlayerID);
             System.out.println(gameState);
 
 
@@ -408,6 +407,7 @@ public class Game { //Singleton Pattern
                 }
             }
         }
+        gameState.setActionPerformed(actionPerformed);
     }
 
     

@@ -19,8 +19,6 @@ public class PauseScreen extends JFrame {
     private JButton resumeButton;
     private Frame mainFrame;
     private JFrame menuScreen;
-    private String pausingPlayerName = null;
-
     
 
     public PauseScreen(Frame mainFrame, JFrame menuScreen) {
@@ -36,23 +34,7 @@ public class PauseScreen extends JFrame {
         getContentPane().add(fxPanel);
         initializeJavaFXComponents(fxPanel);
     }
-    
-    public PauseScreen(Frame mainFrame, JFrame menuScreen, String pausingPlayerName) {
-        this.mainFrame = mainFrame;
-        this.menuScreen = menuScreen;
-        this.pausingPlayerName = pausingPlayerName;
 
-        setTitle("Pause Screen");
-        setUndecorated(true);
-        setSize(900, 505);
-        setLocationRelativeTo(null);
-
-        JFXPanel fxPanel = new JFXPanel();
-        getContentPane().add(fxPanel);
-        initializeJavaFXComponents(fxPanel);
-    }
-
-    
     private void initializeJavaFXComponents(JFXPanel fxPanel) {
         Platform.runLater(() -> {
             try {
@@ -63,7 +45,6 @@ public class PauseScreen extends JFrame {
                 controller.setPauseScreen(this);
                 controller.setMainFrame(mainFrame);
                 controller.setMenuScreen(menuScreen);
-                controller.setPausingPlayerName(pausingPlayerName); //
 
                 Scene scene = new Scene(root);
                 fxPanel.setScene(scene);
