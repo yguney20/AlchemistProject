@@ -36,7 +36,8 @@ public class GameController {
     private boolean isOnlineMode = false;
     private OnlineGameAdapter onlineGameAdapter;
     private static final SettingsState settingsState = new SettingsState();
-    private String clientPlayerId;
+    private Player clientPlayer;
+
 	
     public static GameController getInstance() {
         if (instance == null) {
@@ -345,16 +346,12 @@ public class GameController {
         System.out.println("Debug: GameState set in GameController: " + gameState);
     }
 
-    public void setClientPlayerId(String playerId) {
-        this.clientPlayerId = playerId;
+    public void setClientPlayer(Player player) {
+        this.clientPlayer = player;
     }
 
     // Method to get the client player
     public Player getClientPlayer() {
-        if (game.getGameState() != null && clientPlayerId != null) {
-            // Assuming you have a method in GameState to get a player by their ID
-            return  game.getGameState().getPlayerById(clientPlayerId);
-        }
-        return null;
+        return clientPlayer;
     }
 }

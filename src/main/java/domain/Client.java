@@ -206,7 +206,7 @@ public class Client {
             BoardScreenController boardController = BoardScreenController.getInstance();
             if (boardController != null) {
                 System.out.println("if  içi: "+ gameState);
-                boardController.updateGameState(gameState);
+                boardScreen.updateLabels();
             } else {
                 System.err.println("Error: BoardScreenController is null.");
                 // Additional error handling here

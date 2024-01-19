@@ -189,8 +189,18 @@ public class PlayerDashboard extends JFrame {
         		} 
         		else {      		
         		int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
-    			gameController.forageForIngredient(currentPlayerId);
-    			PlayerDashboard.this.setVisible(false);
+                if(gameController.isOnlineMode()){
+                    if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer())){
+                        gameController.forageForIngredient(currentPlayerId);
+                        PlayerDashboard.this.setVisible(false);
+                    } else {
+                        // Not the client player's turn
+                        JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else{
+                    gameController.forageForIngredient(currentPlayerId);
+                    PlayerDashboard.this.setVisible(false);
+                    }
         		}
         	}
         });

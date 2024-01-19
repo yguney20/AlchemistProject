@@ -17,6 +17,7 @@ import domain.controllers.ConnectController;
 import domain.controllers.GameController;
 import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
+import domain.gameobjects.Player;
 import domain.interfaces.EventListener;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
     private Client client;
 
     private LoginController loginController = LoginController.getInstance();
+    private GameController gameController = GameController.getInstance();
     private ConnectController connectController;
 
     public ConnectGameScreen(Frame frame) {
@@ -74,6 +76,8 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         contentPane.add(playerList);
         
         loginController.createPlayer(playerName, avatarPath);
+
+
 
 
         // Back button logic
@@ -155,6 +159,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         client = new Client(hostIp, 6666, this);
         if (client.connect()) {
             client.sendPlayerInfo(playerName, avatarPath); // Send player info to the server
+            gameController.setClientPlayer(new Player(playerName, avatarPath));
             statusLabel.setText("Connected successfully!");
             statusLabel.setForeground(Color.GREEN);
             client.setEventListener(this);

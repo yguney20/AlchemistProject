@@ -120,6 +120,13 @@ public class BoardScreen extends JFrame{
         return controller;
     }
 
-    
+    public void updateLabels() {
+        System.out.println("Update labels içi :"+ gameController.getGameState());
+        //Online kısmında client ile vermemiz gerekebilir
+        //Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
+        currentPlayerLabel.setText("Player: " + gameController.getGameState().getCurrentPlayer().getNickname());
+        currentTurnLabel.setText("Turn: " + gameController.getGameState().getCurrentTurn());
+        currentRoundLabel.setText("Round: " + gameController.getGameState().getCurrentRound());
+    }
 
 }

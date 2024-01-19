@@ -363,7 +363,6 @@ public class Server {
         
                 switch (action) {
                     case "playerReady":
-                        
                         if (messageMap.containsKey("isReady")) {
                             Boolean isReady = (Boolean) messageMap.get("isReady");
                             if (isReady != null) {
@@ -407,55 +406,84 @@ public class Server {
                         break;
 
                     case "forageForIngredient":
-                         String currentPlayerName = game.getCurrentPlayer().getNickname();
+                        String currentPlayerName = game.getCurrentPlayer().getNickname();
                         if(clientName.equals(currentPlayerName)){
                             int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                             System.out.println("Forage for ingredient");
                             game.forageForIngredient(playerId);
+                        }else {
+                            sendMessage("ERROR: Not your turn");
                         }
                         
                         break;
                      case "buyArtifactCard":
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
                         int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int cardId = Integer.parseInt((String) messageMap.get("cardId"));
                         game.buyArtifactCard(playerId, cardId);
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "transmuteIngredient":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                    currentPlayerName = game.getCurrentPlayer().getNickname();
+                    if(clientName.equals(currentPlayerName)){
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int ingredientId = Integer.parseInt((String) messageMap.get("ingredientId"));
                         game.transmuteIngredient(playerId, ingredientId);
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "sellPotion":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int cardId1 = Integer.parseInt((String) messageMap.get("cardId1"));
                         int cardId2 = Integer.parseInt((String) messageMap.get("cardId2"));
                         String guarantee = (String) messageMap.get("guarantee");
                         game.sellPotion(playerId, cardId1, cardId2, guarantee);
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "publishTheory":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int ingredientIdPub = Integer.parseInt((String) messageMap.get("ingredientId"));
                         int moleculeId = Integer.parseInt((String) messageMap.get("moleculeId"));
                         game.publishTheory(playerId, ingredientIdPub, moleculeId);
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "debunkTheory":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int publicationCardId = Integer.parseInt((String) messageMap.get("publicationCardId"));
                         Molecule.Component component = Molecule.Component.valueOf((String) messageMap.get("componentId"));
                         game.debunkTheory(playerId, publicationCardId, component);
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
 
                     case "useArtifactCard":
-                        playerId = Integer.parseInt((String) messageMap.get("playerId"));
-                        cardId = Integer.parseInt((String) messageMap.get("cardId"));
+                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                        int cardId = Integer.parseInt((String) messageMap.get("cardId"));
                         game.useArtifactCardById(cardId, playerId);
                         break;
 
                     case "makeExperiment":
+                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                        if(clientName.equals(currentPlayerName)){
                         // Extract details from messageMap
                         playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int firstCardId = Integer.parseInt((String) messageMap.get("firstCardId"));
@@ -468,6 +496,9 @@ public class Server {
                         // Send the result back to the client
                         String potionCardJson = new Gson().toJson(potionCard);
                         sendMessage("EXPERIMENT_RESULT:" + potionCardJson);
+                        }else {
+                            sendMessage("ERROR: Not your turn");
+                        }
                         break;
                     }
                     
