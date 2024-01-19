@@ -26,6 +26,7 @@ import javax.swing.border.LineBorder;
 import com.formdev.flatlaf.util.UIScale;
 
 import domain.controllers.LoginController;
+import domain.gameobjects.Player;
 import ui.swing.desingsystem.RoundedBorder;
 import ui.swing.desingsystem.RoundedCornerPanel;
 import ui.swing.model.CardModel;
@@ -46,6 +47,9 @@ public class LoginOverlay extends JFrame {
 	private Map<ImageIcon, String> iconPathMap = new HashMap<>(); 
 
 	private int counter = 0;
+	
+	private JTextField numPlayersTextField;
+    private int totalPlayers;
 	
 	public LoginOverlay() {
 	
@@ -172,6 +176,37 @@ public class LoginOverlay extends JFrame {
         avatarCardScreen4.addMouseListener(cardMouseListener);
         avatarCardScreen5.addMouseListener(cardMouseListener);
         
+     // Create and add a textfield for the number of players
+        numPlayersTextField = new JTextField();
+        numPlayersTextField.setBorder(new LineBorder(new Color(171, 173, 179), 2));
+        numPlayersTextField.setHorizontalAlignment(SwingConstants.CENTER);
+        numPlayersTextField.setForeground(new Color(128, 0, 0));
+        numPlayersTextField.setFont(new Font("Verdana", Font.BOLD, 16));
+        numPlayersTextField.setBounds(43, 150, 257, 29);
+        mainPanel.add(numPlayersTextField);
+        numPlayersTextField.setColumns(10);
+        
+     // Create and add a button to save the number of players
+        RoundedCornerPanel saveNumPlayersButton = new RoundedCornerPanel(15);
+        saveNumPlayersButton.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(82, 82, 82),
+                new Color(192, 192, 192), new Color(82, 82, 82), new Color(82, 82, 82)));
+        saveNumPlayersButton.setBackground(new Color(128, 0, 0));
+        saveNumPlayersButton.setBounds(58, 180, 231, 38);
+        mainPanel.add(saveNumPlayersButton);
+        saveNumPlayersButton.setLayout(new GridLayout(1, 0, 0, 0));
+
+        JLabel saveNumPlayersLabel = new JLabel("Save Player Number");
+        saveNumPlayersLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                handleSaveNumPlayersButtonClick();
+            }
+        });
+        saveNumPlayersLabel.setForeground(new Color(255, 255, 255));
+        saveNumPlayersLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        saveNumPlayersLabel.setFont(new Font("Segoe Script", Font.BOLD, 18));
+        saveNumPlayersLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        saveNumPlayersButton.add(saveNumPlayersLabel);
         
         RoundedCornerPanel avatarNamePanel = new RoundedCornerPanel(10);
         
@@ -229,7 +264,20 @@ public class LoginOverlay extends JFrame {
 		
 	}
 	
-	
+    private void handleSaveNumPlayersButtonClick() {
+        try {
+            totalPlayers = Integer.parseInt(numPlayersTextField.getText());
+            if (totalPlayers < 2 || totalPlayers > 4) {
+                throw new NumberFormatException();
+            }
+            JOptionPane.showMessageDialog(this, "Number of players saved: " + totalPlayers, "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid number of players between 2 and 4.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+	 
 	private void handleStartButtonClick() {
         if (nicknameTextField.getText().isEmpty() || selectedCard == null) {
         	
@@ -241,6 +289,16 @@ public class LoginOverlay extends JFrame {
         }
 
         String playerName = nicknameTextField.getText();
+        
+        // Check if the nickname is already taken
+        if (isNicknameTaken(playerName)) {
+            JOptionPane.showMessageDialog(this,
+                    "Nickname already taken. Please choose a different nickname.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         ImageIcon selectedIcon = (ImageIcon) selectedCard.getData().getIcon(); 
         String playerAvatarPath = iconPathMap.get(selectedIcon);
 
@@ -250,7 +308,7 @@ public class LoginOverlay extends JFrame {
         playerCreatedText.setVisible(true);
         counter++;
         
-        if (counter > 1) {
+        if (counter >= totalPlayers) {
         	loginController.initializeGame();
         	this.dispose();
         	BoardScreen board = BoardScreen.getInstance();
@@ -259,6 +317,15 @@ public class LoginOverlay extends JFrame {
 
         
     }
+	
+	private boolean isNicknameTaken(String nickname) {
+		for(Player player : loginController.getPlayerList()) {
+			if(nickname.equals(player.getNickname())) {
+				return true;
+			}
+		}
+	    return false;
+	}
 }
 
 /**

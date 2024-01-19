@@ -16,6 +16,10 @@ public class Theory {
 		theoryList.add(this);
 		
 	}
+	
+    public static void resetTheoryList() {
+        theoryList.clear();
+    }
 
 	public IngredientCard getIngredient() {
 		return ingredient;

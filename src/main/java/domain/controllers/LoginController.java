@@ -1,7 +1,10 @@
 package domain.controllers;
 
+import java.util.List;
+
 import domain.Game;
 import domain.gameobjects.GameObjectFactory;
+import domain.gameobjects.Player;
 
 public class LoginController {
 	
@@ -33,6 +36,10 @@ public class LoginController {
     
     public void initializeGame() {
     	game.initializeGame();
+    }
+    
+    public List<Player> getPlayerList(){
+    	return Player.getPlayerList();
     }
     
 }

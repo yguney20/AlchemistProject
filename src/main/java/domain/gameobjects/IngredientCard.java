@@ -19,6 +19,10 @@ public class IngredientCard {
 		ingredientList.add(this);
 	}
 	
+    public static void resetIngredientList() {
+        ingredientList.clear();
+    }
+	
     public static ArrayList<IngredientCard> getIngredientList() {
 		return ingredientList;
 	}

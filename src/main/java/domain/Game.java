@@ -26,9 +26,10 @@ public class Game { //Singleton Pattern
     private Player currentPlayer;
     private int currentPlayerID;
     private boolean isPaused;
-    private GameState gameState;
-    Player winner = null;
-    private boolean actionPerformed;
+    private GameState gameState = null;
+    private Player winner = null;
+
+	private boolean actionPerformed;
     private int publicationCounter = 1;
     private int theoryCounter = 1;
     private int validatedAspectCounter = 1;
@@ -127,7 +128,11 @@ public class Game { //Singleton Pattern
     //-----------------------Game Related Functions--------------------------------------
 
     public void initializeGame() {
+    	
+        GameState.destroyInstance();
+
         System.out.println("Players Size: "+ players.size());
+
         // Null check for players
         if (players == null || players.isEmpty()) {
             throw new IllegalStateException("Player list is null or empty.");
@@ -165,7 +170,7 @@ public class Game { //Singleton Pattern
 
         currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
         this.currentPlayerID = currentPlayer.getPlayerId();
-        this.gameState = new GameState(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed);
+        this.gameState = new GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed);
         gameState.setCurrentPlayerID(currentPlayerID);
 
        System.out.println("Player List: " + players);
@@ -248,7 +253,7 @@ public class Game { //Singleton Pattern
 
     
     //end game method
-    private void endGame() {
+    public double endGame() {
     	double maxScore = Double.MIN_VALUE;
 
         for (Player player : players) {
@@ -260,8 +265,10 @@ public class Game { //Singleton Pattern
                 winner = player;
             }
         }
-
+        
         System.out.println("Game Over! Winner: " + winner.getNickname() + " with a score of " + maxScore);
+
+        return maxScore;
     }
 
 	//Takes a player and calculates the score 
@@ -295,7 +302,7 @@ public class Game { //Singleton Pattern
         System.out.println(message);
     }
     
-    private boolean isGameOver() {
+    public boolean isGameOver() {
         return currentRound > totalRounds; 
     }
 
@@ -312,6 +319,14 @@ public class Game { //Singleton Pattern
 
     public ArtifactCard getArtifactCardById(int cardId) {
         return artifactDeck.stream()
+               .filter(card -> card.getArtifactId() == cardId)
+               .findFirst()
+               .orElse(null); // Return null if no card is found
+    }
+    
+    public ArtifactCard getPlayerArtifactCardById(int cardId, int playerId) {
+    	Player player = getPlayerById(playerId);
+        return player.getArtifactCards().stream()
                .filter(card -> card.getArtifactId() == cardId)
                .findFirst()
                .orElse(null); // Return null if no card is found
@@ -491,7 +506,7 @@ public class Game { //Singleton Pattern
 
     public void useArtifactCardById(int cardId, int playerId) {
         Player player = getPlayerById(playerId);
-        ArtifactCard card = getArtifactCardById(cardId);
+        ArtifactCard card = getPlayerArtifactCardById(cardId, playerId);
     
         // Check if both player and card are not null
         if (card == null || player == null) {

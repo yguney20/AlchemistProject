@@ -16,6 +16,7 @@ import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
 import ui.swing.screens.scenes.SettingsScreen;
 import ui.swing.screens.ArtifactCardsScreen;
+import ui.swing.screens.GameOverScreen;
 import ui.swing.screens.PotionCardsScreen;
 import ui.swing.screens.PublicationCardsScreen;
 import ui.swing.screens.PublishTheoryScreen;
@@ -90,6 +91,9 @@ public class BoardScreenController {
         return instance;
     }
     
+    public static synchronized void destroyInstance() {
+        instance = null;
+    }
 
     @FXML
     protected void handleActionPerformed() {
@@ -139,11 +143,15 @@ public class BoardScreenController {
     @FXML
     protected void handleMagicBallClick() {
     	
-    	
     	if(gameController.getActionPerformed()) {
     		Image newBallImage = new Image(getClass().getResourceAsStream("/ui/swing/resources/animations/Magic_Ball.gif"));
         	magicBall.setImage(newBallImage);
         	gameController.updateState();
+        	if(gameController.isGameOver()) {
+                boardScreenFrame.dispose();
+        		GameOverScreen gos = new GameOverScreen();
+        		gos.display();
+        	}
             currentPlayerLabel.setText("Player: " + gameController.getCurrentPlayer().getNickname());
             currentTurnLabel.setText("Turn: " + gameController.getCurrentTurn());
             currentRoundLabel.setText("Round: " + gameController.getCurrentRound());

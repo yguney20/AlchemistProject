@@ -19,6 +19,10 @@ public class PotionCard {
 		        this.potionId = potionId;
 		    }
 		    
+			public static void resetPotionMap() {
+		        potionMap.clear();
+		    }
+			
 		    public int getPotionId() {
 				return potionId;
 			}
