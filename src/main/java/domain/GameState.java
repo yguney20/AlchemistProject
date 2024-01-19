@@ -30,9 +30,9 @@ public class GameState {
         
     }
 
-    public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused) {
+    public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed) {
         if (instance == null) {
-            instance = new GameState(players, initialRound, firstTurn, initialPlayer, isPaused);
+            instance = new GameState(players, initialRound, firstTurn, initialPlayer, isPaused, actionPerformed);
         }
         return instance;
     }

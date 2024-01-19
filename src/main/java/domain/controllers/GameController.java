@@ -354,6 +354,7 @@ public class GameController {
     
     public boolean isGameOver() {
         return game.isGameOver(); 
+    }
 
     public void updateGameState(GameState gameState) {
        game.updateGameState(gameState);

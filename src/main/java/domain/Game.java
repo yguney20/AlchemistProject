@@ -170,7 +170,7 @@ public class Game { //Singleton Pattern
 
         currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
         this.currentPlayerID = currentPlayer.getPlayerId();
-        this.gameState = new GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed);
+        this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed);
         gameState.setCurrentPlayerID(currentPlayerID);
 
        System.out.println("Player List: " + players);
