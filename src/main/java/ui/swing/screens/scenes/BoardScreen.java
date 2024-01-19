@@ -73,7 +73,7 @@ public class BoardScreen extends JFrame{
         add(fxPanel);
     }
     
-    private void initializeJavaFXComponents() {
+    public void initializeJavaFXComponents() {
         Platform.runLater(() -> {
             try {
                 FXMLLoader loader = new FXMLLoader();
