@@ -205,6 +205,7 @@ public class Game { //Singleton Pattern
             gameState.setCurrentRound(currentRound);
             gameState.setCurrentTurn(currentTurn);
             // set actionPerformed to false since we moved on to the next player
+            updateGameStateWithLatestPlayerInfo(currentPlayerID);
             actionPerformed = false;
             System.out.println(gameState);
 
@@ -459,6 +460,7 @@ public class Game { //Singleton Pattern
         artifactDeck.remove(card);
         player.addArtifactCard(card);
         player.reduceGold(card.getGoldValue());
+        updateGameStateWithLatestPlayerInfo(player.getPlayerId());
         actionPerformed = true;
     }
 
@@ -559,6 +561,7 @@ public class Game { //Singleton Pattern
         // Increase the player's gold by 1 as a result of the transmutation
         player.increaseGold(1);
         // Mark the action as performed
+        updateGameStateWithLatestPlayerInfo(playerId);
         actionPerformed = true;
     }
 
@@ -600,7 +603,9 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     gameState.setLastCreatedPotion(potionCard);
     processExperimentOutcome(player, potionCard, student);
     actionPerformed = true;
+
     PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
+    updateGameStateWithLatestPlayerInfo(playerId);
 
     return potionCard;
 }
@@ -714,6 +719,7 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
             }
     
             actionPerformed = true;
+            updateGameStateWithLatestPlayerInfo(playerId);
             System.out.println(potion);
         } else {
             notifyPlayers("Action already performed or preconditions are not met");
@@ -781,6 +787,7 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
         }
 
         actionPerformed = true;
+        updateGameStateWithLatestPlayerInfo(player.getPlayerId());
     }
 
 
@@ -838,6 +845,7 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
         }
     
         ValidatedAspect validatedAspect = new ValidatedAspect(validatedAspectCounter++, ingredient, component, componentSign, componentSize);
+        updateGameStateWithLatestPlayerInfo(playerId);
         actionPerformed = true;
     }
 

@@ -425,6 +425,7 @@ public class Server {
                         int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int cardId = Integer.parseInt((String) messageMap.get("cardId"));
                         game.buyArtifactCard(playerId, cardId);
+                        broadcastGameState();
                         }else {
                             sendMessage("ERROR: Not your turn");
                         }
@@ -436,6 +437,7 @@ public class Server {
                         int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int ingredientId = Integer.parseInt((String) messageMap.get("ingredientId"));
                         game.transmuteIngredient(playerId, ingredientId);
+                        broadcastGameState();
                         }else {
                             sendMessage("ERROR: Not your turn");
                         }
@@ -449,6 +451,7 @@ public class Server {
                         int cardId2 = Integer.parseInt((String) messageMap.get("cardId2"));
                         String guarantee = (String) messageMap.get("guarantee");
                         game.sellPotion(playerId, cardId1, cardId2, guarantee);
+                        broadcastGameState();
                         }else {
                             sendMessage("ERROR: Not your turn");
                         }
@@ -461,6 +464,7 @@ public class Server {
                         int ingredientIdPub = Integer.parseInt((String) messageMap.get("ingredientId"));
                         int moleculeId = Integer.parseInt((String) messageMap.get("moleculeId"));
                         game.publishTheory(playerId, ingredientIdPub, moleculeId);
+                        broadcastGameState();
                         }else {
                             sendMessage("ERROR: Not your turn");
                         }
@@ -473,6 +477,7 @@ public class Server {
                         int publicationCardId = Integer.parseInt((String) messageMap.get("publicationCardId"));
                         Molecule.Component component = Molecule.Component.valueOf((String) messageMap.get("componentId"));
                         game.debunkTheory(playerId, publicationCardId, component);
+                        broadcastGameState();
                         }else {
                             sendMessage("ERROR: Not your turn");
                         }
@@ -482,6 +487,7 @@ public class Server {
                         int playerId = Integer.parseInt((String) messageMap.get("playerId"));
                         int cardId = Integer.parseInt((String) messageMap.get("cardId"));
                         game.useArtifactCardById(cardId, playerId);
+                        broadcastGameState();
                         break;
 
                     case "makeExperiment":
@@ -499,6 +505,7 @@ public class Server {
                         // Send the result back to the client
                         String potionCardJson = new Gson().toJson(potionCard);
                         sendMessage("EXPERIMENT_RESULT:" + potionCardJson);
+                        broadcastGameState();
                         }else {
                             sendMessage("ERROR: Not your turn");
                         }

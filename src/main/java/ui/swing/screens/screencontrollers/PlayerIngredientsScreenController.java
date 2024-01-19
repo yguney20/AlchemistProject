@@ -26,7 +26,6 @@ public class PlayerIngredientsScreenController {
 
     private GameController gameController;
     private JFrame playerIngredientsScreen;
-    private String clientName = gameController.getClientPlayer().getNickname();
 
     public void initialize() {
         gameController = GameController.getInstance();
@@ -34,12 +33,13 @@ public class PlayerIngredientsScreenController {
     }
 
      private void updateIngredients() {
-        Player playerToShow;
-        if (gameController.isOnlineMode()){
-            playerToShow = gameController.getPlayerByClientName(clientName);
-        } else{
-            playerToShow = gameController.getCurrentPlayer();
-        }
+        // Player playerToShow;
+        // if (gameController.isOnlineMode()){
+        //     playerToShow = gameController.getPlayerByClientName(clientName);
+        // } else{
+        //     playerToShow = gameController.getCurrentPlayer();
+        // }
+        Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
         if (playerToShow != null) {
             ingredientsContainer.getChildren().clear(); // Clear previous items
             List<IngredientCard> ingredientCards = playerToShow.getIngredientInventory();

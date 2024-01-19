@@ -682,8 +682,15 @@ public class PlayerDashboard extends JFrame {
          
         ImageIcon resizedNicknameIcon = ImageResizer.getResizedIcon(nicknameImageSmallPanel, "/ui/swing/resources/images/playerDashboardUI/nicknameImage.png");
         nicknameImageJLabel.setIcon(resizedNicknameIcon);
+
+        JLabel nicknameLabel;
+        if(gameController.isOnlineMode()){
+            nicknameLabel  = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getGolds()));
+        }else {
+            nicknameLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getNickname()));
+        }
              
-        JLabel nicknameLabel = new JLabel(gameController.getClientPlayer().getNickname());
+        
         nicknameLabel.setBounds(141, 0, 133, 57);
         nicknamePanel.add(nicknameLabel);
         nicknameLabel.setFont(playerInfoFont);
@@ -709,8 +716,13 @@ public class PlayerDashboard extends JFrame {
         ImageIcon resizedGoldIcon = ImageResizer.getResizedIcon(goldImageSmallPanel, "/ui/swing/resources/images/playerDashboardUI/goldImage.png");
         
         goldImageJLabel.setIcon(resizedGoldIcon);
-   
-        JLabel goldLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getGolds()));
+        JLabel goldLabel;
+        if(gameController.isOnlineMode()){
+            goldLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getGolds()));
+        }else {
+            goldLabel= new JLabel(String.valueOf(gameController.getCurrentPlayer().getGolds()));
+        }
+       
         goldLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         goldLabel.setBounds(141, 0, 133, 57);
         goldPanel.add(goldLabel);
@@ -721,8 +733,14 @@ public class PlayerDashboard extends JFrame {
         sicknessPanel.setBackground(new Color(255, 255, 255));
         playerInfoPanel.add(sicknessPanel);
         sicknessPanel.setLayout(null);
+        JLabel sicknessLabel;
+        if(gameController.isOnlineMode()){
+            sicknessLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getSicknessLevel()));
+        }else {
+            sicknessLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getSicknessLevel()));
+        }
         
-        JLabel sicknessLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getSicknessLevel()));
+       
         sicknessLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         sicknessLabel.setBounds(141, 0, 133, 57);
         sicknessPanel.add(sicknessLabel);
