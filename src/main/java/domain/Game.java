@@ -395,9 +395,15 @@ public class Game { //Singleton Pattern
     private void updateGameStateWithLatestPlayerInfo(int playerId) {
         Player updatedPlayer = getPlayerById(playerId);
         if (updatedPlayer != null) {
-            List<Player> updatedPlayers = new ArrayList<>(gameState.getPlayers());
-            updatedPlayers.set(updatedPlayers.indexOf(updatedPlayer), updatedPlayer);
-            gameState.setPlayers(updatedPlayers);
+            // Find the corresponding player in the GameState and update their state
+            for (Player gameStatePlayer : gameState.getPlayers()) {
+                if (gameStatePlayer.getPlayerId() == playerId) {
+                    gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
+                    gameStatePlayer.setGolds(updatedPlayer.getGolds());
+                    // Add any other player properties that need to be updated
+                    break;
+                }
+            }
         }
     }
     //-----------------------Artifact Related Functions ------------------------------------
