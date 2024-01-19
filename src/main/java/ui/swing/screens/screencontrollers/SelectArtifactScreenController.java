@@ -28,10 +28,13 @@ public class SelectArtifactScreenController {
 	private SelectArtifactScreen selectArtifactScreen;
 	private GameController gameController;
 	private ArtifactCard selectedArtifactCard;
-	private String clientName = gameController.getClientPlayer().getNickname();
+	private String clientName;
 
 	public SelectArtifactScreenController() {
 		gameController = GameController.getInstance();
+		if(gameController.isOnlineMode()) {
+			clientName = gameController.getClientPlayer().getNickname();
+		}
 	}
 
 	public void setSelectArtifactScreen(SelectArtifactScreen screen) {
