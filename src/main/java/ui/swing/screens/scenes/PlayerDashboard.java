@@ -685,7 +685,7 @@ public class PlayerDashboard extends JFrame {
 
         JLabel nicknameLabel;
         if(gameController.isOnlineMode()){
-            nicknameLabel  = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getGolds()));
+            nicknameLabel  = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getNickname()));
         }else {
             nicknameLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getNickname()));
         }

@@ -61,7 +61,6 @@ public class GameState {
     }
 
     public int getCurrentPlayerID() {
-        System.out.println("Getting current playerID: " + currentPlayerID);
         return currentPlayerID;
     }
 
