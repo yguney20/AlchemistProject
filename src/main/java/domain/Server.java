@@ -31,7 +31,7 @@ public class Server {
 
     // Constructor to initialize server with a specific port
     public Server(int port) throws IOException {
-        serverSocket = new ServerSocket(port);
+    	serverSocket = new ServerSocket(port, 50, InetAddress.getByName("0.0.0.0"));
         System.out.println("Server started on port " + port);
     }
 
