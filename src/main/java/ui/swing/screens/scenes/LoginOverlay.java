@@ -26,6 +26,7 @@ import javax.swing.border.LineBorder;
 import com.formdev.flatlaf.util.UIScale;
 
 import domain.controllers.LoginController;
+import domain.gameobjects.Player;
 import ui.swing.desingsystem.RoundedBorder;
 import ui.swing.desingsystem.RoundedCornerPanel;
 import ui.swing.model.CardModel;
@@ -288,6 +289,16 @@ public class LoginOverlay extends JFrame {
         }
 
         String playerName = nicknameTextField.getText();
+        
+        // Check if the nickname is already taken
+        if (isNicknameTaken(playerName)) {
+            JOptionPane.showMessageDialog(this,
+                    "Nickname already taken. Please choose a different nickname.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         ImageIcon selectedIcon = (ImageIcon) selectedCard.getData().getIcon(); 
         String playerAvatarPath = iconPathMap.get(selectedIcon);
 
@@ -306,6 +317,15 @@ public class LoginOverlay extends JFrame {
 
         
     }
+	
+	private boolean isNicknameTaken(String nickname) {
+		for(Player player : loginController.getPlayerList()) {
+			if(nickname.equals(player.getNickname())) {
+				return true;
+			}
+		}
+	    return false;
+	}
 }
 
 /**
