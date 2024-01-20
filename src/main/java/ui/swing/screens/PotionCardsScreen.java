@@ -130,7 +130,8 @@ public class PotionCardsScreen extends JFrame{
 	            JLabel potionImageLabel = new JLabel();
 	            potionImageLabel.setBounds(x, y, width, height);
 	            try {
-	                setImage(potionCard.getImagePath(), potionImageLabel);
+	            	String imagePathWithExtensionPng = potionCard.getImagePath() + ".png";
+	                setImage(imagePathWithExtensionPng, potionImageLabel);
 	            } catch (IOException e) {
 	                e.printStackTrace();
 	            }
