@@ -221,14 +221,30 @@ public class Client {
                     // Additional error handling here
                 }
             });
-            
+
         } else if (message.startsWith("GAME_PAUSED:")) {
-        	 String pausingPlayerName = message.substring("GAME_PAUSED:".length());
-             openPauseScreen(pausingPlayerName);
+            // Assuming GAME_PAUSED message contains GameState information after the player name
+            int separatorIndex = message.indexOf(':');
+            String pausingPlayerName = message.substring("GAME_PAUSED:".length(), separatorIndex);
+            String jsonState = message.substring(separatorIndex + 1);
+            GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+
+            gameController.setGameState(gameState);
+
+            SwingUtilities.invokeLater(() -> {
+                openPauseScreen(pausingPlayerName);
+            });
         } else if (message.equals("GAME_RESUMED")) {
-        	closePauseScreen();
+            // Assuming GAME_RESUMED message contains GameState information
+            String jsonState = message.substring("GAME_RESUMED:".length());
+            GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+
+            gameController.setGameState(gameState);
+
+            SwingUtilities.invokeLater(this::closePauseScreen);
         }
     }
+
 
     
 
@@ -278,23 +294,19 @@ public class Client {
     }
     
     
- // Method to display the pause screen
+    // Method to display the pause screen
+    // Method to display the pause screen
     private void openPauseScreen(String pausingPlayerName) {
-        SwingUtilities.invokeLater(() -> {
-            pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen));
-            pauseScreen.display();
-            // Further customization based on pausingPlayerName
-        });
+        pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen), gameController.getCurrentPlayer().getNickname());
+        pauseScreen.display();
+        // Further customization based on pausingPlayerName
     }
 
     // Method to close the pause screen
     private void closePauseScreen() {
-        SwingUtilities.invokeLater(() -> {
-            // Logic to close the pause screen
-        	if (pauseScreen != null) {
-                pauseScreen.close();
-            }
-        });
+        if (pauseScreen != null) {
+            pauseScreen.close();
+        }
     }
 
     public void simulateAnotherPlayer() {

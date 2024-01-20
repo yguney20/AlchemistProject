@@ -41,7 +41,7 @@ public class PauseScreenController {
     public void setPauseScreen(PauseScreen pauseScreen) {
         this.pauseScreen = pauseScreen;
     }
-    
+
     public void setPausingPlayerName(String pausingPlayerName) {
         this.pausingPlayerName = pausingPlayerName;
         updateResumeButtonVisibility();
@@ -54,7 +54,7 @@ public class PauseScreenController {
         Media buttonSound = new Media(buttonSoundFile);
         buttonSoundPlayer = new MediaPlayer(buttonSound);
     }
-    
+
     //-------------
     private void updateResumeButtonVisibility() {
         // Only show the resume button if the current player is the one who paused the game
