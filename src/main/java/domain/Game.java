@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import domain.controllers.GameController;
 import domain.gameobjects.*;
 import domain.gameobjects.Molecule.Component;
 import domain.gameobjects.artifacteffects.ArtifactEffect;
@@ -20,6 +21,7 @@ public class Game { //Singleton Pattern
     private List<Player> players;
     private List<IngredientCard> ingredientDeck;
 	private List<ArtifactCard> artifactDeck;
+    private List<PublicationCard> publicationCards;
 	private int totalRounds;
     private int currentRound;
     private int currentTurn;
@@ -167,10 +169,10 @@ public class Game { //Singleton Pattern
         }
 
    
-
+        publicationCards = GameController.getPublicationCardList();
         currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
         this.currentPlayerID = currentPlayer.getPlayerId();
-        this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed);
+        this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed,publicationCards);
         gameState.setCurrentPlayerID(currentPlayerID);
 
        System.out.println("Player List: " + players); 
@@ -188,6 +190,7 @@ public class Game { //Singleton Pattern
             currentPlayerID = currentPlayer.getPlayerId();
             gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentPlayerID(currentPlayerID);
+            gameState.setPublicationCards(publicationCards);
            
             // Check if all players have completed their turns
             if (currentPlayerIndex == 0) {
@@ -321,6 +324,8 @@ public class Game { //Singleton Pattern
             }
         }
     }
+
+    
 }
 
     //---------------------Functions for finding object by Id----------------------------

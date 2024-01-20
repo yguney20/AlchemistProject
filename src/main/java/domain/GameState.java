@@ -1,9 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
@@ -21,25 +19,25 @@ public class GameState {
     private boolean isPaused;
     private int currentTurn;
     private PotionCard lastCreatedPotion;
-    private boolean actionPerformed;
-    private ArrayList<PublicationCard> publicationCardList = new ArrayList<PublicationCard>();
-    private  Map<Player, List<PotionCard>> potionMap = new HashMap<>();
+    private boolean actionPerformed;;
+    private List<PublicationCard> publicationCards;
 
 
 
-    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed) {
+    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed, List<PublicationCard> publicationCards) {
         this.players = players;
         this.currentRound = initialRound;
         this.currentPlayerID = initialPlayer;
         this.isPaused = isPaused;
         this.currentTurn = firstTurn;
         this.actionPerformed = actionPerformed;
+        this.publicationCards= publicationCards;
         
     }
 
-    public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed) {
+    public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed, List<PublicationCard> publicationCards) {
         if (instance == null) {
-            instance = new GameState(players, initialRound, firstTurn, initialPlayer, isPaused, actionPerformed);
+            instance = new GameState(players, initialRound, firstTurn, initialPlayer, isPaused, actionPerformed, publicationCards);
         }
         return instance;
     }
@@ -158,19 +156,13 @@ public class GameState {
         return actionPerformed;
     }
 
-    public  ArrayList<PublicationCard> getPublicationCardList() {
-        for(Player player: players){
-            for(PublicationCard publicationCard: player.getPublicationCards()){
-                publicationCardList.add(publicationCard);
-            }
-        }
-        return publicationCardList;
+    public List<PublicationCard> gePublicationCards(){
+        return publicationCards;
     }
 
-    public  Map<Player, List<PotionCard>> getPotionMap() {
-        for(Player player: players){
-            potionMap.put(player, player.getPotionInventory());
-        }
-        return potionMap;
+    public void setPublicationCards(List<PublicationCard> publicationCards){
+        this.publicationCards = publicationCards;
     }
+
+
 }

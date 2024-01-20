@@ -118,10 +118,11 @@ public class PublicationCardsScreen extends JFrame{
         int width = 140;
         int height = 300;
         int horizontalSpacing = 20;
-        List<PublicationCard> publicationCards;
 
-        if (gameController.isOnlineMode()){
-            	publicationCards = gameController.getGameState().getPublicationCardList();
+        
+        List<PublicationCard> publicationCards;
+        if (gameController.isOnlineMode()){;
+            	publicationCards = gameController.getGameState().gePublicationCards();
             } else {
             	publicationCards = GameController.getPublicationCardList();
         }
