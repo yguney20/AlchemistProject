@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 
 import domain.controllers.GameController;
 import domain.gameobjects.Player;
+import javafx.application.Platform;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import ui.swing.helper.SoundPlayer;
@@ -66,6 +67,7 @@ public class PlayerDashboard extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 905, 550); // Adjust the size accordingly
         setResizable(false);
+        setLocationRelativeTo(null);
 
 
         RoundedBorder roundedBorder = new RoundedBorder(Color.BLACK, 10, 0, 4, new Color(0, 0, 0, 70));  //Custom Border Design.
@@ -488,6 +490,7 @@ public class PlayerDashboard extends JFrame {
             }
             @Override
         	public void mouseClicked(MouseEvent e) {
+
             	if(gameController.getActionPerformed()) {
                     JOptionPane.showMessageDialog(null, "Action already performed!", "Warning", JOptionPane.WARNING_MESSAGE);
         		}
@@ -500,8 +503,10 @@ public class PlayerDashboard extends JFrame {
             	else {
                     if(gameController.isOnlineMode()){
                         if(gameController.getClientPlayer().equals(gameController.getCurrentPlayer().getNickname())){
-                            PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
-                        publishTheoryScreen.display();
+                            Platform.runLater(() -> {
+                                PublishTheoryFXScreen publishTheoryScreen = new PublishTheoryFXScreen();
+                                publishTheoryScreen.display();
+                            });
                         PlayerDashboard.this.setVisible(false);
                         } else {
                             // Not the client player's turn
@@ -509,8 +514,10 @@ public class PlayerDashboard extends JFrame {
                         }
                     }
                     else{
-                        PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
-                        publishTheoryScreen.display();
+                        Platform.runLater(() -> {
+                            PublishTheoryFXScreen publishTheoryScreen = new PublishTheoryFXScreen();
+                            publishTheoryScreen.display();
+                        });
                         PlayerDashboard.this.setVisible(false);
                     }
                     

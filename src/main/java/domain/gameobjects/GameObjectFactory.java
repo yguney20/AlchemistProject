@@ -81,14 +81,14 @@ public class GameObjectFactory { // Singleton Patterns
     	
         Map<String, String> ingredientImages = new HashMap<>();
 
-        ingredientImages.put("Moon Blossom", "/images/ingredientCards/Moon Blossom.png");
+        ingredientImages.put("Moon Blossom", "/images/ingredientCards/Moon_Blossom.png");
         ingredientImages.put("Crystalite", "/images/ingredientCards/Crystalite.png");
-        ingredientImages.put("Shimmer Fungus", "/images/ingredientCards/Shimmer Fungus.png");
-        ingredientImages.put("Golden Mold", "/images/ingredientCards/Golden Mald.png");
-        ingredientImages.put("Starling Nectar", "/images/ingredientCards/Starlight Nectar.png");
-        ingredientImages.put("Verdant Fern", "/images/ingredientCards/Verdant Fern.png");
-        ingredientImages.put("Dandelion Root", "/images/ingredientCards/Dandelion Root.png");
-        ingredientImages.put("Dragon Powder", "/images/ingredientCards/Dragon Powder.png");
+        ingredientImages.put("Shimmer Fungus", "/images/ingredientCards/Shimmer_Fungus.png");
+        ingredientImages.put("Golden Mold", "/images/ingredientCards/Golden_Mald.png");
+        ingredientImages.put("Starling Nectar", "/images/ingredientCards/Starlight_Nectar.png");
+        ingredientImages.put("Verdant Fern", "/images/ingredientCards/Verdant_Fern.png");
+        ingredientImages.put("Dandelion Root", "/images/ingredientCards/Dandelion_Root.png");
+        ingredientImages.put("Dragon Powder", "/images/ingredientCards/Dragon_Powder.png");
         
         return ingredientImages;
     }

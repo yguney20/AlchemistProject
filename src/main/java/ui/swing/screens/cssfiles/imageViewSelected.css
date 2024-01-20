@@ -1,0 +1,6 @@
+.image-view-selected {
+    -fx-background-color: #f0e68c; /* Light khaki background */
+    -fx-border-color: #6b8e23; /* Olive drab border */
+    -fx-border-width: 4px; /* Border width */
+    -fx-padding: 4px; /* Padding to avoid clipping the image */
+}

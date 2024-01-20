@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="504.0" prefWidth="743.0" stylesheets="@../cssfiles/screenstyles.css, @../cssfiles/imageViewSelected.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.swing.screens.screencontrollers.PublishTheoryController">
+   <children>
+      <Pane fx:id="ingredientPane" layoutX="25.0" layoutY="72.0" prefHeight="149.0" prefWidth="701.0" style="-fx-background-color: #faebdc; -fx-background-radius: 20; -fx-border-width: 2; -fx-border-color: #000000; -fx-border-radius: 20;">
+         <children>
+            <ImageView fx:id="ingredient1" fitHeight="110.0" fitWidth="76.0" layoutX="8.0" layoutY="20.0" onMousePressed="#ingredient1MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/ingredientCards/Crystalite.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ingredient2" fitHeight="110.0" fitWidth="87.0" layoutX="85.0" layoutY="18.0" onMousePressed="#ingredient2MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/ingredientCards/Dandelion_Root.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ingredient3" fitHeight="110.0" fitWidth="87.0" layoutX="172.0" layoutY="20.0" onMousePressed="#ingredient3MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/ingredientCards/Dragon_Powder.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ingredient4" fitHeight="110.0" fitWidth="115.0" layoutX="253.0" layoutY="20.0" onMousePressed="#ingredient4MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/ingredientCards/Golden_Mald.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ingredient5" fitHeight="110.0" fitWidth="102.0" layoutX="343.0" layoutY="20.0" onMousePressed="#ingredient5MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/ingredientCards/Moon_Blossom.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ingredient6" fitHeight="110.0" fitWidth="102.0" layoutX="520.0" layoutY="22.0" onMousePressed="#ingredient6MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/ingredientCards/Shimmer_Fungus.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ingredient7" fitHeight="110.0" fitWidth="102.0" layoutX="610.0" layoutY="22.0" onMousePressed="#ingredient7MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/ingredientCards/Starlight_Nectar.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="ingredient8" fitHeight="110.0" fitWidth="113.0" layoutX="437.0" layoutY="22.0" onMousePressed="#ingredient8MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/ingredientCards/Verdant_Fern.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="moleculePane" layoutX="73.0" layoutY="252.0" prefHeight="123.0" prefWidth="604.0" style="-fx-background-color: #faebdc; -fx-background-radius: 20; -fx-border-width: 2; -fx-border-color: #000000; -fx-border-radius: 20;">
+         <children>
+            <ImageView fx:id="molecule1" fitHeight="61.0" fitWidth="68.0" layoutX="13.0" layoutY="27.0" onMousePressed="#molecule1MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/molecules/molecule1.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="molecule2" fitHeight="61.0" fitWidth="68.0" layoutX="86.0" layoutY="27.0" onMousePressed="#molecule2MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/molecules/molecule2.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="molecule3" fitHeight="61.0" fitWidth="68.0" layoutX="157.0" layoutY="27.0" onMousePressed="#molecule3MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/molecules/molecule3.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="molecule4" fitHeight="61.0" fitWidth="68.0" layoutX="229.0" layoutY="27.0" onMousePressed="#molecule4MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/molecules/molecule4.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="molecule5" fitHeight="61.0" fitWidth="68.0" layoutX="301.0" layoutY="27.0" onMousePressed="#molecule5MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/molecules/molecule5.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="molecule6" fitHeight="61.0" fitWidth="68.0" layoutX="373.0" layoutY="27.0" onMousePressed="#molecule6MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/molecules/molecule6.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="molecule7" fitHeight="61.0" fitWidth="68.0" layoutX="444.0" layoutY="27.0" onMousePressed="#molecule7MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/molecules/molecule7.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="molecule8" fitHeight="61.0" fitWidth="68.0" layoutX="522.0" layoutY="27.0" onMousePressed="#molecule8MousePressed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/molecules/molecule8.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane fx:id="publishPane" layoutX="308.0" layoutY="410.0" prefHeight="49.0" prefWidth="138.0" style="-fx-background-color: #faebdc; -fx-background-radius: 20; -fx-border-width: 2; -fx-border-color: #000000; -fx-border-radius: 20;">
+         <children>
+            <Label fx:id="publishButton" alignment="CENTER" contentDisplay="CENTER" layoutX="23.0" layoutY="11.0" onMousePressed="#publishButtonMousePressed" prefHeight="28.0" prefWidth="92.0" text="Publish!" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor>
+            </Label>
+         </children>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </Pane>
+      <ImageView fx:id="exitButton" fitHeight="38.0" fitWidth="34.0" layoutX="700.0" layoutY="3.0" onMousePressed="#exitButtonPressed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../images/entranceUI/x.square.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="OPEN_HAND" />
+         </cursor>
+      </ImageView>
+   </children>
+</AnchorPane>
