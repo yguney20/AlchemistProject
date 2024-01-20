@@ -49,6 +49,7 @@ public class Client {
     private GameObjectFactory gameObjectFactory = GameObjectFactory.getInstance();
 
 
+
     
     // Constructor to initialize the client with the server's host and port
     public Client(String hostname, int port, EventListener listener) {
@@ -303,10 +304,10 @@ public class Client {
         }
     }
     
-    
-    // Method to display the pause screen
+
     // Method to display the pause screen
     private void openPauseScreen(String pausingPlayerName) {
+        Game.getInstance().setPausedPlayer(pausingPlayerName);
         pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen), pausingPlayerName);
         pauseScreen.display();
         // Further customization based on pausingPlayerName
