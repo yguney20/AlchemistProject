@@ -96,6 +96,7 @@ public class GameOverScreenController {
         });
     }
     
+    
     public void setGameOverScreen(GameOverScreen frame) {
         this.gameOverScreen = frame;
     }

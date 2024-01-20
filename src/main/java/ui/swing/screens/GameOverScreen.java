@@ -18,7 +18,6 @@ public class GameOverScreen extends JFrame {
         initializeFrame();
         initializeJavaFXComponents();
     }
-
     private void initializeFrame() {
         setTitle("Game Over");
         setSize(702, 570);
