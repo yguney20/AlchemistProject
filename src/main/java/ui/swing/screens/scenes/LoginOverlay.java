@@ -212,7 +212,7 @@ public class LoginOverlay extends JFrame {
         
         RoundedCornerPanel avatarNamePanel = new RoundedCornerPanel(10);
         
-        avatarNamePanel.setBounds(1008, 250, 340, 184);
+        avatarNamePanel.setBounds(1008, 230, 340, 270);
         avatarNamePanel.setBorder(roundedBorder);
         
         
@@ -231,7 +231,7 @@ public class LoginOverlay extends JFrame {
         RoundedCornerPanel startButton = new RoundedCornerPanel(15);
         startButton.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(82, 82, 82), new Color(192, 192, 192), new Color(82, 82, 82), new Color(82, 82, 82)));
         startButton.setBackground(new Color(128, 0, 0));
-        startButton.setBounds(58, 100, 231, 38);
+        startButton.setBounds(58, 85, 231, 38);
         avatarNamePanel.add(startButton);
         startButton.setLayout(new GridLayout(1, 0, 0, 0));
         

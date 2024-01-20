@@ -140,6 +140,11 @@
             <Rectangle2D height="900.0" minX="600.0" minY="600.0" width="700.0" />
          </viewport>
       </ImageView>
+      <ImageView fx:id="exitButton" fitHeight="59.0" fitWidth="53.0" layoutX="1227.0" layoutY="16.0" onMousePressed="#exitButtonPressed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../images/entranceUI/x.square.png" />
+         </image>
+      </ImageView>
     </children>
    <cursor>
       <Cursor fx:constant="OPEN_HAND" />

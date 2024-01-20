@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import domain.GameState;
 import domain.controllers.GameController;
 import domain.gameobjects.Player;
+import javafx.scene.input.MouseEvent;
 import ui.swing.screens.scenes.BoardScreen;
 import ui.swing.screens.scenes.MenuScreen;
 import ui.swing.screens.scenes.PlayerDashboard;
@@ -53,6 +54,8 @@ public class BoardScreenController {
     private ImageView deductionBoard;
     @FXML
     private ImageView cauldron;
+    @FXML
+    private ImageView exitButton;
 
     private GameController gameController = GameController.getInstance();
     
@@ -83,6 +86,11 @@ public class BoardScreenController {
             currentTurnLabel.setText("Turn: " + gameController.getGameState().getCurrentTurn());
             currentRoundLabel.setText("Round: " + gameController.getGameState().getCurrentRound());
         });
+    }
+
+    public void exitButtonPressed(MouseEvent event) {
+        System.exit(0);
+
     }
     
     public static synchronized BoardScreenController getInstance() {
