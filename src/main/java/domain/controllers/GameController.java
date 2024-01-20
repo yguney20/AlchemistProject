@@ -395,7 +395,7 @@ public class GameController {
         return game.getPlayerById(playerId);
     }
     public ArtifactCard getArtifactCardById(int artifactCardId) {
-       return game.getArtifactCardById(artifactCardId);
+       return game.getGameState().getArtifactCardById(artifactCardId);
     }
 
 }

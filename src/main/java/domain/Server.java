@@ -567,10 +567,16 @@ public class Server {
                         server.broadcastResumeGame();
                         broadcastGameState();
                         break;
-                        case "REQUEST_GAME_STATE":
+                    case "REQUEST_GAME_STATE":
                         GameState gameState = game.getGameState();
-                        String gameStateJson = new Gson().toJson(gameState);
-                        sendMessage("GAME_STATE:" + gameStateJson);
+                        if (gameState != null && gameState.isInitialized()) {
+                            String gameStateJson = new Gson().toJson(gameState);
+                            System.out.println("Sending game state: " + gameStateJson); // Debug print
+                            sendMessage("GAME_STATE:" + gameStateJson);
+                        } else {
+                            System.err.println("Error: GameState is null or not initialized.");
+                            sendMessage("ERROR:GameState not available");
+                        }
                         break;
                 }
                 
