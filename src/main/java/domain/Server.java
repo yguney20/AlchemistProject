@@ -193,6 +193,7 @@ public class Server {
         public void broadcastResumeGame() {
             GameState gameState = game.getGameState();
             gameState.setPaused(false);
+            GameController.getInstance().resumeGame();
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
                 broadcast("GAME_RESUMED" + gameStateJson);
@@ -260,6 +261,7 @@ public class Server {
 
     public void pauseGame(String pausingPlayerName) {
         game.getGameState().setPaused(true);
+        GameController.getInstance().pauseGame();
         broadcast("GAME_PAUSED:" + pausingPlayerName + ":" + new Gson().toJson(game.getGameState()));
     }
 
