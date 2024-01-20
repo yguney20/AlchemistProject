@@ -179,7 +179,8 @@ public class Server {
             }
         }
 
-        public void broadcastPauseGame(GameState gameState) {
+        public void broadcastPauseGame() {
+            GameState gameState = game.getGameState();
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
                 broadcast("GAME_PAUSED:" + gameStateJson);
@@ -254,15 +255,7 @@ public class Server {
             }
         }
 
-    public void pauseGame(String pausingPlayerName) {
-        game.getGameState().setPaused(true);
-        broadcast("GAME_PAUSED:" + pausingPlayerName);
-    }
 
-    public void resumeGame() {
-        game.getGameState().setPaused(false);
-        broadcast("GAME_RESUMED");
-    }
 
     // Main method to start the server
     public static void main(String[] args) {
@@ -540,13 +533,14 @@ public class Server {
                         break;
                     case "pauseGame":
                         // Handling pause game request
-                        String pausingPlayerName = this.clientName; // The client who requested the pause
-                        server.pauseGame(pausingPlayerName);
+                        broadcastPauseGame();
+                        broadcastGameState();
                         break;
 
                     case "resumeGame":
                         // Handling resume game request
-                        server.resumeGame();
+                        broadcastResumeGame();
+                        broadcastGameState();
                         break;
                 }
                     

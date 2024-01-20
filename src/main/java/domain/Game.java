@@ -24,6 +24,8 @@ public class Game { //Singleton Pattern
     private int currentRound;
     private int currentTurn;
     private Player currentPlayer;
+
+    private String pausedPlayer = "";
     private int currentPlayerID;
     private boolean isPaused;
     private GameState gameState = null;
@@ -944,5 +946,11 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     }
 
 
+    public String getPausedPlayer() {
+        return pausedPlayer;
+    }
 
+    public void setPausedPlayer(String pausedPlayer) {
+        this.pausedPlayer = pausedPlayer;
+    }
 }
