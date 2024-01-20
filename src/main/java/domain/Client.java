@@ -2,35 +2,24 @@ package domain;
 
 import java.io.*;
 import java.net.*;
-import java.net.http.WebSocket.Listener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
-
-import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 import java.lang.reflect.Type;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import domain.controllers.GameController;
-import domain.controllers.LoginController;
-import domain.controllers.OnlineGameAdapter;
 import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
 import domain.interfaces.EventListener;
 import ui.swing.screens.scenes.*;
-import ui.swing.screens.HostGameScreen;
-import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
 import ui.swing.screens.screencontrollers.BoardScreenController;
-import ui.swing.screens.screencontrollers.*;
+
 
 public class Client {
     private String hostname; // The IP address or hostname of the server
@@ -45,10 +34,10 @@ public class Client {
     private PauseScreen pauseScreen;
     private boolean isConnected = false;
     private List<Player> playerList = Player.getPlayerList(); 
-
-    private LoginController loginController = LoginController.getInstance();
     private GameController gameController = GameController.getInstance();
     private GameObjectFactory gameObjectFactory = GameObjectFactory.getInstance();
+    private Map<String, Consumer<PotionCard>> callbacks = new HashMap<>();
+
 
 
 
@@ -59,12 +48,6 @@ public class Client {
         this.port = port;
         this.eventListener = listener;
     }
-
-    public void setEventListener(EventListener eventListener) {
-        this.eventListener = eventListener;
-    }
-
-    
 
     // Connect to the server
     public boolean connect() {
@@ -109,31 +92,6 @@ public class Client {
         }
     }
 
-    public void sendPlayerInfo(String playerName, String avatarPath) {
-        Map<String, String> playerInfo = new HashMap<>();
-        playerInfo.put("playerName", playerName);
-        playerInfo.put("avatarPath", avatarPath);
-        String jsonPlayerInfo = new Gson().toJson(playerInfo);
-        System.out.println("Sending player info: " + jsonPlayerInfo);
-        sendMessage(jsonPlayerInfo);
-    }
-
-    public void setPlayerReady() {
-        sendMessage("{\"action\":\"playerReady\"}");
-    }
-
-    public void sendPlayerReadiness(boolean isReady) {
-        String readinessMessage = "{\"action\":\"playerReady\", \"isReady\":" + isReady + "}";
-        sendMessage(readinessMessage);
-    }
-
-    // Client side code to send pause/resume request
-    public void sendPauseOrResumeRequest(boolean isPause) {
-        String action = isPause ? "pauseGameRequest" : "resumeGameRequest";
-        String message = "{\"action\":\"" + action + "\"}";
-        sendMessage(message);
-    }
-
     // Disconnect from the server
     public void disconnect() {
         try {
@@ -149,18 +107,70 @@ public class Client {
         }
     }
 
+    public void startListening() {
+        new Thread(() -> {
+            while (listening) {
+                String message = receiveMessage();
+                if (message != null) {
+                    handleServerMessage(message);
+                }
+            }
+        }).start();
+    }
+
+    public void stopListening() {
+        listening = false;
+    }
+
+    //------- Get and Set related functionality 
+
     public boolean isConnected() {
         return isConnected;
     }
 
-    private Map<String, Consumer<PotionCard>> callbacks = new HashMap<>();
-
+    public void setEventListener(EventListener eventListener) {
+        this.eventListener = eventListener;
+    }
 
     public void addCallback(String action, Consumer<PotionCard> callback) {
         callbacks.put(action, callback);
     }
+    
+
+    // ------ 
+    public void setPlayerReady() {
+        sendMessage("{\"action\":\"playerReady\"}");
+    }
+
+    public void sendPlayerReadiness(boolean isReady) {
+        String readinessMessage = "{\"action\":\"playerReady\", \"isReady\":" + isReady + "}";
+        sendMessage(readinessMessage);
+    }
 
 
+    // ---------- 
+
+    // Send player info to the server
+    public void sendPlayerInfo(String playerName, String avatarPath) {
+        Map<String, String> playerInfo = new HashMap<>();
+        playerInfo.put("playerName", playerName);
+        playerInfo.put("avatarPath", avatarPath);
+        String jsonPlayerInfo = new Gson().toJson(playerInfo);
+        sendMessage(jsonPlayerInfo);
+    }
+
+
+    // Client side code to send pause/resume request
+    public void sendPauseOrResumeRequest(boolean isPause) {
+        String action = isPause ? "pauseGameRequest" : "resumeGameRequest";
+        String message = "{\"action\":\"" + action + "\"}";
+        sendMessage(message);
+    }
+
+
+    /*
+     * This function handles the server messages accorind the message.
+     */
     public void handleServerMessage(String message) {
 
         if (message.startsWith("PLAYER_LIST:")) {
@@ -177,23 +187,19 @@ public class Client {
             updateLocalPlayerList(playerInfoList);
             
             // Update UI using SwingUtilities.invokeLater
-                SwingUtilities.invokeLater(() -> {
-                    if (eventListener != null) {
-                        eventListener.onPlayerListUpdate(playerNames);
-                    } else {
-                        System.out.println("EventListener is null");
-                    }
-                });
-    
-    } else if (message.startsWith("START_GAME:")) {
+            SwingUtilities.invokeLater(() -> {
+                if (eventListener != null) {
+                    eventListener.onPlayerListUpdate(playerNames);
+                } else {
+                    System.out.println("EventListener is null");
+                }
+            });
+        } else if (message.startsWith("START_GAME:")) {
             System.out.println("Game is started");
             String jsonState = message.substring("START_GAME:".length());
-            System.out.println("Debug: Received GameState JSON - " + jsonState);
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
-            System.out.println("Client Handler Recieved Start Game State:" + gameState);
             gameController.setGameState(gameState);
         
-           
             SwingUtilities.invokeLater(() -> {
     
                 openBoardScreen(gameState);
@@ -202,11 +208,8 @@ public class Client {
             String json = message.substring("EXPERIMENT_RESULT:".length());
             PotionCard potionCard = new Gson().fromJson(json, PotionCard.class);
 
-            // Call the callback function with potionCard
-            // This assumes you have a way to pass the callback to this method
-            // For example, you could use a Map to store callbacks based on request types
-            
-            
+            // Call the callback function with for retrieve potionCard
+        
             Consumer<PotionCard> callback = callbacks.get("makeExperiment");
             if (callback != null) {
                 callback.accept(potionCard);
@@ -214,14 +217,12 @@ public class Client {
         } else if (message.startsWith("GAME_STATE:")) {
             String jsonState = message.substring("GAME_STATE:".length());
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
-           
             
+            // Adjust the game state
             gameController.setGameState(gameState);
             gameController.getGameState().setPublicationCards(gameState.gePublicationCards());
             gameController.getGameState().setPotionMap(gameState.getPotionMap());
-            System.out.println(" after game staate call ;" + gameState.getPotionMap() );
-            
-
+        
             SwingUtilities.invokeLater(() -> {
                 BoardScreenController boardController = BoardScreenController.getInstance();
                 if (boardController != null) {
@@ -248,7 +249,6 @@ public class Client {
             // Assuming GAME_RESUMED message contains GameState information
             String jsonState = message.substring("GAME_RESUMED:".length());
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
-
             gameController.setGameState(gameState);
 
             SwingUtilities.invokeLater(this::closePauseScreen);
@@ -258,17 +258,11 @@ public class Client {
                 int playerId = Integer.parseInt(parts[1]);
                 int artifactCardId = Integer.parseInt(parts[2]);
                 // Handle the artifact card purchase
-                // For example, update the UI or local game state based on these IDs
                 handleArtifactPurchase(playerId, artifactCardId);
             }
 
         }
     }
-
-
-    
-
-    
 
     private void handleArtifactPurchase(int playerId, int artifactCardId) {
       
@@ -282,44 +276,18 @@ public class Client {
             // Handle error: player or card not found
             System.err.println("Player or ArtifactCard not found for given IDs.");
         }
-
-        // Optionally, request the updated GameState from the server
         requestUpdatedGameState();
-          
-        }
-
-        
-        private void requestUpdatedGameState() {
-           sendMessage("REQUEST_GAME_STATE");
-
-        }
-
-        private void updateLocalPlayerList(List<Map<String, String>> playerInfoList) {
-
-            playerList.clear(); // Clear the existing list first
-        
-            for (Map<String, String> playerInfo : playerInfoList) {
-                String playerName = playerInfo.get("playerName");
-                String avatarPath = playerInfo.get("avatarPath");
-                gameObjectFactory.createPlayer(playerName, avatarPath);
-            }
-      }
-
-    public void startListening() {
-        new Thread(() -> {
-            while (listening) {
-                String message = receiveMessage();
-                if (message != null) {
-                    handleServerMessage(message);
-                }
-            }
-        }).start();
     }
 
+    private void updateLocalPlayerList(List<Map<String, String>> playerInfoList) {
 
-
-    public void stopListening() {
-        listening = false;
+        playerList.clear(); // Clear the existing list first
+        
+        for (Map<String, String> playerInfo : playerInfoList) {
+            String playerName = playerInfo.get("playerName");
+            String avatarPath = playerInfo.get("avatarPath");
+            gameObjectFactory.createPlayer(playerName, avatarPath);
+        }
     }
 
     private void openBoardScreen(GameState gameState) {
@@ -332,7 +300,6 @@ public class Client {
             boardController.updateGameState(gameState);
         } else {
             System.err.println("Error: BoardScreenController is null.");
-            // Additional error handling here
         }
     }
     
@@ -343,7 +310,7 @@ public class Client {
         System.out.println(pausingPlayerName);
         pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen), pausingPlayerName);
         pauseScreen.display();
-        // Further customization based on pausingPlayerName
+
     }
 
     // Method to close the pause screen
@@ -353,6 +320,10 @@ public class Client {
             pauseScreen.close();
         }
     }
+
+    private void requestUpdatedGameState() {
+        sendMessage("REQUEST_GAME_STATE");
+     }
 
 
    

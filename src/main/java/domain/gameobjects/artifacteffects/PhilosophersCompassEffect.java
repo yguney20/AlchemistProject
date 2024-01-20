@@ -8,8 +8,7 @@ public class PhilosophersCompassEffect implements ArtifactEffect{
 
     @Override
     public void apply(Game game, Player player) {
-        
-        
+        player.setPhilosopherCompassEffect(true);
     }
 
     @Override

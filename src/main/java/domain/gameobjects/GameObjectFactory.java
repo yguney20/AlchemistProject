@@ -11,6 +11,9 @@ import domain.gameobjects.artifacteffects.*;
 
 
 public class GameObjectFactory { // Singleton Patterns
+
+    // Object Creations handled in this class
+    
 	
 	private static GameObjectFactory instance;
 
@@ -54,12 +57,29 @@ public class GameObjectFactory { // Singleton Patterns
     public static void destroyInstance() {
         instance = null;
     }
+
+    //------ Game Object Creations ---------
     
 	//Create a player
 	public void createPlayer(String nickname, String avatar) {
 		Player player = new Player(nickname, avatar);
         player.setPlayerId(playerCounter++);
 	}
+
+     // Create Artifacts
+     public List<ArtifactCard> createArtifactDeck() {
+        List<ArtifactCard> artifactDeck = new ArrayList<>();
+
+        artifactDeck.add(new ArtifactCard(artifactCounter++, "Elixir of Insight", 3, new ElixirOfInsightEffect(), true, false,"/images/artifactCards/Elixir Of Insight.png" ));
+        artifactDeck.add(new ArtifactCard(artifactCounter++, "Magic Mortar", 3, new MagicMortarEffect(), true, false,"/images/artifactCards/Magic Mortar.png" ));
+        artifactDeck.add((new ArtifactCard(artifactCounter++, "Printing Press", 3, new PrintingPressEffect(), false, false,"/images/artifactCards/Printing Press.png" )));
+        artifactDeck.add((new ArtifactCard(artifactCounter++, "Wisdom Idol", 3, new WisdomIdolEffect(), true, false,"/images/artifactCards/Wisdom Idol.png" )));
+
+        return artifactDeck;
+    }
+
+
+    //--------- List Creatiosn --------
 
     //Create a Molecule list
     public static List<Molecule> createMoleculeList() {
@@ -93,8 +113,10 @@ public class GameObjectFactory { // Singleton Patterns
         return ingredientImages;
     }
 
-    /*Creates a new ingredient list for the given molecule list. 
-    *Each ingredient will have a different molecule for each Game*/
+    /*
+    * Creates a new ingredient list for the given molecule list. 
+    * Each ingredient will have a different molecule for each Game
+    */
     public List<IngredientCard> createIngredientDeck() {
     	List<Molecule> moleculeList = createMoleculeList();
         List<IngredientCard> ingredients = new ArrayList<>();
@@ -102,7 +124,6 @@ public class GameObjectFactory { // Singleton Patterns
 
         List<String> ingredientNames = new ArrayList<> (List.of("Moon Blossom", "Crystalite", "Shimmer Fungus", "Golden Mold",
                 "Starlight Nectar", "Verdant Fern", "Dandelion Root", "Dragon Powder"));
-
         Collections.shuffle(ingredientNames);
 
         for (int i = 0; i < ingredientNames.size(); i++) {
@@ -115,28 +136,13 @@ public class GameObjectFactory { // Singleton Patterns
             }
         }
         
-
         Collections.shuffle(ingredients);
         
         return ingredients;
 
     }
 
-    // Create Artifacts
-    public List<ArtifactCard> createArtifactDeck() {
-        List<ArtifactCard> artifactDeck = new ArrayList<>();
-
-        artifactDeck.add(new ArtifactCard(artifactCounter++, "Elixir of Insight", 3, new ElixirOfInsightEffect(), true, false,"/images/artifactCards/Elixir Of Insight.png" ));
-        artifactDeck.add(new ArtifactCard(artifactCounter++, "Magic Mortar", 3, new MagicMortarEffect(), true, false,"/images/artifactCards/Magic Mortar.png" ));
-        artifactDeck.add((new ArtifactCard(artifactCounter++, "Printing Press", 3, new PrintingPressEffect(), false, false,"/images/artifactCards/Printing Press.png" )));
-        artifactDeck.add((new ArtifactCard(artifactCounter++, "Wisdom Idol", 3, new WisdomIdolEffect(), true, false,"/images/artifactCards/Wisdom Idol.png" )));
-        // Add other artifacts here
-
-        return artifactDeck;
-    }
-
-
-    
+    // All potions getted from there.
     public PotionCard potionMaker(IngredientCard firstIngredient, IngredientCard secondIngredient) {
         // Initialize potionCard as null
         PotionCard potionCard = null;

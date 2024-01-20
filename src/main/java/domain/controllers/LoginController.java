@@ -7,11 +7,12 @@ import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Player;
 
 public class LoginController {
-	
+
 	private static LoginController instance;
-	
 	private final GameObjectFactory gameObjectFactory;
 	private final Game game;
+
+    //HostController for handling host connection and initializing the game.
 
     public static LoginController getInstance() {
         if (instance == null) {
@@ -23,8 +24,7 @@ public class LoginController {
     public static void destroyInstance() {
         instance = null;
     }
-    
-    //constructor should be private in Singleton
+        
 	private LoginController() {
 		gameObjectFactory = GameObjectFactory.getInstance();
 		game = Game.getInstance();

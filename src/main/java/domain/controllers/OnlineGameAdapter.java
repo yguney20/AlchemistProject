@@ -1,22 +1,14 @@
 package domain.controllers;
 
 import domain.Client;
-import domain.Game;
-import domain.GameState;
 import domain.gameobjects.PotionCard;
-import domain.interfaces.EventListener;
-import ui.swing.screens.screenInterfaces.PlayerListUpdateListener;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-
 import javax.swing.SwingUtilities;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 
@@ -24,20 +16,18 @@ public class OnlineGameAdapter implements GameActionHandler {
 	
 	private Client client;
 	private Gson gson;
-	private PlayerListUpdateListener updateListener;
 
 
+	/**
+	 *  Adapter for handling online game actions and communication with the server.
+	 */
 	public OnlineGameAdapter (Client client){
 		this.client = client;
 		this.gson = new Gson();
 
 	}
 
-	public void sendMessage(String message) {
-		client.sendMessage(message);
-	}
-
-
+	
 	@Override
 	public void startGame() {
 		Map<String, String> message = new HashMap<>();
@@ -60,17 +50,23 @@ public class OnlineGameAdapter implements GameActionHandler {
 		
 	}
 
+	public void sendMessage(String message) {
+		client.sendMessage(message);
+	}
 
-	// Forage for Ingredient
+	// ---- Game Action Methods ----
+
+	/*
+	 * The action calls were sent the server.
+	 * Each action sent with its details
+	 */
+
 	public void forageForIngredient(String playerId) {
-		System.out.println("B");
 		Map<String, String> actionDetails = new HashMap<>();
 		actionDetails.put("playerId", playerId);
 		sendAction("forageForIngredient", actionDetails);
-
 	}
 
-	// Buy Artifact Card
     public void buyArtifactCard(String playerId, String cardId) {
         Map<String, String> actionDetails = new HashMap<>();
         actionDetails.put("playerId", playerId);
@@ -87,8 +83,7 @@ public class OnlineGameAdapter implements GameActionHandler {
 		sendAction("useArtifactCard", actionDetails);
 	}
 
-	 // Transmute Ingredient
-	 public void transmuteIngredient(String playerId, String ingredientId) {
+	public void transmuteIngredient(String playerId, String ingredientId) {
         Map<String, String> actionDetails = new HashMap<>();
         actionDetails.put("playerId", playerId);
         actionDetails.put("ingredientId", ingredientId);
@@ -96,7 +91,6 @@ public class OnlineGameAdapter implements GameActionHandler {
         sendAction("transmuteIngredient", actionDetails);
     }
 
-	// Make Experiment
     public void makeExperiment(int playerId, int firstCardId, int secondCardId, boolean student ,Consumer<PotionCard> callback) {
     // Create a request payload
 		Map<String, String> actionDetails = new HashMap<>();
@@ -109,10 +103,8 @@ public class OnlineGameAdapter implements GameActionHandler {
 		// Send the request
 		client.addCallback("makeExperiment", callback); 
 		sendAction("makeExperiment",actionDetails);
-
 	}
 
-	// Sell a Potion
 	public void sellPotion(String playerId, String cardId1, String cardId2, String guarantee) {
 		Map<String, String> actionDetails = new HashMap<>();
 		actionDetails.put("playerId", playerId);
@@ -123,7 +115,6 @@ public class OnlineGameAdapter implements GameActionHandler {
 		sendAction("sellPotion", actionDetails);
 	}
 
-	// Publish a Theory
 	public void publishTheory(String playerId, String ingredientId, String moleculeId) {
 		Map<String, String> actionDetails = new HashMap<>();
 		actionDetails.put("playerId", playerId);
@@ -133,7 +124,6 @@ public class OnlineGameAdapter implements GameActionHandler {
 		sendAction("publishTheory", actionDetails);
 	}
 
-	// Debunk a Theory
 	public void debunkTheory(String playerId, String publicationCardId, domain.gameobjects.Molecule.Component component) {
 		Map<String, String> actionDetails = new HashMap<>();
 		actionDetails.put("playerId", playerId);
@@ -162,7 +152,20 @@ public class OnlineGameAdapter implements GameActionHandler {
 		client.sendMessage(gson.toJson(playerInfo));
 	}
 
+	public void sendPauseGameRequest() {
+		Map<String, String> actionDetails = new HashMap<>();
+		actionDetails.put("action", "pauseGame");
+		client.sendMessage(gson.toJson(actionDetails));
+	}
+
+	public void sendResumeGameRequest() {
+		Map<String, String> actionDetails = new HashMap<>();
+		actionDetails.put("action", "resumeGame");
+		client.sendMessage(gson.toJson(actionDetails));
+	}
 	
+	// This call back for recieving readiness of the players in the game lobby
+
 	public void areAllPlayersReady(Consumer<Boolean> callback) {
 		new Thread(() -> {
 			client.sendMessage("{\"action\":\"areAllPlayersReady\"}");
@@ -177,14 +180,15 @@ public class OnlineGameAdapter implements GameActionHandler {
 			}
 		}).start();
 	}
-	
-	
+
+
+	// For retrieving the players for the lobby
 
 	public List<String> getConnectedPlayers() {
     // Send a request to the server
 		client.sendMessage("{\"action\":\"getConnectedPlayers\"}");
 
-		// Wait for and process the server's response
+		// Waiting for the server's response and process 
 		String response = client.receiveMessage();
 		if (response != null && response.startsWith("PLAYER_LIST:")) {
 			String jsonList = response.substring("PLAYER_LIST:".length());
@@ -192,23 +196,6 @@ public class OnlineGameAdapter implements GameActionHandler {
 		}
 
 		return Collections.emptyList();
-	}	
-
-	public void setPlayerListUpdateListener(PlayerListUpdateListener listener) {
-		this.updateListener = listener;
-	}
-
-
-	public void sendPauseGameRequest() {
-		Map<String, String> actionDetails = new HashMap<>();
-		actionDetails.put("action", "pauseGame");
-		client.sendMessage(gson.toJson(actionDetails));
-	}
-
-	public void sendResumeGameRequest() {
-		Map<String, String> actionDetails = new HashMap<>();
-		actionDetails.put("action", "resumeGame");
-		client.sendMessage(gson.toJson(actionDetails));
 	}
 
 }

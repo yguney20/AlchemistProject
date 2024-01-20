@@ -3,42 +3,36 @@ package domain.controllers;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-
 import domain.Game;
 import domain.GameState;
 import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.IngredientCard;
-import domain.gameobjects.Molecule;
 import domain.gameobjects.Molecule.Component;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
 import domain.gameobjects.PublicationCard;
 import domain.gameobjects.ValidatedAspect;
-import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
 import javafx.application.Platform;
-import domain.controllers.*;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import ui.swing.screens.scenes.DeductionBoard;
-import ui.swing.screens.scenes.BoardScreen;
 import ui.swing.screens.screencomponents.SettingsState;
 import ui.swing.screens.screencontrollers.DeductionBoardController;
 
 public class GameController {
 	
 	private static GameController instance;
-	private BoardScreen boardScreen;
-	private final Game game;
-	private final GameObjectFactory gameObjectFactory;
-	private Map<Player, DeductionBoard> playerDeductionBoards = new HashMap<>();
-    private boolean isOnlineMode = false;
+    private final Game game;
+    private final GameObjectFactory gameObjectFactory;
     private OnlineGameAdapter onlineGameAdapter;
+    private boolean isOnlineMode = false;
+	
+	private Map<Player, DeductionBoard> playerDeductionBoards = new HashMap<>();
     private static final SettingsState settingsState = new SettingsState();
-    private String clientPlayerName;
+    
+    private String clientPlayerName; //For online game, just keep the client name for further check
 
 	
     public static GameController getInstance() {
@@ -51,26 +45,22 @@ public class GameController {
         }
         return instance;
     }
-    //constructor should be private in Singleton
+
+    /**
+    * Singleton game controller 
+    * MVV - this controller redirects the call from UI to game
+    */
     public GameController() {
 		game = Game.getInstance();
 		gameObjectFactory = GameObjectFactory.getInstance();
-		//initializeDeductionBoards();
+		initializeDeductionBoards();
     }
 	
     public static void destroyInstance() {
         instance = null;
     }
     
-    // Provide a way to access the settings state
-    public static SettingsState getSettingsState() {
-        return settingsState;
-    }
-
-
-
-
-    // ------Get and Set------
+    // ----------- Getter and Setter Methods -----------
 
     public Player getCurrentPlayer(){
     	return game.getGameState().getCurrentPlayer();
@@ -97,13 +87,9 @@ public class GameController {
     }
 
     public List<ArtifactCard> getPlayerArtifactCards() {
-        
         return game.getGameState().getCurrentPlayer().getArtifactCards();
     }
 
-    public void setBoardScreen(BoardScreen boardScreen) {
-        this.boardScreen = boardScreen;
-    }
 
     public ArtifactCard getArtifactCardByPath(String path) {
     	return game.getArtifactCardByPath(path);
@@ -112,7 +98,77 @@ public class GameController {
     public Map<String, String> createIngredientNameAndPathList(){
     	return gameObjectFactory.createIngredientNameAndPathList();
     }
+
+    public boolean getActionPerformed() {
+    	return game.getActionPerformed();
+    }
+
+    public DeductionBoard getDeductionBoardForPlayer(Player player) {
+        return playerDeductionBoards.get(player);
+    }
+
+    public String getClientPlayer() {
+        return clientPlayerName;
+    }
+
+    public Player getPlayerByClientName(String name){
+        return game.getPlayerByClientName(name);
+    }
+    public Player getPlayerById(int playerId) {
+        return game.getPlayerById(playerId);
+    }
+    public ArtifactCard getArtifactCardById(int artifactCardId) {
+       return game.getGameState().getArtifactCardById(artifactCardId);
+    }
+
+    public void updateGameState(GameState gameState) {
+        game.updateGameState(gameState);
+    }
+
+    public void setGameState(GameState gameState) {
+        game.setGameState(gameState);
+    }
+ 
+    public void setClientPlayer(String player) {
+        this.clientPlayerName = player;
+    }
+
+    public void setOnlineGameAdapter(OnlineGameAdapter adapter) {
+        this.onlineGameAdapter = adapter;
+    }
+
+    public Player getWinner() {
+    	return game.getWinner();   	
+    }
     
+    public double endGame() {
+    	return game.endGame();
+    }
+    
+    public boolean isGameOver() {
+        return game.isGameOver(); 
+    }
+
+
+    //-------- Aditional sets and checks to system ------
+
+
+    // Method to check if the game is in online mode
+    public boolean isOnlineMode() {
+        return this.isOnlineMode;
+    }
+
+    public void setOnlineMode(boolean isOnline) {
+        this.isOnlineMode = isOnline;
+    }
+
+    // Provide a way to access the settings state
+    public static SettingsState getSettingsState() {
+        return settingsState;
+    }
+
+
+    //------------- Action calls --------
 
     public void updateState() {
         if (isOnlineMode) {
@@ -135,101 +191,30 @@ public class GameController {
         }
     }
 
-    public boolean getActionPerformed() {
-    	return game.getActionPerformed();
-    }
-
-
     public void pauseGame() {
         if (isOnlineMode) {
+            // Online mode: Send action to server via adapter
             onlineGameAdapter.sendPauseGameRequest();
         } else {
+            // Offline mode: Directly call game logic
             game.pauseGame();
         }
     }
 
     public void resumeGame() {
         if (isOnlineMode) {
+            // Online mode: Send action to server via adapter
             onlineGameAdapter.sendResumeGameRequest();
         } else {
+            // Offline mode: Directly call game logic
             game.resumeGame();
         }
     }
 
-    // Method to set the game mode
-    public void setOnlineMode(boolean isOnline) {
-        this.isOnlineMode = isOnline;
-    }
 
-
-    
-    // Method to check if the game is in online mode
-    public boolean isOnlineMode() {
-        return this.isOnlineMode;
-    }
-    
-    
-
-    private void initializeDeductionBoards() {
-        for (Player player : game.getGameState().getPlayers()) {
-            playerDeductionBoards.put(player, new DeductionBoard());
-        }
-    }
-
-    public DeductionBoard getDeductionBoardForPlayer(Player player) {
-        return playerDeductionBoards.get(player);
-    }
-
-    
-    // Call this method when it's a player's turn
-    public void displayDeductionBoardForCurrentPlayer() {
-        Player currentPlayer = getCurrentPlayer();
-        DeductionBoard board = playerDeductionBoards.computeIfAbsent(currentPlayer, k -> new DeductionBoard());
-        Platform.runLater(() -> {
-            board.display();
-            loadPlayerDeductionsIntoBoard(currentPlayer, board);
-        });
-    }
-
-    private void loadPlayerDeductionsIntoBoard(Player player, DeductionBoard board) {
-        // The following assumes that you have a method to get the deductions for a player
-        List<Player.Deduction> deductions = player.getDeductions(); // Retrieve the list of deductions for the player
-        Platform.runLater(() -> {
-            board.clearSignPlacements();
-            for (Player.Deduction deduction : deductions) {
-                board.addSignPlacement(new Point(deduction.getX(), deduction.getY()), convertNumToSign(deduction.getSign_num()));
-            }
-        });
-    }
-    
-    private DeductionBoardController.Sign convertNumToSign(int signNum) {
-        DeductionBoardController.Sign[] signs = DeductionBoardController.Sign.values();
-        if (signNum >= 0 && signNum < signs.length) {
-            return signs[signNum];
-        }
-        return DeductionBoardController.Sign.NEUTRAL; // Default or error handling
-    }
-    
-    public void playerMadeDeduction(int x, int y, int signNum) {
-        Player currentPlayer = getCurrentPlayer();
-        currentPlayer.addDeduction(x, y, signNum);
-
-        DeductionBoard board = playerDeductionBoards.get(currentPlayer);
-        if (board != null) {
-            Platform.runLater(() -> {
-                board.addSignPlacement(new Point(x, y), convertNumToSign(signNum));
-            });
-        }
-    }
-
-
-   
-    
     public void forageForIngredient(int playerId) {
-        System.out.println("ONLINE OR OFFLINE = " + isOnlineMode);
         if (isOnlineMode) {
             // Online mode: Send action to server via adapter
-            System.out.println("A");
             onlineGameAdapter.forageForIngredient(String.valueOf(playerId));
         } else {
             // Offline mode: Directly call game logic
@@ -274,16 +259,6 @@ public class GameController {
         }
     }
 
-    public void swapRight(IngredientCard ingredientCard){
-       game.swapRight(ingredientCard);
-
-    }
-
-    public void swapLeft(IngredientCard ingredientCard){
-        game.swapLeft(ingredientCard);
-
-    }
-    
     public void sellPotion(int playerId, int ingredientCardId1, int ingredientCardId2, String guarantee) {
         if (isOnlineMode) {
             // Online mode: Send action to server via adapter
@@ -296,16 +271,16 @@ public class GameController {
     }
     
    public void makeExperiment(int playerId, int firstCardId, int secondCardId, boolean student, Consumer<PotionCard> callback) {
-    if (isOnlineMode) {
-        onlineGameAdapter.makeExperiment(playerId, firstCardId, secondCardId, student, callback);
-    } else {
-        PotionCard result = game.makeExperiment(playerId, firstCardId, secondCardId, student);
-        callback.accept(result);
+        if (isOnlineMode) {
+            // Online mode: Send action to server via adapter
+            onlineGameAdapter.makeExperiment(playerId, firstCardId, secondCardId, student, callback);
+        } else {
+            // Offline mode: Directly call game logic
+            PotionCard result = game.makeExperiment(playerId, firstCardId, secondCardId, student);
+            callback.accept(result);
+        }
     }
-}
-    
-   
-    
+
     public void publishTheory(int playerId, int ingredientId, int moleculeId) {
         if (isOnlineMode) {
             // Send action to server via adapter and wait for response
@@ -327,6 +302,71 @@ public class GameController {
         }
        
     }
+    
+
+    /// DeductionBoard handler functions for each players own deductionBoard
+
+
+    private void initializeDeductionBoards() {
+        for (Player player : game.getGameState().getPlayers()) {
+            playerDeductionBoards.put(player, new DeductionBoard());
+        }
+    }
+   
+    // this method for keeping unique deductions
+    public void displayDeductionBoardForCurrentPlayer() {
+        Player currentPlayer = getCurrentPlayer();
+        DeductionBoard board = playerDeductionBoards.computeIfAbsent(currentPlayer, k -> new DeductionBoard());
+        Platform.runLater(() -> {
+            board.display();
+            loadPlayerDeductionsIntoBoard(currentPlayer, board);
+        });
+    }
+
+    private void loadPlayerDeductionsIntoBoard(Player player, DeductionBoard board) {
+        List<Player.Deduction> deductions = player.getDeductions(); // Retrieve the list of deductions for the player
+        Platform.runLater(() -> {
+            board.clearSignPlacements();
+            for (Player.Deduction deduction : deductions) {
+                board.addSignPlacement(new Point(deduction.getX(), deduction.getY()), convertNumToSign(deduction.getSign_num()));
+            }
+        });
+    }
+    
+    
+    private DeductionBoardController.Sign convertNumToSign(int signNum) {
+        DeductionBoardController.Sign[] signs = DeductionBoardController.Sign.values();
+        if (signNum >= 0 && signNum < signs.length) {
+            return signs[signNum];
+        }
+        return DeductionBoardController.Sign.NEUTRAL; 
+    }
+    
+    public void playerMadeDeduction(int x, int y, int signNum) {
+        Player currentPlayer = getCurrentPlayer();
+        currentPlayer.addDeduction(x, y, signNum);
+
+        DeductionBoard board = playerDeductionBoards.get(currentPlayer);
+        if (board != null) {
+            Platform.runLater(() -> {
+                board.addSignPlacement(new Point(x, y), convertNumToSign(signNum));
+            });
+        }
+    }
+
+   
+    //---------- Elixir of insight artifact swap calls redirection --------     
+
+    public void swapRight(IngredientCard ingredientCard){
+       game.swapRight(ingredientCard);
+
+    }
+
+    public void swapLeft(IngredientCard ingredientCard){
+        game.swapLeft(ingredientCard);
+
+    }
+    
     public ValidatedAspect findValidatedAspectByIngredientComponent(IngredientCard ingredient, Component component) {
     	return game.findValidatedAspectByIngredientComponent(ingredient, component);
     }
@@ -352,50 +392,4 @@ public class GameController {
         }
         return gameState;
     }
-
-    public void setOnlineGameAdapter(OnlineGameAdapter adapter) {
-        this.onlineGameAdapter = adapter;
-    }
-
-    
-    public Player getWinner() {
-    	return game.getWinner();   	
-    }
-    
-    public double endGame() {
-    	return game.endGame();
-    }
-    
-    public boolean isGameOver() {
-        return game.isGameOver(); 
-    }
-
-    public void updateGameState(GameState gameState) {
-       game.updateGameState(gameState);
-    }
-
-    public void setGameState(GameState gameState) {
-        game.setGameState(gameState);
-    }
-
-    public void setClientPlayer(String player) {
-        this.clientPlayerName = player;
-    }
-
-    // Method to get the client player
-    public String getClientPlayer() {
-        return clientPlayerName;
-    }
-
-    public Player getPlayerByClientName(String name){
-        return game.getPlayerByClientName(name);
-
-    }
-    public Player getPlayerById(int playerId) {
-        return game.getPlayerById(playerId);
-    }
-    public ArtifactCard getArtifactCardById(int artifactCardId) {
-       return game.getGameState().getArtifactCardById(artifactCardId);
-    }
-
 }

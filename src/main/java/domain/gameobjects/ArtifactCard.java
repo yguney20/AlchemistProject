@@ -29,7 +29,7 @@ public class ArtifactCard {
         this.artifactId = artifactId;
     }
 
-    // Getters and setters
+    //------ Getters and setters ------ 
 
     public int getArtifactId() {
         return artifactId;
@@ -94,9 +94,6 @@ public class ArtifactCard {
         if(isUsed == false ){ 
             effect.apply(game, player);
             isUsed = true;
-            // if (isOneTimeUse){
-            //     player.getArtifactCards().remove(this);
-            // }
 
         } else if(isUsed == true && isOneTimeUse == false){
             throw new IllegalStateException("This one-per-round use artifact has already been used.");

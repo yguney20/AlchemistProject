@@ -3,11 +3,8 @@ package domain.controllers;
 import domain.GameState;
 import domain.Server;
 import domain.gameobjects.Player;
-
 import java.io.IOException;
 import java.util.List;
-
-import javax.swing.JOptionPane;
 
 public class HostController {
     private Server server;

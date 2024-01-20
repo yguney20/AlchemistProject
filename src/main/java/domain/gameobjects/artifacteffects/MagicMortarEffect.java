@@ -8,6 +8,7 @@ import domain.gameobjects.Player;
 
 public class MagicMortarEffect implements  ArtifactEffect {
 
+     //Activate the card when player wants to use it.
     @Override
     public void apply(Game game, Player player) {
         player.setMagicMortarActive(true);

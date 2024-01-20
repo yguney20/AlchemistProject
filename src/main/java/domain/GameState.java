@@ -1,14 +1,18 @@
 package domain;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
-
 import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
 import domain.gameobjects.PublicationCard;
 
+/**
+ * Represents the state of the game at any given point. 
+ * This includes details about the players, the current round, 
+ * the current player, and various game objects like potion and publication cards.
+ */
 public class GameState {
 	
 	
@@ -34,7 +38,6 @@ public class GameState {
         this.isPaused = isPaused;
         this.currentTurn = firstTurn;
         this.actionPerformed = actionPerformed;
-        this.publicationCards= publicationCards;
         this.potionMap = potionMap;
         
     }
@@ -70,7 +73,8 @@ public class GameState {
                 "\n}";
     }
 
-    // Getters and setters
+
+    //------- Getters and setters ------ 
     
 
     public int getCurrentTurn() {

@@ -3,13 +3,16 @@ package domain.controllers;
 import domain.Client;
 import domain.interfaces.EventListener;
 
+/* This controller handles the connection for players
+ *  Call comes from Connect Screen.
+ */
 public class ConnectController {
     private Client client;
     private GameController gameController;
 
     public ConnectController(GameController gameController) {
         this.gameController = gameController;
-    }
+    }   
 
     public void connectToServer(String host, int port, EventListener listener) {
         client = new Client(host, port, listener);
@@ -18,11 +21,5 @@ public class ConnectController {
         } else {
             System.err.println("Failed to connect to server.");
         }
-    }
-
-    public void sendPlayerInfo(String playerName, String avatarPath) {
-        // Prepare message and send player info to server
-        // String message = createPlayerInfoMessage(playerName, avatarPath);
-        // client.sendMessage(message);
     }
 }

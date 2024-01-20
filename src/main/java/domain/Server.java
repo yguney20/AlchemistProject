@@ -3,13 +3,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import domain.controllers.GameController;
-import domain.controllers.LoginController;
-import domain.gameobjects.ArtifactCard;
-import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Molecule;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
-import domain.gameobjects.artifacteffects.ArtifactEffect;
+
 
 import java.io.*;
 import java.net.*;
@@ -22,7 +19,6 @@ public class Server {
     private boolean gameStarted = false; // Flag to indicate if the game has started
     private Set<String> playerNames = new HashSet<>();
     private Set<String> avatarPaths = new HashSet<>();
-    //private GameController gameController = GameController.getInstance();
     private List<Player> serverPlayerList = new ArrayList<>(); 
     private Game game = Game.getInstance();
 
@@ -41,13 +37,7 @@ public class Server {
             instance = new Server(port);
         }
         return instance;
-    }
-
-    public List<String> getConnectedPlayerNames() {
-        return clients.stream().map(ClientHandler::getClientName).collect(Collectors.toList());
-    }
-
-    
+    }    
 
     // Main logic to execute the server
     public void execute() {
@@ -77,6 +67,9 @@ public class Server {
         }
     }
 
+
+    //----------------------BROADCASTING METHODS ---------------
+
     // Broadcast a message to all clients except the sender
     void broadcast(String message, ClientHandler excludeUser) {
         for (ClientHandler aClient : clients) {
@@ -96,7 +89,6 @@ public class Server {
 
 
     void broadcastPlayerList() {
-        System.out.println("Broadcasting player list");
     
         // Create a list of player info maps
         List<Map<String, String>> playerInfoList = new ArrayList<>();
@@ -111,6 +103,80 @@ public class Server {
         String playerListJson = new Gson().toJson(playerInfoList);
         broadcast("PLAYER_LIST:" + playerListJson);
     }
+
+    public void broadcastPlayerStatus() {
+        String statusUpdate = clients.stream()
+            .map(client -> client.getClientName() + ": " + (client.isReady() ? "Ready" : "Not Ready"))
+            .collect(Collectors.joining(", "));
+        broadcast("PLAYER_STATUS_UPDATE:" + statusUpdate);
+    }
+
+    public void broadcastGameState() {
+        GameState gameState = game.getGameState();
+        if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
+            String gameStateJson = new Gson().toJson(gameState);
+            broadcast("GAME_STATE:" + gameStateJson);
+        } else {
+            System.err.println("Error: GameState is not ready for broadcasting.");
+        }
+    }
+
+    public void broadcastaArtifactState() {
+        GameState gameState = game.getGameState();
+        if (gameState != null && gameState.isInitialized()) {
+            Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
+            String gameStateJson = gson.toJson(gameState);
+            broadcast("ARTIFACT:" + gameStateJson);
+        } else {
+            System.err.println("Error: Artifact is not ready for broadcasting.");
+        }
+}
+
+    public void broadcastStartGame() {
+        GameState gameState = game.getGameState();
+        if (gameState != null && gameState.isInitialized()) { 
+            String gameStateJson = new Gson().toJson(gameState);
+            broadcast("START_GAME:" + gameStateJson);
+        } else {
+            System.err.println("Error: Start game is not ready for broadcasting.");
+        }
+    }
+    public void broadcastGameState(GameState gameState) {
+
+        if (gameState != null && gameState.isInitialized()) { 
+            String gameStateJson = new Gson().toJson(gameState);
+            broadcast("GAME_STATE:" + gameStateJson);
+        } else {
+            System.err.println("Error: GameState is not ready for broadcasting.");
+        }
+    }
+
+    public void broadcastPauseGame() {
+        GameState gameState = game.getGameState();
+        gameState.setPaused(true);
+        if (gameState != null && gameState.isInitialized()) {
+            String gameStateJson = new Gson().toJson(gameState);
+            broadcast("GAME_PAUSED:" + gameStateJson);
+        } else {
+            System.err.println("Error: GameState is not ready for broadcasting.");
+        }
+    }
+
+    public void broadcastResumeGame() {
+        GameState gameState = game.getGameState();
+        gameState.setPaused(false);
+        GameController.getInstance().resumeGame();
+        if (gameState != null && gameState.isInitialized()) { 
+            String gameStateJson = new Gson().toJson(gameState);
+            broadcast("GAME_RESUMED" + gameStateJson);
+        } else {
+            System.err.println("Error: GameState is not ready for broadcasting.");
+        }
+    }
+
+    //------------Message delivering methods --------
 
 
     // Notify the host to start the game
@@ -128,150 +194,80 @@ public class Server {
         broadcastPlayerList();
         System.out.println("Player left: " + client.getClientName());
     }
+
     // A method to send current players and their statuses
-        void sendPlayerStatus() {
-            String playerStatusJson = createPlayerStatusJson();
-            broadcast(playerStatusJson);
+    void sendPlayerStatus() {
+        String playerStatusJson = createPlayerStatusJson();
+        broadcast(playerStatusJson);
+    }
+
+    String createPlayerStatusJson() {
+        Map<String, String> playerStatuses = new HashMap<>();
+        for (ClientHandler client : clients) {
+            playerStatuses.put(client.getClientName(), client.isReady() ? "Ready" : "Not Ready");
         }
-
-        String createPlayerStatusJson() {
-            Map<String, String> playerStatuses = new HashMap<>();
-            for (ClientHandler client : clients) {
-                playerStatuses.put(client.getClientName(), client.isReady() ? "Ready" : "Not Ready");
-            }
-            return new Gson().toJson(playerStatuses);
-        }
-
-        public void broadcastPlayerStatus() {
-            String statusUpdate = clients.stream()
-                .map(client -> client.getClientName() + ": " + (client.isReady() ? "Ready" : "Not Ready"))
-                .collect(Collectors.joining(", "));
-            broadcast("PLAYER_STATUS_UPDATE:" + statusUpdate);
-        }
-
-        public void broadcastGameState() {
-            GameState gameState = game.getGameState();
-            if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
-                String gameStateJson = new Gson().toJson(gameState);
-                broadcast("GAME_STATE:" + gameStateJson);
-            } else {
-                System.err.println("Error: GameState is not ready for broadcasting.");
-            }
-        }
-
-        public void broadcastaArtifactState() {
-            GameState gameState = game.getGameState();
-            if (gameState != null && gameState.isInitialized()) {
-                Gson gson = new GsonBuilder()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .create();
-                String gameStateJson = gson.toJson(gameState);
-                broadcast("ARTIFACT:" + gameStateJson);
-            } else {
-                System.err.println("Error: Artifact is not ready for broadcasting.");
-            }
-}
-
-        public void broadcastStartGame() {
-            GameState gameState = game.getGameState();
-            System.out.println("Debug: GameState before broadcasting - " + gameState);
-            if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
-                String gameStateJson = new Gson().toJson(gameState);
-                broadcast("START_GAME:" + gameStateJson);
-                System.out.println("Debug: Broadcasting START_GAME withGameState");
-            } else {
-                System.err.println("Error: Start game is not ready for broadcasting.");
-            }
-        }
-        public void broadcastGameState(GameState gameState) {
-
-            if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
-                String gameStateJson = new Gson().toJson(gameState);
-                broadcast("GAME_STATE:" + gameStateJson);
-            } else {
-                System.err.println("Error: GameState is not ready for broadcasting.");
-            }
-        }
-
-        public void broadcastPauseGame() {
-            GameState gameState = game.getGameState();
-            gameState.setPaused(true);
-            if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
-                String gameStateJson = new Gson().toJson(gameState);
-                broadcast("GAME_PAUSED:" + gameStateJson);
-            } else {
-                System.err.println("Error: GameState is not ready for broadcasting.");
-            }
-        }
-
-        public void broadcastResumeGame() {
-            GameState gameState = game.getGameState();
-            gameState.setPaused(false);
-            GameController.getInstance().resumeGame();
-            if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
-                String gameStateJson = new Gson().toJson(gameState);
-                broadcast("GAME_RESUMED" + gameStateJson);
-            } else {
-                System.err.println("Error: GameState is not ready for broadcasting.");
-            }
-        }
+        return new Gson().toJson(playerStatuses);
+    }
 
 
-        public void sendPlayerList() {
-            // Extract just the player names into a list
-            List<String> playerNames = clients.stream()
-            .map(ClientHandler::getClientName)
-            .collect(Collectors.toList());
 
-            // Convert the list of player names to JSON
-            String playerListJson = new Gson().toJson(playerNames);
-            broadcast("PLAYER_LIST:" + playerListJson);
+    public void sendPlayerList() {
+        // Extract just the player names into a list
+         List<String> playerNames = clients.stream()
+        .map(ClientHandler::getClientName)
+        .collect(Collectors.toList());
 
-            // For debugging
-            System.out.println("Server: Broadcasted player list - " + playerListJson);
-        }
+        // Convert the list of player names to JSON
+        String playerListJson = new Gson().toJson(playerNames);
+        broadcast("PLAYER_LIST:" + playerListJson);
+
+    }
+
+    // --------------- Getter and Setters --------------
+
+    public List<String> getConnectedPlayerNames() {
+        return clients.stream().map(ClientHandler::getClientName).collect(Collectors.toList());
+    }
+    
         
-        public boolean checkAllPlayersReady() {
-            boolean allReady = clients.stream().allMatch(ClientHandler::isReady);
-            return allReady;
+    public boolean checkAllPlayersReady() {
+        boolean allReady = clients.stream().allMatch(ClientHandler::isReady);
+        return allReady;
+    }
+
+    public synchronized boolean isUniquePlayer(String playerName, String avatarPath) {
+        return playerNames.add(playerName) && avatarPaths.add(avatarPath);
+    }
+
+    public List<ClientHandler> getClients() {
+        return clients;
+    }
+
+    public boolean areAllPlayersReady() {
+        return clients.stream().allMatch(ClientHandler::isReady);
+
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+     public void setGameStarted(boolean gameStarted) {
+         this.gameStarted = gameStarted;
+    }
+
+    private synchronized void addPlayerToList(String playerName, String avatarPath) {
+        boolean playerExists = serverPlayerList.stream()
+        .anyMatch(player -> player.getNickname().equals(playerName));
+
+        if (!playerExists) {
+            Player newPlayer = new Player(playerName, avatarPath);
+            serverPlayerList.add(newPlayer);
+            System.out.println("Added new player: " + playerName);
+        } else {
+            System.out.println("Player already exists: " + playerName);
         }
-
-        public synchronized boolean isUniquePlayer(String playerName, String avatarPath) {
-            return playerNames.add(playerName) && avatarPaths.add(avatarPath);
-        }
-
-        public List<ClientHandler> getClients() {
-            return clients;
-        }
-
-        public boolean areAllPlayersReady() {
-            return clients.stream().allMatch(ClientHandler::isReady);
-
-        }
-
-        public boolean isGameStarted() {
-            return gameStarted;
-        }
-
-        public void setGameStarted(boolean gameStarted) {
-            this.gameStarted = gameStarted;
-        }
-
-        private synchronized void addPlayerToList(String playerName, String avatarPath) {
-            boolean playerExists = serverPlayerList.stream()
-                .anyMatch(player -> player.getNickname().equals(playerName));
-            
-            System.out.println("Attempting to add player: " + playerName + " Exists: " + playerExists);
-        
-            if (!playerExists) {
-                Player newPlayer = new Player(playerName, avatarPath);
-                serverPlayerList.add(newPlayer);
-                System.out.println("Added new player: " + playerName);
-            } else {
-                System.out.println("Player already exists: " + playerName);
-            }
-        }
-
+    }
 
     public void pauseGame(String pausingPlayerName) {
         game.getGameState().setPaused(true);
@@ -329,10 +325,34 @@ public class Server {
             } catch (IOException ex) {
                 System.out.println("Error in ClientHandler: " + ex.getMessage());
                 ex.printStackTrace();
-            }
+            }            
+        }
 
-            
-            
+        
+        
+        // Getters for client's name and host status
+        String getClientName() {
+            return clientName;
+        }
+
+        String getClientAvatar() {
+            return clientAvatar;
+        }
+
+        public boolean isHost() {
+            return isHost;
+        }
+
+        public boolean isReady() {
+            return isReady; // Return the actual state of isReady
+        }
+
+        public void setReady(boolean readyStatus) {
+            this.isReady = readyStatus;
+        }
+
+        int getClientId() {
+            return clientId;
         }
         
 
@@ -345,11 +365,9 @@ public class Server {
                     jsonBuilder.append(line);
                 }
                 
-
                 String json = jsonBuilder.toString();
                 processPlayerInfo(json);
             
-
                 if (clients.size() == 1) {
                     isHost = true;
                 }
@@ -363,19 +381,31 @@ public class Server {
             }
         }
 
+
+        //---------- Process Client Message -------
+        
+        /**
+         * Processes the player information received in JSON format.
+         * This method parses the JSON to extract player details, checks for unique player names,
+         * registers the player, and triggers game start if all players are ready.
+         */
         private void processPlayerInfo(String json) {
+            // Parse the JSON string to extract player information
             Map<String, String> playerInfo = new Gson().fromJson(json, Map.class);
             String playerName = playerInfo.get("playerName");
             String avatarPath = playerInfo.get("avatarPath");
         
+            // Check if the player's name and avatar path are unique
             if (!server.isUniquePlayer(playerName, avatarPath)) {
                 writer.println("DUPLICATE");
                 System.out.println("Duplicate player detected: " + playerName);
             } else {
+                // Register the player and update server state
                 clientName = playerName;
                 this.clientAvatar = avatarPath;
                 System.out.println("Player registered: " + playerName);
         
+                // Add player to the server's list and broadcast updated list to all clients
                 server.addPlayerToList(playerName, avatarPath); // Add player here after uniqueness check
                 server.broadcastPlayerList();
                 if (server.checkAllPlayersReady()) {
@@ -384,11 +414,11 @@ public class Server {
             }
         }
 
+        // Validation cheks for the message.
         private void processClientMessages() {
             try {
                 String serverMessage;
                 while ((serverMessage = reader.readLine()) != null) {
-                    System.out.println("Received message from client " + clientName + ": " + serverMessage); // Debug print
                     processMessage(serverMessage);
                 }
             } catch (IOException ex) {
@@ -397,14 +427,23 @@ public class Server {
             }
         }
 
+        /**
+         * Processes incoming messages and performs actions based on the message content.
+         * The method handles various game-related actions like starting a game, updating game state,
+         * and performing game-specific actions like foraging for ingredients or buying artifact cards.
+         */
+
         private void processMessage(String message) {
             if (message == null || message.trim().isEmpty()) {
                 return; // Ignore empty or null messages
             }
+            // Parse the incoming message
             Map<String, Object> messageMap = new Gson().fromJson(message, Map.class);
+
             if (messageMap.containsKey("action")) {
                 String action = (String) messageMap.get("action");
-        
+                
+                 // Handle different actions based on the 'action' key value
                 switch (action) {
                     case "playerReady":
                         if (messageMap.containsKey("isReady")) {
@@ -414,7 +453,7 @@ public class Server {
                             }
                         }
                         break;
-        
+
                     case "areAllPlayersReady":
                         boolean allReady = server.checkAllPlayersReady();
                         sendMessage("ALL_PLAYERS_READY:" + allReady);
@@ -450,12 +489,9 @@ public class Server {
                         break;
 
                     case "forageForIngredient":
-                        System.out.println("C");
                         String currentPlayerName = game.getCurrentPlayer().getNickname();
                         if(clientName.equals(currentPlayerName)){
                             int playerId = Integer.parseInt((String) messageMap.get("playerId"));
-                            System.out.println("Forage for ingredient");
-                            System.out.println("D");
                             game.forageForIngredient(playerId);
                             broadcastGameState();
                         }else {
@@ -571,16 +607,13 @@ public class Server {
                         GameState gameState = game.getGameState();
                         if (gameState != null && gameState.isInitialized()) {
                             String gameStateJson = new Gson().toJson(gameState);
-                            System.out.println("Sending game state: " + gameStateJson); // Debug print
                             sendMessage("GAME_STATE:" + gameStateJson);
                         } else {
                             System.err.println("Error: GameState is null or not initialized.");
                             sendMessage("ERROR:GameState not available");
                         }
                         break;
-                }
-                
-                    
+                    }
             }
     
         }
@@ -597,34 +630,5 @@ public class Server {
         void sendMessage(String message) {
             writer.println(message);
         }
-
-        // Getters for client's name and host status
-        String getClientName() {
-            return clientName;
-        }
-
-        String getClientAvatar() {
-            return clientAvatar;
-        }
-
-        public boolean isHost() {
-            return isHost;
-        }
-
-        public boolean isReady() {
-            return isReady; // Return the actual state of isReady
-        }
-
-        public void setReady(boolean readyStatus) {
-            this.isReady = readyStatus;
-        }
-
-        int getClientId() {
-            return clientId;
-        }
-
-
     }
-
-
 }

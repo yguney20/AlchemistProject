@@ -3,39 +3,35 @@
  import java.util.ArrayList;
 
  import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
 
  public class Player {
-     private int playerId;
-     private String nickname;
-     private String avatar; // This can be a path to the avatar image file 
-     private int golds;
-     private List<IngredientCard> ingredientInventory;
-     private List<PotionCard> potionInventory;
-     private List<ArtifactCard> artifactCards;
-     private List<PublicationCard> publicationCards;
-   	 private int sicknessLevel;
-     private int reputationPoints;
-     private double score;
- 	 private static ArrayList<Player> playerList = new ArrayList<Player>();
- 	 private ArrayList<Deduction> deductions = new ArrayList<Deduction>();
-     private boolean magicMortarActive = false;
-     private boolean printingPressActive = false;
-     private boolean wisdomIdolActive = false;
-
- 	 
- 	 public class Deduction{
- 		 int x;
- 		 int y;
- 		 int sign_num;
+    private int playerId;
+    private String nickname;
+    private String avatar; // This can be a path to the avatar image file 
+    private int golds;
+    private List<IngredientCard> ingredientInventory;
+    private List<PotionCard> potionInventory;
+    private List<ArtifactCard> artifactCards;
+    private List<PublicationCard> publicationCards;
+   	private int sicknessLevel;
+    private int reputationPoints;
+    private double score;
+ 	private static ArrayList<Player> playerList = new ArrayList<Player>();
+ 	private ArrayList<Deduction> deductions = new ArrayList<Deduction>();
+    private boolean magicMortarActive = false;
+    private boolean printingPressActive = false;
+    private boolean wisdomIdolActive = false;
+    private boolean philosophersCompassActive = false;
+ 	public class Deduction{
+ 		int x;
+ 		int y;
+ 		int sign_num;
  		 
- 		 Deduction(int x, int y, int sign_num) {
- 			 this.x = x;
- 			 this.y = y;
- 			 this.sign_num = sign_num;
- 		 }
+ 		Deduction(int x, int y, int sign_num) {
+ 			this.x = x;
+ 			this.y = y;
+ 			this.sign_num = sign_num;
+ 		}
 
 		public int getX() {
 			return x;
@@ -61,34 +57,32 @@ import java.util.UUID;
 			this.sign_num = sign_num;
 		} 		 
  		 
- 	 }
-     
+ 	}
 
-
-     public Player(String nickname, String avatar) {
-         this.nickname = nickname;
-         this.avatar = avatar;
-         this.golds = 10; 
-         this.ingredientInventory = new ArrayList<>();
-         this.potionInventory = new ArrayList<>();
-         this.artifactCards = new ArrayList<>();
-         this.sicknessLevel = 0; 
-         this.reputationPoints = 0; 
-         playerList.add(this);
-     }
+    public Player(String nickname, String avatar) {
+        this.nickname = nickname;
+        this.avatar = avatar;
+        this.golds = 10; 
+        this.ingredientInventory = new ArrayList<>();
+        this.potionInventory = new ArrayList<>();
+        this.artifactCards = new ArrayList<>();
+        this.sicknessLevel = 0; 
+        this.reputationPoints = 0; 
+        playerList.add(this);
+    }
      
      @Override
-     public String toString() {
-         return "Player{" +
+    public String toString() {
+        return "Player{" +
                  "\n\tnickname='" + nickname + 
                  "\n\tgolds=" + golds +
                  "\n\treputationPoints=" + reputationPoints +
                  "\n\tsicknessLevel=" + sicknessLevel +
                  "\n}";
-     }
+    }
      
 
-     public ArrayList<Deduction> getDeductions() {
+    public ArrayList<Deduction> getDeductions() {
 		return deductions;
 	}
      
@@ -122,28 +116,26 @@ import java.util.UUID;
 	}
 
 	public void increaseSickness(int x) {
-    	 this.sicknessLevel += x;
+    	this.sicknessLevel += x;
      }
      
-     public void increaseGold(int x) {
-    	 this.golds += x;
-     }
+    public void increaseGold(int x) {
+    	this.golds += x;
+    }
      
-     public void reduceGold(int x) {
-    	 this.golds -= x;
-     }
+    public void reduceGold(int x) {
+    	this.golds -= x;
+    }
      
-     public void increaseReputation(int x) {
-    	 this.reputationPoints += x;
-     }
+    public void increaseReputation(int x) {
+    	this.reputationPoints += x;
+    }
      
-     public void reduceReputation(int x) {
-    	 this.reputationPoints -= x;
-     }
+    public void reduceReputation(int x) {
+    	this.reputationPoints -= x;
+    }
      
-     
-     
-     public List<ArtifactCard> getArtifactCards() {
+    public List<ArtifactCard> getArtifactCards() {
 		return artifactCards;
 	}
 
@@ -167,22 +159,24 @@ import java.util.UUID;
 		this.potionInventory = potionInventory;
 	}
 
-    
+    public void setPhilosopherCompassEffect(boolean isActive) {
+        this.philosophersCompassActive = isActive;
+    }
 
     public int getPlayerId() {
         return playerId;
     }
 
 	public String getNickname() {
-         return nickname;
+        return nickname;
     }
 
     public String getAvatar() {
-         return avatar;
+        return avatar;
     }
 
     public int getGolds() {
-         return golds;
+        return golds;
     }
 
     public void setGolds(int golds) {
@@ -245,8 +239,7 @@ import java.util.UUID;
         this.wisdomIdolActive = wisdomIdolActive;
     }
 
-
-     // Adds an artifact card to the player's collection.
+    // Adds an artifact card to the player's collection.
     public void addArtifactCard(ArtifactCard card) {
         this.artifactCards.add(card);
     }
@@ -276,6 +269,5 @@ import java.util.UUID;
         score += goldsForScore/3;
         return score;
     }
-    
- }
+}
 

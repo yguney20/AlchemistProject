@@ -5,13 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import domain.controllers.GameController;
 import domain.gameobjects.*;
 import domain.gameobjects.Molecule.Component;
 import domain.gameobjects.artifacteffects.ArtifactEffect;
-import domain.gameobjects.artifacteffects.MagicMortarEffect;
 
 
 public class Game { //Singleton Pattern
@@ -51,8 +49,6 @@ public class Game { //Singleton Pattern
         this.isPaused = false;
         this.actionPerformed = false;
       
-        
-        
     }
     
     //---------------------Singleton Methods----------------------------------------
@@ -130,13 +126,33 @@ public class Game { //Singleton Pattern
        return currentRound;
     }
 
+    public boolean isGameOver() {
+        return currentRound > totalRounds; 
+    }
+
+
+    public int getCurrentPlayerID() {
+        return currentPlayerID;
+    }
+ 
+    public  void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+ 
+ 
+    public String getPausedPlayer() {
+        return pausedPlayer;
+    }
+ 
+     public void setPausedPlayer(String pausedPlayer) {
+        this.pausedPlayer = pausedPlayer;
+    }
+
     //-----------------------Game Related Functions--------------------------------------
 
     public void initializeGame() {
     	
         GameState.destroyInstance();
-
-        System.out.println("Players Size: "+ players.size());
 
         // Null check for players
         if (players == null || players.isEmpty()) {
@@ -167,8 +183,6 @@ public class Game { //Singleton Pattern
             IngredientCard i2 = drawIngredientCard();
             p.getIngredientInventory().add(i1);
             p.getIngredientInventory().add(i2);
-
-            System.out.println("Player: " + p.getNickname() +" gets ingredients: "+ i1.getName() + ", " + i2.getName());
         }
 
         potionMap = GameController.getPotionMap();
@@ -177,61 +191,45 @@ public class Game { //Singleton Pattern
         this.currentPlayerID = currentPlayer.getPlayerId();
         this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed,publicationCards,potionMap);
         gameState.setCurrentPlayerID(currentPlayerID);
-
-       System.out.println("Player List: " + players); 
-        System.out.println("Debug: GameState initialized - " + gameState);
     }
 
     
     public void updateState() {
-
-        System.out.println("Game State before updateState: " + getGameState());
     	
-			int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-            currentPlayer = players.get(currentPlayerIndex);
-            currentPlayerID = currentPlayer.getPlayerId();
-            gameState.setCurrentPlayer(currentPlayer);
-            gameState.setCurrentPlayerID(currentPlayerID);
-            gameState.setPublicationCards(publicationCards);
+		int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        currentPlayer = players.get(currentPlayerIndex);
+        currentPlayerID = currentPlayer.getPlayerId();
+        gameState.setCurrentPlayer(currentPlayer);
+        gameState.setCurrentPlayerID(currentPlayerID);
+        gameState.setPublicationCards(publicationCards);
            
-            // Check if all players have completed their turns
-            if (currentPlayerIndex == 0) {
-                currentTurn++;
+        // Check if all players have completed their turns
+        if (currentPlayerIndex == 0) {
+            currentTurn++;
 
-                // Check if all turns for the current round have been completed
-                if (currentTurn > 3) {
-                    currentTurn = 1;
-                    currentRound++;
+            // Check if all turns for the current round have been completed
+            if (currentTurn > 3) {
+                currentTurn = 1;
+                currentRound++;
 
 
-                    // Check if all rounds have been completed
-                    if (currentRound > totalRounds) {
-                        endGame();
-                        return;
-                    }
+                // Check if all rounds have been completed
+                if (currentRound > totalRounds) {
+                    endGame();
+                    return;
                 }
             }
-            
-            // update the game state attributes
-            gameState.setCurrentPlayerID(currentPlayerID);
-            gameState.setCurrentRound(currentRound);
-            gameState.setCurrentTurn(currentTurn);
-            // set actionPerformed to false since we moved on to the next player
-            
-            gameState.setActionPerformed(false); 
-            System.out.println("Game State before updateState: " + getGameState());
-
-
-
-    }
-
-    public void endRound() {
-        for (Player player : players) {
-            resetArtifactCards(player);
         }
-        // Include any other end-of-round logic here
-    }  
+            
+        // update the game state attributes
+        gameState.setCurrentPlayerID(currentPlayerID);
+        gameState.setCurrentRound(currentRound);
+        gameState.setCurrentTurn(currentTurn);
+        // set actionPerformed to false since we moved on to the next player
+            
+        gameState.setActionPerformed(false); 
+    }
 
     public void updateGameState(GameState newGameState) {
         // Update the game state with the new information
@@ -240,27 +238,48 @@ public class Game { //Singleton Pattern
         this.currentPlayerID = newGameState.getCurrentPlayerID();
         this.currentPlayer = getPlayerById(newGameState.getCurrentPlayerID());
         this.isPaused = newGameState.isPaused();
-        // Additionally update other relevant state attributes if necessary
-        // For example, players, scores, etc., based on what GameState contains
+    }
 
-        // Debug print to check initialization
-        System.out.println("Game initialized from GameState:");
-        System.out.println("Current Round: " + currentRound);
-        System.out.println("Current Turn: " + currentTurn);
-        System.out.println("Current Player: " + (currentPlayer != null ? currentPlayer.getNickname() : "null"));
-
-        // Printing player details
-        if (players != null) {
-            for (Player player : players) {
-                System.out.println("Player: " + player.getNickname() + ", Golds: " + player.getGolds());
-                System.out.println("Ingredient Inventory: " + player.getIngredientInventory());
-            }
+    public void pauseGame() {
+        if (!gameState.isPaused()) {
+            gameState.setPaused(true);
+            // Notify all players
+            notifyPlayers("The game has been paused.");
         }
     }
 
+    public void resumeGame() {
+        if (gameState.isPaused()) {
+            gameState.setPaused(false);
+            // Notify all players
+            notifyPlayers("The game has resumed.");
+        }
+    }
 
+    public void endRound() {
+        for (Player player : players) {
+            resetArtifactCards(player);
+        }
+    }  
+
+    // Updates the gameStete with lates information.
+    private void updateGameStateWithLatestPlayerInfo(int playerId) {
+        Player updatedPlayer = getPlayerById(playerId);
+        if (updatedPlayer != null) {
+            // Find the corresponding player in the GameState and update their state
+            for (Player gameStatePlayer : gameState.getPlayers()) {
+                if (gameStatePlayer.getPlayerId() == playerId) {
+                    gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
+                    gameStatePlayer.setGolds(updatedPlayer.getGolds());
+                    gameStatePlayer.setArtifactCards(updatedPlayer.getArtifactCards());
+                    break;
+                }
+            }
+        }
+    }
     
-    //end game method
+    //---------- - End Game Related Functions----- --- 
+
     public double endGame() {
     	double maxScore = Double.MIN_VALUE;
 
@@ -288,21 +307,7 @@ public class Game { //Singleton Pattern
         return score;
     }
   
-    public void pauseGame() {
-        if (!gameState.isPaused()) {
-            gameState.setPaused(true);
-            // Notify all players
-            notifyPlayers("The game has been paused.");
-        }
-    }
-
-    public void resumeGame() {
-        if (gameState.isPaused()) {
-            gameState.setPaused(false);
-            // Notify all players
-            notifyPlayers("The game has resumed.");
-        }
-    }
+   
     
     // Until implementing UI Component this will be used for testing
     private void notifyPlayers(String message) {
@@ -310,29 +315,11 @@ public class Game { //Singleton Pattern
         System.out.println(message);
     }
     
-    public boolean isGameOver() {
-        return currentRound > totalRounds; 
-    }
-
-    private void updateGameStateWithLatestPlayerInfo(int playerId) {
-    Player updatedPlayer = getPlayerById(playerId);
-    if (updatedPlayer != null) {
-        // Find the corresponding player in the GameState and update their state
-        for (Player gameStatePlayer : gameState.getPlayers()) {
-            if (gameStatePlayer.getPlayerId() == playerId) {
-                gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
-                gameStatePlayer.setGolds(updatedPlayer.getGolds());
-                gameStatePlayer.setArtifactCards(updatedPlayer.getArtifactCards());
-                // Add any other player properties that need to be updated
-                break;
-            }
-        }
-    }
-
-    
-}
+   
 
     //---------------------Functions for finding object by Id----------------------------
+
+
     // Method to find a player by their ID
     public Player getPlayerById(int playerId) {
         for (Player player : players) {
@@ -387,7 +374,14 @@ public class Game { //Singleton Pattern
         return null; // Publication Card not found
     }
     
-    
+    public Player getPlayerByClientName(String name) {
+        for (Player player : gameState.getPlayers()) {
+            if (player.getNickname().equals(name)) {
+                return player;
+            }
+        }
+        return null; 
+    }
 
     //----------------------Forage for Ingredient Functions-------------------------------
 
@@ -423,9 +417,6 @@ public class Game { //Singleton Pattern
                 gameState.setActionPerformed(true);
                 updateGameStateWithLatestPlayerInfo(playerId);
     
-                // Print the player's updated inventory (for testing or logging)
-                System.out.println(player.getIngredientInventory());
-    
             } else {
                 // Notify all players if the ingredient deck is empty
                 notifyPlayers("The ingredient deck is empty.");
@@ -436,7 +427,6 @@ public class Game { //Singleton Pattern
         }
     }
   
-
     
     //-----------------------Artifact Related Functions ------------------------------------
     
@@ -495,7 +485,6 @@ public class Game { //Singleton Pattern
 
         gameState.setActionPerformed(true);
         updateGameStateWithLatestPlayerInfo(player.getPlayerId());
-        System.out.println("After buy: " +  gameState.getCurrentPlayer().getArtifactCards());
     }
 
     /**
@@ -603,53 +592,55 @@ public class Game { //Singleton Pattern
     //-----------------------Make Experiment Function ------------------------------------
 
     /**
- * Conducts an experiment to create a potion using two ingredient cards.
- * If a student is conducting the experiment, different outcomes are considered.
- *
- * @param playerId the ID of the player conducting the experiment.
- * @param firstCardId the ID of the first ingredient card.
- * @param secondCardId the ID of the second ingredient card.
- * @param student flag indicating if a student is conducting the experiment.
- * @return the created potion card, or null if the experiment cannot be conducted.
- */
-public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId, boolean student) {
-    if (gameState.getActionPerformed()) {
-        notifyPlayers("Action already performed.");
-        return null;
+     * Conducts an experiment to create a potion using two ingredient cards.
+     * If a student is conducting the experiment, different outcomes are considered.
+     *
+     * @param playerId the ID of the player conducting the experiment.
+     * @param firstCardId the ID of the first ingredient card.
+     * @param secondCardId the ID of the second ingredient card.
+     * @param student flag indicating if a student is conducting the experiment.
+     * @return the created potion card, or null if the experiment cannot be conducted.
+     */
+
+    public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId, boolean student) {
+        // Action Performed Check
+        if (gameState.getActionPerformed()) {
+            notifyPlayers("Action already performed.");
+            return null;
+        }
+
+        Player player = getPlayerById(playerId);
+        IngredientCard firstCard = getIngredientById(firstCardId);
+        IngredientCard secondCard = getIngredientById(secondCardId);
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null.");
+        }
+        if (firstCard == null || secondCard == null) {
+            throw new IllegalArgumentException("Ingredient cards cannot be null.");
+        }
+
+        if (player.getIngredientInventory().size() < 2) {
+            notifyPlayers("There are not enough ingredient cards.");
+            return null;
+        }
+
+        PotionCard potionCard = makePotion(firstCard, secondCard);
+        gameState.setLastCreatedPotion(potionCard);
+        processExperimentOutcome(player, potionCard, student);
+        
+        PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
+        gameState.setActionPerformed(true);
+        updateGameStateWithLatestPlayerInfo(playerId);
+
+        return potionCard;
     }
 
-    Player player = getPlayerById(playerId);
-    IngredientCard firstCard = getIngredientById(firstCardId);
-    IngredientCard secondCard = getIngredientById(secondCardId);
-    if (player == null) {
-        throw new IllegalArgumentException("Player cannot be null.");
-    }
-    if (firstCard == null || secondCard == null) {
-        throw new IllegalArgumentException("Ingredient cards cannot be null.");
-    }
+    // Make the potion with selected ingredinets 
 
-    if (player.getIngredientInventory().size() < 2) {
-        notifyPlayers("There are not enough ingredient cards.");
-        return null;
-    }
-
-    PotionCard potionCard = makePotion(firstCard, secondCard);
-    gameState.setLastCreatedPotion(potionCard);
-    processExperimentOutcome(player, potionCard, student);
-    
-    PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
-    gameState.setActionPerformed(true);
-    updateGameStateWithLatestPlayerInfo(playerId);
-
-    
-    
-
-    return potionCard;
-}
     private PotionCard makePotion(IngredientCard firstCard, IngredientCard secondCard) {
         PotionCard potionCard = GameObjectFactory.getInstance().potionMaker(firstCard, secondCard);
         currentPlayer.getPotionInventory().add(potionCard);
-        System.out.println(currentPlayer.isMagicMortarActive());
+
         if (currentPlayer.isMagicMortarActive()) {
             ArtifactEffect currentEffect = currentPlayer.getArtifactCard("Magic Mortar").getEffect();
             if (currentEffect != null) {
@@ -923,32 +914,5 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
         }
 
         return playerArtifactMap;
-    }
-    
-
-    public int getCurrentPlayerID() {
-       return currentPlayerID;
-    }
-
-    public  void setGameState(GameState gameState) {
-        this.gameState = gameState;
-    }
-
-    public Player getPlayerByClientName(String name) {
-        for (Player player : gameState.getPlayers()) {
-            if (player.getNickname().equals(name)) {
-                return player;
-            }
-        }
-        return null; 
-    }
-
-
-    public String getPausedPlayer() {
-        return pausedPlayer;
-    }
-
-    public void setPausedPlayer(String pausedPlayer) {
-        this.pausedPlayer = pausedPlayer;
     }
 }
