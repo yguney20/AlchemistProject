@@ -99,7 +99,6 @@ public class MakeExperimentScreenController {
         }
     }
 
-
     private void addEventHandlers() {
         studentButton.setOnAction(event -> handleTesterSelection(true));
         yourselfButton.setOnAction(event -> handleTesterSelection(false));
