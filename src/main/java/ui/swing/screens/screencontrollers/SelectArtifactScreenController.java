@@ -49,7 +49,7 @@ public class SelectArtifactScreenController {
 	private void loadArtifacts() {
 		List<ArtifactCard> artifactCards;
 		if (gameController.isOnlineMode()){
-			artifactCards = gameController.getPlayerByClientName(clientName).getArtifactCards();
+			artifactCards = gameController.getPlayerByClientName(gameController.getClientPlayer()).getArtifactCards();
 		}else{
 			artifactCards = gameController.getPlayerArtifactCards();
 		}

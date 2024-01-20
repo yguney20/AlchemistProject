@@ -485,6 +485,7 @@ public class Game { //Singleton Pattern
        
 
         gameState.setActionPerformed(true);
+        updateGameStateWithLatestPlayerInfo(player.getPlayerId());
     }
 
     /**
@@ -585,6 +586,7 @@ public class Game { //Singleton Pattern
         player.increaseGold(1);
         // Mark the action as performed
         gameState.setActionPerformed(true);
+        updateGameStateWithLatestPlayerInfo(playerId);
     }
 
     
@@ -625,6 +627,7 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     gameState.setLastCreatedPotion(potionCard);
     processExperimentOutcome(player, potionCard, student);
     gameState.setActionPerformed(true);
+    updateGameStateWithLatestPlayerInfo(playerId);
 
     PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
 
@@ -807,6 +810,7 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
         }
 
         gameState.setActionPerformed(true);
+        updateGameStateWithLatestPlayerInfo(player.getPlayerId());
     }
 
 
@@ -865,6 +869,7 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     
         ValidatedAspect validatedAspect = new ValidatedAspect(validatedAspectCounter++, ingredient, component, componentSign, componentSize);
         gameState.setActionPerformed(true);
+        updateGameStateWithLatestPlayerInfo(playerId);
     }
 
     private void handleCorrectTheory(PublicationCard publicationCard, Player player) {
