@@ -9,4 +9,6 @@
     <Canvas fx:id="deductionBoardCanvas" height="1000" width="1500" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     <ComboBox fx:id="signSelectionComboBox" layoutX="1089.0" layoutY="46.0" prefHeight="73.0" prefWidth="278.0" />
     <Button fx:id="backButton" layoutX="10" layoutY="10" onAction="#handleBackButtonAction" text="Back" />
+    <Button fx:id="undoButton" layoutX="1250.0" layoutY="176.0" onAction="#handleUndoButtonAction" text="Undo" />
+    
 </AnchorPane>

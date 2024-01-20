@@ -25,6 +25,9 @@ public class DeductionBoardController {
     private Button backButton;
     @FXML
     private ComboBox<Sign> signSelectionComboBox;
+    @FXML
+    private Button undoButton;
+
 
     private Image deductionBoardImage;
     private ArrayList<SignPlacement> signPlacements = new ArrayList<>();
@@ -172,6 +175,18 @@ public class DeductionBoardController {
 		// TODO Auto-generated method stub
 		this.deductionBoard = deductionBoard;
 		
+	}
+	
+	@FXML
+	private void handleUndoButtonAction() {
+	    undoLastSignPlacement();
+	    drawDeductionBoard();
+	}
+	
+	private void undoLastSignPlacement() {
+	    if (!signPlacements.isEmpty()) {
+	        signPlacements.remove(signPlacements.size() - 1);
+	    }
 	}
 
     // Additional methods for managing the board...
