@@ -14,6 +14,7 @@ public class PublicationCardsScreen extends JFrame{
 
     private JFrame frame;
     private JFXPanel jfxPanel;
+    
 
     public PublicationCardsScreen() {
         initializeSwingComponents();
