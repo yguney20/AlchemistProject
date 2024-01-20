@@ -2,6 +2,7 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
@@ -21,10 +22,11 @@ public class GameState {
     private PotionCard lastCreatedPotion;
     private boolean actionPerformed;;
     private List<PublicationCard> publicationCards;
+    private Map<Player, List<PotionCard>> potionMap;
 
 
 
-    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed, List<PublicationCard> publicationCards) {
+    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed, List<PublicationCard> publicationCard, Map<Player, List<PotionCard>> potionMap) {
         this.players = players;
         this.currentRound = initialRound;
         this.currentPlayerID = initialPlayer;
@@ -32,12 +34,13 @@ public class GameState {
         this.currentTurn = firstTurn;
         this.actionPerformed = actionPerformed;
         this.publicationCards= publicationCards;
+        this.potionMap = potionMap;
         
     }
 
-    public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed, List<PublicationCard> publicationCards) {
+    public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed, List<PublicationCard> publicationCards,Map<Player, List<PotionCard>> potionMap) {
         if (instance == null) {
-            instance = new GameState(players, initialRound, firstTurn, initialPlayer, isPaused, actionPerformed, publicationCards);
+            instance = new GameState(players, initialRound, firstTurn, initialPlayer, isPaused, actionPerformed, publicationCards, potionMap);
         }
         return instance;
     }
@@ -162,6 +165,14 @@ public class GameState {
 
     public void setPublicationCards(List<PublicationCard> publicationCards){
         this.publicationCards = publicationCards;
+    }
+
+    public Map<Player, List<PotionCard>> getPotionMap() {
+        return potionMap;
+    }
+
+    public void setPotionMap(Map<Player, List<PotionCard>> potionMap) {
+        this.potionMap = potionMap;
     }
 
 

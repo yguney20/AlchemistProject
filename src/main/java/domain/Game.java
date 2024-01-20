@@ -22,6 +22,7 @@ public class Game { //Singleton Pattern
     private List<IngredientCard> ingredientDeck;
 	private List<ArtifactCard> artifactDeck;
     private List<PublicationCard> publicationCards;
+    private  Map<Player, List<PotionCard>> potionMap;
 	private int totalRounds;
     private int currentRound;
     private int currentTurn;
@@ -168,11 +169,11 @@ public class Game { //Singleton Pattern
             System.out.println("Player: " + p.getNickname() +" gets ingredients: "+ i1.getName() + ", " + i2.getName());
         }
 
-   
+        potionMap = GameController.getPotionMap();
         publicationCards = GameController.getPublicationCardList();
         currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
         this.currentPlayerID = currentPlayer.getPlayerId();
-        this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed,publicationCards);
+        this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed,publicationCards,potionMap);
         gameState.setCurrentPlayerID(currentPlayerID);
 
        System.out.println("Player List: " + players); 

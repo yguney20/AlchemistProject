@@ -208,8 +208,10 @@ public class Client {
             
             System.out.println(" before game state call ;" + gameController.getGameState() );
             gameController.setGameState(gameState);
+            gameController.getGameState().setPublicationCards(gameState.gePublicationCards());
+            gameController.getGameState().setPotionMap(gameState.getPotionMap());
             System.out.println(" after game staate call ;" + gameController.getGameState() );
-
+            
 
             SwingUtilities.invokeLater(() -> {
                 BoardScreenController boardController = BoardScreenController.getInstance();
