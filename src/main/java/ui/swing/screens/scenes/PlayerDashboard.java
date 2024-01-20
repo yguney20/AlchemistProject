@@ -191,9 +191,9 @@ public class PlayerDashboard extends JFrame {
                     JOptionPane.showMessageDialog(null, "Ingredient deck is empty!", "Warning", JOptionPane.WARNING_MESSAGE);
         		} 
         		else {      		
-        		int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
                 if(gameController.isOnlineMode()){
-                    if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                    int currentPlayerId = gameController.getPlayerByClientName(gameController.getCurrentPlayer().getNickname()).getPlayerId();
+                    if(gameController.getClientPlayer().equals(gameController.getCurrentPlayer().getNickname())){
                         gameController.forageForIngredient(currentPlayerId);
                         PlayerDashboard.this.setVisible(false);
                     } else {
@@ -201,6 +201,7 @@ public class PlayerDashboard extends JFrame {
                         JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
                 } else{
+                    int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
                     gameController.forageForIngredient(currentPlayerId);
                     PlayerDashboard.this.setVisible(false);
                     }
@@ -240,7 +241,7 @@ public class PlayerDashboard extends JFrame {
         		}
         		else {
                     if(gameController.isOnlineMode()){
-                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                        if(gameController.getClientPlayer().equals(gameController.getCurrentPlayer().getNickname())){
                             TransmuteIngredientScreen transmuteIngredientScreen = new TransmuteIngredientScreen();
                             transmuteIngredientScreen.display();
                             PlayerDashboard.this.setVisible(false);
@@ -290,7 +291,7 @@ public class PlayerDashboard extends JFrame {
         		}
         		else {
                     if(gameController.isOnlineMode()){
-                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                        if(gameController.getClientPlayer().equals(gameController.getCurrentPlayer().getNickname())){
                             BuyArtifactScreen buyArtifactScreen = new BuyArtifactScreen();
                             buyArtifactScreen.display();
                             PlayerDashboard.this.setVisible(false);
@@ -377,7 +378,7 @@ public class PlayerDashboard extends JFrame {
             	else {
 
                     if(gameController.isOnlineMode()){
-                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                        if(gameController.getClientPlayer().equals(gameController.getCurrentPlayer().getNickname())){
                             MakeExperimentScreen makeExperimentScreen = new MakeExperimentScreen();
                             makeExperimentScreen.display();
                             PlayerDashboard.this.setVisible(false);
@@ -431,7 +432,7 @@ public class PlayerDashboard extends JFrame {
             	}
             	else {
                     if(gameController.isOnlineMode()){
-                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                        if(gameController.getClientPlayer().equals(gameController.getCurrentPlayer().getNickname())){
                             SellPotionScreen sellPotionScreen = new SellPotionScreen();
                             sellPotionScreen.display();
                             PlayerDashboard.this.setVisible(false);
@@ -484,7 +485,7 @@ public class PlayerDashboard extends JFrame {
             	}
             	else {
                     if(gameController.isOnlineMode()){
-                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                        if(gameController.getClientPlayer().equals(gameController.getCurrentPlayer().getNickname())){
                             PublishTheoryScreen publishTheoryScreen = new PublishTheoryScreen();
                         publishTheoryScreen.display();
                         PlayerDashboard.this.setVisible(false);
@@ -536,7 +537,7 @@ public class PlayerDashboard extends JFrame {
             	}
             	else {
                     if(gameController.isOnlineMode()){
-                        if(gameController.getClientPlayer().getNickname().equals(gameController.getCurrentPlayer().getNickname())){
+                        if(gameController.getClientPlayer().equals(gameController.getCurrentPlayer().getNickname())){
                             DebunkTheoryScreen debunkTheoryScreen = new DebunkTheoryScreen();
                             debunkTheoryScreen.display();
                             PlayerDashboard.this.setVisible(false);
@@ -703,7 +704,7 @@ public class PlayerDashboard extends JFrame {
 
         JLabel nicknameLabel;
         if(gameController.isOnlineMode()){
-            nicknameLabel  = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getNickname()));
+            nicknameLabel  = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer()).getNickname()));
         }else {
             nicknameLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getNickname()));
         }
@@ -736,7 +737,7 @@ public class PlayerDashboard extends JFrame {
         goldImageJLabel.setIcon(resizedGoldIcon);
         JLabel goldLabel;
         if(gameController.isOnlineMode()){
-            goldLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getGolds()));
+            goldLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer()).getGolds()));
         }else {
             goldLabel= new JLabel(String.valueOf(gameController.getCurrentPlayer().getGolds()));
         }
@@ -753,7 +754,7 @@ public class PlayerDashboard extends JFrame {
         sicknessPanel.setLayout(null);
         JLabel sicknessLabel;
         if(gameController.isOnlineMode()){
-            sicknessLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname()).getSicknessLevel()));
+            sicknessLabel = new JLabel(String.valueOf(gameController.getPlayerByClientName(gameController.getClientPlayer()).getSicknessLevel()));
         }else {
             sicknessLabel = new JLabel(String.valueOf(gameController.getCurrentPlayer().getSicknessLevel()));
         }

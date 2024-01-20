@@ -29,6 +29,7 @@ public class PlayerIngredientsScreenController {
 
     private GameController gameController;
     private JFrame playerIngredientsScreen;
+    Player playerToShow;
 
     public void initialize() {
         gameController = GameController.getInstance();
@@ -36,15 +37,15 @@ public class PlayerIngredientsScreenController {
     }
 
     private void updateIngredients() {
-        Player playerToShow;
         if(gameController.isOnlineMode()){
-            playerToShow = gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname());
+            playerToShow = gameController.getGameState().getPlayerByNickname(gameController.getClientPlayer());
         } else{
             playerToShow = gameController.getCurrentPlayer();
         }
 
         if (playerToShow != null) {
             ingredientsContainer.getChildren().clear(); // Clear previous items
+            System.out.println(playerToShow.getIngredientInventory());
             List<IngredientCard> ingredientCards = playerToShow.getIngredientInventory();
             for (IngredientCard card : ingredientCards) {
                 // Create the image view

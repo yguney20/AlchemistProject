@@ -36,7 +36,7 @@ public class GameController {
     private boolean isOnlineMode = false;
     private OnlineGameAdapter onlineGameAdapter;
     private static final SettingsState settingsState = new SettingsState();
-    private Player clientPlayer;
+    private String clientPlayerName;
 
 	
     public static GameController getInstance() {
@@ -365,13 +365,13 @@ public class GameController {
         System.out.println("Debug: GameState set in GameController: " + gameState);
     }
 
-    public void setClientPlayer(Player player) {
-        this.clientPlayer = player;
+    public void setClientPlayer(String player) {
+        this.clientPlayerName = player;
     }
 
     // Method to get the client player
-    public Player getClientPlayer() {
-        return clientPlayer;
+    public String getClientPlayer() {
+        return clientPlayerName;
     }
 
     public Player getPlayerByClientName(String name){

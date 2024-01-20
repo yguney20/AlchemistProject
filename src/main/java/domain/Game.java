@@ -437,16 +437,18 @@ public class Game { //Singleton Pattern
                 for (Player gameStatePlayer : gameState.getPlayers()) {
                     if (gameStatePlayer.getPlayerId() == playerId) {
                         gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
+                        System.out.println("updatelenen playerin ingredientları: " + gameStatePlayer.getIngredientInventory());
                         gameStatePlayer.setPublicationCards(updatedPlayer.getPublicationCards());
                         gameStatePlayer.setGolds(updatedPlayer.getGolds());
-                        // Add any other player properties that need to be updated
+                        System.out.println(gameState);
                         break;
                     }
                 }
             }
         }
-        System.out.println("Action Performed 13 ;" + getActionPerformed() );
+        System.out.println("Action Performed before UpdateStateAllplayers ;" + getActionPerformed());
         gameState.setActionPerformed(gameState.actionPerformed());
+        System.out.println("Action Performed After UpdateStateAllplayers ;" + getActionPerformed());
     }
 
     

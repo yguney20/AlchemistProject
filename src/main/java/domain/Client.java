@@ -117,7 +117,6 @@ public class Client {
 
     public void setPlayerReady() {
         sendMessage("{\"action\":\"playerReady\"}");
-        System.out.println("Sent player ready message for " + hostname);
     }
 
     public void sendPlayerReadiness(boolean isReady) {
@@ -153,7 +152,6 @@ public class Client {
 
 
     public void handleServerMessage(String message) {
-        System.out.println("Client received message: " + message);
 
         if (message.startsWith("PLAYER_LIST:")) {
             String json = message.substring("PLAYER_LIST:".length());
@@ -183,6 +181,9 @@ public class Client {
             System.out.println("Debug: Received GameState JSON - " + jsonState);
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
             gameController.setGameState(gameState);
+            gameController.updateGameStateWithAllPlayersInfo();
+           
+
            
             SwingUtilities.invokeLater(() -> {
     
@@ -207,21 +208,17 @@ public class Client {
             gameController.setGameState(gameState);
             //after setting the game state we should apply it
             // Update the UI here or through a method call
-            System.out.println("Action Performed 11 ;" + gameController.getActionPerformed() );
+            System.out.println("Action Performed before game state call ;" + gameController.getActionPerformed() );
             gameController.updateGameStateWithAllPlayersInfo();
-            System.out.println("Action Performed 12 ;" + gameController.getActionPerformed() );
+            System.out.println("Action Performed after game staate call ;" + gameController.getActionPerformed() );
 
 
             SwingUtilities.invokeLater(() -> {
                 BoardScreenController boardController = BoardScreenController.getInstance();
                 if (boardController != null) {
-                    System.out.println("Game state call sonrası: ");
-                    System.out.println(gameState.getCurrentPlayer().getNickname()); 
-                    //boardController.updateLabels();
                     boardScreen.initializeJavaFXComponents();
                 } else {
                     System.err.println("Error: BoardScreenController is null.");
-                    // Additional error handling here
                 }
             });
             
@@ -272,7 +269,6 @@ public class Client {
         BoardScreenController boardController = BoardScreenController.getInstance();
     
         if (boardController != null) {
-            System.out.println("if  içi: "+ gameState);
             boardController.updateGameState(gameState);
         } else {
             System.err.println("Error: BoardScreenController is null.");
@@ -300,45 +296,6 @@ public class Client {
         });
     }
 
-    public void simulateAnotherPlayer() {
-        String hostname = "localhost";
-        int port = 6666;
-    
-        // Create a new client for the simulated player
-        Client simulatedPlayer = new Client(hostname, port, new SimulatedPlayerEventListener());
-        if (simulatedPlayer.connect()) {
-            System.out.println("Simulated player connected!");
-    
-            // Set unique player name and avatar path for the simulated player
-            String playerName = "mert2";
-            String avatarPath ="/ui/swing/resources/images/avatar/a3.jpg";
-    
-            System.out.println("Simulated player sending info: Name - " + playerName + ", Avatar - " + avatarPath);
-            simulatedPlayer.sendPlayerInfo(playerName, avatarPath);
-            //loginController.createPlayer(playerName, avatarPath);
-            simulatedPlayer.setPlayerReady();
 
-            // You can add additional automated actions for the simulated player here
-        } else {
-            System.err.println("Failed to connect the simulated player.");
-        }
-    }
-    
-    // Inner class for handling events for the simulated player
-    class SimulatedPlayerEventListener implements EventListener {
-        @Override
-        public void onMessageReceived(String message) {
-            // Handle messages from the server for the simulated player
-            // This can be as simple or complex as needed for your testing
-            System.out.println("Simulated player received message: " + message);
-        }
-        @Override
-        public void onPlayerListUpdate(List<String> playerNames) {
-            // Handle messages from the server for the simulated player
-            // This can be as simple or complex as needed for your testing
-            System.out.println("Simulated player received player list update: " + playerNames);
-           
-        }
-    }
    
 }

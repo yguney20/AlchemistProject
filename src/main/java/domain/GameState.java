@@ -148,4 +148,13 @@ public class GameState {
     public boolean actionPerformed() {
         return actionPerformed;
     }
+
+    public Player getPlayerByNickname(String clientPlayer) {
+        for (Player player : players) {
+            if (player.getNickname() == getCurrentPlayer().getNickname()) {
+                return player;
+            }
+        }
+        return null;
+    }
 }

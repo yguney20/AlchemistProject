@@ -159,7 +159,7 @@ public class ConnectGameScreen extends JFrame implements PlayerListUpdateListene
         client = new Client(hostIp, 6666, this);
         if (client.connect()) {
             client.sendPlayerInfo(playerName, avatarPath); // Send player info to the server
-            gameController.setClientPlayer(new Player(playerName, avatarPath));
+            gameController.setClientPlayer(playerName);
             statusLabel.setText("Connected successfully!");
             statusLabel.setForeground(Color.GREEN);
             client.setEventListener(this);
