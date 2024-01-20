@@ -308,6 +308,21 @@ public class Game { //Singleton Pattern
         return currentRound > totalRounds; 
     }
 
+    private void updateGameStateWithLatestPlayerInfo(int playerId) {
+        Player updatedPlayer = getPlayerById(playerId);
+        if (updatedPlayer != null) {
+            // Find the corresponding player in the GameState and update their state
+            for (Player gameStatePlayer : gameState.getPlayers()) {
+                if (gameStatePlayer.getPlayerId() == playerId) {
+                    gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
+                    gameStatePlayer.setGolds(updatedPlayer.getGolds());
+                    // Add any other player properties that need to be updated
+                    break;
+                }
+            }
+        }
+    }
+
     //---------------------Functions for finding object by Id----------------------------
     // Method to find a player by their ID
     public Player getPlayerById(int playerId) {
@@ -397,6 +412,7 @@ public class Game { //Singleton Pattern
     
                 // Mark that an action has been performed
                 gameState.setActionPerformed(true);
+                updateGameStateWithLatestPlayerInfo(playerId);
     
                 // Print the player's updated inventory (for testing or logging)
                 System.out.println(player.getIngredientInventory());
