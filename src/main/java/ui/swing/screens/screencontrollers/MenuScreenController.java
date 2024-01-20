@@ -112,14 +112,9 @@ public class MenuScreenController {
                             ((MenuScreen) menuScreenFrame).close(); // Close the entrance screen
                         }
                     	boardFrame.setVisible(false);
-                        if(!gameController.isOnlineMode()){
-                            PauseScreen pauseScreen = new PauseScreen(boardFrame, menuScreenFrame);
-                            pauseScreen.display();
-                            break;
-                        } else {
-                            gameController.pauseGame();
-                        }
-
+                        PauseScreen pauseScreen = new PauseScreen(boardFrame, menuScreenFrame);
+                        pauseScreen.display();
+                        break;
                     case "helpButton":
                     	if (menuScreenFrame instanceof MenuScreen) {
                             ((MenuScreen) menuScreenFrame).close(); // Close the entrance screen
