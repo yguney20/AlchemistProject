@@ -214,11 +214,10 @@ public class Client {
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
            
             
-            System.out.println(" before game state call ;" + gameController.getGameState() );
             gameController.setGameState(gameState);
             gameController.getGameState().setPublicationCards(gameState.gePublicationCards());
             gameController.getGameState().setPotionMap(gameState.getPotionMap());
-            System.out.println(" after game staate call ;" + gameController.getGameState() );
+            System.out.println(" after game staate call ;" + gameState.getPotionMap() );
             
 
             SwingUtilities.invokeLater(() -> {

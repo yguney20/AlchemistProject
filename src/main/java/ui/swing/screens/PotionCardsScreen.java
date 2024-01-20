@@ -118,7 +118,7 @@ public class PotionCardsScreen extends JFrame{
 	    int height = 300;
 	    int horizontalSpacing = 20;
 		
-
+		
 	    Map<Player, List<PotionCard>> potionMap = GameController.getPotionMap();
 
 	    for (Map.Entry<Player, List<PotionCard>> entry : potionMap.entrySet()) {
