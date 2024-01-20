@@ -114,8 +114,8 @@ public class PotionCardsScreen extends JFrame{
 	private void addPotions() {
 	    int x = 20;
 	    int y = 40;
-	    int width = 140;
-	    int height = 200;
+	    int width = 380;
+	    int height = 300;
 	    int horizontalSpacing = 20;
 		
 
@@ -144,7 +144,7 @@ public class PotionCardsScreen extends JFrame{
 	            contentPane.add(potionImageLabel);
 	            contentPane.add(playerNameLabel);
 
-	            x += width + horizontalSpacing;
+	            x += width-40 + horizontalSpacing;
 	        }
 	    }
 	}
