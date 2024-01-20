@@ -181,6 +181,7 @@ public class Server {
 
         public void broadcastPauseGame() {
             GameState gameState = game.getGameState();
+            gameState.setPaused(true);
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
                 broadcast("GAME_PAUSED:" + gameStateJson);
@@ -191,6 +192,8 @@ public class Server {
 
         public void broadcastResumeGame() {
             GameState gameState = game.getGameState();
+            gameState.setPaused(false);
+            GameController.getInstance().resumeGame();
             if (gameState != null && gameState.isInitialized()) { // assuming you have an isInitialized() method
                 String gameStateJson = new Gson().toJson(gameState);
                 broadcast("GAME_RESUMED" + gameStateJson);
@@ -255,6 +258,12 @@ public class Server {
             }
         }
 
+
+    public void pauseGame(String pausingPlayerName) {
+        game.getGameState().setPaused(true);
+        GameController.getInstance().pauseGame();
+        broadcast("GAME_PAUSED:" + pausingPlayerName + ":" + new Gson().toJson(game.getGameState()));
+    }
 
 
     // Main method to start the server
@@ -532,14 +541,15 @@ public class Server {
                         }
                         break;
                     case "pauseGame":
-                        // Handling pause game request
-                        broadcastPauseGame();
-                        broadcastGameState();
+                        if (messageMap.containsKey("pausingPlayerName")) {
+                            String pausingPlayerName = (String) messageMap.get("pausingPlayerName");
+                            server.pauseGame(pausingPlayerName);
+                        }
                         break;
 
                     case "resumeGame":
                         // Handling resume game request
-                        broadcastResumeGame();
+                        server.broadcastResumeGame();
                         broadcastGameState();
                         break;
                 }

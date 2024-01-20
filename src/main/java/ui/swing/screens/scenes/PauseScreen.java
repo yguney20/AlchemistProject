@@ -65,6 +65,7 @@ public class PauseScreen extends JFrame {
                 controller.setMainFrame(mainFrame);
                 controller.setMenuScreen(menuScreen);
                 controller.setPausingPlayerName(pausingPlayerName); //
+                controller.updateResumeButtonVisibility();
 
                 Scene scene = new Scene(root);
                 fxPanel.setScene(scene);

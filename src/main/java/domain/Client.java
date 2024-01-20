@@ -234,17 +234,18 @@ public class Client {
             });
 
         } else if (message.startsWith("GAME_PAUSED:")) {
-            // Assuming GAME_PAUSED message contains GameState information after the player name
-            int separatorIndex = message.indexOf(':');
-            String pausingPlayerName = message.substring("GAME_PAUSED:".length(), separatorIndex);
-            String jsonState = message.substring(separatorIndex + 1);
-            GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+            // Split the message to extract pausing player's name and GameState
+            String[] parts = message.split(":", 3);
+            if (parts.length >= 3) {
+                String pausingPlayerName = parts[1];
+                String jsonState = parts[2];
+                GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+                gameController.setGameState(gameState);
 
-            gameController.setGameState(gameState);
-
-            SwingUtilities.invokeLater(() -> {
-                openPauseScreen(pausingPlayerName);
-            });
+                SwingUtilities.invokeLater(() -> {
+                    openPauseScreen(pausingPlayerName);
+                });
+            }
         } else if (message.equals("GAME_RESUMED")) {
             // Assuming GAME_RESUMED message contains GameState information
             String jsonState = message.substring("GAME_RESUMED:".length());
@@ -308,6 +309,7 @@ public class Client {
     // Method to display the pause screen
     private void openPauseScreen(String pausingPlayerName) {
         Game.getInstance().setPausedPlayer(pausingPlayerName);
+        System.out.println(pausingPlayerName);
         pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen), pausingPlayerName);
         pauseScreen.display();
         // Further customization based on pausingPlayerName
@@ -316,6 +318,7 @@ public class Client {
     // Method to close the pause screen
     private void closePauseScreen() {
         if (pauseScreen != null) {
+            Game.getInstance().setPausedPlayer("");
             pauseScreen.close();
         }
     }
