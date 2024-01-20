@@ -125,6 +125,13 @@ public class Client {
         sendMessage(readinessMessage);
     }
 
+    // Client side code to send pause/resume request
+    public void sendPauseOrResumeRequest(boolean isPause) {
+        String action = isPause ? "pauseGameRequest" : "resumeGameRequest";
+        String message = "{\"action\":\"" + action + "\"}";
+        sendMessage(message);
+    }
+
     // Disconnect from the server
     public void disconnect() {
         try {
@@ -297,7 +304,7 @@ public class Client {
     // Method to display the pause screen
     // Method to display the pause screen
     private void openPauseScreen(String pausingPlayerName) {
-        pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen), gameController.getCurrentPlayer().getNickname());
+        pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen), pausingPlayerName);
         pauseScreen.display();
         // Further customization based on pausingPlayerName
     }
