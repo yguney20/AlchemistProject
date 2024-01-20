@@ -239,7 +239,6 @@ public class Client {
             String pausingPlayerName = message.substring("GAME_PAUSED:".length(), separatorIndex);
             String jsonState = message.substring(separatorIndex + 1);
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
-
             gameController.setGameState(gameState);
 
             SwingUtilities.invokeLater(() -> {
@@ -316,6 +315,7 @@ public class Client {
     // Method to close the pause screen
     private void closePauseScreen() {
         if (pauseScreen != null) {
+            Game.getInstance().setPausedPlayer("");
             pauseScreen.close();
         }
     }
