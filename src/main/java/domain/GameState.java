@@ -1,9 +1,12 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
+import domain.gameobjects.PublicationCard;
 
 public class GameState {
 	
@@ -17,22 +20,27 @@ public class GameState {
     private boolean isPaused;
     private int currentTurn;
     private PotionCard lastCreatedPotion;
-    private boolean actionPerformed;
+    private boolean actionPerformed;;
+    private List<PublicationCard> publicationCards;
+    private Map<Player, List<PotionCard>> potionMap;
 
 
-    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed) {
+
+    public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed, List<PublicationCard> publicationCard, Map<Player, List<PotionCard>> potionMap) {
         this.players = players;
         this.currentRound = initialRound;
         this.currentPlayerID = initialPlayer;
         this.isPaused = isPaused;
         this.currentTurn = firstTurn;
         this.actionPerformed = actionPerformed;
+        this.publicationCards= publicationCards;
+        this.potionMap = potionMap;
         
     }
 
-    public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed) {
+    public static synchronized GameState getInstance(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed, List<PublicationCard> publicationCards,Map<Player, List<PotionCard>> potionMap) {
         if (instance == null) {
-            instance = new GameState(players, initialRound, firstTurn, initialPlayer, isPaused, actionPerformed);
+            instance = new GameState(players, initialRound, firstTurn, initialPlayer, isPaused, actionPerformed, publicationCards, potionMap);
         }
         return instance;
     }
@@ -51,6 +59,8 @@ public class GameState {
     @Override
     public String toString() {
         return "GameState{" +
+                "\n\tcurrentPlayerName=" + getCurrentPlayer().getNickname()+
+                "\n\tcurrentPlayerIngredi=" + getCurrentPlayer().getIngredientInventory()+
                 "\n\tcurrentRound=" + currentRound +
                 "\n\tcurrentTurn=" + currentTurn +
                 "\n\tcurrentPlayerID=" + currentPlayerID +
@@ -148,4 +158,22 @@ public class GameState {
     public boolean actionPerformed() {
         return actionPerformed;
     }
+
+    public List<PublicationCard> gePublicationCards(){
+        return publicationCards;
+    }
+
+    public void setPublicationCards(List<PublicationCard> publicationCards){
+        this.publicationCards = publicationCards;
+    }
+
+    public Map<Player, List<PotionCard>> getPotionMap() {
+        return potionMap;
+    }
+
+    public void setPotionMap(Map<Player, List<PotionCard>> potionMap) {
+        this.potionMap = potionMap;
+    }
+
+
 }

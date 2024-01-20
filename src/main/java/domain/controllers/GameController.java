@@ -38,7 +38,7 @@ public class GameController {
     private boolean isOnlineMode = false;
     private OnlineGameAdapter onlineGameAdapter;
     private static final SettingsState settingsState = new SettingsState();
-    private Player clientPlayer;
+    private String clientPlayerName;
 
 	
     public static GameController getInstance() {
@@ -376,32 +376,20 @@ public class GameController {
 
     public void setGameState(GameState gameState) {
         game.setGameState(gameState);
-        System.out.println("Debug: GameState set in GameController: " + gameState);
     }
 
-    public void setClientPlayer(Player player) {
-        this.clientPlayer = player;
+    public void setClientPlayer(String player) {
+        this.clientPlayerName = player;
     }
 
     // Method to get the client player
-    public Player getClientPlayer() {
-        return clientPlayer;
+    public String getClientPlayer() {
+        return clientPlayerName;
     }
 
     public Player getPlayerByClientName(String name){
-       for (Player player : game.getPlayers()){
-         if(player.getNickname().equals(name)){
-            return player;
-         }
-       }
-       return null;
+        return game.getPlayerByClientName(name);
 
     }
-    public void updateGameStateWithAllPlayersInfo(){
-        game.updateGameStateWithAllPlayersInfo();
-    }
-    public Object getPublicationCards() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPublicationCards'");
-    }
+
 }

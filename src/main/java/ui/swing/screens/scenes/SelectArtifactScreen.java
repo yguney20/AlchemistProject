@@ -61,7 +61,7 @@ public class SelectArtifactScreen extends JFrame {
         initializeFrame();
         initializeJavaFXComponents();
         if(gameController.isOnlineMode()) {
-			clientName = gameController.getClientPlayer().getNickname();
+			clientName = gameController.getClientPlayer();
 		}
     }
 

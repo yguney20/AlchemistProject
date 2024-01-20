@@ -117,6 +117,7 @@ public class PotionCardsScreen extends JFrame{
 	    int width = 140;
 	    int height = 200;
 	    int horizontalSpacing = 20;
+		
 
 	    Map<Player, List<PotionCard>> potionMap = GameController.getPotionMap();
 

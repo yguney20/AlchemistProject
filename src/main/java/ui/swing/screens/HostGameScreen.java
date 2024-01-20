@@ -156,7 +156,7 @@ public class HostGameScreen extends JFrame implements PlayerListUpdateListener, 
             OnlineGameAdapter onlineGameAdapter = new OnlineGameAdapter(client);
             GameController.getInstance().setOnlineGameAdapter(onlineGameAdapter);
             GameController.getInstance().setOnlineMode(true);
-             gameController.setClientPlayer(new Player(selectedPlayerName, selectedAvatarPath));
+             gameController.setClientPlayer(selectedPlayerName);
             client.sendPlayerInfo(selectedPlayerName, selectedAvatarPath);
             client.startListening();
             

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import domain.controllers.GameController;
 import domain.gameobjects.*;
 import domain.gameobjects.Molecule.Component;
 import domain.gameobjects.artifacteffects.ArtifactEffect;
@@ -20,6 +21,8 @@ public class Game { //Singleton Pattern
     private List<Player> players;
     private List<IngredientCard> ingredientDeck;
 	private List<ArtifactCard> artifactDeck;
+    private List<PublicationCard> publicationCards;
+    private  Map<Player, List<PotionCard>> potionMap;
 	private int totalRounds;
     private int currentRound;
     private int currentTurn;
@@ -168,19 +171,21 @@ public class Game { //Singleton Pattern
             System.out.println("Player: " + p.getNickname() +" gets ingredients: "+ i1.getName() + ", " + i2.getName());
         }
 
-   
-
+        potionMap = GameController.getPotionMap();
+        publicationCards = GameController.getPublicationCardList();
         currentPlayer = players.get(0); // set the current player to the first player in list (list is already shuffled)
         this.currentPlayerID = currentPlayer.getPlayerId();
-        this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed);
+        this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed,publicationCards,potionMap);
         gameState.setCurrentPlayerID(currentPlayerID);
 
-       System.out.println("Player List: " + players);
+       System.out.println("Player List: " + players); 
         System.out.println("Debug: GameState initialized - " + gameState);
     }
 
     
     public void updateState() {
+
+        System.out.println("Game State before updateState: " + getGameState());
     	
 			int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
@@ -188,7 +193,8 @@ public class Game { //Singleton Pattern
             currentPlayerID = currentPlayer.getPlayerId();
             gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentPlayerID(currentPlayerID);
-            System.out.println("currentPlayer name in method game updateState: " + currentPlayer.getNickname());
+            gameState.setPublicationCards(publicationCards);
+           
             // Check if all players have completed their turns
             if (currentPlayerIndex == 0) {
                 currentTurn++;
@@ -214,7 +220,8 @@ public class Game { //Singleton Pattern
             // set actionPerformed to false since we moved on to the next player
             
             gameState.setActionPerformed(false); 
-            System.out.println(gameState);
+            System.out.println("Game State before updateState: " + getGameState());
+
 
 
     }
@@ -307,6 +314,23 @@ public class Game { //Singleton Pattern
         return currentRound > totalRounds; 
     }
 
+    private void updateGameStateWithLatestPlayerInfo(int playerId) {
+    Player updatedPlayer = getPlayerById(playerId);
+    if (updatedPlayer != null) {
+        // Find the corresponding player in the GameState and update their state
+        for (Player gameStatePlayer : gameState.getPlayers()) {
+            if (gameStatePlayer.getPlayerId() == playerId) {
+                gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
+                gameStatePlayer.setGolds(updatedPlayer.getGolds());
+                // Add any other player properties that need to be updated
+                break;
+            }
+        }
+    }
+
+    
+}
+
     //---------------------Functions for finding object by Id----------------------------
     // Method to find a player by their ID
     public Player getPlayerById(int playerId) {
@@ -396,10 +420,10 @@ public class Game { //Singleton Pattern
     
                 // Mark that an action has been performed
                 gameState.setActionPerformed(true);
+                updateGameStateWithLatestPlayerInfo(playerId);
     
                 // Print the player's updated inventory (for testing or logging)
                 System.out.println(player.getIngredientInventory());
-                updateGameStateWithLatestPlayerInfo(playerId);
     
             } else {
                 // Notify all players if the ingredient deck is empty
@@ -410,46 +434,7 @@ public class Game { //Singleton Pattern
             notifyPlayers("Action already performed.");
         }
     }
-    private void updateGameStateWithLatestPlayerInfo(int playerId) {
-        Player updatedPlayer = getPlayerById(playerId);
-        if (updatedPlayer != null) {
-            // Find the corresponding player in the GameState and update their state
-            for (Player gameStatePlayer : gameState.getPlayers()) {
-                if (gameStatePlayer.getPlayerId() == playerId) {
-                    gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
-                    gameStatePlayer.setPublicationCards(updatedPlayer.getPublicationCards());
-                    gameStatePlayer.setGolds(updatedPlayer.getGolds());
-                    // Add any other player properties that need to be updated
-                    break;
-                }
-            }
-        }
-        gameState.setActionPerformed(gameState.actionPerformed());
-    }
-
-    public void updateGameStateWithAllPlayersInfo() {
-        // Iterate over all players in the game
-        for (Player gamePlayer : players) {
-            int playerId = gamePlayer.getPlayerId();
-            Player updatedPlayer = getPlayerById(playerId);
-    
-            // Check if the updated player information is available
-            if (updatedPlayer != null) {
-                // Find the corresponding player in the GameState and update their state
-                for (Player gameStatePlayer : gameState.getPlayers()) {
-                    if (gameStatePlayer.getPlayerId() == playerId) {
-                        gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
-                        gameStatePlayer.setPublicationCards(updatedPlayer.getPublicationCards());
-                        gameStatePlayer.setGolds(updatedPlayer.getGolds());
-                        // Add any other player properties that need to be updated
-                        break;
-                    }
-                }
-            }
-        }
-        System.out.println("Action Performed 13 ;" + getActionPerformed() );
-        gameState.setActionPerformed(gameState.actionPerformed());
-    }
+  
 
     
     //-----------------------Artifact Related Functions ------------------------------------
@@ -649,10 +634,14 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     PotionCard potionCard = makePotion(firstCard, secondCard);
     gameState.setLastCreatedPotion(potionCard);
     processExperimentOutcome(player, potionCard, student);
-    gameState.setActionPerformed(true);
-
+    
     PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
+    potionMap.computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
+    gameState.setActionPerformed(true);
     updateGameStateWithLatestPlayerInfo(playerId);
+
+    
+    
 
     return potionCard;
 }
@@ -766,7 +755,6 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
             }
     
             gameState.setActionPerformed(true);
-            updateGameStateWithLatestPlayerInfo(playerId);
             System.out.println(potion);
         } else {
             notifyPlayers("Action already performed or preconditions are not met");
@@ -941,8 +929,17 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
        return currentPlayerID;
     }
 
-    public synchronized void setGameState(GameState gameState) {
+    public  void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public Player getPlayerByClientName(String name) {
+        for (Player player : gameState.getPlayers()) {
+            if (player.getNickname().equals(name)) {
+                return player;
+            }
+        }
+        return null; 
     }
 
 
