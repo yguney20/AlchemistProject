@@ -207,7 +207,10 @@ public class Client {
             gameController.setGameState(gameState);
             //after setting the game state we should apply it
             // Update the UI here or through a method call
+            System.out.println("Action Performed 11 ;" + gameController.getActionPerformed() );
             gameController.updateGameStateWithAllPlayersInfo();
+            System.out.println("Action Performed 12 ;" + gameController.getActionPerformed() );
+
 
             SwingUtilities.invokeLater(() -> {
                 BoardScreenController boardController = BoardScreenController.getInstance();

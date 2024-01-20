@@ -446,6 +446,7 @@ public class Game { //Singleton Pattern
                 }
             }
         }
+        System.out.println("Action Performed 13 ;" + getActionPerformed() );
         gameState.setActionPerformed(actionPerformed);
     }
 
