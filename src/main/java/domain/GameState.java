@@ -51,6 +51,8 @@ public class GameState {
     @Override
     public String toString() {
         return "GameState{" +
+                "\n\tcurrentPlayerName=" + getCurrentPlayer().getNickname()+
+                "\n\tcurrentPlayerIngredients=" + getCurrentPlayer().getIngredientInventory()+
                 "\n\tcurrentRound=" + currentRound +
                 "\n\tcurrentTurn=" + currentTurn +
                 "\n\tcurrentPlayerID=" + currentPlayerID +

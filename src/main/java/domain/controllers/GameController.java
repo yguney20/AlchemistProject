@@ -362,7 +362,6 @@ public class GameController {
 
     public void setGameState(GameState gameState) {
         game.setGameState(gameState);
-        System.out.println("Debug: GameState set in GameController: " + gameState);
     }
 
     public void setClientPlayer(String player) {

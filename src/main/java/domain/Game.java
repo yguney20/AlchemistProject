@@ -173,12 +173,14 @@ public class Game { //Singleton Pattern
         this.gameState = GameState.getInstance(players, currentRound, currentTurn, currentPlayerID, isPaused, actionPerformed);
         gameState.setCurrentPlayerID(currentPlayerID);
 
-       System.out.println("Player List: " + players);
+       System.out.println("Player List: " + players); 
         System.out.println("Debug: GameState initialized - " + gameState);
     }
 
     
     public void updateState() {
+
+        System.out.println("Game State before updateState: " + getGameState());
     	
 			int currentPlayerIndex = players.indexOf(currentPlayer); // Get the index of the current player
             currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
@@ -186,7 +188,7 @@ public class Game { //Singleton Pattern
             currentPlayerID = currentPlayer.getPlayerId();
             gameState.setCurrentPlayer(currentPlayer);
             gameState.setCurrentPlayerID(currentPlayerID);
-            System.out.println("currentPlayer name in method game updateState: " + currentPlayer.getNickname());
+           
             // Check if all players have completed their turns
             if (currentPlayerIndex == 0) {
                 currentTurn++;
@@ -212,7 +214,8 @@ public class Game { //Singleton Pattern
             // set actionPerformed to false since we moved on to the next player
             
             gameState.setActionPerformed(false); 
-            System.out.println(gameState);
+            System.out.println("Game State before updateState: " + getGameState());
+
 
 
     }
@@ -397,7 +400,6 @@ public class Game { //Singleton Pattern
     
                 // Print the player's updated inventory (for testing or logging)
                 System.out.println(player.getIngredientInventory());
-                updateGameStateWithLatestPlayerInfo(playerId);
     
             } else {
                 // Notify all players if the ingredient deck is empty
@@ -652,7 +654,6 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     gameState.setActionPerformed(true);
 
     PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
-    updateGameStateWithLatestPlayerInfo(playerId);
 
     return potionCard;
 }
@@ -941,7 +942,7 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
        return currentPlayerID;
     }
 
-    public synchronized void setGameState(GameState gameState) {
+    public  void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 

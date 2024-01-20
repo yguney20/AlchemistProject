@@ -180,8 +180,8 @@ public class Client {
             String jsonState = message.substring("START_GAME:".length());
             System.out.println("Debug: Received GameState JSON - " + jsonState);
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+            System.out.println("Client Handler Recieved Start Game State:" + gameState);
             gameController.setGameState(gameState);
-            gameController.updateGameStateWithAllPlayersInfo();
            
 
            
