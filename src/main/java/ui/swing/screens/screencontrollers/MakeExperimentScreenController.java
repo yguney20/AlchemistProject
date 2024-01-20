@@ -10,6 +10,7 @@ import javafx.util.Duration;
 import ui.swing.screens.PublicationCardsScreen;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import domain.controllers.GameController;
 import domain.gameobjects.IngredientCard;
 import domain.gameobjects.PotionCard;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import javax.swing.JFrame;
 
 public class MakeExperimentScreenController {
 
@@ -29,7 +32,9 @@ public class MakeExperimentScreenController {
     private Label ingredient1Label, ingredient2Label, messageLabel;
     @FXML
     private ImageView potionImageView;
-
+    @FXML
+    private ImageView exitButtonImage;
+    private JFrame makeExperimentScreenFrame;
     private GameController gameController;
     private IngredientCard ingredientCard1, ingredientCard2;
     private Boolean tester;
@@ -37,6 +42,19 @@ public class MakeExperimentScreenController {
 
     public MakeExperimentScreenController() {
         this.gameController = GameController.getInstance();
+    }
+    
+    
+    @FXML
+    private void exitButtonPressed(MouseEvent event) {
+        
+        if (makeExperimentScreenFrame != null) {
+        	makeExperimentScreenFrame.dispose(); // Close the menu screen
+        }
+    }
+    
+    public void setExperimentScreenFrame(JFrame frame) {
+        this.makeExperimentScreenFrame = frame;
     }
 
     @FXML
@@ -127,10 +145,13 @@ public class MakeExperimentScreenController {
 
         int currentPlayerId = gameController.getCurrentPlayer().getPlayerId();
         Consumer<PotionCard> callback = this::processExperimentResult;
-
-        gameController.makeExperiment(currentPlayerId, ingredientCard1.getCardId(), ingredientCard2.getCardId(), tester, callback);
-
-        resetExperiment();
+		if (ingredientCard1.getCardId() != ingredientCard2.getCardId()) {
+			gameController.makeExperiment(currentPlayerId, ingredientCard1.getCardId(), ingredientCard2.getCardId(),
+					tester, callback);
+		} else {
+			messageLabel.setText("Please select different two ingredients.");
+		}
+		resetExperiment();
     }
 
     private void processExperimentResult(PotionCard potionCard) {

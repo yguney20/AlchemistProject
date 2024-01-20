@@ -7,6 +7,8 @@ import java.io.IOException;
 import javafx.embed.swing.JFXPanel;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import ui.swing.screens.screencontrollers.MakeExperimentScreenController;
+import ui.swing.screens.screencontrollers.MenuScreenController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import domain.controllers.GameController;
@@ -27,6 +29,8 @@ public class MakeExperimentScreen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 904, 550); // Adjust the size as needed
         setResizable(false);
+        setLocationRelativeTo(null);
+        setUndecorated(true);
         fxPanel = new JFXPanel(); // Prepares JavaFX toolkit and environment
         add(fxPanel);
     }
@@ -34,12 +38,11 @@ public class MakeExperimentScreen extends JFrame {
     private void initializeJavaFXComponents() {
         Platform.runLater(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles//MakeExperimentScreen.fxml"));
-                Parent root = loader.load();
+            	FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles//MakeExperimentScreen.fxml"));
+            	Parent root = loader.load();
+            	MakeExperimentScreenController controller = loader.getController();
+            	controller.setExperimentScreenFrame(this); // 'this' should be a reference to the JFrame.
 
-                // If you need to pass the current JFrame to the controller:
-                // MakeExperimentScreenController controller = loader.getController();
-                // controller.setExperimentScreenFrame(this);
 
                 Scene scene = new Scene(root);
                 fxPanel.setScene(scene);
