@@ -64,7 +64,7 @@ public class PauseScreenController {
         if(!gameController.isOnlineMode()){
             resumeGameButton.setVisible(true);
         } else{
-            resumeGameButton.setVisible(pausingPlayerName.equals(game.getCurrentPlayer().getNickname()));
+            resumeGameButton.setVisible(pausingPlayerName.equals(game.getPausedPlayer()));
         }
     }
 
