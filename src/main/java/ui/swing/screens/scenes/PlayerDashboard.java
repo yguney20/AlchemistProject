@@ -337,10 +337,10 @@ public class PlayerDashboard extends JFrame {
         		
         		if(gameController.isOnlineMode()){
                     if(gameController.getClientPlayer().equals(gameController.getCurrentPlayer().getNickname())){
-                		//SelectArtifactScreen selectArtifactScreen = new SelectArtifactScreen();
-            			//selectArtifactScreen.display();
-            			UseArtifactScreen useart = new UseArtifactScreen();
-            			useart.display();
+                		SelectArtifactScreen selectArtifactScreen = new SelectArtifactScreen();
+            			selectArtifactScreen.display();
+            			//UseArtifactScreen useart = new UseArtifactScreen();
+            			//useart.display();
             			PlayerDashboard.this.setVisible(false);
                     } else {
                         // Not the client player's turn
