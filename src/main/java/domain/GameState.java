@@ -144,4 +144,8 @@ public class GameState {
         }
         return null;
     }
+
+    public boolean actionPerformed() {
+        return actionPerformed;
+    }
 }

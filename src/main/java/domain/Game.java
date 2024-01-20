@@ -102,7 +102,7 @@ public class Game { //Singleton Pattern
 	}
 	
 	public boolean getActionPerformed() {
-		return actionPerformed;
+		return gameState.actionPerformed();
 	}
 
     public Player getCurrentPlayer() {
