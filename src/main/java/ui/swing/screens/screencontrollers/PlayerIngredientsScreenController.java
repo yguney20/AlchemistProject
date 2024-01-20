@@ -38,7 +38,7 @@ public class PlayerIngredientsScreenController {
 
     private void updateIngredients() {
         if(gameController.isOnlineMode()){
-            playerToShow = gameController.getGameState().getPlayerByNickname(gameController.getClientPlayer());
+            playerToShow = gameController.getPlayerByClientName(gameController.getClientPlayer());
         } else{
             playerToShow = gameController.getCurrentPlayer();
         }

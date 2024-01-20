@@ -52,7 +52,7 @@ public class GameState {
     public String toString() {
         return "GameState{" +
                 "\n\tcurrentPlayerName=" + getCurrentPlayer().getNickname()+
-                "\n\tcurrentPlayerIngredients=" + getCurrentPlayer().getIngredientInventory()+
+                "\n\tcurrentPlayerIngredi=" + getCurrentPlayer().getIngredientInventory()+
                 "\n\tcurrentRound=" + currentRound +
                 "\n\tcurrentTurn=" + currentTurn +
                 "\n\tcurrentPlayerID=" + currentPlayerID +
@@ -151,12 +151,5 @@ public class GameState {
         return actionPerformed;
     }
 
-    public Player getPlayerByNickname(String clientPlayer) {
-        for (Player player : players) {
-            if (player.getNickname() == getCurrentPlayer().getNickname()) {
-                return player;
-            }
-        }
-        return null;
-    }
+
 }
