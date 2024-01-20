@@ -309,6 +309,7 @@ public class Client {
     // Method to display the pause screen
     private void openPauseScreen(String pausingPlayerName) {
         Game.getInstance().setPausedPlayer(pausingPlayerName);
+        System.out.println(pausingPlayerName);
         pauseScreen = new PauseScreen(boardScreen, menuScreen.getInstance(boardScreen), pausingPlayerName);
         pauseScreen.display();
         // Further customization based on pausingPlayerName

@@ -47,11 +47,10 @@ public class PauseScreenController {
 
     public void setPausingPlayerName(String pausingPlayerName) {
         this.pausingPlayerName = pausingPlayerName;
-        updateResumeButtonVisibility();
     }
     
     
-    private void initializeMediaPlayers() {
+    public void initializeMediaPlayers() {
         
         String buttonSoundFile = getClass().getResource("/sounds/buttonSound.wav").toExternalForm();
         Media buttonSound = new Media(buttonSoundFile);
@@ -59,10 +58,11 @@ public class PauseScreenController {
     }
 
     //-------------
-    private void updateResumeButtonVisibility() {
+    public void updateResumeButtonVisibility() {
         // Only show the resume button if the current player is the one who paused the game
         if(!gameController.isOnlineMode()){
             resumeGameButton.setVisible(true);
+            System.out.println(pausingPlayerName);
         } else{
             System.out.println(pausingPlayerName);
             System.out.println(game.getPausedPlayer());
