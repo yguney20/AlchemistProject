@@ -20,8 +20,9 @@ public class PublicationCardsScreenController {
     @FXML
     private VBox publicationsVBox;
 
+
     @FXML
-    private Button quitButton;
+    private ImageView exitButton;
     
     private PublicationCardsScreen publicationCardsScreen;
 
@@ -66,7 +67,7 @@ public class PublicationCardsScreenController {
 
 
     @FXML
-    private void handleQuitButtonAction(ActionEvent event) {
+    private void handleQuitButtonAction() {
     	/*
     	if (publicationCardsScreenFrame != null) {
     		publicationCardsScreenFrame.dispose(); 

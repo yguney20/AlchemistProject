@@ -27,7 +27,7 @@ public class PublicationCardsScreen extends JFrame{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(947, 735);
         frame.setLocationRelativeTo(null); // Center the frame
-
+        frame.setUndecorated(true);
         // Create the JFXPanel to add JavaFX content
         jfxPanel = new JFXPanel();
         frame.add(jfxPanel, BorderLayout.CENTER);
