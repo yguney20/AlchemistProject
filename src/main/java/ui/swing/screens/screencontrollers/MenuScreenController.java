@@ -104,7 +104,7 @@ public class MenuScreenController {
             Object source = event.getSource();
             if (source instanceof Button) {
                 Button clickedButton = (Button) source;
-                
+
                 switch (clickedButton.getId()) {
                     case "pauseGameButton":
                         // Code for play button
@@ -112,9 +112,14 @@ public class MenuScreenController {
                             ((MenuScreen) menuScreenFrame).close(); // Close the entrance screen
                         }
                     	boardFrame.setVisible(false);
-                        PauseScreen pauseScreen = new PauseScreen(boardFrame, menuScreenFrame);
-                        pauseScreen.display();
-                        break;
+                        if(!gameController.isOnlineMode()){
+                            PauseScreen pauseScreen = new PauseScreen(boardFrame, menuScreenFrame);
+                            pauseScreen.display();
+                            break;
+                        } else {
+                            gameController.pauseGame();
+                        }
+
                     case "helpButton":
                     	if (menuScreenFrame instanceof MenuScreen) {
                             ((MenuScreen) menuScreenFrame).close(); // Close the entrance screen
