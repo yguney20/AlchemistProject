@@ -16,15 +16,17 @@ import domain.gameobjects.PotionCard;
 import domain.gameobjects.PublicationCard;
 import domain.gameobjects.ValidatedAspect;
 import domain.gameobjects.artifacteffects.ElixirOfInsightEffect;
+import javafx.application.Platform;
 import domain.controllers.*;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import ui.swing.screens.DeductionBoard;
+import ui.swing.screens.scenes.DeductionBoard;
 import ui.swing.screens.scenes.BoardScreen;
 import ui.swing.screens.screencomponents.SettingsState;
+import ui.swing.screens.screencontrollers.DeductionBoardController;
 
 public class GameController {
 	
@@ -170,7 +172,7 @@ public class GameController {
 
     private void initializeDeductionBoards() {
         for (Player player : game.getGameState().getPlayers()) {
-            playerDeductionBoards.put(player, new DeductionBoard(boardScreen));
+            playerDeductionBoards.put(player, new DeductionBoard());
         }
     }
 
@@ -178,44 +180,48 @@ public class GameController {
         return playerDeductionBoards.get(player);
     }
 
-
+    
     // Call this method when it's a player's turn
     public void displayDeductionBoardForCurrentPlayer() {
         Player currentPlayer = getCurrentPlayer();
-        DeductionBoard board = new DeductionBoard(boardScreen);
-        loadPlayerDeductionsIntoBoard(currentPlayer, board);
-        board.display();
+        DeductionBoard board = playerDeductionBoards.computeIfAbsent(currentPlayer, k -> new DeductionBoard());
+        Platform.runLater(() -> {
+            board.display();
+            loadPlayerDeductionsIntoBoard(currentPlayer, board);
+        });
     }
 
     private void loadPlayerDeductionsIntoBoard(Player player, DeductionBoard board) {
-        // Logic to load player's deductions into the board
-    	board.clearSignPlacements();
-        for (Player.Deduction deduction : player.getDeductions()) {
-            board.addSignPlacement(new Point(deduction.getX(), deduction.getY()), convertNumToSign(deduction.getSign_num()));
-        }
-        board.repaint();
+        // The following assumes that you have a method to get the deductions for a player
+        List<Player.Deduction> deductions = player.getDeductions(); // Retrieve the list of deductions for the player
+        Platform.runLater(() -> {
+            board.clearSignPlacements();
+            for (Player.Deduction deduction : deductions) {
+                board.addSignPlacement(new Point(deduction.getX(), deduction.getY()), convertNumToSign(deduction.getSign_num()));
+            }
+        });
     }
     
-    private DeductionBoard.Sign convertNumToSign(int signNum) {
-        // Assuming signNum starts from 0 and maps directly to the order of enum constants
-        DeductionBoard.Sign[] signs = DeductionBoard.Sign.values();
+    private DeductionBoardController.Sign convertNumToSign(int signNum) {
+        DeductionBoardController.Sign[] signs = DeductionBoardController.Sign.values();
         if (signNum >= 0 && signNum < signs.length) {
             return signs[signNum];
         }
-        // Handle invalid signNum (e.g., return a default sign or throw an exception)
-        return DeductionBoard.Sign.NEUTRAL; // Default or error handling
+        return DeductionBoardController.Sign.NEUTRAL; // Default or error handling
     }
     
     public void playerMadeDeduction(int x, int y, int signNum) {
         Player currentPlayer = getCurrentPlayer();
         currentPlayer.addDeduction(x, y, signNum);
 
-        // Now update the DeductionBoard for the current player
-        DeductionBoard currentBoard = playerDeductionBoards.get(currentPlayer);
-        if (currentBoard != null) {
-            loadPlayerDeductionsIntoBoard(currentPlayer, currentBoard);
+        DeductionBoard board = playerDeductionBoards.get(currentPlayer);
+        if (board != null) {
+            Platform.runLater(() -> {
+                board.addSignPlacement(new Point(x, y), convertNumToSign(signNum));
+            });
         }
     }
+
 
    
     
