@@ -35,7 +35,7 @@ public class PublicationCardsScreen extends JFrame{
     private int initialY;
     private GameController gameController = GameController.getInstance();
     private JLabel publicationLabel;
-    List<PublicationCard> publicationCards = GameController.getPublicationCardList();
+    List<PublicationCard> publicationCards;
     private JButton quitButton = new JButton("X");
     
 
@@ -118,9 +118,19 @@ public class PublicationCardsScreen extends JFrame{
         int width = 140;
         int height = 300;
         int horizontalSpacing = 20;
+        List<PublicationCard> publicationCards;
+
+        if (gameController.isOnlineMode()){
+            	publicationCards = gameController.getGameState().getPublicationCardList();
+            } else {
+            	publicationCards = GameController.getPublicationCardList();
+        }
         
+       
 
         for (int i = 0; i < publicationCards.size(); i++) {
+
+
             PublicationCard publicationCard = publicationCards.get(i);
 
             // Create a panel for each publication card

@@ -117,8 +117,13 @@ public class PotionCardsScreen extends JFrame{
 	    int width = 140;
 	    int height = 200;
 	    int horizontalSpacing = 20;
+		Map<Player, List<PotionCard>> potionMap;
+		if (gameController.isOnlineMode()){
+			potionMap = gameController.getGameState().getPotionMap();
+		} else {
+			potionMap = GameController.getPotionMap();
+		}
 
-	    Map<Player, List<PotionCard>> potionMap = GameController.getPotionMap();
 
 	    for (Map.Entry<Player, List<PotionCard>> entry : potionMap.entrySet()) {
 	        Player player = entry.getKey();

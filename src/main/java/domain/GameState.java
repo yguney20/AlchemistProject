@@ -1,9 +1,13 @@
 package domain;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
+import domain.gameobjects.PublicationCard;
 
 public class GameState {
 	
@@ -18,6 +22,9 @@ public class GameState {
     private int currentTurn;
     private PotionCard lastCreatedPotion;
     private boolean actionPerformed;
+    private ArrayList<PublicationCard> publicationCardList = new ArrayList<PublicationCard>();
+    private  Map<Player, List<PotionCard>> potionMap = new HashMap<>();
+
 
 
     public GameState(List<Player> players, int initialRound, int firstTurn, int initialPlayer, boolean isPaused, boolean actionPerformed) {
@@ -151,5 +158,19 @@ public class GameState {
         return actionPerformed;
     }
 
+    public  ArrayList<PublicationCard> getPublicationCardList() {
+        for(Player player: players){
+            for(PublicationCard publicationCard: player.getPublicationCards()){
+                publicationCardList.add(publicationCard);
+            }
+        }
+        return publicationCardList;
+    }
 
+    public  Map<Player, List<PotionCard>> getPotionMap() {
+        for(Player player: players){
+            potionMap.put(player, player.getPotionInventory());
+        }
+        return potionMap;
+    }
 }
