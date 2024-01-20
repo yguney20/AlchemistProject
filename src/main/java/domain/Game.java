@@ -309,19 +309,19 @@ public class Game { //Singleton Pattern
     }
 
     private void updateGameStateWithLatestPlayerInfo(int playerId) {
-        Player updatedPlayer = getPlayerById(playerId);
-        if (updatedPlayer != null) {
-            // Find the corresponding player in the GameState and update their state
-            for (Player gameStatePlayer : gameState.getPlayers()) {
-                if (gameStatePlayer.getPlayerId() == playerId) {
-                    gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
-                    gameStatePlayer.setGolds(updatedPlayer.getGolds());
-                    // Add any other player properties that need to be updated
-                    break;
-                }
+    Player updatedPlayer = getPlayerById(playerId);
+    if (updatedPlayer != null) {
+        // Find the corresponding player in the GameState and update their state
+        for (Player gameStatePlayer : gameState.getPlayers()) {
+            if (gameStatePlayer.getPlayerId() == playerId) {
+                gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
+                gameStatePlayer.setGolds(updatedPlayer.getGolds());
+                // Add any other player properties that need to be updated
+                break;
             }
         }
     }
+}
 
     //---------------------Functions for finding object by Id----------------------------
     // Method to find a player by their ID
@@ -914,6 +914,15 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
 
     public  void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public Player getPlayerByClientName(String name) {
+        for (Player player : gameState.getPlayers()) {
+            if (player.getNickname().equals(name)) {
+                return player;
+            }
+        }
+        return null; 
     }
 
 
