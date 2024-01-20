@@ -281,6 +281,7 @@ public class LoginOverlay extends JFrame {
             JOptionPane.showMessageDialog(this, "Number of players saved: " + totalPlayers, "Success",
                     JOptionPane.INFORMATION_MESSAGE);
             
+            
             nicknameTextField.setVisible(true);
             startButton.setVisible(true);
             saveNumPlayersButton.setVisible(false);
