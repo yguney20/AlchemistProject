@@ -15,6 +15,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 import java.lang.reflect.Type;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import domain.controllers.GameController;
@@ -250,6 +251,15 @@ public class Client {
             gameController.setGameState(gameState);
 
             SwingUtilities.invokeLater(this::closePauseScreen);
+        }if (message.startsWith("ARTIFACT:")) {
+            String jsonState = message.substring("ARTIFACT:".length());
+            Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
+            GameState gameState = gson.fromJson(jsonState, GameState.class);
+
+            // Handle the updated game state
+            // ...
         }
     }
 

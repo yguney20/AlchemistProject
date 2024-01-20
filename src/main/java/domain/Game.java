@@ -322,6 +322,7 @@ public class Game { //Singleton Pattern
             if (gameStatePlayer.getPlayerId() == playerId) {
                 gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
                 gameStatePlayer.setGolds(updatedPlayer.getGolds());
+                gameStatePlayer.setArtifactCards(updatedPlayer.getArtifactCards());
                 // Add any other player properties that need to be updated
                 break;
             }

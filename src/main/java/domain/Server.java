@@ -1,5 +1,6 @@
 package domain;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import domain.controllers.GameController;
 import domain.controllers.LoginController;
@@ -8,7 +9,7 @@ import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Molecule;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
-
+import domain.gameobjects.artifacteffects.ArtifactEffect;
 
 import java.io.*;
 import java.net.*;
@@ -157,6 +158,19 @@ public class Server {
                 System.err.println("Error: GameState is not ready for broadcasting.");
             }
         }
+
+        public void broadcastaArtifactState() {
+            GameState gameState = game.getGameState();
+            if (gameState != null && gameState.isInitialized()) {
+                Gson gson = new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .create();
+                String gameStateJson = gson.toJson(gameState);
+                broadcast("ARTIFACT:" + gameStateJson);
+            } else {
+                System.err.println("Error: Artifact is not ready for broadcasting.");
+            }
+}
 
         public void broadcastStartGame() {
             GameState gameState = game.getGameState();
