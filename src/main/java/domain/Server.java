@@ -1,5 +1,6 @@
 package domain;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import domain.controllers.GameController;
 import domain.controllers.LoginController;
@@ -8,7 +9,7 @@ import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Molecule;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
-
+import domain.gameobjects.artifacteffects.ArtifactEffect;
 
 import java.io.*;
 import java.net.*;
@@ -157,6 +158,19 @@ public class Server {
                 System.err.println("Error: GameState is not ready for broadcasting.");
             }
         }
+
+        public void broadcastaArtifactState() {
+            GameState gameState = game.getGameState();
+            if (gameState != null && gameState.isInitialized()) {
+                Gson gson = new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .create();
+                String gameStateJson = gson.toJson(gameState);
+                broadcast("ARTIFACT:" + gameStateJson);
+            } else {
+                System.err.println("Error: Artifact is not ready for broadcasting.");
+            }
+}
 
         public void broadcastStartGame() {
             GameState gameState = game.getGameState();
@@ -450,13 +464,14 @@ public class Server {
                         
                         break;
                      case "buyArtifactCard":
-                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                     currentPlayerName = game.getCurrentPlayer().getNickname();
                         if(clientName.equals(currentPlayerName)){
-                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
-                        int cardId = Integer.parseInt((String) messageMap.get("cardId"));
-                        game.buyArtifactCard(playerId, cardId);
-                        broadcastGameState();
-                        }else {
+                            int playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                            int cardId = Integer.parseInt((String) messageMap.get("cardId"));
+                            game.buyArtifactCard(playerId, cardId);
+                            // Broadcast only the artifact card ID and player ID
+                            broadcast("ARTIFACT_BOUGHT:" + playerId + ":" + cardId);
+                        } else {
                             sendMessage("ERROR: Not your turn");
                         }
                         break;
@@ -552,7 +567,19 @@ public class Server {
                         server.broadcastResumeGame();
                         broadcastGameState();
                         break;
+                    case "REQUEST_GAME_STATE":
+                        GameState gameState = game.getGameState();
+                        if (gameState != null && gameState.isInitialized()) {
+                            String gameStateJson = new Gson().toJson(gameState);
+                            System.out.println("Sending game state: " + gameStateJson); // Debug print
+                            sendMessage("GAME_STATE:" + gameStateJson);
+                        } else {
+                            System.err.println("Error: GameState is null or not initialized.");
+                            sendMessage("ERROR:GameState not available");
+                        }
+                        break;
                 }
+                
                     
             }
     

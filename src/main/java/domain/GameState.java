@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
 import domain.gameobjects.PublicationCard;
@@ -173,6 +174,16 @@ public class GameState {
 
     public void setPotionMap(Map<Player, List<PotionCard>> potionMap) {
         this.potionMap = potionMap;
+    }
+
+    public ArtifactCard getArtifactCardById(int artifactCardId) {
+       for (ArtifactCard artifactCard :currentPlayer.getArtifactCards()){
+              if (artifactCard.getArtifactId() == artifactCardId){
+                return artifactCard;
+              }
+
+       }
+        return null;
     }
 
 
