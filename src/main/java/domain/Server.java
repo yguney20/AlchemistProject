@@ -533,13 +533,13 @@ public class Server {
                         break;
                     case "pauseGame":
                         // Handling pause game request
-                        broadcastPauseGame();
+                        server.broadcastPauseGame();
                         broadcastGameState();
                         break;
 
                     case "resumeGame":
                         // Handling resume game request
-                        broadcastResumeGame();
+                        server.broadcastResumeGame();
                         broadcastGameState();
                         break;
                 }
