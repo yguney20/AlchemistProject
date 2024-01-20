@@ -48,7 +48,6 @@ public class MakeExperimentScreenController {
             e.printStackTrace(); // Handle this exception as per your application's policy
         }
     }
-
     private void addIngredients() throws IOException {
         int x = 0; // Horizontal position
         int y = 0; // Vertical position

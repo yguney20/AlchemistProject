@@ -21,6 +21,7 @@ public class MakeExperimentScreen extends JFrame {
         initializeJavaFXComponents();
     }
 
+    
     private void initializeFrame() {
         setTitle("Make Experiment");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

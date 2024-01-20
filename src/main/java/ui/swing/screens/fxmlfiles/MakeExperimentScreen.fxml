@@ -13,7 +13,6 @@
     <AnchorPane fx:id="ingredientContainer" layoutX="25" layoutY="20" prefHeight="200.0" prefWidth="730.0">
         <!-- Dynamically added ingredients will go here -->
     </AnchorPane>
-
     <!-- Tester Buttons -->
     <Button fx:id="studentButton" layoutX="28.0" layoutY="265.0" text="Student" />
     <Button fx:id="yourselfButton" layoutX="177.0" layoutY="265.0" text="Yourself" />
