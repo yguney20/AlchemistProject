@@ -69,6 +69,8 @@ public class BoardScreen extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(50, 50, 1300, 705); // Adjust the size accordingly
         setResizable(false);
+        setLocationRelativeTo(null);
+        setUndecorated(true);
         fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
         add(fxPanel);
     }

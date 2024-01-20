@@ -62,6 +62,8 @@ public class LoginOverlay extends JFrame {
 		setSize(1365, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
+        setLocationRelativeTo(null);
+        setUndecorated(true);
 
         // Load the original gif as an image
         Image originalImage = new ImageIcon(this.getClass().getResource("/animations/loginBackground.gif")).getImage();
