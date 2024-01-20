@@ -632,10 +632,12 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     PotionCard potionCard = makePotion(firstCard, secondCard);
     gameState.setLastCreatedPotion(potionCard);
     processExperimentOutcome(player, potionCard, student);
+    PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
     gameState.setActionPerformed(true);
     updateGameStateWithLatestPlayerInfo(playerId);
 
-    PotionCard.getPotionMap().computeIfAbsent(player, k -> new ArrayList<>()).add(potionCard);
+    
+    
 
     return potionCard;
 }
