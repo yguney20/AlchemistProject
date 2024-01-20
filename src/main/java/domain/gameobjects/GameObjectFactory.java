@@ -20,13 +20,13 @@ public class GameObjectFactory { // Singleton Patterns
     private int artifactCounter = 1;
     private int potionCounter = 1;
 	
-	private static String redPositivePath = "/images/potions/red+.png";
-	private static String redNegativePath = "/images/potions/red-.png";
-	private static String bluePositivePath = "/images/potions/blue+.png";
-	private static String blueNegativePath = "/images/potions/blue-.png";
-	private static String greenPositivePath = "/images/potions/green+.png";
-	private static String greenNegativePath = "/images/potions/green-.png";
-	private static String neutralPath = "/images/potions/neutral.png";
+	private static String redPositivePath = "/images/potions/RedPlusPotion";
+	private static String redNegativePath = "/images/potions/RedMinusPotion";
+	private static String bluePositivePath = "/images/potions/BluePlusPotion";
+	private static String blueNegativePath = "/images/potions/BlueMinusPotion";
+	private static String greenPositivePath = "/images/potions/GreenPlusPotion";
+	private static String greenNegativePath = "/images/potions/GreenMinusPotion";
+	private static String neutralPath = "/images/potions/NeutralPotion";
 	
 	private static String molecule1image = "/images/molecules/molecule1.png";
 	private static String molecule2image = "/images/molecules/molecule2.png";
