@@ -410,48 +410,7 @@ public class Game { //Singleton Pattern
             notifyPlayers("Action already performed.");
         }
     }
-    private void updateGameStateWithLatestPlayerInfo(int playerId) {
-        Player updatedPlayer = getPlayerById(playerId);
-        if (updatedPlayer != null) {
-            // Find the corresponding player in the GameState and update their state
-            for (Player gameStatePlayer : gameState.getPlayers()) {
-                if (gameStatePlayer.getPlayerId() == playerId) {
-                    gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
-                    gameStatePlayer.setPublicationCards(updatedPlayer.getPublicationCards());
-                    gameStatePlayer.setGolds(updatedPlayer.getGolds());
-                    // Add any other player properties that need to be updated
-                    break;
-                }
-            }
-        }
-        gameState.setActionPerformed(gameState.actionPerformed());
-    }
-
-    public void updateGameStateWithAllPlayersInfo() {
-        // Iterate over all players in the game
-        for (Player gamePlayer : players) {
-            int playerId = gamePlayer.getPlayerId();
-            Player updatedPlayer = getPlayerById(playerId);
-    
-            // Check if the updated player information is available
-            if (updatedPlayer != null) {
-                // Find the corresponding player in the GameState and update their state
-                for (Player gameStatePlayer : gameState.getPlayers()) {
-                    if (gameStatePlayer.getPlayerId() == playerId) {
-                        gameStatePlayer.setIngredientInventory(updatedPlayer.getIngredientInventory());
-                        System.out.println("updatelenen playerin ingredientları: " + gameStatePlayer.getIngredientInventory());
-                        gameStatePlayer.setPublicationCards(updatedPlayer.getPublicationCards());
-                        gameStatePlayer.setGolds(updatedPlayer.getGolds());
-                        System.out.println(gameState);
-                        break;
-                    }
-                }
-            }
-        }
-        System.out.println("Action Performed before UpdateStateAllplayers ;" + getActionPerformed());
-        gameState.setActionPerformed(gameState.actionPerformed());
-        System.out.println("Action Performed After UpdateStateAllplayers ;" + getActionPerformed());
-    }
+  
 
     
     //-----------------------Artifact Related Functions ------------------------------------
@@ -510,7 +469,6 @@ public class Game { //Singleton Pattern
        
 
         gameState.setActionPerformed(true);
-        updateGameStateWithLatestPlayerInfo(player.getPlayerId());
     }
 
     /**
@@ -611,7 +569,6 @@ public class Game { //Singleton Pattern
         player.increaseGold(1);
         // Mark the action as performed
         gameState.setActionPerformed(true);
-        updateGameStateWithLatestPlayerInfo(playerId);
     }
 
     
@@ -767,7 +724,6 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
             }
     
             gameState.setActionPerformed(true);
-            updateGameStateWithLatestPlayerInfo(playerId);
             System.out.println(potion);
         } else {
             notifyPlayers("Action already performed or preconditions are not met");
@@ -835,7 +791,6 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
         }
 
         gameState.setActionPerformed(true);
-        updateGameStateWithLatestPlayerInfo(player.getPlayerId());
     }
 
 
@@ -894,7 +849,6 @@ public PotionCard makeExperiment(int playerId, int firstCardId, int secondCardId
     
         ValidatedAspect validatedAspect = new ValidatedAspect(validatedAspectCounter++, ingredient, component, componentSign, componentSize);
         gameState.setActionPerformed(true);
-        updateGameStateWithLatestPlayerInfo(playerId);
     }
 
     private void handleCorrectTheory(PublicationCard publicationCard, Player player) {

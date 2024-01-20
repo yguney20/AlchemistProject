@@ -182,8 +182,7 @@ public class Client {
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
             System.out.println("Client Handler Recieved Start Game State:" + gameState);
             gameController.setGameState(gameState);
-           
-
+        
            
             SwingUtilities.invokeLater(() -> {
     
@@ -205,12 +204,11 @@ public class Client {
         } else if (message.startsWith("GAME_STATE:")) {
             String jsonState = message.substring("GAME_STATE:".length());
             GameState gameState = new Gson().fromJson(jsonState, GameState.class);
+           
+            
+            System.out.println(" before game state call ;" + gameController.getGameState() );
             gameController.setGameState(gameState);
-            //after setting the game state we should apply it
-            // Update the UI here or through a method call
-            System.out.println("Action Performed before game state call ;" + gameController.getActionPerformed() );
-            gameController.updateGameStateWithAllPlayersInfo();
-            System.out.println("Action Performed after game staate call ;" + gameController.getActionPerformed() );
+            System.out.println(" after game staate call ;" + gameController.getGameState() );
 
 
             SwingUtilities.invokeLater(() -> {

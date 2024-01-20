@@ -382,11 +382,4 @@ public class GameController {
        return null;
 
     }
-    public void updateGameStateWithAllPlayersInfo(){
-        game.updateGameStateWithAllPlayersInfo();
-    }
-    public Object getPublicationCards() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPublicationCards'");
-    }
 }
