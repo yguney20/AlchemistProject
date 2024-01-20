@@ -104,7 +104,7 @@ public class MenuScreenController {
             Object source = event.getSource();
             if (source instanceof Button) {
                 Button clickedButton = (Button) source;
-                
+
                 switch (clickedButton.getId()) {
                     case "pauseGameButton":
                         // Code for play button
