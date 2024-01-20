@@ -36,7 +36,13 @@ public class PlayerIngredientsScreenController {
     }
 
     private void updateIngredients() {
-        Player playerToShow = gameController.isOnlineMode() ? gameController.getClientPlayer() : gameController.getCurrentPlayer();
+        Player playerToShow;
+        if(gameController.isOnlineMode()){
+            playerToShow = gameController.getPlayerByClientName(gameController.getClientPlayer().getNickname());
+        } else{
+            playerToShow = gameController.getCurrentPlayer();
+        }
+
         if (playerToShow != null) {
             ingredientsContainer.getChildren().clear(); // Clear previous items
             List<IngredientCard> ingredientCards = playerToShow.getIngredientInventory();
