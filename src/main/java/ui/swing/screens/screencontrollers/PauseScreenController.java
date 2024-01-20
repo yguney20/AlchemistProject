@@ -1,5 +1,6 @@
 package ui.swing.screens.screencontrollers;
 
+import domain.controllers.GameController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +24,8 @@ public class PauseScreenController {
     private PauseScreen pauseScreen;
     private String pausingPlayerName;
     private Game game = Game.getInstance();
+
+    private GameController gameController = GameController.getInstance();
 
     private MediaPlayer buttonSoundPlayer;
     
@@ -58,7 +61,11 @@ public class PauseScreenController {
     //-------------
     private void updateResumeButtonVisibility() {
         // Only show the resume button if the current player is the one who paused the game
-        resumeGameButton.setVisible(pausingPlayerName.equals(game.getCurrentPlayer().getNickname()));
+        if(!gameController.isOnlineMode()){
+            resumeGameButton.setVisible(true);
+        } else{
+            resumeGameButton.setVisible(pausingPlayerName.equals(game.getCurrentPlayer().getNickname()));
+        }
     }
 
 
@@ -83,4 +90,6 @@ public class PauseScreenController {
             buttonSoundPlayer.play(); // Play the sound
         }
     }
+
+
 }
