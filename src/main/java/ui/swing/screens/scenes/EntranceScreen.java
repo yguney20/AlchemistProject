@@ -2,6 +2,8 @@ package ui.swing.screens.scenes;
 
 import java.awt.Color;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 
@@ -26,6 +28,7 @@ import javafx.stage.Stage;
 import ui.swing.helper.SoundPlayer;
 import ui.swing.screens.screencontrollers.EntranceScreenController;
 
+import java.awt.Point;
 
 public class EntranceScreen extends JFrame{
 
@@ -33,8 +36,8 @@ public class EntranceScreen extends JFrame{
     private GameController gameController = GameController.getInstance();
     private JFXPanel fxPanel;
     private JFrame frame;
-    
-    
+
+    private Point initialClick;
     
     public EntranceScreen() {
         initializeFrame();
@@ -46,9 +49,10 @@ public class EntranceScreen extends JFrame{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(50, 50, 900, 505); // Adjust the size accordingly
         setResizable(false);
+        setLocationRelativeTo(null);
+        setUndecorated(true);
         fxPanel = new JFXPanel(); // This will prepare JavaFX toolkit and environment
         add(fxPanel);
-        
     
     }
     
@@ -56,7 +60,7 @@ public class EntranceScreen extends JFrame{
         Platform.runLater(() -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/swing/screens/fxmlfiles/EntranceScreen.fxml"));
-                loader.setController(EntranceScreenController.getInstance());
+
                 Parent root = loader.load();
 
                 EntranceScreenController.getInstance().setEntranceScreenFrame(this);

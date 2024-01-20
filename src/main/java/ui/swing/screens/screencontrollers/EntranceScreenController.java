@@ -1,12 +1,12 @@
 package ui.swing.screens.screencontrollers;
 
-import java.awt.Frame;
+import java.awt.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.BindException;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import animatefx.animation.Bounce;
 import animatefx.animation.FadeInUp;
@@ -22,7 +22,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -53,10 +55,14 @@ public class EntranceScreenController {
     private Button helpButton;
     @FXML
     private ImageView wizardImage;
-    
+    @FXML
+    private AnchorPane anchorPane;
+    @FXML
+    private ImageView exitButtonImage;
+
     private GameController gameController = GameController.getInstance();
     
-    private Frame entranceScreenFrame;
+    private JFrame entranceScreenFrame;
     private static EntranceScreenController instance;
     private MediaPlayer backgroundMusicPlayer;
     private MediaPlayer buttonSoundPlayer;
@@ -85,7 +91,7 @@ public class EntranceScreenController {
     }
     
     
-    public void setEntranceScreenFrame(Frame frame) {
+    public void setEntranceScreenFrame(JFrame frame) {
         this.entranceScreenFrame = frame;
     }
     
@@ -96,6 +102,13 @@ public class EntranceScreenController {
             buttonSoundPlayer.stop(); // Stop the sound to reset it if it was already playing
             buttonSoundPlayer.play(); // Play the sound
         }
+    }
+
+    @FXML
+    private void exitButtonPressed(MouseEvent event) {
+
+        System.exit(0);
+
     }
 
     // Method to animate a button on mouse pressed
