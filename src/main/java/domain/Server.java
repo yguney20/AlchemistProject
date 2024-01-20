@@ -540,7 +540,7 @@ public class Server {
                         break;
                     case "pauseGame":
                         // Handling pause game request
-                        String pausingPlayerName = clientName; // The client who requested the pause
+                        String pausingPlayerName = this.clientName; // The client who requested the pause
                         server.pauseGame(pausingPlayerName);
                         break;
 
