@@ -1,12 +1,16 @@
 package domain.gameobjects;
 
 import domain.gameobjects.artifacteffects.ArtifactEffect;
+
+import com.google.gson.annotations.Expose;
+
 import domain.Game;
 
 public class ArtifactCard {
 	private int artifactId;
     private String name;
     private int goldValue;
+    @Expose(serialize = false, deserialize = false)
     private ArtifactEffect effect;
     private boolean isOneTimeUse; // Indicates if the card is for one-time use
     private boolean isUsed;       // Tracks whether the card has been used

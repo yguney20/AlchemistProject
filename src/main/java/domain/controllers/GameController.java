@@ -391,5 +391,11 @@ public class GameController {
         return game.getPlayerByClientName(name);
 
     }
+    public Player getPlayerById(int playerId) {
+        return game.getPlayerById(playerId);
+    }
+    public ArtifactCard getArtifactCardById(int artifactCardId) {
+       return game.getArtifactCardById(artifactCardId);
+    }
 
 }

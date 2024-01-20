@@ -495,6 +495,7 @@ public class Game { //Singleton Pattern
 
         gameState.setActionPerformed(true);
         updateGameStateWithLatestPlayerInfo(player.getPlayerId());
+        System.out.println("After buy: " +  gameState.getCurrentPlayer().getArtifactCards());
     }
 
     /**

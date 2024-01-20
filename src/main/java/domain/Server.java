@@ -464,13 +464,14 @@ public class Server {
                         
                         break;
                      case "buyArtifactCard":
-                        currentPlayerName = game.getCurrentPlayer().getNickname();
+                     currentPlayerName = game.getCurrentPlayer().getNickname();
                         if(clientName.equals(currentPlayerName)){
-                        int playerId = Integer.parseInt((String) messageMap.get("playerId"));
-                        int cardId = Integer.parseInt((String) messageMap.get("cardId"));
-                        game.buyArtifactCard(playerId, cardId);
-                        broadcastGameState();
-                        }else {
+                            int playerId = Integer.parseInt((String) messageMap.get("playerId"));
+                            int cardId = Integer.parseInt((String) messageMap.get("cardId"));
+                            game.buyArtifactCard(playerId, cardId);
+                            // Broadcast only the artifact card ID and player ID
+                            broadcast("ARTIFACT_BOUGHT:" + playerId + ":" + cardId);
+                        } else {
                             sendMessage("ERROR: Not your turn");
                         }
                         break;
@@ -566,7 +567,13 @@ public class Server {
                         server.broadcastResumeGame();
                         broadcastGameState();
                         break;
+                        case "REQUEST_GAME_STATE":
+                        GameState gameState = game.getGameState();
+                        String gameStateJson = new Gson().toJson(gameState);
+                        sendMessage("GAME_STATE:" + gameStateJson);
+                        break;
                 }
+                
                     
             }
     

@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import domain.controllers.GameController;
 import domain.controllers.LoginController;
 import domain.controllers.OnlineGameAdapter;
+import domain.gameobjects.ArtifactCard;
 import domain.gameobjects.GameObjectFactory;
 import domain.gameobjects.Player;
 import domain.gameobjects.PotionCard;
@@ -251,15 +252,16 @@ public class Client {
             gameController.setGameState(gameState);
 
             SwingUtilities.invokeLater(this::closePauseScreen);
-        }if (message.startsWith("ARTIFACT:")) {
-            String jsonState = message.substring("ARTIFACT:".length());
-            Gson gson = new GsonBuilder()
-                .excludeFieldsWithoutExposeAnnotation()
-                .create();
-            GameState gameState = gson.fromJson(jsonState, GameState.class);
+        }if (message.startsWith("ARTIFACT_BOUGHT:")) {
+            String[] parts = message.split(":");
+            if (parts.length == 3) {
+                int playerId = Integer.parseInt(parts[1]);
+                int artifactCardId = Integer.parseInt(parts[2]);
+                // Handle the artifact card purchase
+                // For example, update the UI or local game state based on these IDs
+                handleArtifactPurchase(playerId, artifactCardId);
+            }
 
-            // Handle the updated game state
-            // ...
         }
     }
 
@@ -268,16 +270,40 @@ public class Client {
 
     
 
-    private void updateLocalPlayerList(List<Map<String, String>> playerInfoList) {
+    private void handleArtifactPurchase(int playerId, int artifactCardId) {
+      
+        Player player = gameController.getPlayerById(playerId);
+        ArtifactCard artifactCard = gameController.getArtifactCardById(artifactCardId);
 
-        playerList.clear(); // Clear the existing list first
-    
-        for (Map<String, String> playerInfo : playerInfoList) {
-            String playerName = playerInfo.get("playerName");
-            String avatarPath = playerInfo.get("avatarPath");
-            gameObjectFactory.createPlayer(playerName, avatarPath);
+        // Add the artifact card to the player's inventory
+        if (player != null && artifactCard != null) {
+            player.addArtifactCard(artifactCard);
+        } else {
+            // Handle error: player or card not found
+            System.err.println("Player or ArtifactCard not found for given IDs.");
         }
-    }
+
+        // Optionally, request the updated GameState from the server
+        requestUpdatedGameState();
+          
+        }
+
+        
+        private void requestUpdatedGameState() {
+           sendMessage("REQUEST_GAME_STATE");
+
+        }
+
+        private void updateLocalPlayerList(List<Map<String, String>> playerInfoList) {
+
+            playerList.clear(); // Clear the existing list first
+        
+            for (Map<String, String> playerInfo : playerInfoList) {
+                String playerName = playerInfo.get("playerName");
+                String avatarPath = playerInfo.get("avatarPath");
+                gameObjectFactory.createPlayer(playerName, avatarPath);
+            }
+      }
 
     public void startListening() {
         new Thread(() -> {
